@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ry7mm6mgg6iy"]
+
+[ext_resource type="PackedScene" uid="uid://cb2d8j7se8qb8" path="res://Scene/Core/field.tscn" id="2_gevu4"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Field" parent="." instance=ExtResource("2_gevu4")]

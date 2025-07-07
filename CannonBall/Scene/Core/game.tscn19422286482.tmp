@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://ry7mm6mgg6iy"]
+
+[ext_resource type="PackedScene" uid="uid://ind02kvqyd3c" path="res://Scene/Object/player.tscn" id="1_sh76h"]
+[ext_resource type="PackedScene" uid="uid://cb2d8j7se8qb8" path="res://Scene/Core/field.tscn" id="2_gevu4"]
+[ext_resource type="PackedScene" uid="uid://csssoqjjrrj67" path="res://Scene/Object/cannon.tscn" id="3_ydnd4"]
+[ext_resource type="Script" uid="uid://2dikyvdavocn" path="res://Script/Core/shelling_system.gd" id="6_0hom0"]
+[ext_resource type="PackedScene" uid="uid://dv453ijcwqcn6" path="res://Scene/Core/camera_moving_controller.tscn" id="7_ratep"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yt3vs"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Game" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_sh76h")]
+
+[node name="Field" parent="." instance=ExtResource("2_gevu4")]
+
+[node name="Cannon" parent="." instance=ExtResource("3_ydnd4")]
+z_index = -10
+position = Vector2(464, -0.999999)
+scale = Vector2(0.335, 0.335)
+
+[node name="ShellingSystem" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_0hom0")
+
+[node name="CameraMovingController" parent="." instance=ExtResource("7_ratep")]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1184, 3)
+texture = SubResource("ViewportTexture_yt3vs")

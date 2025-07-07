@@ -1,0 +1,107 @@
+[gd_scene load_steps=6 format=3 uid="uid://j2h0dfktxryh"]
+
+[ext_resource type="PackedScene" uid="uid://ry7mm6mgg6iy" path="res://Scene/Core/game.tscn" id="1_26vnw"]
+[ext_resource type="Script" uid="uid://bje2m75ykq44v" path="res://Script/Core/root.gd" id="1_kbabc"]
+[ext_resource type="PackedScene" uid="uid://ind02kvqyd3c" path="res://Scene/Object/player.tscn" id="2_gm1cg"]
+[ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="3_7k7o2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gm1cg"]
+shader = ExtResource("3_7k7o2")
+shader_parameter/hole_center = Vector2(0.5, 0.5)
+shader_parameter/hole_radius = 0.4
+shader_parameter/thickness = 0.005
+shader_parameter/cross_color = Vector4(0, 0, 0, 1)
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/transparency_color = Color(0, 0, 0, 0)
+
+[node name="Root" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_kbabc")
+player_scene = ExtResource("2_gm1cg")
+
+[node name="SVC_Main" type="SubViewportContainer" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="SV_Main" type="SubViewport" parent="SVC_Main"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="Game" parent="SVC_Main/SV_Main" instance=ExtResource("1_26vnw")]
+unique_name_in_owner = true
+
+[node name="UI_Telescope" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_gm1cg")
+layout_mode = 2
+offset_left = 840.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="SVC_Telescope" type="SubViewportContainer" parent="UI_Telescope"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1080.0
+
+[node name="SV_Telescope" type="SubViewport" parent="UI_Telescope/SVC_Telescope"]
+handle_input_locally = false
+size = Vector2i(1080, 1080)
+render_target_update_mode = 0
+
+[node name="Camera2D" type="Camera2D" parent="UI_Telescope/SVC_Telescope/SV_Telescope"]
+
+[node name="UI_Lobby" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0)
+
+[node name="SVC_Lobby" type="SubViewportContainer" parent="UI_Lobby"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="SV_Lobby" type="SubViewport" parent="UI_Lobby/SVC_Lobby"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="BT_Host" type="Button" parent="UI_Lobby/SVC_Lobby/SV_Lobby"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -145.0
+offset_right = 126.0
+offset_bottom = -81.0
+grow_vertical = 0
+text = "Host
+"
+
+[node name="BT_Join" type="Button" parent="UI_Lobby/SVC_Lobby/SV_Lobby"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -77.0
+offset_right = 126.0
+offset_bottom = -13.0
+grow_vertical = 0
+text = "Join"
+metadata/_edit_use_anchors_ = true
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://csssoqjjrrj67")
+spawn_path = NodePath("../SVC_Main/SV_Main/Game")
+
+[connection signal="pressed" from="UI_Lobby/SVC_Lobby/SV_Lobby/BT_Host" to="." method="_on_bt_host_pressed"]
+[connection signal="pressed" from="UI_Lobby/SVC_Lobby/SV_Lobby/BT_Join" to="." method="_on_bt_join_pressed"]
+[connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

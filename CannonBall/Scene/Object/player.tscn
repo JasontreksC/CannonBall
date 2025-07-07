@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://ind02kvqyd3c"]
+
+[ext_resource type="Script" uid="uid://38lyw030h1aq" path="res://Script/Object/player.gd" id="1_ui7ge"]
+[ext_resource type="Texture2D" uid="uid://xy3jc112vdim" path="res://Asset/prototype_object/blue_block.png" id="1_wgxxe"]
+[ext_resource type="PackedScene" uid="uid://dv453ijcwqcn6" path="res://Scene/Object/camera_moving_controller.tscn" id="2_o1tno"]
+[ext_resource type="PackedScene" uid="uid://csssoqjjrrj67" path="res://Scene/Object/cannon.tscn" id="3_tqskk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wgxxe"]
+size = Vector2(100, 100)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ui7ge"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_ui7ge")
+cmc_scene = ExtResource("2_o1tno")
+cannon_scene = ExtResource("3_tqskk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -50)
+texture = ExtResource("1_wgxxe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_wgxxe")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(0, -50)
+
+[node name="CameraTarget_Default" type="Node2D" parent="."]
+position = Vector2(0, -350)
+
+[node name="CameraTarget_Aim" type="Node2D" parent="CameraTarget_Default"]
+position = Vector2(700, 0)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ui7ge")
