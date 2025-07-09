@@ -13,15 +13,15 @@ var stateMachine: StateMachine = StateMachine.new()
 
 # 대포의 각종 파트에 대한 뼈대, 애니메이션 플레이어, 에임 컨트롤러
 @onready var rcWheel: RayCast2D = $Body/RayCast2D_Wheel
-@onready var handle: Node2D = $Body/Sprite_carriage/Handle
-@onready var bnWheel: Bone2D = $Skeleton/wheel
-@onready var bnBarrel: Bone2D = $Skeleton/carriage/barrel
+@onready var nHandle: Node2D = $Body/Sprite_carriage/Handle
+@onready var bWheel: Bone2D = $Skeleton/wheel
+@onready var bBarrel: Bone2D = $Skeleton/carriage/barrel
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var ac: AimController = $AimController
 
 # 손잡이, 즉 플레이어가 대포 조종시 위치하게 될 부분의 x좌표를 반환한다.
-func get_handle_x():
-	return handle.global_position.x
+func get_handle_x() -> float:
+	return nHandle.global_position.x
 
 func get_cur_velocity(delta: float) -> float:
 	var moved = global_position.x - prevPosX
@@ -33,7 +33,7 @@ func rotate_wheel(delta: float):
 	# 각속도(degree) = 선속도 / 반지름
 	# degree -> radian
 	var omega = get_cur_velocity(delta) / WHEEL_RADIUS
-	bnWheel.rotate(deg_to_rad(omega))
+	bWheel.rotate(deg_to_rad(omega))
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -113,7 +113,7 @@ func _physics_process(delta: float) -> void:
 				var dir = Input.get_axis("left", "right")
 				var aimed_x = ac.aim(dir, 500, delta)
 				UIManager.aim_to_cam_telescope(aimed_x)
-				bnBarrel.global_rotation = -ac.get_aimed_theta()
+				bBarrel.global_rotation = -ac.get_aimed_theta()
 				
 				stateMachine.transit_by_input("clickL", "Fire")
 			"Fire":

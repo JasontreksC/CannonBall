@@ -9,12 +9,12 @@ const SPEED: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 
-@export var cmc_scene: PackedScene
-@export var cannon_scene: PackedScene
+@export var psCMC: PackedScene
+@export var psCannon: PackedScene
 
-@onready var rcPlayer: RayCast2D = $RayCast2D
-@onready var ctDefault: Node2D = $CameraTarget_Default
-@onready var ctAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
+@onready var rcFloor: RayCast2D = $RayCast2D
+@onready var nCamTargetDefault: Node2D = $CameraTarget_Default
+@onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
 
 var cmc: CameraMovingController = null
 var cannon: Cannon = null
@@ -40,10 +40,10 @@ func _ready() -> void:
 	## 대포 생성
 	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
 	#  서버의 경우 직접 호출 
-	MultiplaySystem.rpc("spawn_scene", cannon_scene.resource_path, self.name, "cannon")
+	MultiplaySystem.rpc("spawn_scene", psCannon.resource_path, self.name, "cannon")
 	
 	# 카메라 무빙 컨트롤러 생성
-	cmc = cmc_scene.instantiate()
+	cmc = psCMC.instantiate()
 	get_parent().add_child(cmc)
 	cmc.name = name + "_cmc"
 	cmc.targetNode = $CameraTarget_Default
@@ -133,7 +133,7 @@ func _physics_process(delta: float) -> void:
 				UIManager.zoom_cam_telescope(dir, 10, delta)
 		
 	# 높이를 항상 바닥에 고정
-	var collisionPoint: Vector2 = rcPlayer.get_collision_point()
+	var collisionPoint: Vector2 = rcFloor.get_collision_point()
 	position.y = collisionPoint.y
 	
 	#대포의 상호작용구역 안에 들어왔음을 감지
@@ -165,7 +165,7 @@ func on_entry_HandleCannon():
 
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
-	cmc.set_target_node(ctDefault, 0.2)
+	cmc.set_target_node(nCamTargetDefault, 0.2)
 	UIManager.off_observe()
 	
 func on_entry_ReadyFire():
@@ -173,5 +173,5 @@ func on_entry_ReadyFire():
 		cannon.stateMachine.transit("Aim")
 		
 	# 카메라 위치를 이동시킴
-	cmc.set_target_node(ctAim, 0.2)
+	cmc.set_target_node(nCamTargetAim, 0.2)
 	UIManager.on_observe()
