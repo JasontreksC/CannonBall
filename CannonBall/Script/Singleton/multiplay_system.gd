@@ -14,8 +14,6 @@ func spawn_scene(scene_path: String, owner_name: String, target_name: String) ->
 		instance.name = owner_name + "_" + target_name
 		gameWorld.add_child(instance)
 		var isAdded = add_pool(instance)
-		print("Cannon Spawned: ", instance.name)
-		print("Added Pool: ", isAdded)
 
 func get_pool(name: String) -> Node2D:
 	return serverPool.get(name)
