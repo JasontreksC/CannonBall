@@ -15,6 +15,7 @@ var stateMachine: StateMachine = StateMachine.new()
 @onready var rcFloor: RayCast2D = $RayCast2D
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
+@onready var field: Field = $"../Field"
 
 var cmc: CameraMovingController = null
 var cannon: Cannon = null
@@ -48,7 +49,14 @@ func _ready() -> void:
 	cmc.name = name + "_cmc"
 	cmc.targetNode = $CameraTarget_Default
 	cmc.camera.make_current()
-	
+
+	if multiplayer.is_server():
+		global_position = field.get_spawn_spot("p1")
+	else:
+		nCamTargetAim.position.x = -700
+		UIManager.uiTelescope.position.x = 0
+		global_position = field.get_spawn_spot("p2")
+
 	# 상태 머신 정의
 	stateMachine.register_state("Idle")
 	stateMachine.register_state("HandleCannon")
@@ -77,7 +85,10 @@ func _physics_process(delta: float) -> void:
 		return
 	
 	cannon = get_cannon()
-	
+	if cannon:
+		if cannon.player == null:
+			cannon.player = self
+
 	# 상태 전환 처리 중 처리해야하는 내용에 대한 분기이다.
 	# 예를 들어 플레이어가 대포를 잡을때, 순간이동하듯 손잡이쪽으로 즉시 위치하는것이 아니라
 	# 손잡이쪽으로 걸어가 손잡이를 잡게기까지 애니메이션이 짧게라도 나오는것이 자연스럽다.
@@ -131,13 +142,21 @@ func _physics_process(delta: float) -> void:
 				if Input.is_action_just_pressed("wheel_up"): dir = 1
 				elif Input.is_action_just_pressed("wheel_down"): dir = -1
 				UIManager.zoom_cam_telescope(dir, 10, delta)
-		
+	
+
+	
 	# 높이를 항상 바닥에 고정
 	var collisionPoint: Vector2 = rcFloor.get_collision_point()
 	position.y = collisionPoint.y
 	
-	#대포의 상호작용구역 안에 들어왔음을 감지
 	if cannon:
+		# 플레이어가 호스트면 왼쪽 필드 사용, 대포는 오른쪽을 향함. 클라이언트는 반대
+		if not isHost:
+			cannon.scale.x = -0.3
+		else:
+			cannon.scale.x = 0.3
+		
+		#대포의 상호작용구역 안에 들어왔음을 감지
 		var ia: Area2D = cannon.get_node("InteractionArea")
 		var intersects: Array = ia.get_overlapping_bodies()
 		var index = intersects.find_custom(func(n): return n.name == self.name)

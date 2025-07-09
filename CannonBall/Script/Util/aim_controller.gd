@@ -32,15 +32,25 @@ func get_breech_pos() -> Vector2:
 # 대포의 조준 상호작용 시 만원경으로 바라보는 UI 발생, 방향키 조작으로 currentAimRange를 증감시킨다.
 # breech의 x좌표에 currentAimRange를 더해 조준한 위치에 대한 글로벌 x좌표를 반환
 func aim(dir: float, speed: float, delta: float) -> float:
+	if not multiplayer.is_server():
+		dir *= -1
+	
 	currentAimRange += dir * speed * delta
 	currentAimRange = clamp(currentAimRange, minAimRange, maxAimRange)	
-	return breech.global_position.x + currentAimRange
+	
+	if multiplayer.is_server():
+		return breech.global_position.x + currentAimRange
+	else:
+		return breech.global_position.x - currentAimRange
 
 # currentAimRange를 기반으로, 그 위치에 포탄이 도달하기 위한 발사각을 구한다. 반환값은 radian 값이다.
 func get_aimed_theta() -> float:
 	var theta = asin(ShellingSystem.G * currentAimRange / pow(V0, 2)) / 2
-	return theta
-
+	if multiplayer.is_server():
+		return theta
+	else:
+		return -theta - PI
+		
 func _ready() -> void:
 	# 최대/최소 사거리 구하기
 	minAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(minAimAngle))) / ShellingSystem.G

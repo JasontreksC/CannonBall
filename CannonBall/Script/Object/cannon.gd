@@ -18,6 +18,9 @@ var stateMachine: StateMachine = StateMachine.new()
 @onready var bBarrel: Bone2D = $Skeleton/carriage/barrel
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var ac: AimController = $AimController
+@onready var field: Field = $"../Field"
+
+var player: Player = null
 
 # 손잡이, 즉 플레이어가 대포 조종시 위치하게 될 부분의 x좌표를 반환한다.
 func get_handle_x() -> float:
@@ -33,6 +36,10 @@ func rotate_wheel(delta: float):
 	# 각속도(degree) = 선속도 / 반지름
 	# degree -> radian
 	var omega = get_cur_velocity(delta) / WHEEL_RADIUS
+	
+	if not multiplayer.is_server():
+		omega *= -1
+	
 	bWheel.rotate(deg_to_rad(omega))
 
 func _enter_tree() -> void:
@@ -41,6 +48,13 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not is_multiplayer_authority():
 		return
+	
+	if multiplayer.is_server():
+		global_position = field.get_spawn_spot("p1")
+	else:
+		global_position = field.get_spawn_spot("p2")
+		
+		
 		
 	prevPosX = global_position.x
 	
