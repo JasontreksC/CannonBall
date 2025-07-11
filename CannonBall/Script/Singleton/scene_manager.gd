@@ -1,10 +1,12 @@
 # 싱글톤
 extends Node
 
-var gameWorld: Node2D
-var mtpSpawner: MultiplayerSpawner
+var currentScene: Node2D = null
 
+var mtpSpawner: MultiplayerSpawner
 var serverPool: Dictionary
+
+var G = 980
 
 @rpc("any_peer", "call_local")
 func spawn_scene(scene_path: String, owner_name: String, target_name: String) -> void:
@@ -12,7 +14,7 @@ func spawn_scene(scene_path: String, owner_name: String, target_name: String) ->
 		var scene = load(scene_path)
 		var instance = scene.instantiate()
 		instance.name = owner_name + "_" + target_name
-		gameWorld.add_child(instance)
+		currentScene.add_child(instance)
 		var isAdded = add_pool(instance)
 
 func get_pool(name: String) -> Node2D:
