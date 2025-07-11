@@ -10,7 +10,6 @@ var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 
 @export var psCMC: PackedScene
-@export var psCannon: PackedScene
 
 @onready var rcFloor: RayCast2D = $RayCast2D
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
@@ -24,7 +23,7 @@ func get_cannon() -> Cannon:
 	if self.cannon:
 		return self.cannon
 	else:
-		self.cannon = MultiplaySystem.get_pool(name + "_" + "cannon")
+		self.cannon = SceneManager.get_pool(name + "_" + "cannon")
 		return self.cannon
 
 func _enter_tree() -> void:
@@ -41,7 +40,7 @@ func _ready() -> void:
 	## 대포 생성
 	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
 	#  서버의 경우 직접 호출 
-	MultiplaySystem.rpc("spawn_scene", psCannon.resource_path, self.name, "cannon")
+	SceneManager.rpc("spawn_scene", "res://Scene/Object/cannon.tscn", self.name, "cannon")
 	
 	# 카메라 무빙 컨트롤러 생성
 	cmc = psCMC.instantiate()
@@ -150,12 +149,6 @@ func _physics_process(delta: float) -> void:
 	position.y = collisionPoint.y
 	
 	if cannon:
-		# 플레이어가 호스트면 왼쪽 필드 사용, 대포는 오른쪽을 향함. 클라이언트는 반대
-		if not isHost:
-			cannon.scale.x = -0.3
-		else:
-			cannon.scale.x = 0.3
-		
 		#대포의 상호작용구역 안에 들어왔음을 감지
 		var ia: Area2D = cannon.get_node("InteractionArea")
 		var intersects: Array = ia.get_overlapping_bodies()

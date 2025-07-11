@@ -19,24 +19,28 @@ func _on_bt_host_pressed() -> void:
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_add_player)
 	_add_player()
+	
+	SceneManager.currentScene = game
 
 func _add_player(id=1):
 	var player: Player = player_scene.instantiate()
 	player.name = str(id)
 	game.call_deferred("add_child", player)
-	MultiplaySystem.add_pool(player)
+	SceneManager.add_pool(player)
 
 # 참가 버튼 클릭 : 자신을 클라이언트로 만들고 135번 포트의 로컬 호스트에 접속한다.
 func _on_bt_join_pressed() -> void:
 	peer.create_client("localhost", 135)
 	multiplayer.multiplayer_peer = peer
+	
+	SceneManager.currentScene = game
 
-# MultiplaySystem 싱글톤이 관리하는 객체 풀에다가 멀티플레이 동기화로 스폰된 객체 인스턴스를 저장한다.
+# SceneManager 싱글톤이 관리하는 객체 풀에다가 멀티플레이 동기화로 스폰된 객체 인스턴스를 저장한다.
 # 멀티플레이 객체가 서버에서 생성되면, 클라이엔트에게도 똑같은 모습으로 생성되어야 한다.
 # 서버에서는 객체가 직접 생성되는 반면, 클라 측은 MultiplayerSpawner에 의해 원격으로 생성된다.
 # 즉 이 함수는 자동 스폰과 함께 발동하는 이벤트이다.
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
-	MultiplaySystem.add_pool(node)
+	SceneManager.add_pool(node)
 
 func _ready() -> void:
 	# 만원경 SubViewport UI의 월드를 동기화
@@ -47,8 +51,8 @@ func _ready() -> void:
 	
 	# 싱글톤 객체들이 가지고 있어야 하는 참조를 전달한다.
 	UIManager.uiTelescope = self.uiTelescope
-	MultiplaySystem.gameWorld = game
-	MultiplaySystem.mtpSpawner = mtpSpawner
+	SceneManager.currentScene = game
+	SceneManager.mtpSpawner = mtpSpawner
 	
 	
 func _process(delta: float) -> void:

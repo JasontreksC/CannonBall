@@ -51,10 +51,10 @@ func _ready() -> void:
 	
 	if multiplayer.is_server():
 		global_position = field.get_spawn_spot("p1")
+		scale.x = 0.3
 	else:
 		global_position = field.get_spawn_spot("p2")
-		
-		
+		scale.x = -0.3
 		
 	prevPosX = global_position.x
 	
@@ -158,4 +158,4 @@ func on_entry_Aim():
 func on_exit_Fire():
 	pass 
 func on_entry_Fire():
-	ShellingSystem.start_shelling(ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0)
+	field.start_shelling(ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0)

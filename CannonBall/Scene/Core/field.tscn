@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cb2d8j7se8qb8"]
+[gd_scene load_steps=6 format=3 uid="uid://cb2d8j7se8qb8"]
 
 [ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/Core/field.gd" id="1_vv3bg"]
 [ext_resource type="Texture2D" uid="uid://d1g3x5rnwkgik" path="res://Asset/prototype_object/green_block.png" id="1_vywom"]
 [ext_resource type="Texture2D" uid="uid://dk1s8r2gpdtal" path="res://Asset/prototype_object/grass.png" id="3_dseh1"]
+[ext_resource type="Script" uid="uid://b6y06p8tr7jk0" path="res://Script/Util/parabola.gd" id="4_4kywg"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_y0ibm"]
 
@@ -148,3 +149,6 @@ texture = ExtResource("3_dseh1")
 [node name="Grass30" type="Sprite2D" parent="Environment"]
 position = Vector2(-3406, -79)
 texture = ExtResource("3_dseh1")
+
+[node name="Parabola" type="Node2D" parent="."]
+script = ExtResource("4_4kywg")

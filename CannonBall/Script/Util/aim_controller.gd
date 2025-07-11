@@ -17,6 +17,7 @@ class_name AimController
 # 이 노드들을 참조하는 이유는 위치 때문이다.
 @onready var breech: Node2D = $"../Body/Sprite_barrel/Breech"
 @onready var muzzel: Node2D = $"../Body/Sprite_barrel/Muzzel"
+@onready var field: Field = $"../../Field"
 
 # 포물선 운동 공식에 의해, 최소 사거리와 최대 사거리가 정해진다. 이것은 V0가 변하지 않는 이상 고정 값이다.
 # 다만 최근 조준한 위치까지의 사거리를 기억한다. 이것이 있어야 포신의 회전각이 나온다. 
@@ -45,7 +46,7 @@ func aim(dir: float, speed: float, delta: float) -> float:
 
 # currentAimRange를 기반으로, 그 위치에 포탄이 도달하기 위한 발사각을 구한다. 반환값은 radian 값이다.
 func get_aimed_theta() -> float:
-	var theta = asin(ShellingSystem.G * currentAimRange / pow(V0, 2)) / 2
+	var theta = asin(SceneManager.G * currentAimRange / pow(V0, 2)) / 2
 	if multiplayer.is_server():
 		return theta
 	else:
@@ -53,6 +54,6 @@ func get_aimed_theta() -> float:
 		
 func _ready() -> void:
 	# 최대/최소 사거리 구하기
-	minAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(minAimAngle))) / ShellingSystem.G
-	maxAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(maxAimAngle))) / ShellingSystem.G
+	minAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(minAimAngle))) / SceneManager.G
+	maxAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(maxAimAngle))) / SceneManager.G
 	currentAimRange = minAimRange
