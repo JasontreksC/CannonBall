@@ -8,6 +8,8 @@ var t: float = 0
 
 var isFalling: bool = false
 var alive = true
+var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
+var launcher: int = 0
 
 signal land_event
 
@@ -38,4 +40,4 @@ func _physics_process(delta: float) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.get_meta("tag") == "field" and isFalling:
 		alive = false
-		emit_signal("land_event")
+		emit_signal("land_event", Vector2(global_position.x, -50), shellType, launcher)

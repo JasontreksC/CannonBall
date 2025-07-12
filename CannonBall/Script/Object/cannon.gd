@@ -158,4 +158,7 @@ func on_entry_Aim():
 func on_exit_Fire():
 	pass 
 func on_entry_Fire():
-	field.rpc("start_shelling", ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0)
+	var launcher: int = 1
+	if not multiplayer.is_server():
+		launcher = 2
+	field.rpc("start_shelling", ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)

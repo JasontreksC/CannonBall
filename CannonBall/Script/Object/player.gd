@@ -29,8 +29,10 @@ func get_cannon() -> Cannon:
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
+func hit_by_shell():
+	$Sprite2D.modulate = Color(1, 0, 0, 1)
+
 func _ready() -> void:
-	
 	# _enter_tree()에서 설정한 멀티플레이어 권한은 고유의 id값이다.
 	# 멀티플레이를 하게 되면 한 쪽의 컴퓨터에서도 플레이어 객체가 두개 존재하게 되는데, 본 사용자에게 할당된 플레이어 아니면
 	# 이 함수의 내용을 무시하고 리턴하는 것이다. 즉 입력의 중복 등을 방지한다.

@@ -9,6 +9,7 @@ class_name Field
 
 var shellPool: Array[Shell]
 var shellNum: int = 0
+var hitNum: int = 0
 
 func get_spawn_spot(tag: String) -> Vector2:
 	match tag:
@@ -20,12 +21,12 @@ func get_spawn_spot(tag: String) -> Vector2:
 			return Vector2.ZERO
 
 @rpc("any_peer", "call_local")
-func start_shelling(start_pos: Vector2, theta0: float, v0: float) -> void:
+func start_shelling(start_pos: Vector2, theta0: float, v0: float, launcher: int) -> void:
 	if not multiplayer.is_server():
 		return
 	
 	SceneManager.spawn_scene("res://Scene/Object/shell.tscn", self.name, "shell" + str(shellNum))
-	var newShell = SceneManager.get_pool(self.name + "_shell" + str(shellNum))
+	var newShell: Shell = SceneManager.get_pool(self.name + "_shell" + str(shellNum))
 	shellNum += 1
 	
 	newShell.global_position = start_pos
@@ -33,11 +34,24 @@ func start_shelling(start_pos: Vector2, theta0: float, v0: float) -> void:
 	newShell.p0 = start_pos
 	newShell.v0 = v0
 	newShell.theta0 = theta0
+	newShell.launcher = launcher
+	
 	shellPool.append(newShell)
 	newShell.connect("land_event", on_shelling_landed)
 
-func on_shelling_landed():
+func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
+	if not multiplayer.is_server():
+		return
+	
 	print("land!")
+	print("shellType: ", shellType)
+	print("launcher: ", launcher)
+	SceneManager.spawn_scene("res://Scene/Object/hit_point.tscn", self.name, "hitpoint" + str(hitNum))
+	var newHitPoint: HitPoint = SceneManager.get_pool(self.name + "_hitpoint" + str(hitNum))
+	shellNum += 1
+	newHitPoint.attackTo = 3 - launcher
+	newHitPoint.global_position = pos
+	newHitPoint.activate_hit()
 
 func _ready() -> void:
 	pass # Replace with function body.
