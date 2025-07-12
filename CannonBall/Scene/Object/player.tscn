@@ -13,6 +13,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_ui7ge")
 psCMC = ExtResource("2_o1tno")
 
