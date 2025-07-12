@@ -1,0 +1,36 @@
+extends Node2D
+class_name HitPoint
+
+var hitRange: float = 500
+var keepTurnCount: int = 0
+var attackTo: int = 0
+var landImpact: bool = true
+
+func in_range(targetX: float) -> bool:
+	var left = global_position.x - hitRange / 2
+	var right = global_position.x + hitRange / 2
+	
+	if targetX > left and targetX < right:
+		return true
+	else:
+		return false
+
+func activate_hit():
+	if landImpact:
+		var target: Player = null
+		match attackTo:
+			1:
+				target = SceneManager.players[0]
+			2:
+				target = SceneManager.players[1]
+		if target and in_range(target.global_position.x):
+			
+			print(attackTo, ": Hit!")
+	
+	if keepTurnCount == 0:
+		SceneManager.delete_scene(self.name)
+
+func _ready() -> void:
+	pass
+func _process(delta: float) -> void:
+	pass
