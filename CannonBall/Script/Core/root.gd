@@ -22,17 +22,18 @@ func _on_bt_host_pressed() -> void:
 	
 	SceneManager.currentScene = game
 
+# 서버에서 생성
 func _add_player(id=1):
 	var player: Player = player_scene.instantiate()
+	
 	player.name = str(id)
 	game.call_deferred("add_child", player)
-	SceneManager.add_pool(player)
+	SceneManager.players.append(player)
 
 # 참가 버튼 클릭 : 자신을 클라이언트로 만들고 135번 포트의 로컬 호스트에 접속한다.
 func _on_bt_join_pressed() -> void:
 	peer.create_client("localhost", 135)
 	multiplayer.multiplayer_peer = peer
-	
 	SceneManager.currentScene = game
 
 # SceneManager 싱글톤이 관리하는 객체 풀에다가 멀티플레이 동기화로 스폰된 객체 인스턴스를 저장한다.
@@ -40,7 +41,10 @@ func _on_bt_join_pressed() -> void:
 # 서버에서는 객체가 직접 생성되는 반면, 클라 측은 MultiplayerSpawner에 의해 원격으로 생성된다.
 # 즉 이 함수는 자동 스폰과 함께 발동하는 이벤트이다.
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
-	SceneManager.add_pool(node)
+	if node is Player:
+		SceneManager.players.append(node as Player)
+	else:
+		SceneManager.add_pool(node)
 
 func _ready() -> void:
 	# 만원경 SubViewport UI의 월드를 동기화
