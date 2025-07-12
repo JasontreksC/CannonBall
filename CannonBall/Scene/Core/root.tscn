@@ -99,7 +99,7 @@ text = "Join"
 metadata/_edit_use_anchors_ = true
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://csssoqjjrrj67")
+_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://csssoqjjrrj67", "uid://bp8yuq71ym25a")
 spawn_path = NodePath("../SVC_Main/SV_Main/Game")
 
 [connection signal="pressed" from="UI_Lobby/SVC_Lobby/SV_Lobby/BT_Host" to="." method="_on_bt_host_pressed"]
