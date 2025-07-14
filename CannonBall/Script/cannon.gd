@@ -18,6 +18,10 @@ var stateMachine: StateMachine = StateMachine.new()
 @onready var bBarrel: Bone2D = $Skeleton/carriage/barrel
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var ac: AimController = $AimController
+@onready var field: Field = $"../Field"
+
+var game: Game = null
+var player: Player = null
 
 # 손잡이, 즉 플레이어가 대포 조종시 위치하게 될 부분의 x좌표를 반환한다.
 func get_handle_x() -> float:
@@ -33,14 +37,27 @@ func rotate_wheel(delta: float):
 	# 각속도(degree) = 선속도 / 반지름
 	# degree -> radian
 	var omega = get_cur_velocity(delta) / WHEEL_RADIUS
+	
+	if not multiplayer.is_server():
+		omega *= -1
+	
 	bWheel.rotate(deg_to_rad(omega))
 
 func _enter_tree() -> void:
+	game = get_parent() as Game
 	set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
 	if not is_multiplayer_authority():
 		return
+	
+	
+	if multiplayer.is_server():
+		global_position = field.get_spawn_spot("p1")
+		scale.x = 0.3
+	else:
+		global_position = field.get_spawn_spot("p2")
+		scale.x = -0.3
 		
 	prevPosX = global_position.x
 	
@@ -112,10 +129,12 @@ func _physics_process(delta: float) -> void:
 			"Aim":
 				var dir = Input.get_axis("left", "right")
 				var aimed_x = ac.aim(dir, 500, delta)
-				UIManager.aim_to_cam_telescope(aimed_x)
-				bBarrel.global_rotation = -ac.get_aimed_theta()
 				
+				game.ui.aim_to_cam_telescope(aimed_x)
+					
+				bBarrel.global_rotation = -ac.get_aimed_theta()
 				stateMachine.transit_by_input("clickL", "Fire")
+				
 			"Fire":
 				stateMachine.transit("Aim")
 
@@ -144,4 +163,7 @@ func on_entry_Aim():
 func on_exit_Fire():
 	pass 
 func on_entry_Fire():
-	ShellingSystem.start_shelling(ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0)
+	var launcher: int = 1
+	if not multiplayer.is_server():
+		launcher = 2
+	field.rpc("start_shelling", ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)

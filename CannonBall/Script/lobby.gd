@@ -1,9 +1,11 @@
 extends Node2D
-class_name Shell
+class_name Lobby
 
-# Called when the node enters the scene tree for the first time.
+var root: CannonBall = null
+
 func _ready() -> void:
 	pass # Replace with function body.
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

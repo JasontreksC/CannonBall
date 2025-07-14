@@ -14,13 +14,6 @@ config/name="CannonBall"
 run/main_scene="uid://j2h0dfktxryh"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
-[autoload]
-
-Parabola="*res://Script/Util/parabola.gd"
-UIManager="*res://Script/Singleton/ui_manager.gd"
-ShellingSystem="*res://Script/Singleton/shelling_system.gd"
-MultiplaySystem="*res://Script/Singleton/multiplay_system.gd"
-
 [display]
 
 window/size/viewport_width=1920

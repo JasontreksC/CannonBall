@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://csssoqjjrrj67"]
 
-[ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/Object/cannon.gd" id="1_y1q7a"]
+[ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/cannon.gd" id="1_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://bmpr6qse8m8js" path="res://Asset/prototype_object/cannon/canon-barrel.png" id="1_ygu73"]
 [ext_resource type="Texture2D" uid="uid://bcymseen6irgm" path="res://Asset/prototype_object/cannon/canon-carriage.png" id="2_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://xifo5g3kh04w" path="res://Asset/prototype_object/cannon/canon-wheel.png" id="4_mii34"]
-[ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/Util/aim_controller.gd" id="5_y1q7a"]
+[ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/aim_controller.gd" id="5_y1q7a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ygu73"]
 size = Vector2(14.1419, 21.3835)
@@ -65,6 +65,18 @@ _data = {
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:scale")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Skeleton/carriage/barrel:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Skeleton/carriage:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Skeleton/wheel:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [node name="Cannon" type="Node2D"]
 process_priority = 1
@@ -141,7 +153,8 @@ remote_path = NodePath("../../../Body/Sprite_wheel")
 [node name="InteractionArea" type="Area2D" parent="."]
 z_index = 4096
 position = Vector2(0, -260)
-collision_layer = 2
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 position = Vector2(-385.5, 15.8)
