@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://csssoqjjrrj67"]
 
-[ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/Object/cannon.gd" id="1_y1q7a"]
+[ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/cannon.gd" id="1_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://bmpr6qse8m8js" path="res://Asset/prototype_object/cannon/canon-barrel.png" id="1_ygu73"]
 [ext_resource type="Texture2D" uid="uid://bcymseen6irgm" path="res://Asset/prototype_object/cannon/canon-carriage.png" id="2_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://xifo5g3kh04w" path="res://Asset/prototype_object/cannon/canon-wheel.png" id="4_mii34"]
-[ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/Util/aim_controller.gd" id="5_y1q7a"]
+[ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/aim_controller.gd" id="5_y1q7a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ygu73"]
 size = Vector2(14.1419, 21.3835)

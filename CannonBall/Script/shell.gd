@@ -6,6 +6,8 @@ var v0: float = 0
 var theta0: float = 0
 var t: float = 0
 
+var game: Game = null
+
 var isFalling: bool = false
 var alive = true
 var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
@@ -15,7 +17,7 @@ signal land_event
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	game = get_parent() as Game
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -27,7 +29,7 @@ func _physics_process(delta: float) -> void:
 	
 	t += delta
 	var x = v0 * cos(theta0) * t
-	var y = v0 * sin(theta0) * t - 0.5 * SceneManager.G * pow(t, 2)
+	var y = v0 * sin(theta0) * t - 0.5 * game.G * pow(t, 2)
 	y *= -1
 	
 	if ((p0.y + y) - global_position.y) < 0:
@@ -40,4 +42,5 @@ func _physics_process(delta: float) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.get_meta("tag") == "field" and isFalling:
 		alive = false
+		game.rpc("delete_object", self.name)
 		emit_signal("land_event", Vector2(global_position.x, -50), shellType, launcher)

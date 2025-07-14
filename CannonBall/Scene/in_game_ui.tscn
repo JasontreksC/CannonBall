@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://dk04etcfa0wra"]
+
+[ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
+[ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
+shader = ExtResource("2_wpxio")
+shader_parameter/hole_center = Vector2(0.5, 0.5)
+shader_parameter/hole_radius = 0.4
+shader_parameter/thickness = 0.005
+shader_parameter/cross_color = Vector4(0, 0, 0, 1)
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/transparency_color = Color(0, 0, 0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3xi00"]
+font_size = 64
+
+[node name="InGameUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3xi00")
+
+[node name="Telescope" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_ms5rh")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1080.0
+offset_bottom = 1080.0
+grow_horizontal = 0
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Telescope"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1080.0
+
+[node name="SubViewport" type="SubViewport" parent="Telescope/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1080, 1080)
+render_target_update_mode = 0
+
+[node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
+
+[node name="GameTime" type="Label" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 4.0
+offset_right = 175.0
+offset_bottom = 92.0
+text = "00:00"
+label_settings = SubResource("LabelSettings_3xi00")

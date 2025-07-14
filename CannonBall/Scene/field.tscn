@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cb2d8j7se8qb8"]
 
-[ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/Core/field.gd" id="1_vv3bg"]
+[ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/field.gd" id="1_vv3bg"]
 [ext_resource type="Texture2D" uid="uid://d1g3x5rnwkgik" path="res://Asset/prototype_object/green_block.png" id="1_vywom"]
 [ext_resource type="Texture2D" uid="uid://dk1s8r2gpdtal" path="res://Asset/prototype_object/grass.png" id="3_dseh1"]
 

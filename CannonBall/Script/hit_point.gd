@@ -1,10 +1,12 @@
 extends Node2D
 class_name HitPoint
 
-var hitRange: float = 500
+var hitRange: float = 1000
 var keepTurnCount: int = 0
 var attackTo: int = 0
 var landImpact: bool = true
+
+var game: Game = null
 
 func in_range(targetX: float) -> bool:
 	var left = global_position.x - hitRange / 2
@@ -20,17 +22,18 @@ func activate_hit():
 		var target: Player = null
 		match attackTo:
 			1:
-				target = SceneManager.players[0]
+				target = game.players[0]
 			2:
-				target = SceneManager.players[1]
+				target = game.players[1]
 		if target and in_range(target.global_position.x):
 			
 			print(attackTo, ": Hit!")
 	
 	if keepTurnCount == 0:
-		SceneManager.delete_scene(self.name)
+		game.delete_object(self.name)
 
 func _ready() -> void:
-	pass
+	game = get_parent() as Game
+	
 func _process(delta: float) -> void:
 	pass

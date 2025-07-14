@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dv453ijcwqcn6"]
 
-[ext_resource type="Script" uid="uid://bouv6swbmsa2k" path="res://Script/Util/camera_moving_controller.gd" id="1_trrk0"]
+[ext_resource type="Script" uid="uid://bouv6swbmsa2k" path="res://Script/camera_moving_controller.gd" id="1_trrk0"]
 
 [sub_resource type="Curve" id="Curve_trrk0"]
 _data = [Vector2(0, 0), 0.0, 2.26848, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]

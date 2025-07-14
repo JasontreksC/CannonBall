@@ -15,6 +15,7 @@ class_name AimController
 # breech는 포신의 가장 안쪽, 즉 포탄의 운동이 시작되는 위치이며
 # muzzel은 포구, 즉 포탄이 포신 밖으로 나오는 출구이다.
 # 이 노드들을 참조하는 이유는 위치 때문이다.
+@onready var cannon: Cannon = $".."
 @onready var breech: Node2D = $"../Body/Sprite_barrel/Breech"
 @onready var muzzel: Node2D = $"../Body/Sprite_barrel/Muzzel"
 @onready var field: Field = $"../../Field"
@@ -46,7 +47,7 @@ func aim(dir: float, speed: float, delta: float) -> float:
 
 # currentAimRange를 기반으로, 그 위치에 포탄이 도달하기 위한 발사각을 구한다. 반환값은 radian 값이다.
 func get_aimed_theta() -> float:
-	var theta = asin(SceneManager.G * currentAimRange / pow(V0, 2)) / 2
+	var theta = asin(cannon.game.G * currentAimRange / pow(V0, 2)) / 2
 	if multiplayer.is_server():
 		return theta
 	else:
@@ -54,6 +55,6 @@ func get_aimed_theta() -> float:
 		
 func _ready() -> void:
 	# 최대/최소 사거리 구하기
-	minAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(minAimAngle))) / SceneManager.G
-	maxAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(maxAimAngle))) / SceneManager.G
+	minAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(minAimAngle))) / cannon.game.G
+	maxAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(maxAimAngle))) / cannon.game.G
 	currentAimRange = minAimRange

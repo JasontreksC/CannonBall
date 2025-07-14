@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bxon3nl3468ig"]
 
-[ext_resource type="Script" uid="uid://bpe1778xeqdck" path="res://Script/Object/hit_point.gd" id="1_t16og"]
+[ext_resource type="Script" uid="uid://bpe1778xeqdck" path="res://Script/hit_point.gd" id="1_t16og"]
 
 [node name="HitPoint" type="Node2D"]
 script = ExtResource("1_t16og")

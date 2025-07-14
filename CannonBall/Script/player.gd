@@ -8,6 +8,7 @@ class_name Player
 const SPEED: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
+var isAttack: bool = true
 
 @export var psCMC: PackedScene
 
@@ -16,14 +17,19 @@ var stateMachine: StateMachine = StateMachine.new()
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
 @onready var field: Field = $"../Field"
 
+var game: Game = null
 var cmc: CameraMovingController = null
 var cannon: Cannon = null
+
+@rpc("any_peer")
+func on_spawned() -> void:
+	print(game.get_object(name))
 
 func get_cannon() -> Cannon:
 	if self.cannon:
 		return self.cannon
 	else:
-		self.cannon = SceneManager.get_pool(name + "_" + "cannon")
+		self.cannon = game.get_object(self.name + "cannon")
 		return self.cannon
 
 func _enter_tree() -> void:
@@ -39,14 +45,17 @@ func _ready() -> void:
 	if not is_multiplayer_authority():
 		return
 	
+	game = get_parent() as Game
+	game.ui = game.root.uiMgr.get_current_ui_as_in_game()
+	
 	## 대포 생성
 	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
 	#  서버의 경우 직접 호출 
-	SceneManager.rpc("spawn_scene", "res://Scene/Object/cannon.tscn", self.name, "cannon")
+	game.rpc("spawn_object", "res://Scene/cannon.tscn", self.name + "cannon")
 	
 	# 카메라 무빙 컨트롤러 생성
 	cmc = psCMC.instantiate()
-	get_parent().add_child(cmc)
+	game.add_child(cmc)
 	cmc.name = name + "_cmc"
 	cmc.targetNode = $CameraTarget_Default
 	cmc.camera.make_current()
@@ -55,7 +64,7 @@ func _ready() -> void:
 		global_position = field.get_spawn_spot("p1")
 	else:
 		nCamTargetAim.position.x = -700
-		UIManager.uiTelescope.position.x = 0
+		game.root.uiMgr.currentUI.position.x = 0
 		global_position = field.get_spawn_spot("p2")
 
 	# 상태 머신 정의
@@ -142,7 +151,7 @@ func _physics_process(delta: float) -> void:
 				var dir = 0
 				if Input.is_action_just_pressed("wheel_up"): dir = 1
 				elif Input.is_action_just_pressed("wheel_down"): dir = -1
-				UIManager.zoom_cam_telescope(dir, 10, delta)
+				game.ui.zoom_cam_telescope(dir, 10, delta)
 	
 
 	
@@ -180,7 +189,7 @@ func on_entry_HandleCannon():
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
 	cmc.set_target_node(nCamTargetDefault, 0.2)
-	UIManager.off_observe()
+	game.ui.off_observe()
 	
 func on_entry_ReadyFire():
 	if cannon:
@@ -188,4 +197,4 @@ func on_entry_ReadyFire():
 		
 	# 카메라 위치를 이동시킴
 	cmc.set_target_node(nCamTargetAim, 0.2)
-	UIManager.on_observe()
+	game.ui.on_observe()

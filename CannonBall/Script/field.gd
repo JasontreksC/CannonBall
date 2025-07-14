@@ -3,11 +3,12 @@ class_name Field
 
 # 격발 이벤트 - 탄환을 생성 및 운동함
 # 탄착 이벤트 - 피격 범위를 생성 및 유지함. 이펙트를 발생시킴
-
+# 시간 시스템 - 서버에서 시간을 재면서 게임 시간 누적 -> ui 표시
+# 턴제 시스템 - 플레이어가 공격을 할때마다 턴 전환, 플레이어에게 공격인지 수비인지 전달함
 @onready var nP1SpawnSpot: Node2D = $P1SpawnSpot
 @onready var nP2SpawnSpot: Node2D = $P2SpawnSpot
 
-var shellPool: Array[Shell]
+var game: Game = null
 var shellNum: int = 0
 var hitNum: int = 0
 
@@ -25,8 +26,8 @@ func start_shelling(start_pos: Vector2, theta0: float, v0: float, launcher: int)
 	if not multiplayer.is_server():
 		return
 	
-	SceneManager.spawn_scene("res://Scene/Object/shell.tscn", self.name, "shell" + str(shellNum))
-	var newShell: Shell = SceneManager.get_pool(self.name + "_shell" + str(shellNum))
+	game.spawn_object("res://Scene/shell.tscn", "shell" + str(shellNum))
+	var newShell: Shell = game.get_object("shell" + str(shellNum))
 	shellNum += 1
 	
 	newShell.global_position = start_pos
@@ -36,33 +37,23 @@ func start_shelling(start_pos: Vector2, theta0: float, v0: float, launcher: int)
 	newShell.theta0 = theta0
 	newShell.launcher = launcher
 	
-	shellPool.append(newShell)
 	newShell.connect("land_event", on_shelling_landed)
 
 func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 	if not multiplayer.is_server():
 		return
 	
-	print("land!")
-	print("shellType: ", shellType)
-	print("launcher: ", launcher)
-	SceneManager.spawn_scene("res://Scene/Object/hit_point.tscn", self.name, "hitpoint" + str(hitNum))
-	var newHitPoint: HitPoint = SceneManager.get_pool(self.name + "_hitpoint" + str(hitNum))
+	game.spawn_object("res://Scene/hit_point.tscn", "hitpoint" + str(hitNum))
+	var newHitPoint: HitPoint = game.get_object("hitpoint" + str(hitNum))
 	shellNum += 1
+	
 	newHitPoint.attackTo = 3 - launcher
 	newHitPoint.global_position = pos
 	newHitPoint.activate_hit()
 
 func _ready() -> void:
-	pass # Replace with function body.
+	game = get_parent() as Game
 
 func _process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
-	
-	shellPool = shellPool.filter(func(s): return s != null)
-	
-	for shell: Shell in shellPool:
-		if shell.alive == false:
-			SceneManager.rpc("delete_scene", shell.name)
-			

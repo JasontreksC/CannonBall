@@ -20,6 +20,7 @@ var stateMachine: StateMachine = StateMachine.new()
 @onready var ac: AimController = $AimController
 @onready var field: Field = $"../Field"
 
+var game: Game = null
 var player: Player = null
 
 # 손잡이, 즉 플레이어가 대포 조종시 위치하게 될 부분의 x좌표를 반환한다.
@@ -43,11 +44,13 @@ func rotate_wheel(delta: float):
 	bWheel.rotate(deg_to_rad(omega))
 
 func _enter_tree() -> void:
+	game = get_parent() as Game
 	set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
 	if not is_multiplayer_authority():
 		return
+	
 	
 	if multiplayer.is_server():
 		global_position = field.get_spawn_spot("p1")
@@ -126,10 +129,12 @@ func _physics_process(delta: float) -> void:
 			"Aim":
 				var dir = Input.get_axis("left", "right")
 				var aimed_x = ac.aim(dir, 500, delta)
-				UIManager.aim_to_cam_telescope(aimed_x)
-				bBarrel.global_rotation = -ac.get_aimed_theta()
 				
+				game.ui.aim_to_cam_telescope(aimed_x)
+					
+				bBarrel.global_rotation = -ac.get_aimed_theta()
 				stateMachine.transit_by_input("clickL", "Fire")
+				
 			"Fire":
 				stateMachine.transit("Aim")
 
