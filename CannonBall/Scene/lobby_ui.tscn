@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=3 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_hlk56"]
+font_size = 160
+outline_size = 25
+outline_color = Color(0, 0, 0, 1)
 
 [node name="LobbyUI" type="Control"]
 layout_mode = 3
@@ -41,6 +46,15 @@ offset_bottom = 51.255
 grow_horizontal = 2
 grow_vertical = 2
 text = "Join"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 493.0
+offset_top = 257.0
+offset_right = 1419.0
+offset_bottom = 476.0
+text = "Cannon Ball"
+label_settings = SubResource("LabelSettings_hlk56")
 
 [connection signal="pressed" from="BT_Host" to="." method="_on_bt_host_pressed"]
 [connection signal="pressed" from="BT_Join" to="." method="_on_bt_join_pressed"]
