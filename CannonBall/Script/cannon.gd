@@ -23,6 +23,15 @@ var stateMachine: StateMachine = StateMachine.new()
 var game: Game = null
 var player: Player = null
 
+@rpc("any_peer", "call_local")
+func on_spawned() -> void:
+	if multiplayer.is_server():
+		player = game.players[0]
+	else:
+		player = game.players[1]
+		
+	player.cannon = self
+
 # 손잡이, 즉 플레이어가 대포 조종시 위치하게 될 부분의 x좌표를 반환한다.
 func get_handle_x() -> float:
 	return nHandle.global_position.x
@@ -50,7 +59,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not is_multiplayer_authority():
 		return
-	
 	
 	if multiplayer.is_server():
 		global_position = field.get_spawn_spot("p1")

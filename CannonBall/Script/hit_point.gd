@@ -32,8 +32,11 @@ func activate_hit():
 	if keepTurnCount == 0:
 		game.delete_object(self.name)
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	game = get_parent() as Game
+
+func _ready() -> void:
+	pass
 	
 func _process(delta: float) -> void:
 	pass
