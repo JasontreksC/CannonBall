@@ -22,7 +22,8 @@ func spawn_object(path: String, name: String) -> void:
 		add_child(inst)
 		objects[name] = inst
 		
-		inst.rpc_id(multiplayer.get_remote_sender_id(), "on_spawned")
+		var senderID = multiplayer.get_remote_sender_id()
+		inst.rpc_id(senderID, "on_spawned")
 
 @rpc("any_peer", "call_local")
 func delete_object(name: String):
@@ -43,6 +44,9 @@ func add_object(object: Node2D) -> bool:
 	else:
 		objects[object.name] = object
 		return true
+
+func _enter_tree() -> void:
+	root = get_parent().root
 
 func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
