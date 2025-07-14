@@ -23,7 +23,9 @@ func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
 	camTelescope.zoom.y += zoomValue
 	camTelescope.zoom = camTelescope.zoom.clamp(Vector2(0.5, 0.5), Vector2(2, 2))
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
+
+func _ready() -> void:
 	if uiMgr.root.sceneMgr.currentSceneNum == 1:
 		svTelescope.world_2d = uiMgr.root.get_main_viewport_world()

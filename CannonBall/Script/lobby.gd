@@ -1,8 +1,6 @@
 extends Node2D
 class_name Lobby
 
-var root: CannonBall = null
-
 func _ready() -> void:
 	pass # Replace with function body.
 

@@ -21,10 +21,6 @@ var game: Game = null
 var cmc: CameraMovingController = null
 var cannon: Cannon = null
 
-@rpc("any_peer")
-func on_spawned() -> void:
-	print(game.get_object(name))
-
 func get_cannon() -> Cannon:
 	if self.cannon:
 		return self.cannon
@@ -94,10 +90,10 @@ func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
 	
-	cannon = get_cannon()
-	if cannon:
-		if cannon.player == null:
-			cannon.player = self
+	#cannon = get_cannon()
+	#if cannon:
+		#if cannon.player == null:
+			#cannon.player = self
 
 	# 상태 전환 처리 중 처리해야하는 내용에 대한 분기이다.
 	# 예를 들어 플레이어가 대포를 잡을때, 순간이동하듯 손잡이쪽으로 즉시 위치하는것이 아니라

@@ -25,7 +25,6 @@ func set_scene(num: int) -> void:
 		1:
 			currentScene = psGameScene.instantiate()
 	
-	currentScene.root = root
 	call_deferred("add_child", currentScene)
 
 func _init() -> void:
