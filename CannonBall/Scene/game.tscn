@@ -9,7 +9,7 @@ script = ExtResource("1_gevu4")
 [node name="Field" parent="." instance=ExtResource("2_gevu4")]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://csssoqjjrrj67", "uid://bp8yuq71ym25a")
+_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://csssoqjjrrj67", "uid://bp8yuq71ym25a", "uid://co2yk1rkb2o2j")
 spawn_path = NodePath("..")
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

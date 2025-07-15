@@ -11,7 +11,7 @@ var freeQueue: Array[String]
 var G: float = 980
 
 @rpc("any_peer", "call_local")
-func spawn_object(path: String, name: String) -> void:
+func spawn_object(path: String, name: String, pos: Vector2 = Vector2.ZERO) -> void:
 	if objects.has(name):
 		return
 	
@@ -19,6 +19,7 @@ func spawn_object(path: String, name: String) -> void:
 		var ps: PackedScene = load(path)
 		var inst: Node2D = ps.instantiate()
 		inst.name = name
+		inst.global_position = pos
 		add_child(inst)
 		objects[name] = inst
 		
@@ -52,7 +53,8 @@ func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
+	print(node.name)
 	if node is Player:
 		players.append(node as Player)
-	else:
+	elif is_instance_valid(node.get_instance_id()):
 		add_object(node)

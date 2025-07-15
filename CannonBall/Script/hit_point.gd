@@ -8,6 +8,7 @@ var landImpact: bool = true
 
 var game: Game = null
 
+
 func in_range(targetX: float) -> bool:
 	var left = global_position.x - hitRange / 2
 	var right = global_position.x + hitRange / 2
