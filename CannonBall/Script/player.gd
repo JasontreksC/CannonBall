@@ -1,0 +1,196 @@
+# 플레이어의 상태에 따른 행동의 분류, 분류 안에서의 행동 등을 구현한다.
+# 이동 속도, 대포 상호작용 가능 여부, 상태 머신을 속성으로 가지고 있으며
+# 대포와 플레이어를 포커싱하는 카메라 무빙 컨트롤러에 대한 첨조를 저장한다.
+
+extends CharacterBody2D
+class_name Player
+
+const SPEED: float = 300.0
+var isInCannon: bool = false
+var stateMachine: StateMachine = StateMachine.new()
+var isAttack: bool = true
+
+@export var psCMC: PackedScene
+
+@onready var rcFloor: RayCast2D = $RayCast2D
+@onready var nCamTargetDefault: Node2D = $CameraTarget_Default
+@onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
+@onready var field: Field = $"../Field"
+
+var game: Game = null
+var cmc: CameraMovingController = null
+var cannon: Cannon = null
+
+func get_cannon() -> Cannon:
+	if self.cannon:
+		return self.cannon
+	else:
+		self.cannon = game.get_object(self.name + "cannon")
+		return self.cannon
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
+
+func hit_by_shell():
+	$Sprite2D.modulate = Color(1, 0, 0, 1)
+
+func _ready() -> void:
+	# _enter_tree()에서 설정한 멀티플레이어 권한은 고유의 id값이다.
+	# 멀티플레이를 하게 되면 한 쪽의 컴퓨터에서도 플레이어 객체가 두개 존재하게 되는데, 본 사용자에게 할당된 플레이어 아니면
+	# 이 함수의 내용을 무시하고 리턴하는 것이다. 즉 입력의 중복 등을 방지한다.
+	if not is_multiplayer_authority():
+		return
+	
+	game = get_parent() as Game
+	game.ui = game.root.uiMgr.get_current_ui_as_in_game()
+	
+	## 대포 생성
+	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
+	#  서버의 경우 직접 호출 
+	game.rpc("spawn_object", "res://Scene/cannon.tscn", self.name + "cannon")
+	
+	# 카메라 무빙 컨트롤러 생성
+	cmc = psCMC.instantiate()
+	game.add_child(cmc)
+	cmc.name = name + "_cmc"
+	cmc.targetNode = $CameraTarget_Default
+	cmc.camera.make_current()
+
+	if multiplayer.is_server():
+		global_position = field.get_spawn_spot("p1")
+	else:
+		nCamTargetAim.position.x = -700
+		game.root.uiMgr.currentUI.position.x = 0
+		global_position = field.get_spawn_spot("p2")
+
+	# 상태 머신 정의
+	stateMachine.register_state("Idle")
+	stateMachine.register_state("HandleCannon")
+	stateMachine.register_state("ReadyFire")
+	
+	stateMachine.register_transit("Idle", "HandleCannon", 0)
+	stateMachine.register_transit("HandleCannon", "Idle", 0)
+	
+	stateMachine.register_transit("Idle", "ReadyFire", 0)
+	stateMachine.register_transit("ReadyFire", "Idle", 0)
+	
+	stateMachine.register_transit("ReadyFire", "HandleCannon", 0)
+	stateMachine.register_transit("HandleCannon", "ReadyFire", 0)
+	
+	stateMachine.register_state_event("Idle", "exit", on_exit_Idle)	
+	stateMachine.register_state_event("Idle", "entry", on_entry_Idle)	
+	stateMachine.register_state_event("HandleCannon", "exit", on_exit_HandleCannon)	
+	stateMachine.register_state_event("HandleCannon", "entry", on_entry_HandleCannon)	
+	stateMachine.register_state_event("ReadyFire", "exit", on_exit_ReadyFire)	
+	stateMachine.register_state_event("ReadyFire", "entry", on_entry_ReadyFire)
+	
+	stateMachine.init_current_state("Idle")
+
+func _physics_process(delta: float) -> void:
+	if not is_multiplayer_authority():
+		return
+	
+	#cannon = get_cannon()
+	#if cannon:
+		#if cannon.player == null:
+			#cannon.player = self
+
+	# 상태 전환 처리 중 처리해야하는 내용에 대한 분기이다.
+	# 예를 들어 플레이어가 대포를 잡을때, 순간이동하듯 손잡이쪽으로 즉시 위치하는것이 아니라
+	# 손잡이쪽으로 걸어가 손잡이를 잡게기까지 애니메이션이 짧게라도 나오는것이 자연스럽다.
+	# 그 동안 이동이나 조준과 같은 다른 조작이 입력되면 안된다. 그래서 따로 분기를 정해놓은 것
+	# register_transit을 호출했을 때 두 번째 인수로 건네준 실수값이 초 단위인데, 그동안 이 분기가 처리된다. 0이면 실행되지 않는다.
+	
+	if stateMachine.is_transit_process("Idle", "HandleCannon", delta):
+		pass
+	elif stateMachine.is_transit_process("HandleCannon", "Idle", delta):
+		pass
+		
+	elif stateMachine.is_transit_process("Idle", "ReadyFire", delta):
+		pass
+	elif stateMachine.is_transit_process("ReadyFire", "Idle", delta):
+		pass
+		
+	elif stateMachine.is_transit_process("HandleCannon", "ReadyFire", delta):
+		pass
+	elif stateMachine.is_transit_process("ReadyFire", "HandleCannon", delta):
+		pass
+	# 상태 전환 프로세스가 없으면 각 상태에서의 행동 처리
+	else:
+		match stateMachine.current_state_name():
+			"Idle":
+				# 단독 무브먼트
+				var direction := Input.get_axis("left", "right")
+				if direction:
+					velocity.x = direction * SPEED
+				else:
+					velocity.x = move_toward(velocity.x, 0, SPEED)
+				move_and_slide()
+				
+				# 입력 시 상태 전환
+				if isInCannon:
+					stateMachine.transit_by_input("handle", "HandleCannon")
+					stateMachine.transit_by_input("aim", "ReadyFire")
+		
+			"HandleCannon":
+				# 대포 무브먼트에 고정
+				if cannon:
+					position.x = cannon.get_handle_x()
+
+				stateMachine.transit_by_input("handle", "Idle")
+				stateMachine.transit_by_input("aim", "ReadyFire")
+				
+			"ReadyFire":
+				stateMachine.transit_by_input("aim", "back")
+				
+				# 만원경으로 조준
+				var dir = 0
+				if Input.is_action_just_pressed("wheel_up"): dir = 1
+				elif Input.is_action_just_pressed("wheel_down"): dir = -1
+				game.ui.zoom_cam_telescope(dir, 10, delta)
+	
+
+	
+	# 높이를 항상 바닥에 고정
+	var collisionPoint: Vector2 = rcFloor.get_collision_point()
+	position.y = collisionPoint.y
+	
+	if cannon:
+		#대포의 상호작용구역 안에 들어왔음을 감지
+		var ia: Area2D = cannon.get_node("InteractionArea")
+		var intersects: Array = ia.get_overlapping_bodies()
+		var index = intersects.find_custom(func(n): return n.name == self.name)
+		if index != -1 and intersects[index]:
+			isInCannon = true
+		else:
+			isInCannon = false
+		
+
+# 전환 이벤트. 상태 전환이 발생했을 때 한번만 실행된다.
+func on_exit_Idle():
+	pass
+	
+func on_entry_Idle():
+	if cannon:
+		cannon.stateMachine.transit("Idle")
+	pass
+
+func on_exit_HandleCannon():
+	pass
+	
+func on_entry_HandleCannon():
+	if cannon:
+		cannon.stateMachine.transit("Move")
+
+func on_exit_ReadyFire():
+	# 카메라 위치를 원래대로 되돌림
+	cmc.set_target_node(nCamTargetDefault, 0.2)
+	game.ui.off_observe()
+	
+func on_entry_ReadyFire():
+	if cannon:
+		cannon.stateMachine.transit("Aim")
+		
+	# 카메라 위치를 이동시킴
+	cmc.set_target_node(nCamTargetAim, 0.2)
+	game.ui.on_observe()

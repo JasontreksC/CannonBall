@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv453ijcwqcn6"]
+
+[ext_resource type="Script" uid="uid://bouv6swbmsa2k" path="res://Script/camera_moving_controller.gd" id="1_trrk0"]
+
+[sub_resource type="Curve" id="Curve_trrk0"]
+_data = [Vector2(0, 0), 0.0, 2.26848, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="CameraMovingController" type="Node2D"]
+script = ExtResource("1_trrk0")
+MAX_SPEED = 1000
+MIN_SPEED_FOLLOW = 300
+moveCurve = SubResource("Curve_trrk0")
+
+[node name="Camera2D" type="Camera2D" parent="."]
