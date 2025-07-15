@@ -29,3 +29,5 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if uiMgr.root.sceneMgr.currentSceneNum == 1:
 		svTelescope.world_2d = uiMgr.root.get_main_viewport_world()
+	if not multiplayer.is_server():
+		crTelescope.position.x = 0

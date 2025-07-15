@@ -15,6 +15,10 @@ var launcher: int = 0
 
 signal land_event
 
+@rpc("any_peer", "call_local")
+func on_spawned() -> void:
+	pass
+
 func _enter_tree() -> void:
 	game = get_parent() as Game
 

@@ -45,11 +45,14 @@ func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 	
 	game.spawn_object("res://Scene/hit_point.tscn", "hitpoint" + str(hitNum))
 	var newHitPoint: HitPoint = game.get_object("hitpoint" + str(hitNum))
-	shellNum += 1
 	
 	newHitPoint.attackTo = 3 - launcher
 	newHitPoint.global_position = pos
 	newHitPoint.activate_hit()
+	
+	game.rpc("spawn_object", "res://Scene/explosion.tscn", "exlpo" + str(hitNum), pos)
+	
+	hitNum += 1
 
 func _ready() -> void:
 	game = get_parent() as Game
