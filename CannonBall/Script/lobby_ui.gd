@@ -19,11 +19,11 @@ func _on_bt_host_pressed() -> void:
 	uiMgr.root.sceneMgr.set_scene(1)
 	uiMgr.set_ui(1)
 	#uiMgr.root.create_steam_socket()
-	uiMgr.root.host_lobby(teHostPlayerName.text)
+	uiMgr.root.host_lobby()
 
 
 func _on_bt_join_pressed() -> void:
 	uiMgr.root.sceneMgr.set_scene(1)
 	uiMgr.set_ui(1)
 	#uiMgr.root.connect_steam_socket(76561199086295015)
-	uiMgr.root.join_lobby(int(teLobbyID.text), teJoinPlayerName.text)
+	uiMgr.root.join_lobby(int(teLobbyID.text))

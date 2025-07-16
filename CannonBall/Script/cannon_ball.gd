@@ -14,17 +14,8 @@ class_name CannonBall
 # 멀티 플레이 관련 리소스
 var host = false
 var peer: MultiplayerPeer = null
-var p1Name: String
-var p2Name: String
 
-#var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
-
-#func start_host() -> void:
-	#peer.create_server(135) # 포트번호 135번
-	#multiplayer.multiplayer_peer = peer
-	#multiplayer.peer_connected.connect(_add_player)
-	#_add_player()
 
 func _add_player(id=1):
 	var player: Player = player_scene.instantiate()
@@ -33,34 +24,27 @@ func _add_player(id=1):
 	var gameScene: Game = sceneMgr.currentScene as Game
 	gameScene.call_deferred("add_child", player)
 	gameScene.players.append(player)
-	
-#func start_join() -> void:
-	#peer.create_client("localhost", 135)
-	#multiplayer.multiplayer_peer = peer
 
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
 	
 ## STEAM
-#func request_connection(remote_steam_id: int):
-	#Steam.sendP2PPacket(remote_steam_id, "connect_request".to_utf8_buffer(), Steam.P2P_SEND_UNRELIABLE)
-#
-#func recieve_connection():
-	#var packetSize = Steam.getAvailableP2PPacketSize()
-	#if packetSize > 0:
-		#var packet = Steam.readP2PPacket(packetSize)
-		#if packet:
-			#print(packet.keys())
-			#var remote_steam_id = packet["remote_steam_id"]
-			#var data = packet["data"].get_string_from_utf8()
-			#print("받은 메시지:", data, "보낸 사람:", remote_steam_id)
+func invite_to_lobby(remote_steam_id: int, lobbyID: int):
+	Steam.sendP2PPacket(remote_steam_id, str(lobbyID).to_utf8_buffer(), Steam.P2P_SEND_UNRELIABLE)
 
-func host_lobby(new_player_name : String):
-	p1Name = new_player_name
+func recieve_invite():
+	var packetSize = Steam.getAvailableP2PPacketSize()
+	if packetSize > 0:
+		var packet = Steam.readP2PPacket(packetSize)
+		if packet:
+			var remote_steam_id = packet["remote_steam_id"]
+			var invited_lobby_id = packet["data"].get_string_from_utf8()
+			uiMgr.get_current_ui_as_lobby().teLobbyID.text = invited_lobby_id
+
+func host_lobby():
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
 
-func join_lobby(new_lobby_id : int, new_player_name : String):
-	p2Name = new_player_name
+func join_lobby(new_lobby_id : int):
 	Steam.joinLobby(new_lobby_id)
 
 func create_steam_socket():	
@@ -94,10 +78,11 @@ func _ready() -> void:
 	func(status: int, new_lobby_id: int):
 		if status == 1:
 			#lobby_id = new_lobby_id
-			Steam.setLobbyData(new_lobby_id, p1Name, 
+			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
+			invite_to_lobby(76561199086295015, new_lobby_id)
 		else:
 			print("Error on create lobby!")
 	)
@@ -105,7 +90,6 @@ func _ready() -> void:
 	Steam.lobby_joined.connect(
 	func (new_lobby_id: int, _permissions: int, _locked: bool, response: int):
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
-			print(new_lobby_id)
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
 				connect_steam_socket(id)
@@ -140,6 +124,4 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 	Steam.run_callbacks()
-	pass
-	#if host:
-		#recieve_connection()
+	recieve_invite()
