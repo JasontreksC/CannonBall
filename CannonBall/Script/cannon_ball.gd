@@ -12,8 +12,10 @@ class_name CannonBall
 # UI, 게임 씬 참조 저장
 
 # 멀티 플레이 관련 리소스
-var host = false
+var isHost = false
 var peer: MultiplayerPeer = null
+var lobbyID: int
+var invite_sended = false
 
 @export var player_scene: PackedScene
 
@@ -40,6 +42,7 @@ func recieve_invite():
 			var remote_steam_id = packet["remote_steam_id"]
 			var invited_lobby_id = packet["data"].get_string_from_utf8()
 			uiMgr.get_current_ui_as_lobby().teLobbyID.text = invited_lobby_id
+			print("invited from: ", invited_lobby_id)
 
 func host_lobby():
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
@@ -53,6 +56,8 @@ func create_steam_socket():
 	multiplayer.set_multiplayer_peer(peer)
 	multiplayer.peer_connected.connect(_add_player)
 	_add_player()
+	
+	invite_to_lobby(76561199086295015, lobbyID)
 	
 func connect_steam_socket(steam_id : int):
 	peer = SteamMultiplayerPeer.new()
@@ -82,7 +87,8 @@ func _ready() -> void:
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
-			invite_to_lobby(76561199086295015, new_lobby_id)
+			#invite_to_lobby(76561199086295015, new_lobby_id)
+			lobbyID = new_lobby_id
 		else:
 			print("Error on create lobby!")
 	)
