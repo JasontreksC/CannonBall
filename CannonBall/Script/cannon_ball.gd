@@ -13,15 +13,16 @@ class_name CannonBall
 
 # 멀티 플레이 관련 리소스
 var host = false
+var peer: MultiplayerPeer = null
 
-var peer = ENetMultiplayerPeer.new()
+#var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
 
-func start_host() -> void:
-	peer.create_server(135) # 포트번호 135번
-	multiplayer.multiplayer_peer = peer
-	multiplayer.peer_connected.connect(_add_player)
-	_add_player()
+#func start_host() -> void:
+	#peer.create_server(135) # 포트번호 135번
+	#multiplayer.multiplayer_peer = peer
+	#multiplayer.peer_connected.connect(_add_player)
+	#_add_player()
 
 func _add_player(id=1):
 	var player: Player = player_scene.instantiate()
@@ -31,27 +32,38 @@ func _add_player(id=1):
 	gameScene.call_deferred("add_child", player)
 	gameScene.players.append(player)
 	
-func start_join() -> void:
-	peer.create_client("localhost", 135)
-	multiplayer.multiplayer_peer = peer
+#func start_join() -> void:
+	#peer.create_client("localhost", 135)
+	#multiplayer.multiplayer_peer = peer
 
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
 	
 ## STEAM
-func request_connection(remote_steam_id: int):
-	Steam.sendP2PPacket(remote_steam_id, "connect_request".to_utf8_buffer(), Steam.P2P_SEND_UNRELIABLE)
+#func request_connection(remote_steam_id: int):
+	#Steam.sendP2PPacket(remote_steam_id, "connect_request".to_utf8_buffer(), Steam.P2P_SEND_UNRELIABLE)
+#
+#func recieve_connection():
+	#var packetSize = Steam.getAvailableP2PPacketSize()
+	#if packetSize > 0:
+		#var packet = Steam.readP2PPacket(packetSize)
+		#if packet:
+			#print(packet.keys())
+			#var remote_steam_id = packet["remote_steam_id"]
+			#var data = packet["data"].get_string_from_utf8()
+			#print("받은 메시지:", data, "보낸 사람:", remote_steam_id)
 
-func recieve_connection():
-	var packetSize = Steam.getAvailableP2PPacketSize()
-	if packetSize > 0:
-		var packet = Steam.readP2PPacket(packetSize)
-		if packet:
-			print(packet.keys())
-			var remote_steam_id = packet["remote_steam_id"]
-			var data = packet["data"].get_string_from_utf8()
-			print("받은 메시지:", data, "보낸 사람:", remote_steam_id)
-
+func create_steam_socket():
+	peer = SteamMultiplayerPeer.new()
+	peer.create_host(0)
+	multiplayer.set_multiplayer_peer(peer)
+	multiplayer.peer_connected.connect(_add_player)
+	_add_player()
+	
+func connect_steam_socket(steam_id : int):
+	peer = SteamMultiplayerPeer.new()
+	peer.create_client(steam_id, 0)
+	multiplayer.set_multiplayer_peer(peer)
 
 func _ready() -> void:
 	if Steam.steamInit():
@@ -61,5 +73,6 @@ func _ready() -> void:
 		print("Steam 초기화 실패")
 		
 func _process(delta: float) -> void:
-	if host:
-		recieve_connection()
+	pass
+	#if host:
+		#recieve_connection()
