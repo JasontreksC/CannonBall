@@ -31,8 +31,8 @@ func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
 	
 ## STEAM
-func invite_to_lobby(remote_steam_id: int, lobbyID: int):
-	var result = Steam.sendP2PPacket(remote_steam_id,  var_to_bytes(lobbyID), Steam.P2P_SEND_UNRELIABLE)
+#func invite_to_lobby(remote_steam_id: int, lobbyID: int):
+	#var result = Steam.sendP2PPacket(remote_steam_id,  var_to_bytes(lobbyID), Steam.P2P_SEND_UNRELIABLE)
 
 func recieve_invite():
 	var packetSize = Steam.getAvailableP2PPacketSize()
@@ -40,8 +40,8 @@ func recieve_invite():
 		var packet = Steam.readP2PPacket(packetSize)
 		if packet:
 			var remote_steam_id = packet["remote_steam_id"]
-			var invited_lobby_id = packet["data"].get_string_from_utf8()
-			uiMgr.get_current_ui_as_lobby().teLobbyID.text = invited_lobby_id
+			var invited_lobby_id = bytes_to_var(packet["data"])
+			uiMgr.get_current_ui_as_lobby().teLobbyID.text = str(invited_lobby_id)
 			print("invited from: ", invited_lobby_id)
 			
 
@@ -72,21 +72,20 @@ func _ready() -> void:
 	else:
 		print("Steam 초기화 실패")
 	
-		multiplayer.peer_connected.connect(
-		func(id : int):
-			# Tell the connected peer that we have also joined
-			print(id)
-		)
+	multiplayer.peer_connected.connect(
+	func(id : int):
+		# Tell the connected peer that we have also joined
+		print(id)
+	)
 		
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
-			#lobby_id = new_lobby_id
+			Steam.sendP2PPacket(76561199086295015,  var_to_bytes(new_lobby_id), Steam.P2P_SEND_UNRELIABLE)
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
-			invite_to_lobby(76561199086295015, new_lobby_id)
 		else:
 			print("Error on create lobby!")
 	)
