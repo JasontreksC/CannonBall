@@ -3,7 +3,7 @@ extends Control
 var hp_step1 := 100
 var hp_step2 := 100
 
-const TURN_TIME := 30
+const TURN_TIME := 5
 @onready var time_label := $PlayUI/Time
 @onready var def_ui := $PlayUI/Def
 @onready var atk_ui := $PlayUI/Atk
@@ -97,10 +97,12 @@ func _on_timer_tick():
 		update_time_label()
 
 func update_time_label():
-	var min = timer / 60
-	var sec = timer % 60
-	time_label.text = "%02d:%02d" % [min, sec]
-
+	if timer <= 0:
+		time_label.text = "Turn Change"
+	else:
+		var min = timer / 60
+		var sec = timer % 60
+		time_label.text = "%02d:%02d" % [min, sec]
 func show_arrow1_click():
 	if arrow1_click:
 		arrow1_click.modulate.a = 1.0

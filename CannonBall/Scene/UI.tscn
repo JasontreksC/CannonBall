@@ -11,8 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://cp3nylb3saeum" path="res://Asset/BallUIarrow.png" id="6_nq5m3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_i3p7b"]
-font_size = 180
-font_color = Color(0, 1, 0, 1)
+font_size = 240
+font_color = Color(0.540346, 0.895914, 0.928074, 1)
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -24,25 +24,29 @@ grow_vertical = 2
 script = ExtResource("1_g6l6n")
 
 [node name="PlayUI" type="Sprite2D" parent="."]
-position = Vector2(964, 98)
-scale = Vector2(0.3, 0.3)
+z_index = 1
+position = Vector2(946, 22)
+scale = Vector2(0.236321, 0.33)
 texture = ExtResource("2_fv4t1")
 
-[node name="Def" type="Sprite2D" parent="PlayUI"]
-position = Vector2(955.117, -0.783325)
-texture = ExtResource("3_jg4dc")
-
-[node name="Atk" type="Sprite2D" parent="PlayUI"]
-position = Vector2(-908.55, -0.783325)
-texture = ExtResource("4_xql8a")
-
 [node name="Time" type="Label" parent="PlayUI"]
-offset_left = -193.333
-offset_top = -130.0
-offset_right = 266.667
-offset_bottom = 116.0
+offset_left = -537.404
+offset_top = 72.7272
+offset_right = 696.596
+offset_bottom = 400.727
 text = "00:00"
 label_settings = SubResource("LabelSettings_i3p7b")
+horizontal_alignment = 1
+
+[node name="Atk" type="Sprite2D" parent="PlayUI"]
+position = Vector2(-897.083, 263.636)
+scale = Vector2(1.424, 1.02)
+texture = ExtResource("4_xql8a")
+
+[node name="Def" type="Sprite2D" parent="PlayUI"]
+position = Vector2(1055.06, 264.695)
+scale = Vector2(1.424, 1.02)
+texture = ExtResource("3_jg4dc")
 
 [node name="HP" type="Node" parent="."]
 

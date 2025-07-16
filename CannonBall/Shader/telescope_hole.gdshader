@@ -17,7 +17,7 @@ void fragment() {
 	float horizontal = step(0.5 - thickness / 2.0, uv.y) * step(uv.y, 0.5 + thickness / 2.0);
     float vertical = step(0.5 - thickness / 2.0, uv.x) * step(uv.x, 0.5 + thickness / 2.0);
 	float cross_ = max(horizontal, vertical);
-	
+
     float dist = distance(uv, hole_center);
 
     if (dist < hole_radius) {
