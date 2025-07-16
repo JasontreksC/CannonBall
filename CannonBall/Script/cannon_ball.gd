@@ -43,7 +43,7 @@ func request_connection(remote_steam_id: int):
 	Steam.sendP2PPacket(remote_steam_id, "connect_request".to_utf8_buffer(), Steam.P2P_SEND_RELIABLE)
 
 func recieve_connection():
-	var packetSize = Steam.getAvailableP2PPacketSize()
+	var packetSize = Steam.getAvailableP2PPacketSize(Steam.P2P_SEND_RELIABLE)
 	if packetSize > 0:
 		var packet = Steam.readP2PPacket(packetSize)
 		if packet:

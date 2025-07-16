@@ -20,8 +20,7 @@ func _on_bt_host_pressed() -> void:
 
 
 func _on_bt_join_pressed() -> void:
-	uiMgr.root.request_connection(76561198985807345)
-	pass
+	uiMgr.root.request_connection(76561199086295015)
 	#uiMgr.root.sceneMgr.set_scene(1)
 	#uiMgr.set_ui(1)
 	#uiMgr.root.start_join()
