@@ -38,6 +38,7 @@ func recieve_invite():
 	var packetSize = Steam.getAvailableP2PPacketSize()
 	if packetSize > 0:
 		var packet = Steam.readP2PPacket(packetSize)
+		
 		if packet:
 			var remote_steam_id = packet["remote_steam_id"]
 			var invited_lobby_id = bytes_to_var(packet["data"])
@@ -69,6 +70,8 @@ func _ready() -> void:
 	if Steam.steamInitEx(480):
 		print("Steam 초기화 성공")
 		print("내 Steam ID: ", Steam.getSteamID())
+		Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
+		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
 	else:
 		print("Steam 초기화 실패")
 	
@@ -81,7 +84,7 @@ func _ready() -> void:
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
-			Steam.sendP2PPacket(76561199086295015,  var_to_bytes(new_lobby_id), Steam.P2P_SEND_UNRELIABLE)
+			Steam.sendP2PPacket(76561199086295015,  var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 			create_steam_socket()
@@ -123,7 +126,14 @@ func _ready() -> void:
 			print(FAIL_REASON)
 		)
 		
-		
+# 세션 요청 수신 시 자동 수락
+func _on_p2p_session_request(remote_id: int):
+	print("P2P 세션 요청 수신, 자동 수락:", remote_id)
+	Steam.acceptP2PSessionWithUser(remote_id)
+
+# 연결 실패 처리
+func _on_p2p_session_connect_fail(remote_id: int, error: int):
+	print("P2P 세션 연결 실패:", remote_id, "오류 코드:", error)		
 	
 func _process(delta: float) -> void:
 	Steam.run_callbacks()
