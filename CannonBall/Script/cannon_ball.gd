@@ -40,10 +40,10 @@ func get_main_viewport_world() -> World2D:
 	
 ## STEAM
 func request_connection(remote_steam_id: int):
-	Steam.sendP2PPacket(remote_steam_id, "connect_request".to_utf8_buffer(), Steam.P2P_SEND_RELIABLE)
+	Steam.sendP2PPacket(remote_steam_id, "connect_request".to_utf8_buffer(), Steam.P2P_SEND_UNRELIABLE)
 
 func recieve_connection():
-	var packetSize = Steam.getAvailableP2PPacketSize(Steam.P2P_SEND_RELIABLE)
+	var packetSize = Steam.getAvailableP2PPacketSize()
 	if packetSize > 0:
 		var packet = Steam.readP2PPacket(packetSize)
 		if packet:
