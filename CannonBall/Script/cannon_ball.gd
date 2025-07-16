@@ -12,6 +12,8 @@ class_name CannonBall
 # UI, 게임 씬 참조 저장
 
 # 멀티 플레이 관련 리소스
+var host = false
+
 var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
 
@@ -35,3 +37,29 @@ func start_join() -> void:
 
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
+	
+## STEAM
+func request_connection(remote_steam_id: int):
+	Steam.sendP2PPacket(remote_steam_id, "connect_request".to_utf8_buffer(), Steam.P2P_SEND_RELIABLE)
+
+func recieve_connection():
+	var packetSize = Steam.getAvailableP2PPacketSize()
+	if packetSize > 0:
+		var packet = Steam.readP2PPacket(packetSize)
+		if packet:
+			print(packet.keys())
+			var remote_steam_id = packet["remote_steam_id"]
+			var data = packet["data"].get_string_from_utf8()
+			print("받은 메시지:", data, "보낸 사람:", remote_steam_id)
+
+
+func _ready() -> void:
+	if Steam.steamInit():
+		print("Steam 초기화 성공")
+		print("내 Steam ID: ", Steam.getSteamID())
+	else:
+		print("Steam 초기화 실패")
+		
+func _process(delta: float) -> void:
+	if host:
+		recieve_connection()

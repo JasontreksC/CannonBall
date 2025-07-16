@@ -13,12 +13,15 @@ func _process(delta: float) -> void:
 
 
 func _on_bt_host_pressed() -> void:
-	uiMgr.root.sceneMgr.set_scene(1)
-	uiMgr.set_ui(1)
-	uiMgr.root.start_host()
+	uiMgr.root.host = true
+	#uiMgr.root.sceneMgr.set_scene(1)
+	#uiMgr.set_ui(1)
+	#uiMgr.root.start_host()
 
 
 func _on_bt_join_pressed() -> void:
-	uiMgr.root.sceneMgr.set_scene(1)
-	uiMgr.set_ui(1)
-	uiMgr.root.start_join()
+	uiMgr.root.request_connection(76561198985807345)
+	pass
+	#uiMgr.root.sceneMgr.set_scene(1)
+	#uiMgr.set_ui(1)
+	#uiMgr.root.start_join()
