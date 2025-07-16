@@ -32,7 +32,7 @@ func get_main_viewport_world() -> World2D:
 	
 ## STEAM
 func invite_to_lobby(remote_steam_id: int, lobbyID: int):
-	Steam.sendP2PPacket(remote_steam_id, str(lobbyID).to_utf8_buffer(), Steam.P2P_SEND_UNRELIABLE)
+	var result = Steam.sendP2PPacket(remote_steam_id,  var_to_bytes(lobbyID), Steam.P2P_SEND_UNRELIABLE)
 
 func recieve_invite():
 	var packetSize = Steam.getAvailableP2PPacketSize()
@@ -43,6 +43,7 @@ func recieve_invite():
 			var invited_lobby_id = packet["data"].get_string_from_utf8()
 			uiMgr.get_current_ui_as_lobby().teLobbyID.text = invited_lobby_id
 			print("invited from: ", invited_lobby_id)
+			
 
 func host_lobby():
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
@@ -56,8 +57,6 @@ func create_steam_socket():
 	multiplayer.set_multiplayer_peer(peer)
 	multiplayer.peer_connected.connect(_add_player)
 	_add_player()
-	
-	invite_to_lobby(76561199086295015, lobbyID)
 	
 func connect_steam_socket(steam_id : int):
 	peer = SteamMultiplayerPeer.new()
@@ -87,8 +86,7 @@ func _ready() -> void:
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
-			#invite_to_lobby(76561199086295015, new_lobby_id)
-			lobbyID = new_lobby_id
+			invite_to_lobby(76561199086295015, new_lobby_id)
 		else:
 			print("Error on create lobby!")
 	)
