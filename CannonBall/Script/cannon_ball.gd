@@ -14,6 +14,8 @@ class_name CannonBall
 # 멀티 플레이 관련 리소스
 var host = false
 var peer: MultiplayerPeer = null
+var p1Name: String
+var p2Name: String
 
 #var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
@@ -53,7 +55,15 @@ func get_main_viewport_world() -> World2D:
 			#var data = packet["data"].get_string_from_utf8()
 			#print("받은 메시지:", data, "보낸 사람:", remote_steam_id)
 
-func create_steam_socket():
+func host_lobby(new_player_name : String):
+	p1Name = new_player_name
+	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
+
+func join_lobby(new_lobby_id : int, new_player_name : String):
+	p2Name = new_player_name
+	Steam.joinLobby(new_lobby_id)
+
+func create_steam_socket():	
 	peer = SteamMultiplayerPeer.new()
 	peer.create_host(0)
 	multiplayer.set_multiplayer_peer(peer)
@@ -65,14 +75,71 @@ func connect_steam_socket(steam_id : int):
 	peer.create_client(steam_id, 0)
 	multiplayer.set_multiplayer_peer(peer)
 
+
+
 func _ready() -> void:
-	if Steam.steamInit():
+	if Steam.steamInitEx(480):
 		print("Steam 초기화 성공")
 		print("내 Steam ID: ", Steam.getSteamID())
 	else:
 		print("Steam 초기화 실패")
+	
+		multiplayer.peer_connected.connect(
+		func(id : int):
+			# Tell the connected peer that we have also joined
+			print(id)
+		)
 		
+	Steam.lobby_created.connect(
+	func(status: int, new_lobby_id: int):
+		if status == 1:
+			#lobby_id = new_lobby_id
+			Steam.setLobbyData(new_lobby_id, p1Name, 
+				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
+			create_steam_socket()
+			print("Lobby ID:", new_lobby_id)
+		else:
+			print("Error on create lobby!")
+	)
+	
+	Steam.lobby_joined.connect(
+	func (new_lobby_id: int, _permissions: int, _locked: bool, response: int):
+		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+			print(new_lobby_id)
+			var id = Steam.getLobbyOwner(new_lobby_id)
+			if id != Steam.getSteamID():
+				connect_steam_socket(id)
+		else:
+		# Get the failure reason
+			var FAIL_REASON: String
+			match response:
+				Steam.CHAT_ROOM_ENTER_RESPONSE_DOESNT_EXIST:
+					FAIL_REASON = "This lobby no longer exists."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_NOT_ALLOWED:
+					FAIL_REASON = "You don't have permission to join this lobby."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_FULL:
+					FAIL_REASON = "The lobby is now full."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_ERROR:
+					FAIL_REASON = "Uh... something unexpected happened!"
+				Steam.CHAT_ROOM_ENTER_RESPONSE_BANNED:
+					FAIL_REASON = "You are banned from this lobby."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_LIMITED:
+					FAIL_REASON = "You cannot join due to having a limited account."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_CLAN_DISABLED:
+					FAIL_REASON = "This lobby is locked or disabled."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_COMMUNITY_BAN:
+					FAIL_REASON = "This lobby is community locked."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_MEMBER_BLOCKED_YOU:
+					FAIL_REASON = "A user in the lobby has blocked you from joining."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_YOU_BLOCKED_MEMBER:
+					FAIL_REASON = "A user you have blocked is in the lobby."
+			print(FAIL_REASON)
+		)
+		
+		
+	
 func _process(delta: float) -> void:
+	Steam.run_callbacks()
 	pass
 	#if host:
 		#recieve_connection()
