@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
+[ext_resource type="PackedScene" uid="uid://b5gr7cn7phhwc" path="res://Scene/UI.tscn" id="3_quy4v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
 shader = ExtResource("2_wpxio")
@@ -11,9 +12,6 @@ shader_parameter/thickness = 0.005
 shader_parameter/cross_color = Vector4(0, 0, 0, 1)
 shader_parameter/bg_color = Color(0, 0, 0, 1)
 shader_parameter/transparency_color = Color(0, 0, 0, 0)
-
-[sub_resource type="LabelSettings" id="LabelSettings_3xi00"]
-font_size = 64
 
 [node name="InGameUI" type="Control"]
 layout_mode = 3
@@ -50,11 +48,5 @@ render_target_update_mode = 0
 
 [node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
 
-[node name="GameTime" type="Label" parent="."]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 4.0
-offset_right = 175.0
-offset_bottom = 92.0
-text = "00:00"
-label_settings = SubResource("LabelSettings_3xi00")
+[node name="UI" parent="." instance=ExtResource("3_quy4v")]
+layout_mode = 1

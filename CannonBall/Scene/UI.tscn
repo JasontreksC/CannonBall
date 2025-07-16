@@ -1,0 +1,190 @@
+[gd_scene load_steps=11 format=3 uid="uid://b5gr7cn7phhwc"]
+
+[ext_resource type="Texture2D" uid="uid://qr5r40uufke2" path="res://Asset/HP/HpBar.png" id="1_3b2b5"]
+[ext_resource type="Script" uid="uid://dcxluoedtdx8l" path="res://Script/ui.gd" id="1_g6l6n"]
+[ext_resource type="Texture2D" uid="uid://c5em18m15fbb8" path="res://Asset/prototype_object/Ffight_time_ui.png" id="2_fv4t1"]
+[ext_resource type="Texture2D" uid="uid://bpcpewqwd7cnn" path="res://Asset/prototype_object/DEF.png" id="3_jg4dc"]
+[ext_resource type="Texture2D" uid="uid://5a4so6tqvr8f" path="res://Asset/HP/HP_10.png" id="4_i3p7b"]
+[ext_resource type="Texture2D" uid="uid://bhssjcwclbygk" path="res://Asset/HP/HP_BK.png" id="4_vrfts"]
+[ext_resource type="Texture2D" uid="uid://b4qyt66jwdgol" path="res://Asset/prototype_object/ATK.png" id="4_xql8a"]
+[ext_resource type="Texture2D" uid="uid://cjuswftc73knu" path="res://Asset/BallUI.png" id="5_fau5c"]
+[ext_resource type="Texture2D" uid="uid://cp3nylb3saeum" path="res://Asset/BallUIarrow.png" id="6_nq5m3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i3p7b"]
+font_size = 180
+font_color = Color(0, 1, 0, 1)
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g6l6n")
+
+[node name="PlayUI" type="Sprite2D" parent="."]
+position = Vector2(964, 98)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_fv4t1")
+
+[node name="Def" type="Sprite2D" parent="PlayUI"]
+position = Vector2(955.117, -0.783325)
+texture = ExtResource("3_jg4dc")
+
+[node name="Atk" type="Sprite2D" parent="PlayUI"]
+position = Vector2(-908.55, -0.783325)
+texture = ExtResource("4_xql8a")
+
+[node name="Time" type="Label" parent="PlayUI"]
+offset_left = -193.333
+offset_top = -130.0
+offset_right = 266.667
+offset_bottom = 116.0
+text = "00:00"
+label_settings = SubResource("LabelSettings_i3p7b")
+
+[node name="HP" type="Node" parent="."]
+
+[node name="HpBar1" type="Sprite2D" parent="HP"]
+position = Vector2(337.5, 51)
+scale = Vector2(0.75, 1)
+texture = ExtResource("1_3b2b5")
+
+[node name="HpBk100" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(50, 0)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk90" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(-31, 1.00004)
+rotation = -3.14159
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk80" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(-110, 0)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk70" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(-191, 1.00004)
+rotation = -3.14159
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk60" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(-270, 0)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk50" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(231, 1.00004)
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk40" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(155, 0)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk30" type="Sprite2D" parent="HP/HpBar1"]
+position = Vector2(77, 1.00004)
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk20" type="Sprite2D" parent="HP/HpBar1"]
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk10" type="Sprite2D" parent="HP/HpBar1"]
+texture = ExtResource("4_i3p7b")
+
+[node name="HpBar2" type="Sprite2D" parent="HP"]
+position = Vector2(1582.5, 50)
+scale = Vector2(-0.75, 1)
+texture = ExtResource("1_3b2b5")
+
+[node name="HpBk100" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(50, 0)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk90" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(-31, 1.00004)
+rotation = -3.14159
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk80" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(-110, 0)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk70" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(-191, 1.00004)
+rotation = -3.14159
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk60" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(-270, 0)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk50" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(231, 1.00004)
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk40" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(155, 0)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk30" type="Sprite2D" parent="HP/HpBar2"]
+position = Vector2(77, 1.00004)
+scale = Vector2(1, -1)
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk20" type="Sprite2D" parent="HP/HpBar2"]
+texture = ExtResource("4_vrfts")
+
+[node name="HpBk10" type="Sprite2D" parent="HP/HpBar2"]
+texture = ExtResource("4_i3p7b")
+
+[node name="BallUi" type="Sprite2D" parent="."]
+position = Vector2(150, 930)
+rotation = 1.5708
+texture = ExtResource("5_fau5c")
+
+[node name="Ball" type="ColorRect" parent="BallUi"]
+offset_left = -10.0
+offset_top = -28.0
+offset_right = 69.0
+offset_bottom = 64.0
+
+[node name="BallUIarrow1" type="Sprite2D" parent="BallUi"]
+position = Vector2(-50.934, 102.934)
+rotation = -2.35619
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_nq5m3")
+
+[node name="BallUIarrow1click" type="Sprite2D" parent="BallUi"]
+modulate = Color(0.211765, 1, 1, 1)
+position = Vector2(-50.934, 102.934)
+rotation = -2.35619
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_nq5m3")
+
+[node name="BallUIarrow2" type="Sprite2D" parent="BallUi"]
+position = Vector2(109.066, -77.066)
+rotation = 0.785398
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_nq5m3")
+
+[node name="BallUIarrow2click" type="Sprite2D" parent="BallUi"]
+modulate = Color(0.211765, 1, 1, 1)
+position = Vector2(109.066, -77.066)
+rotation = 0.785398
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_nq5m3")

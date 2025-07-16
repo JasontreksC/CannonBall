@@ -9,6 +9,7 @@ const SPEED: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
+var HP: int = 100;
 
 @export var psCMC: PackedScene
 
