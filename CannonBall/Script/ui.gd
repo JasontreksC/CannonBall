@@ -14,7 +14,11 @@ var _timer : Timer
 
 @onready var arrow1_click = $BallUi/BallUIarrow1click
 @onready var arrow2_click = $BallUi/BallUIarrow2click
-@onready var ball = $BallUi/Ball
+
+# Ball 이미지 3개를 각각 준비
+@onready var black_ball = $BallUi/BlackBall
+@onready var purple_ball = $BallUi/PurpleBall
+@onready var red_ball = $BallUi/RedBall
 
 var click_show_time := 0.2
 var ball_state := 1 # 1~3
@@ -103,6 +107,7 @@ func update_time_label():
 		var min = timer / 60
 		var sec = timer % 60
 		time_label.text = "%02d:%02d" % [min, sec]
+
 func show_arrow1_click():
 	if arrow1_click:
 		arrow1_click.modulate.a = 1.0
@@ -136,10 +141,16 @@ func decrease_ball_state():
 	update_ball_color()
 
 func update_ball_color():
+	# 모두 투명하게
+	black_ball.modulate.a = 0.0
+	purple_ball.modulate.a = 0.0
+	red_ball.modulate.a = 0.0
+
+	# ball_state에 따라 해당 공만 보이게
 	match ball_state:
 		1:
-			ball.color = Color(1,0,0) # 붉은색
+			black_ball.modulate.a = 1.0
 		2:
-			ball.color = Color(0,1,0) # 초록색
+			purple_ball.modulate.a = 1.0
 		3:
-			ball.color = Color(0,0,0) # 검정색	
+			red_ball.modulate.a = 1.0

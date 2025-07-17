@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b5gr7cn7phhwc"]
+[gd_scene load_steps=14 format=3 uid="uid://b5gr7cn7phhwc"]
 
 [ext_resource type="Texture2D" uid="uid://qr5r40uufke2" path="res://Asset/HP/HpBar.png" id="1_3b2b5"]
 [ext_resource type="Script" uid="uid://dcxluoedtdx8l" path="res://Script/ui.gd" id="1_g6l6n"]
@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://b4qyt66jwdgol" path="res://Asset/prototype_object/ATK.png" id="4_xql8a"]
 [ext_resource type="Texture2D" uid="uid://cjuswftc73knu" path="res://Asset/BallUI.png" id="5_fau5c"]
 [ext_resource type="Texture2D" uid="uid://cp3nylb3saeum" path="res://Asset/BallUIarrow.png" id="6_nq5m3"]
+[ext_resource type="Texture2D" uid="uid://bc5iakcdqv0vb" path="res://Asset/prototype_object/Ball/Black_Ball.png" id="10_pcf3q"]
+[ext_resource type="Texture2D" uid="uid://djw6k5uke3i5" path="res://Asset/prototype_object/Ball/Purple_Ball.png" id="11_ninrt"]
+[ext_resource type="Texture2D" uid="uid://c1d260p0cwrub" path="res://Asset/prototype_object/Ball/red_ball.png" id="12_1visn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_i3p7b"]
 font_size = 240
@@ -161,12 +164,6 @@ position = Vector2(150, 930)
 rotation = 1.5708
 texture = ExtResource("5_fau5c")
 
-[node name="Ball" type="ColorRect" parent="BallUi"]
-offset_left = -10.0
-offset_top = -28.0
-offset_right = 69.0
-offset_bottom = 64.0
-
 [node name="BallUIarrow1" type="Sprite2D" parent="BallUi"]
 position = Vector2(-50.934, 102.934)
 rotation = -2.35619
@@ -192,3 +189,19 @@ position = Vector2(109.066, -77.066)
 rotation = 0.785398
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_nq5m3")
+
+[node name="BlackBall" type="Sprite2D" parent="BallUi"]
+position = Vector2(26.1503, 17.2996)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("10_pcf3q")
+
+[node name="PurpleBall" type="Sprite2D" parent="BallUi"]
+position = Vector2(26.1503, 17.2996)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("11_ninrt")
+
+[node name="RedBall" type="Sprite2D" parent="BallUi"]
+position = Vector2(-6.99993, 19)
+rotation = -1.5708
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("12_1visn")
