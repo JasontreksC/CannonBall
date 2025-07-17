@@ -10,6 +10,7 @@ var freeQueue: Array[String]
 
 var G: float = 980
 var turnCount: int = 0
+var gameStarted: bool = false
 
 
 @rpc("any_peer", "call_local")
@@ -63,7 +64,12 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
-	rpc("change_turn")
+
+func _process(delta: float) -> void:
+	if players[0] and players[1]:
+		if not gameStarted:
+			gameStarted = true
+			rpc("change_turn")
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)
