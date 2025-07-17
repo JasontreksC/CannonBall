@@ -66,7 +66,7 @@ func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
 
 func _process(delta: float) -> void:
-	if players[0] and players[1]:
+	if len(players) == 2:
 		if not gameStarted:
 			gameStarted = true
 			rpc("change_turn")
