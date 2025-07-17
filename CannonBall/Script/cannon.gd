@@ -143,7 +143,8 @@ func _physics_process(delta: float) -> void:
 				game.ui.aim_to_cam_telescope(aimed_x)
 					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
-				stateMachine.transit_by_input("clickL", "Fire")
+				if player.isAttack:
+					stateMachine.transit_by_input("clickL", "Fire")
 				
 			"Fire":
 				stateMachine.transit("Aim")
