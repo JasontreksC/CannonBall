@@ -63,6 +63,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
+	rpc("change_turn")
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)
