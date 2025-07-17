@@ -54,10 +54,12 @@ func change_turn() -> void:
 	turnCount += 1
 	if turnCount % 2 == 1:
 		players[0].isAttack = true
+		players[0].attackChance = true
 		players[1].isAttack = false
 	else: 
 		players[0].isAttack = false
 		players[1].isAttack = true
+		players[1].attackChance = true
 		
 	gameStarted = true
 	
