@@ -55,9 +55,11 @@ func change_turn() -> void:
 	if turnCount % 2 == 1:
 		players[0].isAttack = true
 		players[1].isAttack = false
+		players[0].attackChance = true
 	else: 
 		players[0].isAttack = false
 		players[1].isAttack = true
+		players[1].attackChance = true
 	print("======================")
 	print("현재 턴:", turnCount)
 	if players[0].isAttack:

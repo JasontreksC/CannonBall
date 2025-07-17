@@ -9,6 +9,7 @@ const SPEED: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
+var attackChance: bool = false
 
 @export var psCMC: PackedScene
 
