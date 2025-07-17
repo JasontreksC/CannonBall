@@ -2,6 +2,9 @@ extends Control
 class_name LobbyUI
 
 var uiMgr: UIManager = null
+@onready var teLobbyID: TextEdit = $LobbyIDInput
+@onready var teHostPlayerName: TextEdit = $HostPlayerName
+@onready var teJoinPlayerName: TextEdit = $JoinPlayerName
 
 # Called when the node enters the scene tree for the first time.
 func _enter_tree() -> void:
@@ -15,10 +18,12 @@ func _process(delta: float) -> void:
 func _on_bt_host_pressed() -> void:
 	uiMgr.root.sceneMgr.set_scene(1)
 	uiMgr.set_ui(1)
-	uiMgr.root.start_host()
+	#uiMgr.root.create_steam_socket()
+	uiMgr.root.host_lobby()
 
 
 func _on_bt_join_pressed() -> void:
 	uiMgr.root.sceneMgr.set_scene(1)
 	uiMgr.set_ui(1)
-	uiMgr.root.start_join()
+	#uiMgr.root.connect_steam_socket(76561199086295015)
+	uiMgr.root.join_lobby(int(teLobbyID.text))
