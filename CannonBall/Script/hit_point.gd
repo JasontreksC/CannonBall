@@ -27,7 +27,7 @@ func activate_hit():
 			2:
 				target = game.players[1]
 		if target and in_range(target.global_position.x):
-			print(attackTo, ": Hit!")
+			pass
 	
 	if keepTurnCount == 0:
 		game.delete_object(self.name)
