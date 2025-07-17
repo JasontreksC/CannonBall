@@ -55,11 +55,12 @@ func change_turn() -> void:
 	if turnCount % 2 == 1:
 		players[0].isAttack = true
 		players[1].isAttack = false
-		players[0].attackChance = true
 	else: 
 		players[0].isAttack = false
 		players[1].isAttack = true
-		players[1].attackChance = true
+		
+	gameStarted = true
+	
 	print("======================")
 	print("현재 턴:", turnCount)
 	if players[0].isAttack:
@@ -76,10 +77,11 @@ func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
 
 func _process(delta: float) -> void:
-	if len(players) == 2:
-		if not gameStarted:
-			gameStarted = true
-			rpc("change_turn")
+	if multiplayer.is_server():
+		if len(players) == 2:
+			if not gameStarted:
+				gameStarted = true
+				rpc("change_turn")
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)
