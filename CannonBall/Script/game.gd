@@ -9,6 +9,8 @@ var objects: Dictionary[String, Node2D]
 var freeQueue: Array[String]
 
 var G: float = 980
+var turnCount: int = 0
+
 
 @rpc("any_peer", "call_local")
 func spawn_object(path: String, name: String, pos: Vector2 = Vector2.ZERO) -> void:
@@ -45,6 +47,16 @@ func add_object(object: Node2D) -> bool:
 	else:
 		objects[object.name] = object
 		return true
+		
+@rpc("any_peer", "call_local")
+func change_turn() -> void:
+	turnCount += 1
+	if turnCount % 2 == 1:
+		players[0].isAttack = true
+		players[1].isAttack = false
+	else: 
+		players[0].isAttack = false
+		players[1].isAttack = true
 
 func _enter_tree() -> void:
 	root = get_parent().root
