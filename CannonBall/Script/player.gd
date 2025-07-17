@@ -130,7 +130,8 @@ func _physics_process(delta: float) -> void:
 				# 입력 시 상태 전환
 				if isInCannon:
 					stateMachine.transit_by_input("handle", "HandleCannon")
-					stateMachine.transit_by_input("aim", "ReadyFire")
+					if isAttack:
+						stateMachine.transit_by_input("aim", "ReadyFire")
 		
 			"HandleCannon":
 				# 대포 무브먼트에 고정
@@ -138,7 +139,9 @@ func _physics_process(delta: float) -> void:
 					position.x = cannon.get_handle_x()
 
 				stateMachine.transit_by_input("handle", "Idle")
-				stateMachine.transit_by_input("aim", "ReadyFire")
+				if isAttack:
+					stateMachine.transit_by_input("aim", "ReadyFire")
+			
 				
 			"ReadyFire":
 				stateMachine.transit_by_input("aim", "back")
