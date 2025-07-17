@@ -9,6 +9,8 @@ var prevPosX: float = 0
 const WHEEL_RADIUS: float = 260.0
 const SPEED: float = 100
 
+var selectedShell = 0
+
 var stateMachine: StateMachine = StateMachine.new()
 
 # 대포의 각종 파트에 대한 뼈대, 애니메이션 플레이어, 에임 컨트롤러
