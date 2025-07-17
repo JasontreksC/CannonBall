@@ -11,8 +11,8 @@ spread = 25.0
 initial_velocity_min = 400.0
 initial_velocity_max = 1000.0
 gravity = Vector3(0, 980, 0)
-scale_min = 3.0
-scale_max = 6.0
+scale_min = 10.0
+scale_max = 30.0
 color = Color(0.326626, 0.20002, 9.62615e-08, 1)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_w8ob6"]
@@ -24,10 +24,8 @@ properties/0/replication_mode = 1
 script = ExtResource("1_w8ob6")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-emitting = false
 amount = 50
 lifetime = 5.0
-one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_y823t")
 
