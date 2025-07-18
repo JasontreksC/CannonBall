@@ -84,7 +84,7 @@ func _ready() -> void:
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
-			Steam.sendP2PPacket(76561199211664303,  var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+			Steam.sendP2PPacket(76561199164167576,  var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 			create_steam_socket()

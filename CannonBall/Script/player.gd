@@ -17,7 +17,9 @@ var attackChance: bool = false
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
 @onready var field: Field = $"../Field"
-@onready var pandent: Sprite2D = $CannonReaper/Body/Pandent
+@onready var pandent: Sprite2D = $CannonReaper/Skeleton2D/Bone_Body/Body/Pandent
+@onready var character: Node2D = $CannonReaper
+	
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -60,10 +62,12 @@ func _ready() -> void:
 
 	if multiplayer.is_server():
 		global_position = field.get_spawn_spot("p1")
+		character.scale.x = 1
 	else:
 		nCamTargetAim.position.x = -700
 		game.root.uiMgr.currentUI.position.x = 0
 		global_position = field.get_spawn_spot("p2")
+		character.scale.x = -1
 
 	# 상태 머신 정의
 	stateMachine.register_state("Idle")
@@ -95,18 +99,9 @@ func _ready() -> void:
 		else:
 			smPandent.set_shader_parameter("TeamColor", Color.BLUE)
 	
-	if not multiplayer.is_server():
-		self.scale.x *= -1
-	
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
-	
-	#cannon = get_cannon()
-	#if cannon:
-		#if cannon.player == null:
-			#cannon.player = self
-
 	# 상태 전환 처리 중 처리해야하는 내용에 대한 분기이다.
 	# 예를 들어 플레이어가 대포를 잡을때, 순간이동하듯 손잡이쪽으로 즉시 위치하는것이 아니라
 	# 손잡이쪽으로 걸어가 손잡이를 잡게기까지 애니메이션이 짧게라도 나오는것이 자연스럽다.
@@ -135,6 +130,7 @@ func _physics_process(delta: float) -> void:
 				var direction := Input.get_axis("left", "right")
 				if direction:
 					velocity.x = direction * SPEED
+					character.scale.x = direction
 				else:
 					velocity.x = move_toward(velocity.x, 0, SPEED)
 				move_and_slide()
@@ -179,8 +175,10 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-		
+	
 
+func _process(delta: float) -> void:
+	pass
 # 전환 이벤트. 상태 전환이 발생했을 때 한번만 실행된다.
 func on_exit_Idle():
 	pass
@@ -194,6 +192,11 @@ func on_exit_HandleCannon():
 	pass
 	
 func on_entry_HandleCannon():
+	if multiplayer.is_server():
+		character.scale.x = 1
+	else:
+		character.scale.x = -1
+	
 	if cannon:
 		cannon.stateMachine.transit("Move")
 
@@ -203,6 +206,11 @@ func on_exit_ReadyFire():
 	game.ui.off_observe()
 	
 func on_entry_ReadyFire():
+	if multiplayer.is_server():
+		character.scale.x = 1
+	else:
+		character.scale.x = -1
+	
 	if cannon:
 		cannon.stateMachine.transit("Aim")
 		
