@@ -139,14 +139,18 @@ func _physics_process(delta: float) -> void:
 			"Aim":
 				var dir = Input.get_axis("left", "right")
 				var aimed_x = ac.aim(dir, 500, delta)
+			
 				
 				game.ui.aim_to_cam_telescope(aimed_x)
 					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
-				stateMachine.transit_by_input("clickL", "Fire")
+				if player.isAttack and player.attackChance:
+					stateMachine.transit_by_input("clickL", "Fire")
+					
 				
 			"Fire":
 				stateMachine.transit("Aim")
+				player.attackChance = false
 
 	# 항상 바닥에 고정
 	var collisionPoint: Vector2 = rcWheel.get_collision_point()

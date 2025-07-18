@@ -9,6 +9,7 @@ const SPEED: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
+var attackChance: bool = false
 
 @export var psCMC: PackedScene
 
@@ -16,6 +17,7 @@ var isAttack: bool = true
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
 @onready var field: Field = $"../Field"
+@onready var pandent: Sprite2D = $CannonReaper/Body/Pandent
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -85,7 +87,17 @@ func _ready() -> void:
 	stateMachine.register_state_event("ReadyFire", "entry", on_entry_ReadyFire)
 	
 	stateMachine.init_current_state("Idle")
-
+	
+	var smPandent: ShaderMaterial = pandent.material
+	if smPandent:
+		if multiplayer.is_server():
+			smPandent.set_shader_parameter("TeamColor", Color.RED)
+		else:
+			smPandent.set_shader_parameter("TeamColor", Color.BLUE)
+	
+	if not multiplayer.is_server():
+		self.scale.x *= -1
+	
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return

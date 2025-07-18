@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=6 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
+[ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
 shader = ExtResource("2_wpxio")
@@ -49,6 +50,8 @@ size = Vector2i(1080, 1080)
 render_target_update_mode = 0
 
 [node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
+
+[node name="Background" parent="Telescope/SubViewportContainer/SubViewport" instance=ExtResource("3_quy4v")]
 
 [node name="GameTime" type="Label" parent="."]
 layout_mode = 0
