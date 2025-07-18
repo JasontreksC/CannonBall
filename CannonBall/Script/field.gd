@@ -57,7 +57,7 @@ func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 
 func _ready() -> void:
 	game = get_parent() as Game
-
+		
 func _process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return

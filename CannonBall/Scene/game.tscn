@@ -1,14 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ry7mm6mgg6iy"]
+[gd_scene load_steps=3 format=3 uid="uid://ry7mm6mgg6iy"]
 
 [ext_resource type="Script" uid="uid://c8jogita80pnd" path="res://Script/game.gd" id="1_gevu4"]
 [ext_resource type="PackedScene" uid="uid://cb2d8j7se8qb8" path="res://Scene/field.tscn" id="2_gevu4"]
-
-[sub_resource type="Gradient" id="Gradient_w51g1"]
-colors = PackedColorArray(0, 0.246667, 0.74, 1, 0.63, 0.901333, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_4jv7b"]
-gradient = SubResource("Gradient_w51g1")
-fill_from = Vector2(1, 1)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_gevu4")
@@ -18,11 +11,5 @@ script = ExtResource("1_gevu4")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://csssoqjjrrj67", "uid://bp8yuq71ym25a", "uid://co2yk1rkb2o2j")
 spawn_path = NodePath("..")
-
-[node name="Sky" type="Sprite2D" parent="."]
-z_index = -4096
-position = Vector2(0, -1600)
-scale = Vector2(164.41, 48.711)
-texture = SubResource("GradientTexture2D_4jv7b")
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

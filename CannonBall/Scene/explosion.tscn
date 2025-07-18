@@ -24,8 +24,10 @@ properties/0/replication_mode = 1
 script = ExtResource("1_w8ob6")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
 amount = 50
 lifetime = 5.0
+one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_y823t")
 
