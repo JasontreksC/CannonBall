@@ -9,6 +9,8 @@ const SPEED: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
+
+var HP: int = 100;
 var attackChance: bool = false
 
 @export var psCMC: PackedScene
@@ -47,7 +49,7 @@ func _ready() -> void:
 	
 	game = get_parent() as Game
 	game.ui = game.root.uiMgr.get_current_ui_as_in_game()
-	
+
 	## 대포 생성
 	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
 	#  서버의 경우 직접 호출 

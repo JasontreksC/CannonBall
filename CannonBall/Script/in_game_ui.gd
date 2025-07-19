@@ -1,10 +1,18 @@
 extends Control
 class_name InGameUI
 
+## Telescope
 @onready var crTelescope: ColorRect = $Telescope
 @onready var svTelescope: SubViewport = $Telescope/SubViewportContainer/SubViewport
 @onready var lGametime: Label = $GameTime
 @onready var camTelescope: Camera2D = $Telescope/SubViewportContainer/SubViewport/Camera2D
+
+## HP
+@export var hpPointSprite: PackedScene
+
+@onready var subuiHeader: TextureRect = $Header
+@onready var p1HPPoints: Node2D = $Header/P1HP/HPBase/HPPoints
+@onready var p2HPPoints: Node2D = $Header/P2HP/HPBase/HPPoints
 
 var uiMgr: UIManager = null
 
@@ -26,9 +34,43 @@ func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
 	camTelescope.zoom.y += zoomValue
 	camTelescope.zoom = camTelescope.zoom.clamp(Vector2(0.5, 0.5), Vector2(2, 2))
 
+func set_hp(player: int, hpAmount: int):
+	var target: Node2D = null
+	if player == 0:
+		target = p1HPPoints
+	else:
+		target = p2HPPoints
+	
+	var points = target.get_children()
+	var count = len(points)
+	
+	if count < hpAmount:
+		for i in range(count, hpAmount):
+			var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
+			newPoint.name = "HPP" + str(count + i)
+			
+			if player == 0:
+				newPoint.position.x = 62 + 30 * i
+			else:
+				newPoint.position.x = -62 - 30 * i
+			
+			if i % 2 == 1:
+				newPoint.scale.y *= -1
+			
+			target.add_child(newPoint)
+			
+	else:
+		for i in range(hpAmount, count):
+			points[i].free()
+	
+	
+
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
 
 func _ready() -> void:
 	if uiMgr.root.sceneMgr.currentSceneNum == 1:
 		svTelescope.world_2d = uiMgr.root.get_main_viewport_world()
+		
+	set_hp(0, 20)
+	set_hp(1, 20)
