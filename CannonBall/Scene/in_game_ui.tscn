@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_point.tscn" id="2_dviy5"]
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
+[ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 [ext_resource type="Shader" uid="uid://cyssw3boblilf" path="res://Shader/header_gradient.tres" id="4_fcixt"]
 [ext_resource type="Shader" uid="uid://bp3u5lnuqdjyt" path="res://Shader/just_color.tres" id="6_o5tdw"]
 [ext_resource type="Texture2D" uid="uid://d37n1yd2i04eb" path="res://Asset/ui_dashboard_1.png" id="7_brp0j"]
 [ext_resource type="Texture2D" uid="uid://b17q7wp0efyyn" path="res://Asset/ui_dashboard_2.png" id="8_wckav"]
 [ext_resource type="Texture2D" uid="uid://b4qyt66jwdgol" path="res://Asset/prototype_object/ATK.png" id="9_wckav"]
 [ext_resource type="Shader" uid="uid://b0yy6n7c4rd7c" path="res://Shader/dashboard_attack_grad.tres" id="10_pmkfs"]
-[ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
 shader = ExtResource("2_wpxio")
@@ -22,8 +22,6 @@ shader_parameter/transparency_color = Color(0, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tkk48"]
 shader = ExtResource("4_fcixt")
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_fcixt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dviy5"]
 shader = ExtResource("6_o5tdw")
@@ -81,16 +79,11 @@ render_target_update_mode = 0
 
 [node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
 
+[node name="Background" parent="Telescope/SubViewportContainer/SubViewport" instance=ExtResource("3_quy4v")]
 
 [node name="Header" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_tkk48")
-[node name="Background" parent="Telescope/SubViewportContainer/SubViewport" instance=ExtResource("3_quy4v")]
-[node name="GameTime" type="Label" parent="."]
-
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 100.0
-texture = SubResource("CanvasTexture_fcixt")
 
 [node name="P1HP" type="Control" parent="Header"]
 anchors_preset = 0
@@ -110,13 +103,12 @@ skew = -0.274886
 
 [node name="P2HP" type="Control" parent="Header"]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -960.0
-offset_right = 960.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_right = 1920.0
 offset_bottom = 1080.0
-grow_horizontal = 2
+grow_horizontal = 0
 
 [node name="HPBase" type="Sprite2D" parent="Header/P2HP"]
 material = SubResource("ShaderMaterial_dviy5")
@@ -128,6 +120,11 @@ texture = SubResource("CanvasTexture_brp0j")
 [node name="HPPoints" type="Node2D" parent="Header/P2HP/HPBase"]
 scale = Vector2(0.0113488, 0.020937)
 skew = 0.274885
+
+[node name="GameTime" type="Label" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 100.0
 
 [node name="Dashboard" type="Control" parent="."]
 layout_mode = 1
@@ -161,6 +158,7 @@ texture = ExtResource("8_wckav")
 region_rect = Rect2(0, 0, 500, 210)
 
 [node name="P1Time" type="Label" parent="Dashboard"]
+layout_mode = 0
 offset_left = 694.0
 offset_top = 41.0
 offset_right = 1928.0
@@ -171,6 +169,7 @@ label_settings = SubResource("LabelSettings_pmkfs")
 horizontal_alignment = 1
 
 [node name="P2Time" type="Label" parent="Dashboard"]
+layout_mode = 0
 offset_left = 1031.0
 offset_top = 41.0
 offset_right = 2265.0
