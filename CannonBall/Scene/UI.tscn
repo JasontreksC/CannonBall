@@ -54,6 +54,7 @@ texture = ExtResource("3_jg4dc")
 [node name="HP" type="Node" parent="."]
 
 [node name="HpBar1" type="Sprite2D" parent="HP"]
+visible = false
 position = Vector2(337.5, 51)
 scale = Vector2(0.75, 1)
 texture = ExtResource("1_3b2b5")
@@ -107,6 +108,7 @@ texture = ExtResource("4_vrfts")
 texture = ExtResource("4_i3p7b")
 
 [node name="HpBar2" type="Sprite2D" parent="HP"]
+visible = false
 position = Vector2(1582.5, 50)
 scale = Vector2(-0.75, 1)
 texture = ExtResource("1_3b2b5")
