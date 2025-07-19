@@ -53,10 +53,11 @@ func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 	game.rpc("spawn_object", "res://Scene/explosion.tscn", "exlpo" + str(hitNum), pos)
 	
 	hitNum += 1
+	game.rpc("change_turn")
 
 func _ready() -> void:
 	game = get_parent() as Game
-
+		
 func _process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return

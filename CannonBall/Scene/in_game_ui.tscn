@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b17q7wp0efyyn" path="res://Asset/ui_dashboard_2.png" id="8_wckav"]
 [ext_resource type="Texture2D" uid="uid://b4qyt66jwdgol" path="res://Asset/prototype_object/ATK.png" id="9_wckav"]
 [ext_resource type="Shader" uid="uid://b0yy6n7c4rd7c" path="res://Shader/dashboard_attack_grad.tres" id="10_pmkfs"]
+[ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
 shader = ExtResource("2_wpxio")
@@ -80,8 +81,12 @@ render_target_update_mode = 0
 
 [node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
 
+
 [node name="Header" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_tkk48")
+[node name="Background" parent="Telescope/SubViewportContainer/SubViewport" instance=ExtResource("3_quy4v")]
+[node name="GameTime" type="Label" parent="."]
+
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 100.0

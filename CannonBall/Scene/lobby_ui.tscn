@@ -23,10 +23,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -147.71
-offset_top = -32.0
-offset_right = -32.86
-offset_bottom = 51.255
+offset_left = -59.0
+offset_top = -57.0
+offset_right = 55.85
+offset_bottom = 26.255
 grow_horizontal = 2
 grow_vertical = 2
 text = "Host
@@ -39,10 +39,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 24.21
-offset_top = -32.0
-offset_right = 139.06
-offset_bottom = 51.255
+offset_left = -58.0
+offset_top = 88.0
+offset_right = 59.0
+offset_bottom = 172.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Join"
@@ -55,6 +55,52 @@ offset_right = 1419.0
 offset_bottom = 476.0
 text = "Cannon Ball"
 label_settings = SubResource("LabelSettings_hlk56")
+
+[node name="LobbyIDInput" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -513.0
+offset_top = 133.0
+offset_right = -74.0
+offset_bottom = 174.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Lobby ID"
+
+[node name="JoinPlayerName" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = 86.0
+offset_right = -73.0
+offset_bottom = 127.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Join Player Name"
+
+[node name="HostPlayerName" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -513.0
+offset_top = -36.0
+offset_right = -74.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Host Player Name
+"
 
 [connection signal="pressed" from="BT_Host" to="." method="_on_bt_host_pressed"]
 [connection signal="pressed" from="BT_Join" to="." method="_on_bt_join_pressed"]
