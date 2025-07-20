@@ -12,10 +12,10 @@ class_name CannonBall
 # UI, 게임 씬 참조 저장
 
 # 멀티 플레이 관련 리소스
-var isHost = false
 var peer: MultiplayerPeer = null
-var lobbyID: int
-var invite_sended = false
+var mySteamID: int = 0
+var validFriends: Dictionary[String, int]
+var invalidFriends: Dictionary[String, int]
 
 @export var player_scene: PackedScene
 
@@ -31,9 +31,6 @@ func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
 	
 ## STEAM
-#func invite_to_lobby(remote_steam_id: int, lobbyID: int):
-	#var result = Steam.sendP2PPacket(remote_steam_id,  var_to_bytes(lobbyID), Steam.P2P_SEND_UNRELIABLE)
-
 func recieve_invite():
 	var packetSize = Steam.getAvailableP2PPacketSize()
 	if packetSize > 0:
@@ -42,9 +39,10 @@ func recieve_invite():
 		if packet:
 			var remote_steam_id = packet["remote_steam_id"]
 			var invited_lobby_id = bytes_to_var(packet["data"])
-			uiMgr.get_current_ui_as_lobby().teLobbyID.text = str(invited_lobby_id)
-			print("invited from: ", invited_lobby_id)
 			
+			uiMgr.get_current_ui_as_lobby().set_host_steam_id(remote_steam_id)
+			uiMgr.get_current_ui_as_lobby().set_invited_lobby_id(invited_lobby_id)
+			print("invited from: ", invited_lobby_id)
 
 func host_lobby():
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
@@ -64,30 +62,66 @@ func connect_steam_socket(steam_id : int):
 	peer.create_client(steam_id, 0)
 	multiplayer.set_multiplayer_peer(peer)
 
+func refresh_firend_list():
+	var firendCount = Steam.getFriendCount(Steam.FriendFlags.FRIEND_FLAG_ALL)
+	for i in range(0, firendCount):
+		var friendID: int = Steam.getFriendByIndex(i, Steam.FriendFlags.FRIEND_FLAG_ALL)
+		var friendName: String = Steam.getFriendPersonaName(friendID)
+		var friendState: Steam.PersonaState = Steam.getFriendPersonaState(friendID)
+		
+		if friendState == Steam.PersonaState.PERSONA_STATE_ONLINE or friendState == Steam.PersonaState.PERSONA_STATE_LOOKING_TO_PLAY:
+			validFriends[friendName] = friendID
+		else:
+			invalidFriends[friendName] = friendID
+	
+	if uiMgr.get_current_ui_as_lobby().vbcFirendList.get_child_count() > 0:
+		for n: Node in uiMgr.get_current_ui_as_lobby().vbcFirendList.get_children():
+			n.free()
+	
+	for f: String in validFriends.keys():
+		var btValidFriend := Button.new()
+		btValidFriend.size.y = 50
+		btValidFriend.text = f
+		btValidFriend.disabled = false
+		btValidFriend.pressed.connect(_on_pressed_fb.bind(btValidFriend))
+		
+		uiMgr.get_current_ui_as_lobby().vbcFirendList.add_child(btValidFriend)
+	
+	for f: String in invalidFriends.keys():
+		var btInvalidFriend := Button.new()
+		btInvalidFriend.size.y = 50
+		btInvalidFriend.text = f
+		btInvalidFriend.disabled = true
+		
+		uiMgr.get_current_ui_as_lobby().vbcFirendList.add_child(btInvalidFriend)
 
+func _on_pressed_fb(fb: Button):
+	uiMgr.get_current_ui_as_lobby().set_invite_steam_id(validFriends[fb.text])
 
 func _ready() -> void:
 	if Steam.steamInitEx(480):
+		mySteamID = Steam.getSteamID()
 		print("Steam 초기화 성공")
-		print("내 Steam ID: ", Steam.getSteamID())
+		print("내 Steam ID: ", mySteamID)
+		
 		Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
 		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
+		
+		print(Steam.getPersonaName())
 	else:
 		print("Steam 초기화 실패")
 	
-	multiplayer.peer_connected.connect(
-	func(id : int):
-		# Tell the connected peer that we have also joined
-		print(id)
-	)
-		
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
-			Steam.sendP2PPacket(76561199164167576,  var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+			if uiMgr.get_current_ui_as_lobby().tInviteSteamID.text:
+				Steam.sendP2PPacket(uiMgr.get_current_ui_as_lobby().get_invite_steam_id(),  var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+				print("invite sended!: ", uiMgr.get_current_ui_as_lobby().get_invite_steam_id())
+			
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 			create_steam_socket()
+			uiMgr.set_ui(1)
 			print("Lobby ID:", new_lobby_id)
 		else:
 			print("Error on create lobby!")
@@ -99,6 +133,7 @@ func _ready() -> void:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
 				connect_steam_socket(id)
+				uiMgr.set_ui(1)
 		else:
 		# Get the failure reason
 			var FAIL_REASON: String

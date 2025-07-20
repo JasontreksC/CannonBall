@@ -4,7 +4,6 @@ class_name InGameUI
 ## Telescope
 @onready var crTelescope: ColorRect = $Telescope
 @onready var svTelescope: SubViewport = $Telescope/SubViewportContainer/SubViewport
-@onready var lGametime: Label = $GameTime
 @onready var camTelescope: Camera2D = $Telescope/SubViewportContainer/SubViewport/Camera2D
 
 ## HP
@@ -13,6 +12,7 @@ class_name InGameUI
 @onready var subuiHeader: TextureRect = $Header
 @onready var p1HPPoints: Node2D = $Header/P1HP/HPBase/HPPoints
 @onready var p2HPPoints: Node2D = $Header/P2HP/HPBase/HPPoints
+@onready var lbFps: Label = $fps
 
 var uiMgr: UIManager = null
 
@@ -34,6 +34,7 @@ func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
 	camTelescope.zoom.y += zoomValue
 	camTelescope.zoom = camTelescope.zoom.clamp(Vector2(0.5, 0.5), Vector2(2, 2))
 
+@rpc("any_peer", "call_local")
 func set_hp(player: int, hpAmount: int):
 	var target: Node2D = null
 	if player == 0:
@@ -74,3 +75,18 @@ func _ready() -> void:
 		
 	set_hp(0, 20)
 	set_hp(1, 20)
+
+var sec: float = 0
+var fps: float = 0
+func _process(delta: float) -> void:
+	sec += delta
+	fps += 1
+	if sec >= 1.0:
+		lbFps.text = str(fps)
+		sec = 0
+		fps = 0
+		
+	
+	
+	
+	
