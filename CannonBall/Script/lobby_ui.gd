@@ -7,13 +7,17 @@ var uiMgr: UIManager = null
 @onready var tInviteSteamID: TextEdit = $IDsFromHost/InviteSteamID
 @onready var tHostSteamID: TextEdit = $IDsFromClient/HostSteamID
 @onready var tInvitedLobbyID: TextEdit = $IDsFromClient/InvitedLobbyID
+@onready var vbcFirendList: VBoxContainer = $SCC_FriendList/VBC_FirendList
 
 func set_my_steam_id(id: int) -> void:
 	tMySteamID.text = str(id)
 
 func get_invite_steam_id() -> int:
 	return int(tInviteSteamID.text)
-	
+
+func set_invite_steam_id(id: int) -> void:
+	tInviteSteamID.text = str(id)
+
 func set_host_steam_id(id: int) -> void:
 	tHostSteamID.text = str(id)
 	
@@ -34,6 +38,11 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	tMySteamID.text = str(uiMgr.root.mySteamID)
+	uiMgr.root.refresh_firend_list()
 
 func _process(delta: float) -> void:
 	pass
+
+
+func _on_bt_refresh_pressed() -> void:
+	uiMgr.root.refresh_firend_list()

@@ -14,6 +14,8 @@ class_name CannonBall
 # 멀티 플레이 관련 리소스
 var peer: MultiplayerPeer = null
 var mySteamID: int = 0
+var validFriends: Dictionary[String, int]
+var invalidFriends: Dictionary[String, int]
 
 @export var player_scene: PackedScene
 
@@ -60,7 +62,41 @@ func connect_steam_socket(steam_id : int):
 	peer.create_client(steam_id, 0)
 	multiplayer.set_multiplayer_peer(peer)
 
+func refresh_firend_list():
+	var firendCount = Steam.getFriendCount(Steam.FriendFlags.FRIEND_FLAG_ALL)
+	for i in range(0, firendCount):
+		var friendID: int = Steam.getFriendByIndex(i, Steam.FriendFlags.FRIEND_FLAG_ALL)
+		var friendName: String = Steam.getFriendPersonaName(friendID)
+		var friendState: Steam.PersonaState = Steam.getFriendPersonaState(friendID)
+		
+		if friendState == Steam.PersonaState.PERSONA_STATE_ONLINE or friendState == Steam.PersonaState.PERSONA_STATE_LOOKING_TO_PLAY:
+			validFriends[friendName] = friendID
+		else:
+			invalidFriends[friendName] = friendID
+	
+	if uiMgr.get_current_ui_as_lobby().vbcFirendList.get_child_count() > 0:
+		for n: Node in uiMgr.get_current_ui_as_lobby().vbcFirendList.get_children():
+			n.free()
+	
+	for f: String in validFriends.keys():
+		var btValidFriend := Button.new()
+		btValidFriend.size.y = 50
+		btValidFriend.text = f
+		btValidFriend.disabled = false
+		btValidFriend.pressed.connect(_on_pressed_fb.bind(btValidFriend))
+		
+		uiMgr.get_current_ui_as_lobby().vbcFirendList.add_child(btValidFriend)
+	
+	for f: String in invalidFriends.keys():
+		var btInvalidFriend := Button.new()
+		btInvalidFriend.size.y = 50
+		btInvalidFriend.text = f
+		btInvalidFriend.disabled = true
+		
+		uiMgr.get_current_ui_as_lobby().vbcFirendList.add_child(btInvalidFriend)
 
+func _on_pressed_fb(fb: Button):
+	uiMgr.get_current_ui_as_lobby().set_invite_steam_id(validFriends[fb.text])
 
 func _ready() -> void:
 	if Steam.steamInitEx(480):
@@ -72,11 +108,9 @@ func _ready() -> void:
 		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
 		
 		print(Steam.getPersonaName())
-
 	else:
 		print("Steam 초기화 실패")
-
-		
+	
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
