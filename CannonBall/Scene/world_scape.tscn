@@ -1,0 +1,40 @@
+[gd_scene load_steps=9 format=3 uid="uid://odu81oggotto"]
+
+[ext_resource type="Script" uid="uid://cpbxtpm51b18s" path="res://Script/world.gd" id="1_pmb4c"]
+[ext_resource type="Texture2D" uid="uid://dq3h3ggl0j0ge" path="res://Asset/environment/ground.png" id="2_jysib"]
+[ext_resource type="Shader" uid="uid://68rcw6q151yq" path="res://Shader/wobble_by_wind.gdshader" id="3_75bd2"]
+[ext_resource type="Texture2D" uid="uid://d1lvnsaajrkic" path="res://Asset/environment/grass.png" id="3_vqcvw"]
+[ext_resource type="Texture2D" uid="uid://dc5cauu8ttx3k" path="res://Asset/environment/tree.png" id="5_kfqfy"]
+[ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="6_0mfoy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kfqfy"]
+shader = ExtResource("3_75bd2")
+shader_parameter/sway_strength = 15.0
+shader_parameter/sway_speed = 1.982
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0mfoy"]
+shader = ExtResource("3_75bd2")
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 1.0
+
+[node name="WorldScape" type="Node2D"]
+script = ExtResource("1_pmb4c")
+groundTexture = ExtResource("2_jysib")
+volume = 10000
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_kfqfy")
+position = Vector2(-1374, -49)
+texture = ExtResource("3_vqcvw")
+
+[node name="Tree" type="Sprite2D" parent="."]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_0mfoy")
+position = Vector2(-1491.5, -245.472)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("5_kfqfy")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Background" parent="." instance=ExtResource("6_0mfoy")]

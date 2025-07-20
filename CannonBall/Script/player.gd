@@ -10,7 +10,7 @@ var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
 
-var HP: int = 100;
+#var HP: int = 100;
 var attackChance: bool = false
 
 @export var psCMC: PackedScene
@@ -18,10 +18,11 @@ var attackChance: bool = false
 @onready var rcFloor: RayCast2D = $RayCast2D
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
-@onready var field: Field = $"../Field"
+@onready var world: World = $"../World"
 @onready var pandent: Sprite2D = $CannonReaper/Skeleton2D/Bone_Body/Body/Pandent
 @onready var character: Node2D = $CannonReaper
 	
+@export var hp: int = 20
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -63,12 +64,12 @@ func _ready() -> void:
 	cmc.camera.make_current()
 
 	if multiplayer.is_server():
-		global_position = field.get_spawn_spot("p1")
+		global_position = world.get_spawn_spot("p1")
 		character.scale.x = 1
 	else:
 		nCamTargetAim.position.x = -700
 		game.root.uiMgr.currentUI.position.x = 0
-		global_position = field.get_spawn_spot("p2")
+		global_position = world.get_spawn_spot("p2")
 		character.scale.x = -1
 
 	# 상태 머신 정의

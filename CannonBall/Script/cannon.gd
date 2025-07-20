@@ -20,7 +20,7 @@ var stateMachine: StateMachine = StateMachine.new()
 @onready var bBarrel: Bone2D = $Skeleton/carriage/barrel
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var ac: AimController = $AimController
-@onready var field: Field = $"../Field"
+@onready var world: World = $"../World"
 
 var game: Game = null
 var player: Player = null
@@ -63,10 +63,10 @@ func _ready() -> void:
 		return
 	
 	if multiplayer.is_server():
-		global_position = field.get_spawn_spot("p1")
+		global_position = world.get_spawn_spot("p1")
 		scale.x = 0.3
 	else:
-		global_position = field.get_spawn_spot("p2")
+		global_position = world.get_spawn_spot("p2")
 		scale.x = -0.3
 		
 	prevPosX = global_position.x
@@ -177,7 +177,7 @@ func on_entry_Aim():
 func on_exit_Fire():
 	pass 
 func on_entry_Fire():
-	var launcher: int = 1
+	var launcher: int = 0
 	if not multiplayer.is_server():
-		launcher = 2
-	field.rpc("start_shelling", ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)
+		launcher = 1
+	world.rpc("start_shelling", ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)

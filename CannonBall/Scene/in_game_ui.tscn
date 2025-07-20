@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=20 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_point.tscn" id="2_dviy5"]
@@ -23,6 +23,8 @@ shader_parameter/transparency_color = Color(0, 0, 0, 0)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tkk48"]
 shader = ExtResource("4_fcixt")
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_pmkfs"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dviy5"]
 shader = ExtResource("6_o5tdw")
 shader_parameter/Color = Color(0.786172, 3.15256e-06, 5.77569e-07, 1)
@@ -33,8 +35,8 @@ shader_parameter/Color = Color(0.786172, 3.15256e-06, 5.77569e-07, 1)
 shader = ExtResource("10_pmkfs")
 
 [sub_resource type="Gradient" id="Gradient_i3syv"]
-offsets = PackedFloat32Array(0.105263, 0.5, 0.910526)
-colors = PackedColorArray(0, 0, 0.65098, 0.972549, 0.54902, 0, 0.294118, 0, 1, 0, 0, 1)
+offsets = PackedFloat32Array(0.189474, 0.521053, 0.821053)
+colors = PackedColorArray(0, 0.470588, 1, 0.972549, 0.54902, 0, 0.294118, 0, 1, 0.360784, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_u4wab"]
 gradient = SubResource("Gradient_i3syv")
@@ -84,6 +86,9 @@ render_target_update_mode = 0
 [node name="Header" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_tkk48")
 layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 150.0
+texture = SubResource("CanvasTexture_pmkfs")
 
 [node name="P1HP" type="Control" parent="Header"]
 anchors_preset = 0
@@ -106,7 +111,7 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_right = 1920.0
+offset_left = -1920.0
 offset_bottom = 1080.0
 grow_horizontal = 0
 
@@ -121,12 +126,7 @@ texture = SubResource("CanvasTexture_brp0j")
 scale = Vector2(0.0113488, 0.020937)
 skew = 0.274885
 
-[node name="GameTime" type="Label" parent="."]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 100.0
-
-[node name="Dashboard" type="Control" parent="."]
+[node name="Dashboard" type="Control" parent="Header"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -137,13 +137,13 @@ offset_bottom = 88.5
 grow_horizontal = 2
 pivot_offset = Vector2(960, 0)
 
-[node name="TurnInfo" type="Sprite2D" parent="Dashboard"]
+[node name="TurnInfo" type="Sprite2D" parent="Header/Dashboard"]
 material = SubResource("ShaderMaterial_qyub3")
 position = Vector2(957, 69.5)
 scale = Vector2(6.46875, 1.54688)
 texture = SubResource("GradientTexture2D_u4wab")
 
-[node name="OutlineLeft" type="Sprite2D" parent="Dashboard"]
+[node name="OutlineLeft" type="Sprite2D" parent="Header/Dashboard"]
 texture_repeat = 1
 position = Vector2(931.96, 70)
 scale = Vector2(0.604375, 0.604375)
@@ -151,36 +151,44 @@ texture = ExtResource("7_brp0j")
 region_enabled = true
 region_rect = Rect2(0, 0, 700, 210)
 
-[node name="OutlineRight" type="Sprite2D" parent="Dashboard/OutlineLeft"]
+[node name="OutlineRight" type="Sprite2D" parent="Header/Dashboard/OutlineLeft"]
 texture_repeat = 1
 position = Vector2(402, -0.5)
 texture = ExtResource("8_wckav")
 region_rect = Rect2(0, 0, 500, 210)
 
-[node name="P1Time" type="Label" parent="Dashboard"]
+[node name="P1Time" type="Label" parent="Header/Dashboard"]
 layout_mode = 0
-offset_left = 694.0
+offset_left = 725.0
 offset_top = 41.0
-offset_right = 1928.0
+offset_right = 1959.0
 offset_bottom = 371.0
 scale = Vector2(0.163137, 0.163137)
 text = "60"
 label_settings = SubResource("LabelSettings_pmkfs")
 horizontal_alignment = 1
 
-[node name="P2Time" type="Label" parent="Dashboard"]
+[node name="P2Time" type="Label" parent="Header/Dashboard"]
 layout_mode = 0
-offset_left = 1031.0
+offset_left = 994.0
 offset_top = 41.0
-offset_right = 2265.0
+offset_right = 2228.0
 offset_bottom = 371.0
 scale = Vector2(0.163137, 0.163137)
 text = "60"
 label_settings = SubResource("LabelSettings_pmkfs")
 horizontal_alignment = 1
 
-[node name="AttackSymbol" type="Sprite2D" parent="Dashboard"]
+[node name="AttackSymbol" type="Sprite2D" parent="Header/Dashboard"]
 position = Vector2(963, 70)
 rotation = -0.787711
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("9_wckav")
+
+[node name="fps" type="Label" parent="."]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 146.0
+offset_right = 49.0
+offset_bottom = 169.0
+text = "0"

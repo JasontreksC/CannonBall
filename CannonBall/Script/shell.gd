@@ -32,6 +32,13 @@ func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
 	
+	if global_position.y >= -50 and isFalling and alive:
+		alive = false
+		game.rpc("delete_object", self.name)
+		emit_signal("land_event", Vector2(global_position.x, -50), shellType, launcher)
+		return
+
+	
 	t += delta
 	var x = v0 * cos(theta0) * t
 	var y = v0 * sin(theta0) * t - 0.5 * game.G * pow(t, 2)
@@ -42,10 +49,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		isFalling = true
 	
-	global_position = p0 + Vector2(x, y)		
+	global_position = p0 + Vector2(x, y)
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.get_meta("tag") == "field" and isFalling:
-		alive = false
-		game.rpc("delete_object", self.name)
-		emit_signal("land_event", Vector2(global_position.x, -50), shellType, launcher)
+	pass
+	#if body.get_meta("tag") == "world" and isFalling:
+		#alive = false
+		#game.rpc("delete_object", self.name)
+		#emit_signal("land_event", Vector2(global_position.x, -50), shellType, launcher)

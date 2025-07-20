@@ -1,5 +1,5 @@
 extends Node2D
-class_name Field
+class_name World
 
 # 격발 이벤트 - 탄환을 생성 및 운동함
 # 탄착 이벤트 - 피격 범위를 생성 및 유지함. 이펙트를 발생시킴
@@ -44,9 +44,9 @@ func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 		return
 	
 	game.spawn_object("res://Scene/hit_point.tscn", "hitpoint" + str(hitNum))
-	var newHitPoint: HitPoint = game.get_object("hitpoint" + str(hitNum))
+	var newHitPoint: DamageField = game.get_object("hitpoint" + str(hitNum))
 	
-	newHitPoint.attackTo = 3 - launcher
+	newHitPoint.attackTo = 1 - launcher
 	newHitPoint.global_position = pos
 	newHitPoint.activate_hit()
 	

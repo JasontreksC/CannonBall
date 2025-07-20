@@ -1,5 +1,5 @@
 extends Node2D
-class_name World
+class_name WorldScape
 
 @onready var ground: Node2D = $Ground
 
