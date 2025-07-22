@@ -48,7 +48,7 @@ func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 	
 	newHitPoint.attackTo = 1 - launcher
 	newHitPoint.global_position = pos
-	newHitPoint.activate_hit()
+	newHitPoint.activate()
 	
 	game.rpc("spawn_object", "res://Scene/explosion.tscn", "exlpo" + str(hitNum), pos)
 	
