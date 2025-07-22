@@ -82,6 +82,7 @@ placeholder_text = "Invite Steam ID
 
 [node name="IDsFromClient" type="VBoxContainer" parent="."]
 clip_contents = true
+layout_mode = 0
 offset_left = 1204.0
 offset_top = 643.0
 offset_right = 1504.0

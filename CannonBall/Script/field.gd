@@ -43,7 +43,7 @@ func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 	if not multiplayer.is_server():
 		return
 	
-	game.spawn_object("res://Scene/hit_point.tscn", "hitpoint" + str(hitNum))
+	game.spawn_object("res://Scene/damage_field.tscn", "hitpoint" + str(hitNum))
 	var newHitPoint: DamageField = game.get_object("hitpoint" + str(hitNum))
 	
 	newHitPoint.attackTo = 1 - launcher
