@@ -23,7 +23,7 @@ func activate():
 	if hitDamage:
 		var target: Player = game.players[attackTo]
 		if target and in_range(target.global_position.x):
-			target.hp -= 10
+			target.hp -= hitDamage
 			game.ui.rpc("set_hp", attackTo, target.hp)
 			
 	if lifetimeCount == 0:
