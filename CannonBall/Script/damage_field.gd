@@ -10,6 +10,10 @@ var tickDamage: int = 0 # 틱 대미지 간격은 1초로 고정
 
 var game: Game = null
 
+@rpc("any_peer", "call_local")
+func on_spawned() -> void:
+	pass
+
 func in_range(targetX: float) -> bool:
 	var left = global_position.x - range / 2
 	var right = global_position.x + range / 2
