@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://odu81oggotto"]
 
-[ext_resource type="Script" uid="uid://cpbxtpm51b18s" path="res://Script/world.gd" id="1_pmb4c"]
+[ext_resource type="Script" uid="uid://cpbxtpm51b18s" path="res://Script/world_scape.gd" id="1_pmb4c"]
 [ext_resource type="Texture2D" uid="uid://dq3h3ggl0j0ge" path="res://Asset/environment/ground.png" id="2_jysib"]
 [ext_resource type="Shader" uid="uid://68rcw6q151yq" path="res://Shader/wobble_by_wind.gdshader" id="3_75bd2"]
 [ext_resource type="Texture2D" uid="uid://d1lvnsaajrkic" path="res://Asset/environment/grass.png" id="3_vqcvw"]
