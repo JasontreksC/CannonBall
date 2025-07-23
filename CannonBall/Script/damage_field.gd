@@ -40,6 +40,7 @@ func activate():
 func tick():
 	if in_range(target.global_position.x):
 		target.hp -= tickDamage
+		game.ui.rpc("set_hp", attackTo, target.hp)
 		print("Tick Damage to: ", target.name)
 	pass
 
