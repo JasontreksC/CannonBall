@@ -76,8 +76,7 @@ func change_turn() -> void:
 		print("수비: P1")
 
 func regist_tick(key: String, interval: float, callback: Callable):
-	tickPoolInfo[key].append(0)
-	tickPoolInfo[key].append(interval)
+	tickPoolInfo[key] = [0, interval]
 	tickPoolCallback[key] = callback
 
 func update_tick(delta: float):
