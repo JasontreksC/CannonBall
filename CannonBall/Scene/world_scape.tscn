@@ -25,6 +25,7 @@ volume = 10000
 [node name="Ground" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture_repeat = 1
 material = SubResource("ShaderMaterial_kfqfy")
 position = Vector2(-1374, -49)
 texture = ExtResource("3_vqcvw")

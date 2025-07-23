@@ -12,6 +12,9 @@ var G: float = 980
 var turnCount: int = 0
 var gameStarted: bool = false
 
+var tickPoolInfo: Dictionary[String, Array]
+var tickPoolCallback: Dictionary[String, Callable]
+
 
 @rpc("any_peer", "call_local")
 func spawn_object(path: String, name: String, pos: Vector2 = Vector2.ZERO) -> void:
@@ -71,6 +74,21 @@ func change_turn() -> void:
 	if players[1].isAttack:
 		print("공격: P2")
 		print("수비: P1")
+
+func regist_tick(key: String, interval: float, callback: Callable):
+	tickPoolInfo[key][0] = 0
+	tickPoolInfo[key][1] = interval
+	tickPoolCallback[key] = callback
+
+func update_tick(delta: float):
+	for key in tickPoolInfo.keys():
+		if tickPoolInfo[key][0] >= tickPoolInfo[key][1]:
+			tickPoolCallback[key].call()
+			tickPoolInfo[key][0] = 0
+		
+		else:
+			tickPoolInfo[key][0] += delta
+		
 
 func _enter_tree() -> void:
 	root = get_parent().root
