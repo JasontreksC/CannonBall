@@ -101,6 +101,8 @@ func _process(delta: float) -> void:
 			if not gameStarted:
 				gameStarted = true
 				rpc("change_turn")
+				
+		update_tick(delta)
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)
