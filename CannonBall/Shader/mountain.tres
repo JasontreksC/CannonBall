@@ -1,0 +1,64 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://cmnrtdecrxk24"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_8ktyh"]
+expanded_output_ports = [0]
+parameter_name = "MountainColor"
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_s3s0y"]
+expanded_output_ports = [0]
+parameter_name = "HorizonColor"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_yph5g"]
+parameter_name = "Blend"
+hint = 1
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_8ktyh"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, Vector3(0.5, 0.5, 0.5)]
+op_type = 3
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 MountainColor : source_color;
+uniform vec4 HorizonColor : source_color;
+uniform float Blend : hint_range(0.0, 1.0);
+
+
+
+void fragment() {
+// ColorParameter:2
+	vec4 n_out2p0 = MountainColor;
+
+
+// ColorParameter:4
+	vec4 n_out4p0 = HorizonColor;
+
+
+// FloatParameter:5
+	float n_out5p0 = Blend;
+
+
+// Mix:6
+	vec3 n_out6p0 = mix(vec3(n_out2p0.xyz), vec3(n_out4p0.xyz), vec3(n_out5p0));
+
+
+// Output:0
+	COLOR.rgb = n_out6p0;
+
+
+}
+"
+graph_offset = Vector2(-217.406, 51.07)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(760, 160)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_8ktyh")
+nodes/fragment/2/position = Vector2(-180, 40)
+nodes/fragment/4/node = SubResource("VisualShaderNodeColorParameter_s3s0y")
+nodes/fragment/4/position = Vector2(-180, 520)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFloatParameter_yph5g")
+nodes/fragment/5/position = Vector2(-160, 960)
+nodes/fragment/6/node = SubResource("VisualShaderNodeMix_8ktyh")
+nodes/fragment/6/position = Vector2(380, 460)
+nodes/fragment/connections = PackedInt32Array(2, 0, 6, 0, 4, 0, 6, 1, 5, 0, 6, 2, 6, 0, 0, 0)

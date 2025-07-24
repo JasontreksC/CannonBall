@@ -1,9 +1,15 @@
 [gd_scene load_steps=11 format=3 uid="uid://b423j2lmwa2a0"]
 
-[ext_resource type="Texture2D" uid="uid://bmpr6qse8m8js" path="res://Asset/prototype_object/cannon/canon-barrel.png" id="1_ygu73"]
-[ext_resource type="Texture2D" uid="uid://bcymseen6irgm" path="res://Asset/prototype_object/cannon/canon-carriage.png" id="2_y1q7a"]
-[ext_resource type="Texture2D" uid="uid://xifo5g3kh04w" path="res://Asset/prototype_object/cannon/canon-wheel.png" id="4_mii34"]
 [ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/aim_controller.gd" id="5_y1q7a"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_w48bf"]
+load_path = "res://.godot/imported/canon-barrel.png-afad376b359688d32f6c6c1aae951676.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_oxrk3"]
+load_path = "res://.godot/imported/canon-carriage.png-79b7aba54cc529f94c1f8eda000ec45b.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hf2ad"]
+load_path = "res://.godot/imported/canon-wheel.png-9c5cf4159334e1733cedef7b540cc007.ctex"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ygu73"]
 size = Vector2(14.1419, 21.3835)
@@ -122,7 +128,7 @@ position = Vector2(0, -260)
 z_index = -1
 position = Vector2(-289.226, -100.752)
 rotation = -0.124361
-texture = ExtResource("1_ygu73")
+texture = SubResource("CompressedTexture2D_w48bf")
 offset = Vector2(305, 4)
 metadata/_edit_lock_ = true
 
@@ -136,7 +142,7 @@ rotation = 0.124361
 
 [node name="Sprite_carriage" type="Sprite2D" parent="Body"]
 rotation = -0.124361
-texture = ExtResource("2_y1q7a")
+texture = SubResource("CompressedTexture2D_oxrk3")
 offset = Vector2(-229, 3)
 metadata/_edit_lock_ = true
 
@@ -146,7 +152,7 @@ rotation = 0.124361
 
 [node name="Sprite_wheel" type="Sprite2D" parent="Body"]
 z_index = 1
-texture = ExtResource("4_mii34")
+texture = SubResource("CompressedTexture2D_hf2ad")
 metadata/_edit_lock_ = true
 
 [node name="RayCast2D_Wheel" type="RayCast2D" parent="Body"]
