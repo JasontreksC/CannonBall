@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dysx527hnqw2v"]
+
+[ext_resource type="PackedScene" uid="uid://bp8yuq71ym25a" path="res://Scene/shell.tscn" id="1_077g6"]
+[ext_resource type="Texture2D" uid="uid://c3pybtbta3oar" path="res://Asset/shell/normal_shell.png" id="2_kbmx5"]
+
+[node name="NormalShell" instance=ExtResource("1_077g6")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_kbmx5")

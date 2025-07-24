@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dk8wqlremdrpq"]
+
+[ext_resource type="PackedScene" uid="uid://bp8yuq71ym25a" path="res://Scene/shell.tscn" id="1_pfqpl"]
+[ext_resource type="Texture2D" uid="uid://b3j2oh0a5iehh" path="res://Asset/shell/poision_shell.png" id="2_lgct0"]
+
+[node name="PoisonShell" instance=ExtResource("1_pfqpl")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_lgct0")
