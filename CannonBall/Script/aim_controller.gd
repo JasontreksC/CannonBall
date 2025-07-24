@@ -16,8 +16,8 @@ class_name AimController
 # muzzel은 포구, 즉 포탄이 포신 밖으로 나오는 출구이다.
 # 이 노드들을 참조하는 이유는 위치 때문이다.
 @onready var cannon: Cannon = $".."
-@onready var breech: Node2D = $"../Body/Sprite_barrel/Breech"
-@onready var muzzel: Node2D = $"../Body/Sprite_barrel/Muzzel"
+@onready var breech: Node2D = $"../Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Breech"
+@onready var muzzel: Node2D = $"../Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Muzzle"
 @onready var world: World = $"../../World"
 
 # 포물선 운동 공식에 의해, 최소 사거리와 최대 사거리가 정해진다. 이것은 V0가 변하지 않는 이상 고정 값이다.

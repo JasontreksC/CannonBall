@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3pybtbta3oar"
-path="res://.godot/imported/normal_shell.png-64e84d13538cff2db4195a3022202f9f.ctex"
+uid="uid://b3j2oh0a5iehh"
+path="res://.godot/imported/poision_shell.png-c4c1dc7c79ebeca39ab768faece6ff23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/shell/normal_shell.png"
-dest_files=["res://.godot/imported/normal_shell.png-64e84d13538cff2db4195a3022202f9f.ctex"]
+source_file="res://Asset/shell/poision_shell.png"
+dest_files=["res://.godot/imported/poision_shell.png-c4c1dc7c79ebeca39ab768faece6ff23.ctex"]
 
 [params]
 

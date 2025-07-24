@@ -4,21 +4,22 @@
 extends Node2D
 class_name Cannon
 
-# 이동시 바퀴 회전 처리를 위한 속성을 가진다.
-var prevPosX: float = 0
-const WHEEL_RADIUS: float = 260.0
-const SPEED: float = 100
-
-var selectedShell = 0
-
 var stateMachine: StateMachine = StateMachine.new()
 
+# 이동시 바퀴 회전 처리를 위한 속성을 가진다.
+var prevPosX: float = 0
+
+const FRONT_WHEEL_RADIUS: float = 72.0
+const BACK_WHEEL_RADIUS: float = 42.0
+const SPEED: float = 100
+
+@export var shellPathes: Array[String]
+
 # 대포의 각종 파트에 대한 뼈대, 애니메이션 플레이어, 에임 컨트롤러
-@onready var rcWheel: RayCast2D = $Body/RayCast2D_Wheel
-@onready var nHandle: Node2D = $Body/Sprite_carriage/Handle
-@onready var bWheel: Bone2D = $Skeleton/wheel
-@onready var bBarrel: Bone2D = $Skeleton/carriage/barrel
-@onready var amp: AnimationPlayer = $AnimationPlayer
+@onready var nHandle: Node2D = $Handle
+@onready var bFrontWheel: Bone2D = $Skeleton2D/BnCarriage/BnFrontWheel
+@onready var bBackWheel: Bone2D = $Skeleton2D/BnCarriage/BnBackWheel
+@onready var bBarrel: Bone2D = $Skeleton2D/BnCarriage/BnBarrel
 @onready var ac: AimController = $AimController
 @onready var world: World = $"../World"
 
@@ -47,12 +48,15 @@ func get_cur_velocity(delta: float) -> float:
 func rotate_wheel(delta: float):
 	# 각속도(degree) = 선속도 / 반지름
 	# degree -> radian
-	var omega = get_cur_velocity(delta) / WHEEL_RADIUS
-	
+	var cv = get_cur_velocity(delta)
+	var omegaF = cv / FRONT_WHEEL_RADIUS
+	var omegaB = cv / BACK_WHEEL_RADIUS
 	if not multiplayer.is_server():
-		omega *= -1
+		omegaF *= -1
+		omegaB *= -1
 	
-	bWheel.rotate(deg_to_rad(omega))
+	bFrontWheel.rotate(deg_to_rad(omegaF))
+	bBackWheel.rotate(deg_to_rad(omegaB))
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
@@ -64,10 +68,10 @@ func _ready() -> void:
 	
 	if multiplayer.is_server():
 		global_position = world.get_spawn_spot("p1")
-		scale.x = 0.3
+		scale.x = 1
 	else:
 		global_position = world.get_spawn_spot("p2")
-		scale.x = -0.3
+		scale.x = -1
 		
 	prevPosX = global_position.x
 	
@@ -144,8 +148,8 @@ func _physics_process(delta: float) -> void:
 				game.ui.aim_to_cam_telescope(aimed_x)
 					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
-				if player.isAttack and player.attackChance:
-					stateMachine.transit_by_input("clickL", "Fire")
+				#if player.isAttack and player.attackChance:
+				stateMachine.transit_by_input("clickL", "Fire")
 					
 				
 			"Fire":
@@ -153,10 +157,7 @@ func _physics_process(delta: float) -> void:
 				player.attackChance = false
 
 	# 항상 바닥에 고정
-	var collisionPoint: Vector2 = rcWheel.get_collision_point()
-	if rcWheel.get_collider():
-		if rcWheel.get_collider().name == "Field":
-			position.y = collisionPoint.y
+	self.global_position.y = 0
 
 func on_exit_Idle():
 	pass
@@ -165,10 +166,12 @@ func on_entry_Idle():
 	
 ## 대포 손잡이를 잡거나 놓을 때 애니메이션 재생
 func on_exit_Move():
-	amp.play("out_handling")
+	pass
+	#amp.play("out_handling")
 	
 func on_entry_Move():
-	amp.play("in_handling")
+	pass
+	#amp.play("in_handling")
 	
 func on_exit_Aim():
 	pass
@@ -180,4 +183,4 @@ func on_entry_Fire():
 	var launcher: int = 0
 	if not multiplayer.is_server():
 		launcher = 1
-	world.rpc("start_shelling", ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)
+	world.rpc("start_shelling", player.selectedShell, shellPathes[player.selectedShell], ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)

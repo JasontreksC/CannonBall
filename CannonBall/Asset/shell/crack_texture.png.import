@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlef35f81k61r"
-path="res://.godot/imported/grass3.png-d35d407558b9e48f164bbb5e91cc9970.ctex"
+uid="uid://coknwbm1o0tp0"
+path="res://.godot/imported/crack_texture.png-eba1863048235fc57ec3f9e603f43895.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/environment/grass3.png"
-dest_files=["res://.godot/imported/grass3.png-d35d407558b9e48f164bbb5e91cc9970.ctex"]
+source_file="res://Asset/shell/crack_texture.png"
+dest_files=["res://.godot/imported/crack_texture.png-eba1863048235fc57ec3f9e603f43895.ctex"]
 
 [params]
 
@@ -21,14 +21,14 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
-process/hdr_as_srgb=false
-process/hdr_clamp_exposure=false
+process/hdr_as_srgb=true
+process/hdr_clamp_exposure=true
 process/size_limit=0
 detect_3d/compress_to=1

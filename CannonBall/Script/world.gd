@@ -22,14 +22,15 @@ func get_spawn_spot(tag: String) -> Vector2:
 			return Vector2.ZERO
 
 @rpc("any_peer", "call_local")
-func start_shelling(start_pos: Vector2, theta0: float, v0: float, launcher: int) -> void:
+func start_shelling(shellType: int, shellPath: String, start_pos: Vector2, theta0: float, v0: float, launcher: int) -> void:
 	if not multiplayer.is_server():
 		return
 	
-	game.spawn_object("res://Scene/shell.tscn", "shell" + str(shellNum))
+	game.spawn_object(shellPath, "shell" + str(shellNum))
 	var newShell: Shell = game.get_object("shell" + str(shellNum))
 	shellNum += 1
 	
+	newShell.shellType = shellType
 	newShell.global_position = start_pos
 
 	newShell.p0 = start_pos

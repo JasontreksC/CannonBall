@@ -1,0 +1,205 @@
+[gd_scene load_steps=11 format=3 uid="uid://b423j2lmwa2a0"]
+
+[ext_resource type="Texture2D" uid="uid://bmpr6qse8m8js" path="res://Asset/prototype_object/cannon/canon-barrel.png" id="1_ygu73"]
+[ext_resource type="Texture2D" uid="uid://bcymseen6irgm" path="res://Asset/prototype_object/cannon/canon-carriage.png" id="2_y1q7a"]
+[ext_resource type="Texture2D" uid="uid://xifo5g3kh04w" path="res://Asset/prototype_object/cannon/canon-wheel.png" id="4_mii34"]
+[ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/aim_controller.gd" id="5_y1q7a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ygu73"]
+size = Vector2(14.1419, 21.3835)
+
+[sub_resource type="Animation" id="Animation_y1q7a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton/carriage:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.124361]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton/wheel:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton/carriage/barrel:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_ygu73"]
+resource_name = "in_handling"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton/carriage:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.267943, 0.267943),
+"update": 0,
+"values": [-0.124361, 0.0]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton/carriage/barrel:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -0.261799, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_0cfif"]
+resource_name = "out_handling"
+length = 0.6
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton/carriage:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.333333, -0.000365826, -0.121, -0.166667, 0.111488, 0, 0),
+"times": PackedFloat32Array(0, 0.6)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mii34"]
+_data = {
+&"RESET": SubResource("Animation_y1q7a"),
+&"in_handling": SubResource("Animation_ygu73"),
+&"out_handling": SubResource("Animation_0cfif")
+}
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_y1q7a"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:scale")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Skeleton/carriage/barrel:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Skeleton/carriage:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Skeleton/wheel:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+
+[node name="Cannon" type="Node2D"]
+process_priority = 1
+z_index = -1
+scale = Vector2(0.3, 0.3)
+
+[node name="Body" type="Node2D" parent="."]
+position = Vector2(0, -260)
+
+[node name="Sprite_barrel" type="Sprite2D" parent="Body"]
+z_index = -1
+position = Vector2(-289.226, -100.752)
+rotation = -0.124361
+texture = ExtResource("1_ygu73")
+offset = Vector2(305, 4)
+metadata/_edit_lock_ = true
+
+[node name="Breech" type="Node2D" parent="Body/Sprite_barrel"]
+position = Vector2(0.25502, -0.217712)
+rotation = 0.124361
+
+[node name="Muzzel" type="Node2D" parent="Body/Sprite_barrel"]
+position = Vector2(707.625, 0.530731)
+rotation = 0.124361
+
+[node name="Sprite_carriage" type="Sprite2D" parent="Body"]
+rotation = -0.124361
+texture = ExtResource("2_y1q7a")
+offset = Vector2(-229, 3)
+metadata/_edit_lock_ = true
+
+[node name="Handle" type="Node2D" parent="Body/Sprite_carriage"]
+position = Vector2(-504.574, 198.949)
+rotation = 0.124361
+
+[node name="Sprite_wheel" type="Sprite2D" parent="Body"]
+z_index = 1
+texture = ExtResource("4_mii34")
+metadata/_edit_lock_ = true
+
+[node name="RayCast2D_Wheel" type="RayCast2D" parent="Body"]
+z_index = 4096
+scale = Vector2(5.2, 5.2)
+
+[node name="Skeleton" type="Skeleton2D" parent="."]
+position = Vector2(0, -260)
+
+[node name="carriage" type="Bone2D" parent="Skeleton"]
+rotation = -0.124361
+rest = Transform2D(1, 0, 0, 1, 0, 0)
+
+[node name="barrel" type="Bone2D" parent="Skeleton/carriage"]
+position = Vector2(-274.495, -135.85)
+rest = Transform2D(1, 0, 0, 1, -274.495, -135.85)
+auto_calculate_length_and_angle = false
+length = 644.157
+bone_angle = 0.0
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton/carriage/barrel"]
+remote_path = NodePath("../../../../Body/Sprite_barrel")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton/carriage"]
+remote_path = NodePath("../../../Body/Sprite_carriage")
+
+[node name="wheel" type="Bone2D" parent="Skeleton"]
+rest = Transform2D(1, 0, 0, 1, 0, 0)
+auto_calculate_length_and_angle = false
+length = 249.315
+bone_angle = 0.0
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton/wheel"]
+remote_path = NodePath("../../../Body/Sprite_wheel")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+z_index = 4096
+position = Vector2(0, -260)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(-385.5, 15.8)
+scale = Vector2(22.84, 22.84)
+shape = SubResource("RectangleShape2D_ygu73")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_mii34")
+}
+
+[node name="AimController" type="Node2D" parent="."]
+script = ExtResource("5_y1q7a")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_y1q7a")
