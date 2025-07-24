@@ -20,6 +20,7 @@ offset_bottom = 1080.0
 
 [node name="SV_Main" type="SubViewport" parent="SVC_Main"]
 handle_input_locally = false
+texture_mipmap_bias = -2.0
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 

@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
+window/per_pixel_transparency/allowed=true
 
 [editor_plugins]
 
@@ -84,7 +85,14 @@ Down={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=2
 textures/canvas_textures/default_texture_repeat=1
 anti_aliasing/quality/msaa_2d=1
+anti_aliasing/screen_space_roughness_limiter/enabled=false
+anti_aliasing/screen_space_roughness_limiter/amount=4.0
+anti_aliasing/screen_space_roughness_limiter/limit=1.0
+textures/default_filters/texture_mipmap_bias=2.0
+textures/decals/filter=5
+textures/light_projectors/filter=5
 anti_aliasing/quality/use_taa=true
 anti_aliasing/quality/use_debanding=true

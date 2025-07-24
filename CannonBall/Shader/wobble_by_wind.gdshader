@@ -1,5 +1,6 @@
 shader_type canvas_item;
 
+uniform float waves : hint_range(0.0, 10.0) = 0.75;
 uniform float sway_strength : hint_range(0.0, 50.0) = 10.0;
 uniform float sway_speed : hint_range(0.0, 10.0) = 2.0;
 
@@ -12,7 +13,7 @@ void fragment() {
 	vec2 uv = UV;
 
     // 바닥 기준으로 위쪽일수록 더 많이 흔들림
-    float sway = sin(TIME * sway_speed + UV.y * 0.75) * sway_strength * (1.0 - UV.y);
+    float sway = sin(TIME * sway_speed + UV.y * waves) * sway_strength * (1.0 - UV.y);
 
     uv.x += sway / 100.0;
 

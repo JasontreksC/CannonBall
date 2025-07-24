@@ -31,7 +31,7 @@ func activate():
 		
 	if hitDamage:
 		if in_range(target.global_position.x):
-			target.hp -= hitDamage
+			target.get_damage(hitDamage)
 			game.ui.rpc("set_hp", attackTo, target.hp)
 	
 	if tickDamage:
@@ -39,10 +39,9 @@ func activate():
 	
 func tick():
 	if in_range(target.global_position.x):
-		target.hp -= tickDamage
+		target.get_damage(tickDamage)
 		game.ui.rpc("set_hp", attackTo, target.hp)
 		print("Tick Damage to: ", target.name)
-	pass
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
