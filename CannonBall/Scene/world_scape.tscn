@@ -38,7 +38,7 @@ region_rect = Rect2(0, 0, 10000, 100)
 [node name="Background" parent="." instance=ExtResource("6_0mfoy")]
 
 [node name="Grasses" type="Node2D" parent="."]
-z_index = 4
+z_index = 10
 
 [node name="Grass1" type="Sprite2D" parent="Grasses"]
 texture_repeat = 1
@@ -481,7 +481,7 @@ region_enabled = true
 region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
 
 [node name="Trees" type="Node2D" parent="."]
-z_index = -6
+z_index = -100
 
 [node name="Tree1" type="Sprite2D" parent="Trees"]
 z_index = -6

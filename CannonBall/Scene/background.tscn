@@ -19,6 +19,7 @@ fill_from = Vector2(1, 0)
 fill_to = Vector2(1, 0.935043)
 
 [node name="Background" type="ParallaxBackground"]
+layer = -128
 scroll_ignore_camera_zoom = true
 script = ExtResource("1_d8sss")
 horizonColor = Color(0.466667, 0.607843, 1, 1)
