@@ -54,6 +54,7 @@ func add_object(object: Node2D) -> bool:
 		
 @rpc("any_peer", "call_local")
 func change_turn() -> void:
+	return
 	turnCount += 1
 	if turnCount % 2 == 1:
 		players[0].isAttack = true
@@ -101,7 +102,6 @@ func _process(delta: float) -> void:
 			if not gameStarted:
 				gameStarted = true
 				rpc("change_turn")
-				
 		update_tick(delta)
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:

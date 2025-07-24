@@ -10,8 +10,8 @@ var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
 
-#var HP: int = 100;
 var attackChance: bool = false
+var selectedShell: int = 0
 
 @export var psCMC: PackedScene
 
@@ -27,13 +27,6 @@ var attackChance: bool = false
 var game: Game = null
 var cmc: CameraMovingController = null
 var cannon: Cannon = null
-
-func get_cannon() -> Cannon:
-	if self.cannon:
-		return self.cannon
-	else:
-		self.cannon = game.get_object(self.name + "cannon")
-		return self.cannon
 
 func get_damage(damage: int):
 	hp -= damage
@@ -166,8 +159,16 @@ func _physics_process(delta: float) -> void:
 				if Input.is_action_just_pressed("wheel_up"): dir = 1
 				elif Input.is_action_just_pressed("wheel_down"): dir = -1
 				game.ui.zoom_cam_telescope(dir, 10, delta)
-	
-
+				
+				if Input.is_action_just_pressed("num1"):
+					print("일반탄 선택")
+					selectedShell = 0
+				elif Input.is_action_just_pressed("num2"):
+					print("화염탄 선택")
+					selectedShell = 1
+				elif Input.is_action_just_pressed("num3"):
+					print("독탄 선택")
+					selectedShell = 2
 	
 	# 높이를 항상 바닥에 고정
 	var collisionPoint: Vector2 = rcFloor.get_collision_point()
