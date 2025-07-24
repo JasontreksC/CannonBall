@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qr5r40uufke2"
-path="res://.godot/imported/HpBar.png-020f98c97f67ee807eec9f4eb9608da5.ctex"
+uid="uid://dmbd685g5h534"
+path="res://.godot/imported/mountain2.png-2f27cf51e50a390972748c8efcc38525.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/HP/HpBar.png"
-dest_files=["res://.godot/imported/HpBar.png-020f98c97f67ee807eec9f4eb9608da5.ctex"]
+source_file="res://Asset/environment/mountain2.png"
+dest_files=["res://.godot/imported/mountain2.png-2f27cf51e50a390972748c8efcc38525.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

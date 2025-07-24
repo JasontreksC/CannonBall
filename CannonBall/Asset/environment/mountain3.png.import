@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqx4lc2jvhjjf"
-path="res://.godot/imported/canon-complete.png-0badfe4aa3d9cb990aa561626d5f23b3.ctex"
+uid="uid://bp56cqot7jg41"
+path="res://.godot/imported/mountain3.png-c67e27d445937fbf71b252b9d7bf95e8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/prototype_object/cannon/canon-complete.png"
-dest_files=["res://.godot/imported/canon-complete.png-0badfe4aa3d9cb990aa561626d5f23b3.ctex"]
+source_file="res://Asset/environment/mountain3.png"
+dest_files=["res://.godot/imported/mountain3.png-c67e27d445937fbf71b252b9d7bf95e8.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
