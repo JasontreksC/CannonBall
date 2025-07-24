@@ -35,6 +35,10 @@ func get_cannon() -> Cannon:
 		self.cannon = game.get_object(self.name + "cannon")
 		return self.cannon
 
+func get_damage(damage: int):
+	hp -= damage
+	hp = max(hp, 0)
+
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
