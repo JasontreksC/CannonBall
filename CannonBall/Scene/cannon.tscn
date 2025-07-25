@@ -14,18 +14,21 @@ size = Vector2(200, 200)
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:scale")
+properties/1/path = NodePath(".:scale:x")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("Skeleton/carriage/barrel:rotation")
+properties/2/path = NodePath("Skeleton2D/BnCarriage/BnBarrel:rotation")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("Skeleton/carriage:rotation")
+properties/3/path = NodePath("Skeleton2D/BnCarriage/BnFrontWheel:rotation")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-properties/4/path = NodePath("Skeleton/wheel:rotation")
+properties/4/path = NodePath("Skeleton2D/BnCarriage/BnBackWheel:rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 1
+properties/5/path = NodePath("Skeleton2D/BnCarriage/BnBarrel/BnChamber:position:x")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [node name="Cannon" type="Node2D"]
 z_index = -10
@@ -67,12 +70,10 @@ offset = Vector2(47.3547, -9.3994)
 [node name="Breech" type="Node2D" parent="Skeleton2D/BnCarriage/BnBarrel/SpBarrel"]
 position = Vector2(0, -9.22)
 rotation = -0.000656065
-scale = Vector2(1, 1)
 
 [node name="Muzzle" type="Node2D" parent="Skeleton2D/BnCarriage/BnBarrel/SpBarrel"]
 position = Vector2(197.61, -9.22)
 rotation = -0.000656065
-scale = Vector2(1, 1)
 
 [node name="BnFrontWheel" type="Bone2D" parent="Skeleton2D/BnCarriage"]
 position = Vector2(86, -8)
