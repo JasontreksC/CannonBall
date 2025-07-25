@@ -9,7 +9,7 @@ const SPEED: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
-
+var lifeTime: float = 0;
 var attackChance: bool = false
 var selectedShell: int = 0
 
@@ -225,3 +225,4 @@ func on_entry_ReadyFire():
 	# 카메라 위치를 이동시킴
 	cmc.set_target_node(nCamTargetAim, 0.2)
 	game.ui.on_observe()
+	

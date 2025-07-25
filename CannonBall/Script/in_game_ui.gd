@@ -14,6 +14,9 @@ class_name InGameUI
 @onready var p2HPPoints: Node2D = $Header/P2HP/HPBase/HPPoints
 @onready var lbFps: Label = $fps
 
+@onready var lbP1Time: Label = $Header/Dashboard/P1Time
+@onready var lbP2Time: Label = $Header/Dashboard/P2Time
+
 var uiMgr: UIManager = null
 
 func on_observe() -> void:
@@ -86,7 +89,9 @@ func _process(delta: float) -> void:
 		sec = 0
 		fps = 0
 		
-	
-	
-	
-	
+func set_player_life_time(pNum: int, time: float) -> void:
+	match pNum:
+		0:
+			lbP1Time.text = "%.1f" % time
+		1:
+			lbP2Time.text = "%.1f" % time
