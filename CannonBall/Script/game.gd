@@ -54,7 +54,6 @@ func add_object(object: Node2D) -> bool:
 		
 @rpc("any_peer", "call_local")
 func change_turn() -> void:
-	return
 	turnCount += 1
 	if turnCount % 2 == 1:
 		players[0].isAttack = true
