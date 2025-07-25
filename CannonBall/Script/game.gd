@@ -83,7 +83,7 @@ func update_tick(delta: float):
 	for key in tickPoolInfo.keys():
 		var thisTick = tickPoolInfo[key]
 		if thisTick[0] >= thisTick[1]:
-			thisTick.call()
+			tickPoolCallback[key].call()
 			thisTick[0] = 0
 		
 		else:
