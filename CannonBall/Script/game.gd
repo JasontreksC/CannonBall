@@ -102,7 +102,10 @@ func _process(delta: float) -> void:
 			if not gameStarted:
 				gameStarted = true
 				rpc("change_turn")
-		update_tick(delta)
+				
+		if gameStarted:
+			update_tick(delta)
+			update_game_time(delta)
 		gameTime += delta
 
 func update_game_time(delta: float) -> void:
