@@ -105,8 +105,16 @@ func _process(delta: float) -> void:
 		update_tick(delta)
 		
 		gameTime += delta
-		print(gameTime)
 
+func update_game_time(delta: float) -> void:
+	if multiplayer.is_server():
+		if players[0].isAttack :
+			players[0].lifeTime -= delta
+			
+		if players[1].isAttack :
+			players[1].lifeTime -= delta
+		
+		
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)
 	if node is Player:
