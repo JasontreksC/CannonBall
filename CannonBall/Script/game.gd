@@ -58,11 +58,13 @@ func change_turn() -> void:
 	if turnCount % 2 == 1:
 		players[0].isAttack = true
 		players[0].attackChance = true
+		
 		players[1].isAttack = false
 	else: 
-		players[0].isAttack = false
 		players[1].isAttack = true
 		players[1].attackChance = true
+		
+		players[0].isAttack = false
 		
 	gameStarted = true
 	
@@ -106,7 +108,6 @@ func _process(delta: float) -> void:
 		if gameStarted:
 			update_tick(delta)
 			update_game_time(delta)
-		gameTime += delta
 
 func update_game_time(delta: float) -> void:
 	if multiplayer.is_server():
