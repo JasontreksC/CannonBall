@@ -5,7 +5,7 @@
 extends CharacterBody2D
 class_name Player
 
-var speed: float = 300.0
+var speed: float = 500.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
