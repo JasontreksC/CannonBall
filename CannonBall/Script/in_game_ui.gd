@@ -89,9 +89,7 @@ func _process(delta: float) -> void:
 		sec = 0
 		fps = 0
 		
-func set_player_life_time(pNum: int, time: float) -> void:
-	match pNum:
-		0:
-			lbP1Time.text = "%.1f" % time
-		1:
-			lbP2Time.text = "%.1f" % time
+@rpc("any_peer", "call_local")		
+func set_player_life_time(p1time: float, p2time: float) -> void:
+	lbP1Time.text = "%.1f" % p1time
+	lbP2Time.text = "%.1f" % p2time

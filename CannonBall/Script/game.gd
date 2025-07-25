@@ -103,7 +103,6 @@ func _process(delta: float) -> void:
 				gameStarted = true
 				rpc("change_turn")
 		update_tick(delta)
-		
 		gameTime += delta
 
 func update_game_time(delta: float) -> void:
@@ -113,6 +112,8 @@ func update_game_time(delta: float) -> void:
 			
 		if players[1].isAttack :
 			players[1].lifeTime -= delta
+		
+		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
 		
 		
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
