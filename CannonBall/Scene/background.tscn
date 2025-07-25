@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://dmbd685g5h534" path="res://Asset/environment/mountain2.png" id="8_8fa28"]
 [ext_resource type="Texture2D" uid="uid://bp56cqot7jg41" path="res://Asset/environment/mountain3.png" id="9_3q56t"]
 
-
 [sub_resource type="Gradient" id="Gradient_kfqfy"]
 offsets = PackedFloat32Array(0, 0.583673)
 colors = PackedColorArray(0.00890361, 0.219013, 0.924864, 1, 0.466667, 0.607843, 1, 1)

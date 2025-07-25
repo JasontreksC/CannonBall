@@ -1,9 +1,9 @@
 extends Node2D
 class_name BenefitField
 
-var benefitType: int = 0;
-var benefitRange:float = 500;
-var effetivePlayer:int =0;
+@export var benefitRange:float = 500;
+@export var effetivePlayer:int = 0;
+@export var benefitType: int = 0;
 
 var world: World = null
 var target: Player = null

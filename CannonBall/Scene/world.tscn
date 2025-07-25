@@ -31,8 +31,18 @@ shape = SubResource("WorldBoundaryShape2D_y0ibm")
 
 [node name="WorldScape" parent="." instance=ExtResource("2_ejll3")]
 
-[node name="BenefitField" parent="." instance=ExtResource("3_ejll3")]
+[node name="BenefitField1" parent="." instance=ExtResource("3_ejll3")]
+position = Vector2(-2500, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="BenefitField"]
+[node name="Sprite2D" type="Sprite2D" parent="BenefitField1"]
+scale = Vector2(1, 20)
+texture = SubResource("GradientTexture1D_pcvp0")
+
+[node name="BenefitField2" parent="." instance=ExtResource("3_ejll3")]
+position = Vector2(2500, 0)
+effetivePlayer = 1
+benefitType = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="BenefitField2"]
 scale = Vector2(1, 20)
 texture = SubResource("GradientTexture1D_pcvp0")
