@@ -24,11 +24,6 @@ func _ready() -> void:
 	for c: Sprite2D in clouds2:
 		c.modulate = horizonColor * 1.2
 		c.modulate.a = 1
-		
-	#var mountains: Array[Node] = plMountains.get_children()
-	#for c: Sprite2D in mountains:
-		#var sm = c.material as ShaderMaterial
-		#sm.set_shader_parameter("HorizonColor")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

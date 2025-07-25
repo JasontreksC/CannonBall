@@ -9,11 +9,12 @@ var speed: float = 300.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
-var lifeTime: float = 0;
 var attackChance: bool = false
 var selectedShell: int = 0
 
+@export var lifeTime: float = 60;
 @export var psCMC: PackedScene
+@export var hp: int = 20
 
 @onready var rcFloor: RayCast2D = $RayCast2D
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
@@ -22,7 +23,6 @@ var selectedShell: int = 0
 @onready var pandent: Sprite2D = $CannonReaper/Skeleton2D/Bone_Body/Body/Pandent
 @onready var character: Node2D = $CannonReaper
 	
-@export var hp: int = 20
 
 var game: Game = null
 var cmc: CameraMovingController = null
