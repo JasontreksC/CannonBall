@@ -14,7 +14,7 @@ var gameStarted: bool = false
 
 var tickPoolInfo: Dictionary[String, Array]
 var tickPoolCallback: Dictionary[String, Callable]
-
+var gameTime: float = 0
 
 @rpc("any_peer", "call_local")
 func spawn_object(path: String, name: String, pos: Vector2 = Vector2.ZERO) -> void:
@@ -82,12 +82,13 @@ func regist_tick(key: String, interval: float, callback: Callable):
 
 func update_tick(delta: float):
 	for key in tickPoolInfo.keys():
-		if tickPoolInfo[key][0] >= tickPoolInfo[key][1]:
-			tickPoolCallback[key].call()
-			tickPoolInfo[key][0] = 0
+		var thisTick = tickPoolInfo[key]
+		if thisTick[0] >= thisTick[1]:
+			thisTick.call()
+			thisTick[0] = 0
 		
 		else:
-			tickPoolInfo[key][0] += delta
+			thisTick[0] += delta
 		
 
 func _enter_tree() -> void:
@@ -103,6 +104,9 @@ func _process(delta: float) -> void:
 				gameStarted = true
 				rpc("change_turn")
 		update_tick(delta)
+		
+		gameTime += delta
+		print(gameTime)
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)

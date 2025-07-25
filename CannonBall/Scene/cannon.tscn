@@ -67,12 +67,10 @@ offset = Vector2(47.3547, -9.3994)
 [node name="Breech" type="Node2D" parent="Skeleton2D/BnCarriage/BnBarrel/SpBarrel"]
 position = Vector2(0, -9.22)
 rotation = -0.000656065
-scale = Vector2(1, 1)
 
 [node name="Muzzle" type="Node2D" parent="Skeleton2D/BnCarriage/BnBarrel/SpBarrel"]
 position = Vector2(197.61, -9.22)
 rotation = -0.000656065
-scale = Vector2(1, 1)
 
 [node name="BnFrontWheel" type="Bone2D" parent="Skeleton2D/BnCarriage"]
 position = Vector2(86, -8)
