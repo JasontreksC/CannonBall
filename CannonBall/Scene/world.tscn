@@ -1,9 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://cb2d8j7se8qb8"]
+[gd_scene load_steps=7 format=3 uid="uid://cb2d8j7se8qb8"]
 
 [ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/world.gd" id="1_dlwip"]
 [ext_resource type="PackedScene" uid="uid://odu81oggotto" path="res://Scene/world_scape.tscn" id="2_ejll3"]
+[ext_resource type="PackedScene" uid="uid://derjshwc5fbbg" path="res://Scene/benefit_field.tscn" id="3_ejll3"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_y0ibm"]
+
+[sub_resource type="Gradient" id="Gradient_scul4"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_pcvp0"]
+gradient = SubResource("Gradient_scul4")
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_dlwip")
@@ -24,3 +30,9 @@ position = Vector2(0, -50)
 shape = SubResource("WorldBoundaryShape2D_y0ibm")
 
 [node name="WorldScape" parent="." instance=ExtResource("2_ejll3")]
+
+[node name="BenefitField" parent="." instance=ExtResource("3_ejll3")]
+
+[node name="Sprite2D" type="Sprite2D" parent="BenefitField"]
+scale = Vector2(1, 20)
+texture = SubResource("GradientTexture1D_pcvp0")
