@@ -25,7 +25,6 @@ func in_range(targetX: float) -> bool:
 		return false
 
 func activate():
-	return
 	target = game.players[attackTo]
 	if target == null:
 		return
