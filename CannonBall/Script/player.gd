@@ -174,8 +174,9 @@ func _physics_process(delta: float) -> void:
 	
 	# 높이를 항상 바닥에 고정
 	if not isInPond:
-		var collisionPoint: Vector2 = rcFloor.get_collision_point()
-		position.y = collisionPoint.y
+		self.global_position.y = 0
+		#var collisionPoint: Vector2 = rcFloor.get_collision_point()
+		#position.y = collisionPoint.y
 	
 	if cannon:
 		#대포의 상호작용구역 안에 들어왔음을 감지
