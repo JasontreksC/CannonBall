@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 	elif in_range(target.global_position.x):
 		var distance = abs(target.global_position.x - self.global_position.x)
 		var t = inverse_lerp(pondRadius, 0, distance)
-		target.y = lerp(0, depthY, t)
+		target.global_position.y = lerp(0, depthY, t)
 
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX
