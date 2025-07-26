@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://o5ao2jcmdg41"]
+
+[ext_resource type="Script" uid="uid://c4jubbdwfrrsf" path="res://Script/pond.gd" id="1_ph7nl"]
+[ext_resource type="Texture2D" uid="uid://deh845m42soi5" path="res://Asset/environment/pond-01.png" id="1_s6roq"]
+
+[node name="Pond" type="Node2D"]
+script = ExtResource("1_ph7nl")
+
+[node name="SP_PondL" type="Sprite2D" parent="."]
+texture_repeat = 1
+position = Vector2(50, 0)
+texture = ExtResource("1_s6roq")
+offset = Vector2(-150, 97.81)
+region_enabled = true
+region_rect = Rect2(0.5, 0.5, 300, 195.64)
+
+[node name="SP_PondR" type="Sprite2D" parent="SP_PondL"]
+texture_repeat = 1
+texture = ExtResource("1_s6roq")
+offset = Vector2(100, 97.81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0.5, 0.5, 200, 195.64)

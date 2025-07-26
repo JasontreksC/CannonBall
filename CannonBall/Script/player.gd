@@ -5,15 +5,16 @@
 extends CharacterBody2D
 class_name Player
 
-const SPEED: float = 300.0
+var speed: float = 500.0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
-
 var attackChance: bool = false
 var selectedShell: int = 0
 
+@export var lifeTime: float = 60;
 @export var psCMC: PackedScene
+@export var hp: int = 20
 
 @onready var rcFloor: RayCast2D = $RayCast2D
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
@@ -22,7 +23,6 @@ var selectedShell: int = 0
 @onready var pandent: Sprite2D = $CannonReaper/Skeleton2D/Bone_Body/Body/Pandent
 @onready var character: Node2D = $CannonReaper
 	
-@export var hp: int = 20
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -92,6 +92,7 @@ func _ready() -> void:
 	
 	stateMachine.init_current_state("Idle")
 	
+	
 	var smPandent: ShaderMaterial = pandent.material
 	if smPandent:
 		if multiplayer.is_server():
@@ -129,10 +130,10 @@ func _physics_process(delta: float) -> void:
 				# 단독 무브먼트
 				var direction := Input.get_axis("left", "right")
 				if direction:
-					velocity.x = direction * SPEED
+					velocity.x = direction * speed
 					character.scale.x = direction
 				else:
-					velocity.x = move_toward(velocity.x, 0, SPEED)
+					velocity.x = move_toward(velocity.x, 0, speed)
 				move_and_slide()
 				
 				# 입력 시 상태 전환

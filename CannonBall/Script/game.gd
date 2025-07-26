@@ -58,11 +58,13 @@ func change_turn() -> void:
 	if turnCount % 2 == 1:
 		players[0].isAttack = true
 		players[0].attackChance = true
+		
 		players[1].isAttack = false
 	else: 
-		players[0].isAttack = false
 		players[1].isAttack = true
 		players[1].attackChance = true
+		
+		players[0].isAttack = false
 		
 	gameStarted = true
 	
@@ -83,7 +85,7 @@ func update_tick(delta: float):
 	for key in tickPoolInfo.keys():
 		var thisTick = tickPoolInfo[key]
 		if thisTick[0] >= thisTick[1]:
-			thisTick.call()
+			tickPoolCallback[key].call()
 			thisTick[0] = 0
 		
 		else:
@@ -102,11 +104,22 @@ func _process(delta: float) -> void:
 			if not gameStarted:
 				gameStarted = true
 				rpc("change_turn")
-		update_tick(delta)
-		
-		gameTime += delta
-		print(gameTime)
+				
+		if gameStarted:
+			update_tick(delta)
+			update_game_time(delta)
 
+func update_game_time(delta: float) -> void:
+	if multiplayer.is_server():
+		if players[0].isAttack :
+			players[0].lifeTime -= delta
+			
+		if players[1].isAttack :
+			players[1].lifeTime -= delta
+		
+		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
+		
+		
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)
 	if node is Player:

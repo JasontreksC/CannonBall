@@ -11,7 +11,7 @@ var prevPosX: float = 0
 
 const FRONT_WHEEL_RADIUS: float = 72.0
 const BACK_WHEEL_RADIUS: float = 42.0
-const SPEED: float = 100
+const SPEED: float = 300
 
 @export var shellPathes: Array[String]
 
@@ -148,8 +148,8 @@ func _physics_process(delta: float) -> void:
 				game.ui.aim_to_cam_telescope(aimed_x)
 					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
-				#if player.isAttack and player.attackChance:
-				stateMachine.transit_by_input("clickL", "Fire")
+				if player.isAttack and player.attackChance:
+					stateMachine.transit_by_input("clickL", "Fire")
 					
 				
 			"Fire":

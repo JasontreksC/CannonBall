@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cb2d8j7se8qb8"]
+[gd_scene load_steps=6 format=3 uid="uid://cb2d8j7se8qb8"]
 
 [ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/world.gd" id="1_dlwip"]
 [ext_resource type="PackedScene" uid="uid://odu81oggotto" path="res://Scene/world_scape.tscn" id="2_ejll3"]
+[ext_resource type="PackedScene" uid="uid://derjshwc5fbbg" path="res://Scene/bush.tscn" id="3_ejll3"]
+[ext_resource type="PackedScene" uid="uid://o5ao2jcmdg41" path="res://Scene/pond.tscn" id="4_scul4"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_y0ibm"]
 
@@ -24,3 +26,10 @@ position = Vector2(0, -50)
 shape = SubResource("WorldBoundaryShape2D_y0ibm")
 
 [node name="WorldScape" parent="." instance=ExtResource("2_ejll3")]
+
+[node name="Bush" parent="." instance=ExtResource("3_ejll3")]
+position = Vector2(-3036, 0)
+
+[node name="Pond" parent="." instance=ExtResource("4_scul4")]
+z_index = 60
+position = Vector2(-4000, 0)

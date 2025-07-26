@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://derjshwc5fbbg"]
+
+[ext_resource type="Script" uid="uid://byctjxbu1163s" path="res://Script/bush.gd" id="1_yqe78"]
+[ext_resource type="Texture2D" uid="uid://cbduxfwourgyr" path="res://Asset/environment/bush1.png" id="2_rcqkf"]
+
+[node name="Bush" type="Node2D"]
+z_index = 10
+script = ExtResource("1_yqe78")
+
+[node name="SP_Bush" type="Sprite2D" parent="."]
+position = Vector2(0, -300)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_rcqkf")
+region_enabled = true
+region_rect = Rect2(0, 1, 420, 400)

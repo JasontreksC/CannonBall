@@ -21,6 +21,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Explosion" type="Node2D"]
+z_index = 20
 script = ExtResource("1_w8ob6")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
