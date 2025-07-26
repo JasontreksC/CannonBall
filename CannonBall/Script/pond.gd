@@ -33,6 +33,7 @@ func _physics_process(delta: float) -> void:
 	if target == null:
 		target = world.game.players[effetivePlayer]
 	elif in_range(target.global_position.x):
+		target.isInPond = true
 		var distance: float = abs(target.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
 		target.global_position.y = lerp(0.0, depthY, t)

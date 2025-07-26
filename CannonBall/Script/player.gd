@@ -10,6 +10,7 @@ var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
 var attackChance: bool = false
+var isInPond: bool = false
 var selectedShell: int = 0
 
 @export var lifeTime: float = 60;
@@ -172,8 +173,9 @@ func _physics_process(delta: float) -> void:
 					selectedShell = 2
 	
 	# 높이를 항상 바닥에 고정
-	var collisionPoint: Vector2 = rcFloor.get_collision_point()
-	position.y = collisionPoint.y
+	if not isInPond:
+		var collisionPoint: Vector2 = rcFloor.get_collision_point()
+		position.y = collisionPoint.y
 	
 	if cannon:
 		#대포의 상호작용구역 안에 들어왔음을 감지
