@@ -186,7 +186,6 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-	
 
 func _process(delta: float) -> void:
 	pass
