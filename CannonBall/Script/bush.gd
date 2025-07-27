@@ -30,8 +30,17 @@ func _physics_process(delta: float) -> void:
 
 	if target == null:
 		target = world.game.players[effetivePlayer]
-	elif in_range(target.global_position.x):
+		return
+
+	if in_range(target.global_position.x):
 		spBush.modulate.a = 0.5
+	else:
+		spBush.modulate.a = 1.0
+	
+	if in_range(target.cannon.global_position.x):
+		spBush.modulate.a = 0.5
+	else:
+		spBush.modulate.a = 1.0
 	
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX
