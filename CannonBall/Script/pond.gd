@@ -29,13 +29,26 @@ func _physics_process(delta: float) -> void:
 	
 	if target == null:
 		target = world.game.players[effetivePlayer]
-	elif in_range(target.global_position.x):
+		return
+	
+	if in_range(target.global_position.x):
 		target.isInPond = true
 		var distance: float = abs(target.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
-		target.global_position.y = lerp(0.0, pondDepth, t)
+		var yInPond: float = lerp(0.0, pondDepth, t)
+		target.global_position.y = yInPond
+		target.cannon.global_position.y = yInPond
 	else:
 		target.isInPond = false
+
+	if in_range(target.cannon.global_position.x):
+		target.cannon.isInPond = true
+		var distance: float = abs(target.cannon.global_position.x - self.global_position.x)
+		var t: float = inverse_lerp(pondRadius, 0, distance)
+		var yInPond: float = lerp(0.0, pondDepth, t)
+		target.cannon.global_position.y = yInPond
+	else:
+		target.cannon.isInPond = false
 
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX

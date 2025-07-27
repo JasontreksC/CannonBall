@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bwrx2pgx1ludf"]
+[gd_scene load_steps=8 format=3 uid="uid://bwrx2pgx1ludf"]
 
 [ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/cannon.gd" id="1_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://c5hbha8afn08k" path="res://Asset/cannon/chamber.png" id="2_wyplu"]
@@ -6,9 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://b37jj8skmoy1q" path="res://Asset/cannon/wheel.png" id="4_havv0"]
 [ext_resource type="Texture2D" uid="uid://da0c6u6pcv1sq" path="res://Asset/cannon/carriage.png" id="5_tpwpf"]
 [ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/aim_controller.gd" id="5_y1q7a"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wyplu"]
-size = Vector2(200, 200)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tscwj"]
 properties/0/path = NodePath(".:position")
@@ -115,15 +112,6 @@ position = Vector2(-38, 0)
 
 [node name="AimController" type="Node2D" parent="."]
 script = ExtResource("5_y1q7a")
-
-[node name="InteractionArea" type="Area2D" parent="."]
-z_index = 4096
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-position = Vector2(-25, -100)
-shape = SubResource("RectangleShape2D_wyplu")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_tscwj")

@@ -8,6 +8,7 @@ var stateMachine: StateMachine = StateMachine.new()
 
 # 이동시 바퀴 회전 처리를 위한 속성을 가진다.
 var prevPosX: float = 0
+var isInPond: bool = false
 
 const FRONT_WHEEL_RADIUS: float = 72.0
 const BACK_WHEEL_RADIUS: float = 42.0
@@ -157,7 +158,9 @@ func _physics_process(delta: float) -> void:
 				player.attackChance = false
 
 	# 항상 바닥에 고정
-	self.global_position.y = 0
+
+	if not player.isInPond:
+		self.global_position.y = 0
 
 func on_exit_Idle():
 	pass
