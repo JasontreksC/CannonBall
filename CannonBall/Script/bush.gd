@@ -13,7 +13,7 @@ var world: World = null
 var target: Player = null
 
 func _enter_tree() -> void:
-	world = get_parent() as World
+	world = get_parent().get_parent() as World
 
 func _ready() -> void:
 	leftX = global_position.x - bushRange / 2

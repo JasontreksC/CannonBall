@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bp8yuq71ym25a" path="res://Scene/shell.tscn" id="1_sf3w6"]
 [ext_resource type="Shader" uid="uid://chslhsr7t500r" path="res://Shader/fire_surf.tres" id="2_3artd"]
 [ext_resource type="Texture2D" uid="uid://c3pybtbta3oar" path="res://Asset/shell/normal_shell.png" id="2_h5kdm"]
-[ext_resource type="Texture2D" uid="uid://coknwbm1o0tp0" path="res://Asset/shell/crack_texture.png" id="3_3artd"]
+[ext_resource type="Texture2D" uid="uid://coknwbm1o0tp0" path="res://Asset/alpha_texture/crack.png" id="3_3artd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vcak5"]
 shader = ExtResource("2_3artd")
