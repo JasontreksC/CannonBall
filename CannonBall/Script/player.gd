@@ -2,14 +2,17 @@
 # 이동 속도, 대포 상호작용 가능 여부, 상태 머신을 속성으로 가지고 있으며
 # 대포와 플레이어를 포커싱하는 카메라 무빙 컨트롤러에 대한 첨조를 저장한다.
 
-extends CharacterBody2D
+#extends CharacterBody2D
+extends Node2D
 class_name Player
 
 var speed: float = 500.0
+var velocity: float = 0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
 var attackChance: bool = false
+var isInPond: bool = false
 var selectedShell: int = 0
 
 @export var lifeTime: float = 60;
@@ -130,11 +133,11 @@ func _physics_process(delta: float) -> void:
 				# 단독 무브먼트
 				var direction := Input.get_axis("left", "right")
 				if direction:
-					velocity.x = direction * speed
+					velocity = direction * speed
 					character.scale.x = direction
 				else:
-					velocity.x = move_toward(velocity.x, 0, speed)
-				move_and_slide()
+					velocity = move_toward(velocity, 0, 50)
+				self.global_position.x += velocity * delta
 				
 				# 입력 시 상태 전환
 				if isInCannon:
@@ -172,9 +175,9 @@ func _physics_process(delta: float) -> void:
 					selectedShell = 2
 	
 	# 높이를 항상 바닥에 고정
-	var collisionPoint: Vector2 = rcFloor.get_collision_point()
-	position.y = collisionPoint.y
-	
+	if not isInPond:
+		self.global_position.y = 0
+
 	if cannon:
 		#대포의 상호작용구역 안에 들어왔음을 감지
 		var ia: Area2D = cannon.get_node("InteractionArea")
@@ -184,7 +187,6 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-	
 
 func _process(delta: float) -> void:
 	pass
