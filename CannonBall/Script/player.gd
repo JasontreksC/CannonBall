@@ -2,10 +2,12 @@
 # 이동 속도, 대포 상호작용 가능 여부, 상태 머신을 속성으로 가지고 있으며
 # 대포와 플레이어를 포커싱하는 카메라 무빙 컨트롤러에 대한 첨조를 저장한다.
 
-extends CharacterBody2D
+#extends CharacterBody2D
+extends Node2D
 class_name Player
 
 var speed: float = 500.0
+var velocity: float = 0
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
@@ -131,11 +133,11 @@ func _physics_process(delta: float) -> void:
 				# 단독 무브먼트
 				var direction := Input.get_axis("left", "right")
 				if direction:
-					velocity.x = direction * speed
+					velocity = direction * speed
 					character.scale.x = direction
 				else:
-					velocity.x = move_toward(velocity.x, 0, speed)
-				move_and_slide()
+					velocity = move_toward(velocity, 0, 50)
+				self.global_position.x += velocity * delta
 				
 				# 입력 시 상태 전환
 				if isInCannon:

@@ -1,11 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cb2d8j7se8qb8"]
+[gd_scene load_steps=5 format=3 uid="uid://cb2d8j7se8qb8"]
 
 [ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/world.gd" id="1_dlwip"]
 [ext_resource type="PackedScene" uid="uid://odu81oggotto" path="res://Scene/world_scape.tscn" id="2_ejll3"]
 [ext_resource type="PackedScene" uid="uid://derjshwc5fbbg" path="res://Scene/bush.tscn" id="3_ejll3"]
 [ext_resource type="PackedScene" uid="uid://o5ao2jcmdg41" path="res://Scene/pond.tscn" id="4_scul4"]
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_y0ibm"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_dlwip")
@@ -15,15 +13,6 @@ position = Vector2(-2000, 0)
 
 [node name="P2SpawnSpot" type="Node2D" parent="."]
 position = Vector2(2000, 0)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(0, 50)
-collision_mask = 2
-metadata/tag = "ground"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(0, -50)
-shape = SubResource("WorldBoundaryShape2D_y0ibm")
 
 [node name="WorldScape" parent="." instance=ExtResource("2_ejll3")]
 

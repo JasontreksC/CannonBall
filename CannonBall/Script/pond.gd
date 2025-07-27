@@ -9,7 +9,7 @@ class_name Pond
 
 var leftX: float
 var rightX: float
-var depthY: float = 100
+var depthY: float = 300
 
 var world: World = null
 var target: Player = null
@@ -37,7 +37,7 @@ func _physics_process(delta: float) -> void:
 		var distance: float = abs(target.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
 		target.global_position.y = lerp(0.0, depthY, t)
-		print(t)
+		print(target.global_position.y)
 
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX
