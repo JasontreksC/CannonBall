@@ -159,7 +159,7 @@ func _physics_process(delta: float) -> void:
 
 	# 항상 바닥에 고정
 
-	if not player.isInPond:
+	if not isInPond:
 		self.global_position.y = 0
 
 func on_exit_Idle():
