@@ -34,10 +34,7 @@ func _physics_process(delta: float) -> void:
 
 	if in_range(target.global_position.x):
 		spBush.modulate.a = 0.5
-	else:
-		spBush.modulate.a = 1.0
-	
-	if in_range(target.cannon.global_position.x):
+	elif in_range(target.cannon.global_position.x):
 		spBush.modulate.a = 0.5
 	else:
 		spBush.modulate.a = 1.0
