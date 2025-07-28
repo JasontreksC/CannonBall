@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjuswftc73knu"
-path="res://.godot/imported/BallUI.png-79466f9c88d3f2cb46b012484a5b2bc2.ctex"
+uid="uid://5f6bfmf0iqpc"
+path="res://.godot/imported/hollow_circle.png-7f50e3f68b580d11cfb735969c993b6d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/BallUI.png"
-dest_files=["res://.godot/imported/BallUI.png-79466f9c88d3f2cb46b012484a5b2bc2.ctex"]
+source_file="res://preview/hollow_circle.png"
+dest_files=["res://.godot/imported/hollow_circle.png-7f50e3f68b580d11cfb735969c993b6d.ctex"]
 
 [params]
 

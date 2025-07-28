@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=30 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_point.tscn" id="2_dviy5"]
@@ -10,6 +10,13 @@
 [ext_resource type="Texture2D" uid="uid://b17q7wp0efyyn" path="res://Asset/ui_dashboard_2.png" id="8_wckav"]
 [ext_resource type="Texture2D" uid="uid://b4qyt66jwdgol" path="res://Asset/prototype_object/ATK.png" id="9_wckav"]
 [ext_resource type="Shader" uid="uid://bfqyq7be1pdx3" path="res://Shader/dashboard_attack_grad.tres" id="10_pmkfs"]
+[ext_resource type="Script" uid="uid://bobtw8bp138h3" path="res://Script/polygon_button.gd" id="11_qyub3"]
+[ext_resource type="Texture2D" uid="uid://c3pybtbta3oar" path="res://Asset/shell/normal_shell.png" id="13_oqxxn"]
+[ext_resource type="Texture2D" uid="uid://ghh2b5ym2jgt" path="res://Asset/ui/ui_shell_dial.png" id="13_u4wab"]
+[ext_resource type="Shader" uid="uid://chslhsr7t500r" path="res://Shader/fire_surf.tres" id="14_7hrlq"]
+[ext_resource type="Shader" uid="uid://s4mnyl4kthwp" path="res://Shader/round.tres" id="14_bucyv"]
+[ext_resource type="Texture2D" uid="uid://coknwbm1o0tp0" path="res://Asset/alpha_texture/crack.png" id="15_bucyv"]
+[ext_resource type="Texture2D" uid="uid://b3j2oh0a5iehh" path="res://Asset/shell/poision_shell.png" id="16_voeoa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
 shader = ExtResource("2_wpxio")
@@ -45,6 +52,18 @@ gradient = SubResource("Gradient_i3syv")
 font_size = 240
 font_color = Color(0.540346, 0.895914, 0.928074, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_voeoa"]
+shader = ExtResource("14_bucyv")
+shader_parameter/TeamColor = Color(1, 1, 1, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_0dgpy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0d0q2"]
+shader = ExtResource("14_7hrlq")
+shader_parameter/Texture2DParameter = ExtResource("15_bucyv")
+shader_parameter/ColorParameter = Color(1, 0.35, 0, 1)
+shader_parameter/Brightness = 1.0
+
 [node name="InGameUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -54,6 +73,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3xi00")
 hpPointSprite = ExtResource("2_dviy5")
+
+[node name="fps" type="Label" parent="."]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 146.0
+offset_right = 49.0
+offset_bottom = 169.0
+text = "0"
 
 [node name="Telescope" type="ColorRect" parent="."]
 visible = false
@@ -189,10 +216,107 @@ rotation = -0.787711
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("9_wckav")
 
-[node name="fps" type="Label" parent="."]
-layout_mode = 0
-offset_left = 9.0
-offset_top = 146.0
-offset_right = 49.0
-offset_bottom = 169.0
-text = "0"
+[node name="ShellDial" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -255.0
+offset_top = -255.0
+offset_right = 255.0
+offset_bottom = 255.0
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(255, 255)
+texture = ExtResource("13_u4wab")
+
+[node name="PolygonButton_Top" type="Control" parent="ShellDial"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+script = ExtResource("11_qyub3")
+metadata/_custom_type_script = "uid://bobtw8bp138h3"
+
+[node name="Polygon2D" type="Polygon2D" parent="ShellDial/PolygonButton_Top"]
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(-2.18592e-14, -119, 30.7995, -114.945, 59.5, -103.057, 84.1457, -84.1457, 103.057, -59.5, 17.5197, -10.115, 14.3048, -14.3048, 10.115, -17.5197, 5.23591, -19.5407, -3.71607e-15, -20.23)
+
+[node name="SP_Shell0" type="Sprite2D" parent="ShellDial/PolygonButton_Top"]
+position = Vector2(39, -67)
+scale = Vector2(0.147151, 0.147151)
+texture = ExtResource("13_oqxxn")
+
+[node name="SP_Outline" type="Sprite2D" parent="ShellDial/PolygonButton_Top/SP_Shell0"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_voeoa")
+scale = Vector2(500, 500)
+texture = SubResource("CanvasTexture_0dgpy")
+
+[node name="PolygonButton_Mid" type="Control" parent="ShellDial"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+script = ExtResource("11_qyub3")
+metadata/_custom_type_script = "uid://bobtw8bp138h3"
+
+[node name="Polygon2D" type="Polygon2D" parent="ShellDial/PolygonButton_Mid"]
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(103.057, -59.5, 114.945, -30.7995, 119, -2.91456e-14, 114.945, 30.7995, 103.057, 59.5, 17.5197, 10.115, 19.5407, 5.23591, 20.23, -4.95476e-15, 19.5407, -5.23591, 17.5197, -10.115)
+
+[node name="SP_Shell1" type="Sprite2D" parent="ShellDial/PolygonButton_Mid"]
+material = SubResource("ShaderMaterial_0d0q2")
+position = Vector2(78, 0)
+scale = Vector2(0.147151, 0.147151)
+texture = ExtResource("13_oqxxn")
+
+[node name="SP_Outline" type="Sprite2D" parent="ShellDial/PolygonButton_Mid/SP_Shell1"]
+visible = false
+show_behind_parent = true
+material = SubResource("ShaderMaterial_voeoa")
+scale = Vector2(500, 500)
+texture = SubResource("CanvasTexture_0dgpy")
+
+[node name="PolygonButton_Bot" type="Control" parent="ShellDial"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+script = ExtResource("11_qyub3")
+metadata/_custom_type_script = "uid://bobtw8bp138h3"
+
+[node name="Polygon2D" type="Polygon2D" parent="ShellDial/PolygonButton_Bot"]
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(103.057, 59.5, 84.1457, 84.1457, 59.5, 103.057, 30.7995, 114.945, 7.28641e-15, 119, 1.23869e-15, 20.23, 5.23591, 19.5407, 10.115, 17.5197, 14.3048, 14.3048, 17.5197, 10.115)
+
+[node name="SP_Shell2" type="Sprite2D" parent="ShellDial/PolygonButton_Bot"]
+position = Vector2(39, 68)
+scale = Vector2(0.147151, 0.147151)
+texture = ExtResource("16_voeoa")
+
+[node name="SP_Outline" type="Sprite2D" parent="ShellDial/PolygonButton_Bot/SP_Shell2"]
+visible = false
+show_behind_parent = true
+material = SubResource("ShaderMaterial_voeoa")
+scale = Vector2(500, 500)
+texture = SubResource("CanvasTexture_0dgpy")
+
+[connection signal="pressed" from="ShellDial/PolygonButton_Top" to="." method="_on_polygon_button_top_pressed"]
+[connection signal="pressed" from="ShellDial/PolygonButton_Mid" to="." method="_on_polygon_button_mid_pressed"]
+[connection signal="pressed" from="ShellDial/PolygonButton_Bot" to="." method="_on_polygon_button_bot_pressed"]

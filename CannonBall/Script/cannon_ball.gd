@@ -115,13 +115,14 @@ func _ready() -> void:
 	func(status: int, new_lobby_id: int):
 		if status == 1:
 			if uiMgr.get_current_ui_as_lobby().tInviteSteamID.text:
-				Steam.sendP2PPacket(uiMgr.get_current_ui_as_lobby().get_invite_steam_id(),  var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+				Steam.sendP2PPacket(uiMgr.get_current_ui_as_lobby().get_invite_steam_id(), var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
 				print("invite sended!: ", uiMgr.get_current_ui_as_lobby().get_invite_steam_id())
 			
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
-			create_steam_socket()
 			uiMgr.set_ui(1)
+			uiMgr.root.sceneMgr.set_scene(1)
+			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
 		else:
 			print("Error on create lobby!")
@@ -132,8 +133,9 @@ func _ready() -> void:
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
-				connect_steam_socket(id)
 				uiMgr.set_ui(1)
+				uiMgr.root.sceneMgr.set_scene(1)
+				connect_steam_socket(id)
 		else:
 		# Get the failure reason
 			var FAIL_REASON: String

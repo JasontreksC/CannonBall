@@ -97,6 +97,8 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
+	if ui:
+		ui.game = self
 
 func _process(delta: float) -> void:
 	if multiplayer.is_server():

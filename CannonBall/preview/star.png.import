@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp3nylb3saeum"
-path="res://.godot/imported/BallUIarrow.png-6d692d8d6376fcfe738d35ff05bac94f.ctex"
+uid="uid://bjk2yvdvjpwet"
+path="res://.godot/imported/star.png-2eafce4d7f05caad2bcd43053d381ef4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/BallUIarrow.png"
-dest_files=["res://.godot/imported/BallUIarrow.png-6d692d8d6376fcfe738d35ff05bac94f.ctex"]
+source_file="res://preview/star.png"
+dest_files=["res://.godot/imported/star.png-2eafce4d7f05caad2bcd43053d381ef4.ctex"]
 
 [params]
 
