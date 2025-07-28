@@ -25,12 +25,10 @@ func set_invited_lobby_id(id: int) -> void:
 	tInvitedLobbyID.text = str(id)
 
 func _on_bt_host_pressed() -> void:
-	uiMgr.root.sceneMgr.set_scene(1)
 	uiMgr.root.host_lobby()
 
 
 func _on_bt_join_pressed() -> void:
-	uiMgr.root.sceneMgr.set_scene(1)
 	uiMgr.root.join_lobby(int(tInvitedLobbyID.text))
 	
 func _enter_tree() -> void:
