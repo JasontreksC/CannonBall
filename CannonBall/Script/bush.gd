@@ -13,7 +13,7 @@ var world: World = null
 var target: Player = null
 
 func _enter_tree() -> void:
-	world = get_parent() as World
+	world = get_parent().get_parent() as World
 
 func _ready() -> void:
 	leftX = global_position.x - bushRange / 2
@@ -30,8 +30,14 @@ func _physics_process(delta: float) -> void:
 
 	if target == null:
 		target = world.game.players[effetivePlayer]
-	elif in_range(target.global_position.x):
+		return
+
+	if in_range(target.global_position.x):
 		spBush.modulate.a = 0.5
+	elif in_range(target.cannon.global_position.x):
+		spBush.modulate.a = 0.5
+	else:
+		spBush.modulate.a = 1.0
 	
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX

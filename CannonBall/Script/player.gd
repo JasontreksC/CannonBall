@@ -19,7 +19,6 @@ var selectedShell: int = 0
 @export var psCMC: PackedScene
 @export var hp: int = 20
 
-@onready var rcFloor: RayCast2D = $RayCast2D
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
 @onready var world: World = $"../World"
@@ -180,10 +179,7 @@ func _physics_process(delta: float) -> void:
 
 	if cannon:
 		#대포의 상호작용구역 안에 들어왔음을 감지
-		var ia: Area2D = cannon.get_node("InteractionArea")
-		var intersects: Array = ia.get_overlapping_bodies()
-		var index = intersects.find_custom(func(n): return n.name == self.name)
-		if index != -1 and intersects[index]:
+		if abs(cannon.global_position.x - self.global_position.x) < 150:
 			isInCannon = true
 		else:
 			isInCannon = false

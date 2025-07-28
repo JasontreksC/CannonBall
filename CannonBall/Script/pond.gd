@@ -2,20 +2,17 @@ extends Node2D
 class_name Pond
 
 @export var effetivePlayer:int = 0
-@export var pondRadius: float = 440
-
-@onready var spPondL: Sprite2D = $SP_PondL
-@onready var spPondR: Sprite2D = $SP_PondL/SP_PondR
+@export var pondRadius: float = 220
+@export var pondDepth: float = 100
 
 var leftX: float
 var rightX: float
-var depthY: float = 300
 
 var world: World = null
 var target: Player = null
 
 func _enter_tree() -> void:
-	world = get_parent() as World
+	world = get_parent().get_parent() as World
 	
 func _ready() -> void:
 	leftX = global_position.x - pondRadius
@@ -32,12 +29,26 @@ func _physics_process(delta: float) -> void:
 	
 	if target == null:
 		target = world.game.players[effetivePlayer]
-	elif in_range(target.global_position.x):
+		return
+	
+	if in_range(target.global_position.x):
 		target.isInPond = true
 		var distance: float = abs(target.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
-		target.global_position.y = lerp(0.0, depthY, t)
-		print(target.global_position.y)
+		var yInPond: float = lerp(0.0, pondDepth, t)
+		target.global_position.y = yInPond
+		target.cannon.global_position.y = yInPond
+	else:
+		target.isInPond = false
+
+	if in_range(target.cannon.global_position.x):
+		target.cannon.isInPond = true
+		var distance: float = abs(target.cannon.global_position.x - self.global_position.x)
+		var t: float = inverse_lerp(pondRadius, 0, distance)
+		var yInPond: float = lerp(0.0, pondDepth, t)
+		target.cannon.global_position.y = yInPond
+	else:
+		target.cannon.isInPond = false
 
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX
