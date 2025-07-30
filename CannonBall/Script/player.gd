@@ -14,6 +14,7 @@ var isAttack: bool = true
 var attackChance: bool = false
 var isInPond: bool = false
 var selectedShell: int = 0
+var isWalking: bool = false
 
 @export var lifeTime: float = 60;
 @export var psCMC: PackedScene
@@ -24,7 +25,7 @@ var selectedShell: int = 0
 @onready var world: World = $"../World"
 @onready var pandent: Sprite2D = $CannonReaper/Skeleton2D/Bone_Body/Body/Pandent
 @onready var character: Node2D = $CannonReaper
-	
+@onready var amp: AnimationPlayer = $AnimationPlayer
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -129,6 +130,12 @@ func _physics_process(delta: float) -> void:
 	else:
 		match stateMachine.current_state_name():
 			"Idle":
+				# 애니메이션 재생
+				if self.velocity: 
+					amp.play("walk")
+				else:
+					amp.stop()
+				
 				# 단독 무브먼트
 				var direction := Input.get_axis("left", "right")
 				if direction:
@@ -136,6 +143,7 @@ func _physics_process(delta: float) -> void:
 					character.scale.x = direction
 				else:
 					velocity = move_toward(velocity, 0, 50)
+				
 				self.global_position.x += velocity * delta
 				
 				# 입력 시 상태 전환
