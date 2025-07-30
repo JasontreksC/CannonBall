@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cb2d8j7se8qb8"]
+[gd_scene load_steps=13 format=3 uid="uid://cb2d8j7se8qb8"]
 
 [ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/world.gd" id="1_dlwip"]
 [ext_resource type="PackedScene" uid="uid://derjshwc5fbbg" path="res://Scene/bush.tscn" id="3_ejll3"]
+[ext_resource type="Texture2D" uid="uid://bjjf0xixu1wuj" path="res://Asset/environment/underground.png" id="3_y56vo"]
 [ext_resource type="PackedScene" uid="uid://o5ao2jcmdg41" path="res://Scene/pond.tscn" id="4_scul4"]
 [ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="5_h7cfj"]
 [ext_resource type="Texture2D" uid="uid://dq3h3ggl0j0ge" path="res://Asset/environment/ground.png" id="5_pcvp0"]
@@ -41,7 +42,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_pcvp0")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 1000, 100)
+region_rect = Rect2(0, -0.5, 1000, 100)
 
 [node name="Ground_500_1" type="Sprite2D" parent="Ground"]
 texture_repeat = 2
@@ -50,7 +51,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_pcvp0")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 500, 100)
+region_rect = Rect2(0, -0.5, 500, 100)
 
 [node name="Ground_1000_2" type="Sprite2D" parent="Ground"]
 texture_repeat = 2
@@ -59,7 +60,60 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_pcvp0")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 1000, 100)
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Undeground" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-10000, 200)
+scale = Vector2(2, 2)
+texture = ExtResource("3_y56vo")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 10000, 1000)
+
+[node name="Ground_1000_3" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_4" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(2000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_5" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(4000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_6" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(6000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_7" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(8000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
 
 [node name="Background" parent="." instance=ExtResource("5_h7cfj")]
 
