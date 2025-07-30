@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://csssoqjjrrj67"]
+[gd_scene load_steps=8 format=3 uid="uid://bwrx2pgx1ludf"]
 
 [ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/cannon.gd" id="1_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://c5hbha8afn08k" path="res://Asset/cannon/chamber.png" id="2_wyplu"]
