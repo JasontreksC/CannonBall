@@ -26,6 +26,7 @@ var isWalking: bool = false
 @onready var pandent: Sprite2D = $CannonReaper/Skeleton2D/Bone_Body/Body/Pandent
 @onready var character: Node2D = $CannonReaper
 @onready var amp: AnimationPlayer = $AnimationPlayer
+@onready var amt: AnimationTree = $AnimationTree
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -131,10 +132,6 @@ func _physics_process(delta: float) -> void:
 		match stateMachine.current_state_name():
 			"Idle":
 				# 애니메이션 재생
-				if self.velocity: 
-					amp.play("walk")
-				else:
-					amp.stop()
 				
 				# 단독 무브먼트
 				var direction := Input.get_axis("left", "right")
