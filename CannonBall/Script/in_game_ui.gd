@@ -127,7 +127,7 @@ func _on_polygon_button_top_pressed() -> void:
 	if multiplayer.is_server():
 		game.players[0].selectedShell = 0
 	else:
-		game.players[1].selectedShel = 0
+		game.players[1].selectedShell = 0
 	
 	set_shell_dial(0)
 
@@ -137,7 +137,7 @@ func _on_polygon_button_mid_pressed() -> void:
 	if multiplayer.is_server():
 		game.players[0].selectedShell = 1
 	else:
-		game.players[1].selectedShel = 1
+		game.players[1].selectedShell = 1
 		
 	set_shell_dial(1)
 
@@ -147,6 +147,6 @@ func _on_polygon_button_bot_pressed() -> void:
 	if multiplayer.is_server():
 		game.players[0].selectedShell = 2
 	else:
-		game.players[1].selectedShel = 2
+		game.players[1].selectedShell = 2
 		
 	set_shell_dial(2)
