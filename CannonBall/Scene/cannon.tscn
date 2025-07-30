@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bwrx2pgx1ludf"]
+[gd_scene load_steps=11 format=3 uid="uid://bwrx2pgx1ludf"]
 
 [ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/cannon.gd" id="1_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://c5hbha8afn08k" path="res://Asset/cannon/chamber.png" id="2_wyplu"]
@@ -27,6 +27,52 @@ properties/5/path = NodePath("Skeleton2D/BnCarriage/BnBarrel/BnChamber:position:
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
+[sub_resource type="Animation" id="Animation_wyplu"]
+resource_name = "fire"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/BnCarriage/BnBarrel:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0.8, -0.25, 0, 0.0333333, -0.0704225, 0.724089, 0, -0.000187576, 0.133333, 0.154213, 0.799275, -0.133333, 0.0148176, 0.25, 0),
+"times": PackedFloat32Array(0, 0.2, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_k6bjk"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/BnCarriage/BnBarrel:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/BnCarriage/BnBarrel:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_havv0"]
+_data = {
+&"RESET": SubResource("Animation_k6bjk"),
+&"fire": SubResource("Animation_wyplu")
+}
+
 [node name="Cannon" type="Node2D"]
 z_index = -10
 script = ExtResource("1_y1q7a")
@@ -40,7 +86,7 @@ rest = Transform2D(1, 0, 0, 1, -27, 119)
 
 [node name="BnBarrel" type="Bone2D" parent="Skeleton2D/BnCarriage"]
 position = Vector2(35, -100)
-scale = Vector2(0.826895, 0.826895)
+scale = Vector2(0.8, 0.8)
 rest = Transform2D(0.826895, 0, 0, 0.826895, 35, -100)
 
 [node name="BnChamber" type="Bone2D" parent="Skeleton2D/BnCarriage/BnBarrel"]
@@ -115,3 +161,8 @@ script = ExtResource("5_y1q7a")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_tscwj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_havv0")
+}
