@@ -52,17 +52,17 @@ gradient = SubResource("Gradient_i3syv")
 font_size = 240
 font_color = Color(0.540346, 0.895914, 0.928074, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_voeoa"]
-shader = ExtResource("14_bucyv")
-shader_parameter/TeamColor = Color(1, 1, 1, 1)
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_0dgpy"]
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0d0q2"]
 shader = ExtResource("14_7hrlq")
 shader_parameter/Texture2DParameter = ExtResource("15_bucyv")
 shader_parameter/ColorParameter = Color(1, 0.35, 0, 1)
 shader_parameter/Brightness = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_voeoa"]
+shader = ExtResource("14_bucyv")
+shader_parameter/TeamColor = Color(1, 1, 1, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_0dgpy"]
 
 [node name="InGameUI" type="Control"]
 layout_mode = 3
@@ -248,15 +248,10 @@ color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-2.18592e-14, -119, 30.7995, -114.945, 59.5, -103.057, 84.1457, -84.1457, 103.057, -59.5, 17.5197, -10.115, 14.3048, -14.3048, 10.115, -17.5197, 5.23591, -19.5407, -3.71607e-15, -20.23)
 
 [node name="SP_Shell0" type="Sprite2D" parent="ShellDial/PolygonButton_Top"]
+z_index = 3
 position = Vector2(39, -67)
 scale = Vector2(0.147151, 0.147151)
 texture = ExtResource("13_oqxxn")
-
-[node name="SP_Outline" type="Sprite2D" parent="ShellDial/PolygonButton_Top/SP_Shell0"]
-show_behind_parent = true
-material = SubResource("ShaderMaterial_voeoa")
-scale = Vector2(500, 500)
-texture = SubResource("CanvasTexture_0dgpy")
 
 [node name="PolygonButton_Mid" type="Control" parent="ShellDial"]
 layout_mode = 1
@@ -276,17 +271,11 @@ color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(103.057, -59.5, 114.945, -30.7995, 119, -2.91456e-14, 114.945, 30.7995, 103.057, 59.5, 17.5197, 10.115, 19.5407, 5.23591, 20.23, -4.95476e-15, 19.5407, -5.23591, 17.5197, -10.115)
 
 [node name="SP_Shell1" type="Sprite2D" parent="ShellDial/PolygonButton_Mid"]
+z_index = 3
 material = SubResource("ShaderMaterial_0d0q2")
 position = Vector2(78, 0)
 scale = Vector2(0.147151, 0.147151)
 texture = ExtResource("13_oqxxn")
-
-[node name="SP_Outline" type="Sprite2D" parent="ShellDial/PolygonButton_Mid/SP_Shell1"]
-visible = false
-show_behind_parent = true
-material = SubResource("ShaderMaterial_voeoa")
-scale = Vector2(500, 500)
-texture = SubResource("CanvasTexture_0dgpy")
 
 [node name="PolygonButton_Bot" type="Control" parent="ShellDial"]
 layout_mode = 1
@@ -306,15 +295,17 @@ color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(103.057, 59.5, 84.1457, 84.1457, 59.5, 103.057, 30.7995, 114.945, 7.28641e-15, 119, 1.23869e-15, 20.23, 5.23591, 19.5407, 10.115, 17.5197, 14.3048, 14.3048, 17.5197, 10.115)
 
 [node name="SP_Shell2" type="Sprite2D" parent="ShellDial/PolygonButton_Bot"]
+z_index = 3
 position = Vector2(39, 68)
 scale = Vector2(0.147151, 0.147151)
 texture = ExtResource("16_voeoa")
 
-[node name="SP_Outline" type="Sprite2D" parent="ShellDial/PolygonButton_Bot/SP_Shell2"]
-visible = false
+[node name="SP_Outline" type="Sprite2D" parent="ShellDial"]
 show_behind_parent = true
+z_index = 1
 material = SubResource("ShaderMaterial_voeoa")
-scale = Vector2(500, 500)
+position = Vector2(333, 121)
+scale = Vector2(147.151, 147.151)
 texture = SubResource("CanvasTexture_0dgpy")
 
 [connection signal="pressed" from="ShellDial/PolygonButton_Top" to="." method="_on_polygon_button_top_pressed"]

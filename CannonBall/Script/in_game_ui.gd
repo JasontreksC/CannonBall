@@ -18,12 +18,16 @@ class_name InGameUI
 @onready var lbP2Time: Label = $Header/Dashboard/P2Time
 
 ## ShellDial
-@onready var spShellDial0: Sprite2D = $ShellDial/PolygonButton_Top/SP_Shell0
-@onready var spShellDial1: Sprite2D = $ShellDial/PolygonButton_Mid/SP_Shell1
-@onready var spShellDial2: Sprite2D = $ShellDial/PolygonButton_Bot/SP_Shell2
+@onready var shellDial: TextureRect = $ShellDial
+@onready var spShell0: Sprite2D = $ShellDial/PolygonButton_Top/SP_Shell0
+@onready var spShell1: Sprite2D = $ShellDial/PolygonButton_Mid/SP_Shell1
+@onready var spShell2: Sprite2D = $ShellDial/PolygonButton_Bot/SP_Shell2
+@onready var spShellOutline: Sprite2D = $ShellDial/SP_Outline
 
 var uiMgr: UIManager = null
 var game: Game = null
+
+## Telescope
 
 func on_observe() -> void:
 	if not multiplayer.is_server():
@@ -42,6 +46,8 @@ func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
 	camTelescope.zoom.x += zoomValue
 	camTelescope.zoom.y += zoomValue
 	camTelescope.zoom = camTelescope.zoom.clamp(Vector2(0.5, 0.5), Vector2(2, 2))
+
+## HP
 
 @rpc("any_peer", "call_local")
 func set_hp(player: int, hpAmount: int):
@@ -74,6 +80,16 @@ func set_hp(player: int, hpAmount: int):
 			points[i].free()
 	
 	
+	## Shell Dial
+func set_shell_dial(num: int):
+	match num:
+		0:
+			spShellOutline.global_position = spShell0.global_position
+		1:
+			spShellOutline.global_position = spShell1.global_position
+		2:
+			spShellOutline.global_position = spShell2.global_position
+			pass	
 
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
@@ -84,6 +100,10 @@ func _ready() -> void:
 		
 	set_hp(0, 20)
 	set_hp(1, 20)
+	
+	if not multiplayer.is_server():
+		shellDial.position.x += 1920
+		shellDial.scale.x *= -1
 
 var sec: float = 0
 var fps: float = 0
@@ -108,10 +128,8 @@ func _on_polygon_button_top_pressed() -> void:
 		game.players[0].selectedShell = 0
 	else:
 		game.players[1].selectedShel = 0
-
-	spShellDial0.get_child(0).visible = true
-	spShellDial1.get_child(0).visible = false
-	spShellDial2.get_child(0).visible = false
+	
+	set_shell_dial(0)
 
 func _on_polygon_button_mid_pressed() -> void:
 	if not game:
@@ -120,10 +138,8 @@ func _on_polygon_button_mid_pressed() -> void:
 		game.players[0].selectedShell = 1
 	else:
 		game.players[1].selectedShel = 1
-
-	spShellDial0.get_child(0).visible = false
-	spShellDial1.get_child(0).visible = true
-	spShellDial2.get_child(0).visible = false
+		
+	set_shell_dial(1)
 
 func _on_polygon_button_bot_pressed() -> void:
 	if not game:
@@ -132,7 +148,5 @@ func _on_polygon_button_bot_pressed() -> void:
 		game.players[0].selectedShell = 2
 	else:
 		game.players[1].selectedShel = 2
-
-	spShellDial0.get_child(0).visible = false
-	spShellDial1.get_child(0).visible = false
-	spShellDial2.get_child(0).visible = true
+		
+	set_shell_dial(2)
