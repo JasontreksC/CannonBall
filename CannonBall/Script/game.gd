@@ -155,6 +155,7 @@ func _ready() -> void:
 	stateMachine.register_state_event("EndSession", "entry", on_entry_EndSession)
 	stateMachine.register_state_event("EndSession", "exit", on_exit_EndSession)
 
+	stateMachine.init_current_state("WaitSession")
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
