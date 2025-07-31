@@ -3,10 +3,11 @@ class_name Game
 
 var root: CannonBall = null
 var ui: InGameUI = null
+var stateMachine: StateMachine = StateMachine.new()
+var transmitQueue: Array[String]
 
 var players: Array[Player]
 var objects: Dictionary[String, Node2D]
-var freeQueue: Array[String]
 
 var G: float = 980
 var turnCount: int = 0
@@ -99,6 +100,25 @@ func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
 	if ui:
 		ui.game = self
+		
+	stateMachine.register_state("WaitSession")
+	stateMachine.register_state("TurnStart")
+	stateMachine.register_state("WaitAttack")
+	stateMachine.register_state("Attacking")
+	stateMachine.register_state("EndAttack")
+	stateMachine.register_state("EndTurn")
+	stateMachine.register_state("EndSession")
+	
+	stateMachine.register_transit("WaitSession", "TurnStart", 1)
+	stateMachine.register_transit("TurnStart", "WaitAttack", 1)
+	stateMachine.register_transit("WaitAttack", "Attacking", 1)
+	stateMachine.register_transit("WaitAttack", "EndTurn", 1)
+	stateMachine.register_transit("Attacking", "EndAttack", 1)
+	stateMachine.register_transit("EndAttack", "EndTurn", 1)
+	stateMachine.register_transit("EndTurn", "TurnStart", 1)
+	stateMachine.register_transit("EndTurn", "EndSession", 1)
+	stateMachine.register_transit("EndSession", "WaitSession", 1)
+	
 
 func _process(delta: float) -> void:
 	if multiplayer.is_server():
@@ -110,6 +130,56 @@ func _process(delta: float) -> void:
 		if gameStarted:
 			update_tick(delta)
 			update_game_time(delta)
+			
+			
+	if stateMachine.is_transit_process("WaitSession", "TurnStart", delta):
+		players[0].inControl = true
+		players[1].inControl = true
+		
+	elif stateMachine.is_transit_process("TurnStart", "WaitAttack", delta):
+		pass
+	elif stateMachine.is_transit_process("WaitAttack", "Attacking", delta):
+		pass
+	elif stateMachine.is_transit_process("WaitAttack", "EndTurn", delta):
+		pass
+	elif stateMachine.is_transit_process("Attacking", "EndAttack", delta):
+		pass
+	elif stateMachine.is_transit_process("EndAttack", "EndTurn", delta):
+		pass
+	elif stateMachine.is_transit_process("EndTurn", "TurnStart", delta):
+		pass
+	elif stateMachine.is_transit_process("EndTurn", "EndSession", delta):
+		pass
+	elif stateMachine.is_transit_process("EndSession", "WaitSession", delta):
+		pass
+	# 상태 전환 프로세스가 없으면 각 상태에서의 행동 처리
+	else:
+		match stateMachine.current_state_name():
+			"WaitSession":
+				if len(players) == 2:
+					stateMachine.transit("TurnStart")
+			"TurnStart":
+				stateMachine.transit("WaitAttack")
+				pass
+			"WaitAttack":
+				
+				pass
+			"Attacking":
+				pass
+			"EndAttack":
+				pass
+			"EndTurn":
+				pass
+			"EndSession":
+				pass
+		#stateMachine.register_state("WaitSession")
+	#stateMachine.register_state("TurnStart")
+	#stateMachine.register_state("WaitAttack")
+	#stateMachine.register_state("Attacking")
+	#stateMachine.register_state("EndAttack")
+	#stateMachine.register_state("EndTurn")
+	#stateMachine.register_state("EndSession")
+
 
 func update_game_time(delta: float) -> void:
 	if multiplayer.is_server():
@@ -128,3 +198,17 @@ func _on_multiplayer_spawner_spawned(node: Node) -> void:
 		players.append(node as Player)
 	elif is_instance_valid(node.get_instance_id()):
 		add_object(node)
+		
+func check_transmit(transmit: Array[String]) -> bool:
+	var result: bool = true
+	for t in transmit:
+		if not transmitQueue.has(t):
+			result = false
+		else:
+			transmitQueue.erase(t)
+	return result
+
+@rpc("any_peer", "call_local")
+func send_transmit(transmit: String):
+	if not transmitQueue.has(transmit):
+		transmitQueue.append(transmit)

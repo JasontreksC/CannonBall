@@ -14,6 +14,12 @@ func set_scene(num: int) -> void:
 	if num != 0 and num != 1 and num != 2:
 		return
 		
+	if currentSceneNum == 0 and num == 1:
+		on_enter_game_scene()
+		
+	elif currentSceneNum == 1 and num ==2:
+		on_enter_end_scene()
+	
 	currentSceneNum = num
 	
 	if currentScene:
@@ -33,3 +39,12 @@ func _init() -> void:
 
 func _ready() -> void:
 	set_scene(0)
+
+func _process(delta: float) -> void:
+	pass
+	
+func on_enter_game_scene():
+	pass
+	
+func on_enter_end_scene():
+	pass
