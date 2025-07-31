@@ -15,6 +15,7 @@ var attackChance: bool = false
 var isInPond: bool = false
 var selectedShell: int = 0
 var isWalking: bool = false
+var inControl: bool = false
 
 @export var lifeTime: float = 60;
 @export var psCMC: PackedScene
@@ -80,10 +81,8 @@ func _ready() -> void:
 	
 	stateMachine.register_transit("Idle", "HandleCannon", 0)
 	stateMachine.register_transit("HandleCannon", "Idle", 0)
-	
 	stateMachine.register_transit("Idle", "ReadyFire", 0)
 	stateMachine.register_transit("ReadyFire", "Idle", 0)
-	
 	stateMachine.register_transit("ReadyFire", "HandleCannon", 0)
 	stateMachine.register_transit("HandleCannon", "ReadyFire", 0)
 	
@@ -141,7 +140,8 @@ func _physics_process(delta: float) -> void:
 				else:
 					velocity = move_toward(velocity, 0, 50)
 				
-				self.global_position.x += velocity * delta
+				if inControl:
+					self.global_position.x += velocity * delta
 				
 				# 입력 시 상태 전환
 				if isInCannon:
