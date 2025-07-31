@@ -180,6 +180,7 @@ func _process(delta: float) -> void:
 					update_game_time(delta)
 					
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
+						print("ShellingStarted!")
 						rpc("transit_game_state", "Shelling")
 			"Shelling":
 				if multiplayer.is_server():
@@ -197,6 +198,8 @@ func on_exit_WaitSession():
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
+		players[0].canMove = true
+		players[1].canMove = true
 func on_exit_Turn():
 	pass
 func on_entry_Shelling():

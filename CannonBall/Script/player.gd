@@ -17,10 +17,12 @@ var attackChance: bool = false
 var isInPond: bool = false
 var selectedShell: int = 0
 var isWalking: bool = false
-var canMove: bool = false
 
-@export var lifeTime: float = 60;
 @export var psCMC: PackedScene
+
+# 멀티플레이 동기화
+@export var canMove: bool = false
+@export var lifeTime: float = 60;
 @export var hp: int = 20
 
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
