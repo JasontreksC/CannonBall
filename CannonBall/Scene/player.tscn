@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ind02kvqyd3c"]
+[gd_scene load_steps=27 format=3 uid="uid://ind02kvqyd3c"]
 
 [ext_resource type="Script" uid="uid://38lyw030h1aq" path="res://Script/player.gd" id="1_ui7ge"]
 [ext_resource type="PackedScene" uid="uid://dv453ijcwqcn6" path="res://Scene/camera_moving_controller.tscn" id="2_o1tno"]
@@ -30,7 +30,322 @@ properties/3/path = NodePath(".:lifeTime")
 properties/3/spawn = true
 properties/3/replication_mode = 2
 
+[sub_resource type="Animation" id="Animation_c31lq"]
+resource_name = "move_cannon"
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(16, -0.1, 0, 0.1, 0, -10.724, -0.1, 0, 0.1, 0, 16, -0.1, 0, 0.1, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0.135, -0.1, 0, 0.1, 0, 0.135, -0.1, 0, 0.1, 0, -5, -0.1, 0, 0.1, 0, 0.135, -0.1, 0, 0.1, 0),
+"times": PackedFloat32Array(0, 0.5, 0.75, 1)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-16, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, -16, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.133333, -0.0533334, -5, -0.1, 0, 0.1, 0, 0, -0.1, 0, 0.1, 0, 0, -0.1, 0, 0.1, 0),
+"times": PackedFloat32Array(0, 0.25, 0.5, 1)
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(15, -41.865), Vector2(15, -41.865)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [-0.966382, -0.966382]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [-1.27693, -1.27693]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-27, -41.865), Vector2(-27, -41.865)]
+}
+
+[sub_resource type="Animation" id="Animation_ij4jb"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.1, 0, 0.1, 0.231111, 0.5, -0.1, 0, 0.1, 0, -0.5, -0.1, 0, 0.1, 0, 0, -0.1, -0.195556, 0.1, 0),
+"times": PackedFloat32Array(0, 0.25, 0.75, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.1, 0, 0.1, -0.231111, -0.5, -0.1, 0, 0.1, 0, 0.5, -0.1, 0, 0.1, 0, 0, -0.1, 0.248889, 0, 0),
+"times": PackedFloat32Array(0, 0.25, 0.75, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.1, 0, 0.1, -0.297778, -0.5, -0.1, 0, 0.1, 0, 0.5, -0.1, 0, 0.1, 0, 0, -0.1, 0.271111, 0, 0),
+"times": PackedFloat32Array(0, 0.25, 0.75, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.1, 0, 0.1, 0.213333, 0.5, -0.1, 0, 0.1, 0, -0.5, -0.1, 0, 0.1, 0, 0, -0.1, -0.177778, 0.1, 0),
+"times": PackedFloat32Array(0, 0.25, 0.75, 1)
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(16, 0.135), Vector2(16, 0.135)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-16, 0), Vector2(-16, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(27, -50.865), Vector2(27, -50.865)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-37, -49.865), Vector2(-37, -49.865)]
+}
+
+[sub_resource type="Animation" id="Animation_2dof7"]
+resource_name = "handle_cannon"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(16, 0.135)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-16, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(15, -41.865)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-27, -41.865)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-0.966382]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1.27693]
+}
+
 [sub_resource type="Animation" id="Animation_c68nv"]
+resource_name = "stand"
 length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
@@ -310,271 +625,57 @@ tracks/23/keys = {
 "points": PackedFloat32Array(-48.865, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-tracks/24/type = "bezier"
-tracks/24/imported = false
-tracks/24/enabled = true
-tracks/24/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:position:x")
-tracks/24/interp = 1
-tracks/24/loop_wrap = true
-tracks/24/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(27, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/25/type = "bezier"
-tracks/25/imported = false
-tracks/25/enabled = true
-tracks/25/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:position:y")
-tracks/25/interp = 1
-tracks/25/loop_wrap = true
-tracks/25/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-50.865, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_c31lq"]
-resource_name = "move_cannon"
-loop_mode = 1
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:position:x")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(16, -0.1, 0, 0.1, 0, -10.724, -0.1, 0, 0.1, 0, 16, -0.1, 0, 0.1, 0),
-"times": PackedFloat32Array(0, 0.5, 1)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:position:y")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0),
-"points": PackedFloat32Array(0.135, -0.1, 0, 0.1, 0, 0.135, -0.1, 0, 0.1, 0, -5, -0.1, 0, 0.1, 0, 0.135, -0.1, 0, 0.1, 0),
-"times": PackedFloat32Array(0, 0.5, 0.75, 1)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:position:x")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(-16, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, -16, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5, 1)
-}
-tracks/5/type = "bezier"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:position:y")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.133333, -0.0533334, -5, -0.1, 0, 0.1, 0, 0, -0.1, 0, 0.1, 0, 0, -0.1, 0, 0.1, 0),
-"times": PackedFloat32Array(0, 0.25, 0.5, 1)
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:position")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(15, -41.865), Vector2(15, -41.865)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:rotation")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [-0.966382, -0.966382]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:rotation")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [-1.27693, -1.27693]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:position")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-27, -41.865), Vector2(-27, -41.865)]
-}
-
-[sub_resource type="Animation" id="Animation_ij4jb"]
-resource_name = "walk"
-loop_mode = 1
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.1, 0, 0.1, 0.231111, 0.5, -0.1, 0, 0.1, 0, -0.5, -0.1, 0, 0.1, 0, 0, -0.1, -0.195556, 0.1, 0),
-"times": PackedFloat32Array(0, 0.25, 0.75, 1)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.1, 0, 0.1, -0.231111, -0.5, -0.1, 0, 0.1, 0, 0.5, -0.1, 0, 0.1, 0, 0, -0.1, 0.248889, 0, 0),
-"times": PackedFloat32Array(0, 0.25, 0.75, 1)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.1, 0, 0.1, -0.297778, -0.5, -0.1, 0, 0.1, 0, 0.5, -0.1, 0, 0.1, 0, 0, -0.1, 0.271111, 0, 0),
-"times": PackedFloat32Array(0, 0.25, 0.75, 1)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.1, 0, 0.1, 0.213333, 0.5, -0.1, 0, 0.1, 0, -0.5, -0.1, 0, 0.1, 0, 0, -0.1, -0.177778, 0.1, 0),
-"times": PackedFloat32Array(0, 0.25, 0.75, 1)
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftLeg:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(16, 0.135), Vector2(16, 0.135)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightLeg:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-16, 0), Vector2(-16, 0)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_LeftArm:position")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(27, -50.865), Vector2(27, -50.865)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("CannonReaper/Skeleton2D/Bone_Body/Bone_RightArm:position")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-37, -49.865), Vector2(-37, -49.865)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c31lq"]
 _data = {
-&"RESET": SubResource("Animation_c68nv"),
+&"handle_cannon": SubResource("Animation_2dof7"),
 &"move_cannon": SubResource("Animation_c31lq"),
+&"stand": SubResource("Animation_c68nv"),
 &"walk": SubResource("Animation_ij4jb")
 }
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ij4jb"]
-animation = &"walk"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c68nv"]
-animation = &"move_cannon"
-
-[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_c31lq"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_ij4jb")
-blend_point_0/pos = -1.0
-blend_point_1/node = SubResource("AnimationNodeAnimation_c68nv")
-blend_point_1/pos = 1.0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2dof7"]
 animation = &"move_cannon"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ij4jb"]
+animation = &"stand"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c68nv"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2dof7"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"state_idle_velocity_true"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4ao7i"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"state_hc_velocity_true"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1sypm"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"state_idle_velocity_false"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fn0wv"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"state_hc_velocity_false"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ij4jb"]
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2dof7"]
-states/BlendSpace1D/node = SubResource("AnimationNodeBlendSpace1D_c31lq")
-states/BlendSpace1D/position = Vector2(480.4, 107)
-"states/move_cannon 2/node" = SubResource("AnimationNodeAnimation_2dof7")
-"states/move_cannon 2/position" = Vector2(555.6, 26.2)
-graph_offset = Vector2(-258, -115)
+states/Start/position = Vector2(183.2, 99.2)
+states/move_cannon/node = SubResource("AnimationNodeAnimation_2dof7")
+states/move_cannon/position = Vector2(460.464, 204.6)
+states/stand/node = SubResource("AnimationNodeAnimation_ij4jb")
+states/stand/position = Vector2(314.8, 100.2)
+states/walk/node = SubResource("AnimationNodeAnimation_c68nv")
+states/walk/position = Vector2(459.811, 47.8)
+transitions = ["stand", "walk", SubResource("AnimationNodeStateMachineTransition_2dof7"), "stand", "move_cannon", SubResource("AnimationNodeStateMachineTransition_4ao7i"), "walk", "stand", SubResource("AnimationNodeStateMachineTransition_1sypm"), "move_cannon", "stand", SubResource("AnimationNodeStateMachineTransition_fn0wv"), "Start", "stand", SubResource("AnimationNodeStateMachineTransition_ij4jb")]
+graph_offset = Vector2(-313, -139)
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_ui7ge")
@@ -610,7 +711,7 @@ texture = ExtResource("5_c68nv")
 offset = Vector2(-29.6053, -177.632)
 
 [node name="Bone_LeftLeg" type="Bone2D" parent="CannonReaper/Skeleton2D/Bone_Body"]
-position = Vector2(16, 0.135)
+position = Vector2(-3.44134, 0.135)
 rest = Transform2D(1, 0, 0, 1, 16, 0.135)
 auto_calculate_length_and_angle = false
 length = 30.0
@@ -624,7 +725,7 @@ texture = ExtResource("8_4ao7i")
 offset = Vector2(-3.94736, 44.079)
 
 [node name="Bone_RightLeg" type="Bone2D" parent="CannonReaper/Skeleton2D/Bone_Body"]
-position = Vector2(-16, 0)
+position = Vector2(1.24507, -3.54314)
 rest = Transform2D(1, 0, 0, 1, -16, 0)
 auto_calculate_length_and_angle = false
 length = 30.0
@@ -638,7 +739,8 @@ texture = ExtResource("9_1sypm")
 offset = Vector2(-2.54387, 44.079)
 
 [node name="Bone_LeftArm" type="Bone2D" parent="CannonReaper/Skeleton2D/Bone_Body"]
-position = Vector2(27, -50.865)
+position = Vector2(15, -41.865)
+rotation = -0.966382
 rest = Transform2D(1, 0, 0, 1, 27, -50.865)
 auto_calculate_length_and_angle = false
 length = 50.0
@@ -651,7 +753,8 @@ texture = ExtResource("6_c31lq")
 offset = Vector2(21.886, 69.3421)
 
 [node name="Bone_RightArm" type="Bone2D" parent="CannonReaper/Skeleton2D/Bone_Body"]
-position = Vector2(-37, -49.865)
+position = Vector2(-27, -41.865)
+rotation = -1.27693
 rest = Transform2D(1, 0, 0, 1, -37, -49.865)
 auto_calculate_length_and_angle = false
 length = 50.0
@@ -687,4 +790,7 @@ libraries = {
 deterministic = false
 tree_root = SubResource("AnimationNodeStateMachine_2dof7")
 anim_player = NodePath("../AnimationPlayer")
-parameters/BlendSpace1D/blend_position = 2.30946
+parameters/conditions/state_hc_velocity_false = false
+parameters/conditions/state_hc_velocity_true = false
+parameters/conditions/state_idle_velocity_false = false
+parameters/conditions/state_idle_velocity_true = false
