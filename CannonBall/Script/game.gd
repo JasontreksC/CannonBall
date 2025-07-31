@@ -198,8 +198,10 @@ func on_exit_WaitSession():
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
-		players[0].canMove = true
-		players[1].canMove = true
+		
+	players[0].canMove = true
+	players[1].canMove = true
+
 func on_exit_Turn():
 	pass
 func on_entry_Shelling():
