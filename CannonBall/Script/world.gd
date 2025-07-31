@@ -58,7 +58,18 @@ func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
 	
 	hitNum += 1
 	game.rpc("change_turn")
-
+	
+@rpc("any_peer", "call_local")
+func spawn_effect(pos: Vector2, index: int, path: String) -> void:
+	if not multiplayer.is_server():
+		return
+	var psEffect: PackedScene = load(path)
+	var newEffect: Node2D = psEffect.instantiate()
+	add_child(newEffect)
+	newEffect.global_position = pos
+	newEffect.visibility_layer = index
+	
+	
 func _ready() -> void:
 	game = get_parent() as Game
 		
