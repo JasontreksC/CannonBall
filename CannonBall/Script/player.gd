@@ -6,8 +6,10 @@
 extends Node2D
 class_name Player
 
-var speed: float = 500.0
+var walkSpeed: float = 500.0
+var cannonSpeed: float = 300.0
 var velocity: float = 0
+
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
@@ -15,7 +17,7 @@ var attackChance: bool = false
 var isInPond: bool = false
 var selectedShell: int = 0
 var isWalking: bool = false
-var inControl: bool = false
+var canMove: bool = false
 
 @export var lifeTime: float = 60;
 @export var psCMC: PackedScene
@@ -39,9 +41,6 @@ func get_damage(damage: int):
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
-
-func hit_by_shell():
-	$Sprite2D.modulate = Color(1, 0, 0, 1)
 
 func _ready() -> void:
 	# _enter_tree()에서 설정한 멀티플레이어 권한은 고유의 id값이다.
@@ -95,7 +94,6 @@ func _ready() -> void:
 	
 	stateMachine.init_current_state("Idle")
 	
-	
 	var smPandent: ShaderMaterial = pandent.material
 	if smPandent:
 		if multiplayer.is_server():
@@ -111,7 +109,6 @@ func _physics_process(delta: float) -> void:
 	# 손잡이쪽으로 걸어가 손잡이를 잡게기까지 애니메이션이 짧게라도 나오는것이 자연스럽다.
 	# 그 동안 이동이나 조준과 같은 다른 조작이 입력되면 안된다. 그래서 따로 분기를 정해놓은 것
 	# register_transit을 호출했을 때 두 번째 인수로 건네준 실수값이 초 단위인데, 그동안 이 분기가 처리된다. 0이면 실행되지 않는다.
-	
 	if stateMachine.is_transit_process("Idle", "HandleCannon", delta):
 		pass
 	elif stateMachine.is_transit_process("HandleCannon", "Idle", delta):
@@ -130,25 +127,16 @@ func _physics_process(delta: float) -> void:
 	else:
 		match stateMachine.current_state_name():
 			"Idle":
-				# 애니메이션 재생
-				
-				# 단독 무브먼트
-				var direction := Input.get_axis("left", "right")
-				if direction:
-					velocity = direction * speed
-					character.scale.x = direction
-				else:
-					velocity = move_toward(velocity, 0, 50)
-				
-				if inControl:
-					self.global_position.x += velocity * delta
-				
 				# 입력 시 상태 전환
 				if isInCannon:
 					stateMachine.transit_by_input("handle", "HandleCannon")
 					if isAttack:
 						stateMachine.transit_by_input("aim", "ReadyFire")
-		
+				
+				h_movement("self", walkSpeed, delta)
+				amt.set("parameters/BT_Idle/Blend2/blend_amount", clamp(abs(velocity), 0, 1))
+				
+				
 			"HandleCannon":
 				# 대포 무브먼트에 고정
 				if cannon:
@@ -158,6 +146,8 @@ func _physics_process(delta: float) -> void:
 				if isAttack:
 					stateMachine.transit_by_input("aim", "ReadyFire")
 			
+				h_movement("cannon", cannonSpeed, delta)
+				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
 				
 			"ReadyFire":
 				stateMachine.transit_by_input("aim", "back")
@@ -189,21 +179,47 @@ func _physics_process(delta: float) -> void:
 		else:
 			isInCannon = false
 
+func h_movement(mode: String, speed: float, delta: float):
+	if not canMove:
+		return
+	
+	var direction := Input.get_axis("left", "right")
+	if direction:
+		velocity = direction * speed
+	else:
+		velocity = move_toward(velocity, 0, 50)
+		
+	match mode:
+		"self":
+			# 단독 무브먼트
+			self.global_position.x += velocity * delta
+			if direction:
+				character.scale.x = direction
+		"cannon":
+			# 대포 무브먼트
+			cannon.global_position.x += velocity * delta
+			self.global_position.x = cannon.get_handle_x()
+			cannon.rotate_wheel(delta)
+
 func _process(delta: float) -> void:
 	pass
+
 # 전환 이벤트. 상태 전환이 발생했을 때 한번만 실행된다.
 func on_exit_Idle():
-	pass
+	amt.set("parameters/conditions/is_state_idle", false)
 	
 func on_entry_Idle():
+	amt.set("parameters/conditions/is_state_idle", true)
+	
 	if cannon:
 		cannon.stateMachine.transit("Idle")
-	pass
 
 func on_exit_HandleCannon():
-	pass
+	amt.set("parameters/conditions/is_state_hc", false)
 	
 func on_entry_HandleCannon():
+	amt.set("parameters/conditions/is_state_hc", true)
+	
 	if multiplayer.is_server():
 		character.scale.x = 1
 	else:

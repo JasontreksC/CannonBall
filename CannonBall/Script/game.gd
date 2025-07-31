@@ -56,15 +56,13 @@ func add_object(object: Node2D) -> bool:
 @rpc("any_peer", "call_local")
 func change_turn() -> void:
 	turnCount += 1
-	if turnCount % 2 == 1:
+	if is_p1_turn():
 		players[0].isAttack = true
 		players[0].attackChance = true
-		
 		players[1].isAttack = false
 	else: 
 		players[1].isAttack = true
 		players[1].attackChance = true
-		
 		players[0].isAttack = false
 		
 	gameStarted = true
@@ -77,6 +75,26 @@ func change_turn() -> void:
 	if players[1].isAttack:
 		print("공격: P2")
 		print("수비: P1")
+
+@rpc("any_peer", "call_local")
+func transit_game_state(state: String):
+	stateMachine.transit(state)
+
+@rpc("any_peer", "call_local")
+func send_transmit(transmit: String):
+	if not transmitQueue.has(transmit):
+		transmitQueue.append(transmit)
+
+## 서버 전용
+
+func check_transmit(transmit: Array[String]) -> bool:
+	var result: bool = true
+	for t in transmit:
+		if not transmitQueue.has(t):
+			result = false
+		else:
+			transmitQueue.erase(t)
+	return result
 
 func regist_tick(key: String, interval: float, callback: Callable):
 	tickPoolInfo[key] = [0, interval]
@@ -92,6 +110,22 @@ func update_tick(delta: float):
 		else:
 			thisTick[0] += delta
 		
+func update_game_time(delta: float) -> void:
+	if multiplayer.is_server():
+		if players[0].isAttack :
+			players[0].lifeTime -= delta
+			
+		if players[1].isAttack :
+			players[1].lifeTime -= delta
+		
+		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
+
+func is_p1_turn() -> bool:
+	if turnCount % 2 == 1:
+		return true
+	else:
+		return false
+	
 
 func _enter_tree() -> void:
 	root = get_parent().root
@@ -102,113 +136,80 @@ func _ready() -> void:
 		ui.game = self
 		
 	stateMachine.register_state("WaitSession")
-	stateMachine.register_state("TurnStart")
-	stateMachine.register_state("WaitAttack")
-	stateMachine.register_state("Attacking")
-	stateMachine.register_state("EndAttack")
-	stateMachine.register_state("EndTurn")
+	stateMachine.register_state("Turn")
+	stateMachine.register_state("Shelling")
 	stateMachine.register_state("EndSession")
 	
-	stateMachine.register_transit("WaitSession", "TurnStart", 1)
-	stateMachine.register_transit("TurnStart", "WaitAttack", 1)
-	stateMachine.register_transit("WaitAttack", "Attacking", 1)
-	stateMachine.register_transit("WaitAttack", "EndTurn", 1)
-	stateMachine.register_transit("Attacking", "EndAttack", 1)
-	stateMachine.register_transit("EndAttack", "EndTurn", 1)
-	stateMachine.register_transit("EndTurn", "TurnStart", 1)
-	stateMachine.register_transit("EndTurn", "EndSession", 1)
-	stateMachine.register_transit("EndSession", "WaitSession", 1)
-	
+	stateMachine.register_transit("WaitSession", "Turn", 0)
+	stateMachine.register_transit("Turn", "Shelling", 0)
+	stateMachine.register_transit("Turn", "EndSession", 0)
+	stateMachine.register_transit("Shelling", "Turn", 0)
+	stateMachine.register_transit("Shelling", "EndSession", 0)
+
+	stateMachine.register_state_event("WaitSession", "entry", on_entry_WaitSession)
+	stateMachine.register_state_event("WaitSession", "exit", on_exit_WaitSession)
+	stateMachine.register_state_event("Turn", "entry", on_entry_Turn)
+	stateMachine.register_state_event("Turn", "exit", on_exit_Turn)
+	stateMachine.register_state_event("Shelling", "entry", on_entry_Shelling)
+	stateMachine.register_state_event("Shelling", "exit", on_exit_Shelling)
+	stateMachine.register_state_event("EndSession", "entry", on_entry_EndSession)
+	stateMachine.register_state_event("EndSession", "exit", on_exit_EndSession)
 
 func _process(delta: float) -> void:
-	if multiplayer.is_server():
-		if len(players) == 2:
-			if not gameStarted:
-				gameStarted = true
-				rpc("change_turn")
-				
-		if gameStarted:
-			update_tick(delta)
-			update_game_time(delta)
 			
-			
-	if stateMachine.is_transit_process("WaitSession", "TurnStart", delta):
-		players[0].inControl = true
-		players[1].inControl = true
-		
-	elif stateMachine.is_transit_process("TurnStart", "WaitAttack", delta):
+	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
 		pass
-	elif stateMachine.is_transit_process("WaitAttack", "Attacking", delta):
+	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
 		pass
-	elif stateMachine.is_transit_process("WaitAttack", "EndTurn", delta):
+	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
 		pass
-	elif stateMachine.is_transit_process("Attacking", "EndAttack", delta):
+	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
 		pass
-	elif stateMachine.is_transit_process("EndAttack", "EndTurn", delta):
-		pass
-	elif stateMachine.is_transit_process("EndTurn", "TurnStart", delta):
-		pass
-	elif stateMachine.is_transit_process("EndTurn", "EndSession", delta):
-		pass
-	elif stateMachine.is_transit_process("EndSession", "WaitSession", delta):
+	elif stateMachine.is_transit_process("Shelling", "EndSession", delta):
 		pass
 	# 상태 전환 프로세스가 없으면 각 상태에서의 행동 처리
 	else:
 		match stateMachine.current_state_name():
 			"WaitSession":
 				if len(players) == 2:
-					stateMachine.transit("TurnStart")
-			"TurnStart":
-				stateMachine.transit("WaitAttack")
-				pass
-			"WaitAttack":
-				
-				pass
-			"Attacking":
-				pass
-			"EndAttack":
-				pass
-			"EndTurn":
-				pass
+					rpc("transit_game_state", "Turn")
+			"Turn":
+				if multiplayer.is_server():
+					update_tick(delta)
+					update_game_time(delta)
+					
+					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
+						rpc("transit_game_state", "Shelling")
+			"Shelling":
+				if multiplayer.is_server():
+					update_tick(delta)
+					
 			"EndSession":
 				pass
-		#stateMachine.register_state("WaitSession")
-	#stateMachine.register_state("TurnStart")
-	#stateMachine.register_state("WaitAttack")
-	#stateMachine.register_state("Attacking")
-	#stateMachine.register_state("EndAttack")
-	#stateMachine.register_state("EndTurn")
-	#stateMachine.register_state("EndSession")
-
-
-func update_game_time(delta: float) -> void:
+	
+	print(stateMachine.current_state_name())
+		
+func on_entry_WaitSession():
+	pass
+func on_exit_WaitSession():
+	pass
+func on_entry_Turn():
 	if multiplayer.is_server():
-		if players[0].isAttack :
-			players[0].lifeTime -= delta
-			
-		if players[1].isAttack :
-			players[1].lifeTime -= delta
-		
-		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
-		
-		
+		rpc("change_turn")
+func on_exit_Turn():
+	pass
+func on_entry_Shelling():
+	pass
+func on_exit_Shelling():
+	pass
+func on_entry_EndSession():
+	pass
+func on_exit_EndSession():
+	pass
+
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	print(node.name)
 	if node is Player:
 		players.append(node as Player)
 	elif is_instance_valid(node.get_instance_id()):
 		add_object(node)
-		
-func check_transmit(transmit: Array[String]) -> bool:
-	var result: bool = true
-	for t in transmit:
-		if not transmitQueue.has(t):
-			result = false
-		else:
-			transmitQueue.erase(t)
-	return result
-
-@rpc("any_peer", "call_local")
-func send_transmit(transmit: String):
-	if not transmitQueue.has(transmit):
-		transmitQueue.append(transmit)
