@@ -1,6 +1,20 @@
 extends Node2D
 class_name World
 
+class ShellProp:
+	var shellType: int
+	var p0: Vector2
+	var v0: float
+	var theta0: float
+	var launcher: int
+	signal land_event
+	func _init(shellType: int, p0: Vector2, v0: float, theta0: float, launcher: int) -> void:
+		self.shellType = shellType
+		self.p0 = p0
+		self.v0 = v0
+		self.theta0 = theta0
+		self.launcher = launcher
+	
 # 격발 이벤트 - 탄환을 생성 및 운동함
 # 탄착 이벤트 - 피격 범위를 생성 및 유지함. 이펙트를 발생시킴
 # 시간 시스템 - 서버에서 시간을 재면서 게임 시간 누적 -> ui 표시
@@ -8,9 +22,10 @@ class_name World
 @onready var nP1SpawnSpot: Node2D = $P1SpawnSpot
 @onready var nP2SpawnSpot: Node2D = $P2SpawnSpot
 
+
+var shellingQueue: Dictionary[String, ShellProp]
+
 var game: Game = null
-var shellNum: int = 0
-var hitNum: int = 0
 
 func get_spawn_spot(tag: String) -> Vector2:
 	match tag:
@@ -22,42 +37,34 @@ func get_spawn_spot(tag: String) -> Vector2:
 			return Vector2.ZERO
 
 @rpc("any_peer", "call_local")
-func start_shelling(shellType: int, shellPath: String, start_pos: Vector2, theta0: float, v0: float, launcher: int) -> void:
+func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, theta0: float, launcher: int) -> void:
 	if not multiplayer.is_server():
 		return
 	
-	game.spawn_object(shellPath, "shell" + str(shellNum))
-	var newShell: Shell = game.get_object("shell" + str(shellNum))
-	shellNum += 1
+	var key: String = OS.get_unique_id()
+	game.spawn_object(shellPath, key, p0)
 	
-	newShell.shellType = shellType
-	newShell.global_position = start_pos
+	shellingQueue[key] = ShellProp.new(shellType, p0, v0, theta0, launcher)	
+	shellingQueue[key].land_event.connect(on_shelling_landed)
 
-	newShell.p0 = start_pos
-	newShell.v0 = v0
-	newShell.theta0 = theta0
-	newShell.launcher = launcher
-	
-	newShell.connect("land_event", on_shelling_landed)
 
-func on_shelling_landed(pos: Vector2, shellType: int, launcher: int):
+func on_shelling_landed(key: String, pos: Vector2):
 	if not multiplayer.is_server():
 		return
 	
-	game.spawn_object("res://Scene/damage_field.tscn", "hitpoint" + str(hitNum))
-	var newHitPoint: DamageField = game.get_object("hitpoint" + str(hitNum))
+	game.spawn_object("res://Scene/damage_field.tscn", key, pos)
 	
-	newHitPoint.attackTo = 1 - launcher
-	newHitPoint.global_position = pos
-	newHitPoint.hitDamage = 5
-	newHitPoint.tickDamage = 1
-	newHitPoint.lifetimeCount = 1
-	newHitPoint.activate()
+	match shellingQueue[key].shellType:
+		0: ## 일반탄
+			game.rpc("spawn_object", "res://Scene/explosion.tscn", "")
+			pass
+		1: ## 화염탄
+			game.rpc("spawn_object", "res://Scene/fire.tscn", "")
+			pass
+		2: ## 독탄
+			pass
 	
-	game.rpc("spawn_object", "res://Scene/explosion.tscn", "exlpo" + str(hitNum), pos)
-	
-	hitNum += 1
-	game.rpc("change_turn")
+	game.rpc("transit_game_state", "Turn")
 	
 @rpc("any_peer", "call_local")
 func spawn_effect(pos: Vector2, index: int, path: String) -> void:

@@ -9,6 +9,8 @@ var transmitQueue: Array[String]
 var players: Array[Player]
 var objects: Dictionary[String, Node2D]
 
+@onready var world: World = $World
+
 var G: float = 980
 var turnCount: int = 0
 var gameStarted: bool = false
@@ -18,14 +20,14 @@ var tickPoolCallback: Dictionary[String, Callable]
 var gameTime: float = 0
 
 @rpc("any_peer", "call_local")
-func spawn_object(path: String, name: String, pos: Vector2 = Vector2.ZERO) -> void:
+func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
 	if objects.has(name):
 		return
 	
 	if multiplayer.is_server():
 		var ps: PackedScene = load(path)
 		var inst: Node2D = ps.instantiate()
-		inst.name = name
+		inst.name = object_name
 		inst.global_position = pos
 		add_child(inst)
 		objects[name] = inst
@@ -34,11 +36,11 @@ func spawn_object(path: String, name: String, pos: Vector2 = Vector2.ZERO) -> vo
 		inst.rpc_id(senderID, "on_spawned")
 
 @rpc("any_peer", "call_local")
-func delete_object(name: String):
-	if objects.has(name):
-		var inst: Node2D = objects[name]
+func delete_object(object_name: String):
+	if objects.has(object_name):
+		var inst: Node2D = objects[object_name]
 		inst.queue_free()
-		objects.erase(name)
+		objects.erase(object_name)
 		
 func get_object(name: String) -> Node2D:
 	if objects.has(name):
@@ -185,13 +187,12 @@ func _process(delta: float) -> void:
 			"Shelling":
 				if multiplayer.is_server():
 					update_tick(delta)
-					
+				
 			"EndSession":
 				pass
-	
-	print(stateMachine.current_state_name())
 		
 func on_entry_WaitSession():
+	print(stateMachine.current_state_name())
 	pass
 func on_exit_WaitSession():
 	pass
@@ -201,14 +202,18 @@ func on_entry_Turn():
 		
 	players[0].canMove = true
 	players[1].canMove = true
+	
+	print(stateMachine.current_state_name())
 
 func on_exit_Turn():
 	pass
 func on_entry_Shelling():
+	print(stateMachine.current_state_name())
 	pass
 func on_exit_Shelling():
 	pass
 func on_entry_EndSession():
+	print(stateMachine.current_state_name())
 	pass
 func on_exit_EndSession():
 	pass

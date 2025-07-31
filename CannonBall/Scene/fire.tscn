@@ -17,7 +17,6 @@ offsets = PackedFloat32Array(0, 0.523511, 0.836991)
 colors = PackedColorArray(1, 0, 0, 1, 0.98, 0.571667, 0, 1, 0.19, 0.19, 0.19, 1)
 
 [node name="Fire" type="Node2D"]
-position = Vector2(150, -22)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_4y4p3")
