@@ -25,7 +25,6 @@ func in_range(targetX: float) -> bool:
 		return false
 
 func activate():
-	target = game.players[attackTo]
 	if target == null:
 		return
 		
@@ -50,6 +49,7 @@ func _ready() -> void:
 	var prop: World.ShellProp = game.world.shellingQueue[self.name]
 	
 	attackTo = 1 - prop.launcher
+	target = game.players[attackTo]
 	
 	match prop.shellType:
 		0: ## 일반탄
@@ -67,6 +67,8 @@ func _ready() -> void:
 			tickDamage = 0
 			lifetimeCount = 0
 			range = 1000
+	
+	activate()
 	
 func _process(delta: float) -> void:
 	if lifetimeCount <= 0:
