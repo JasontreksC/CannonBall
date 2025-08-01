@@ -45,7 +45,7 @@ func server_spawn_request() -> void:
 
 ## 멀티플레이를 위한 스폰이 아님. 즉 동기화 없이 서버에서만 존재하며 따라서 비동기적이지 않으므로 참조를 즉시 반환함.
 func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = Vector2.ZERO) -> Node2D:
-	if objects.has(object_name) or not multiplayer.is_server():
+	if objects.has(object_name) or multiplayer.is_server() == false:
 		return null
 
 	var inst: Node2D = ps.instantiate()
