@@ -42,11 +42,10 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 		return
 	
 	var key: String = OS.get_unique_id()
-	game.spawn_object(shellPath, key, p0)
-	
 	shellingQueue[key] = ShellProp.new(shellType, p0, v0, theta0, launcher)	
 	shellingQueue[key].land_event.connect(on_shelling_landed)
-
+	
+	game.spawn_object(shellPath, key, p0)
 
 func on_shelling_landed(key: String, pos: Vector2):
 	if not multiplayer.is_server():
