@@ -44,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	## 포물선 운동
 	t += delta
 	var x = v0 * cos(theta0) * t
-	var y = v0 * sin(theta0) * t - 0.5 * game.G * pow(t, 2)
+	var y = -v0 * sin(theta0) * t + 0.5 * game.G * pow(t, 2)
 	## 떨어지고 있는 중인지 판정
 	if ((p0.y + y) - global_position.y) < 0:
 		isFalling = false

@@ -152,4 +152,4 @@ func on_entry_Fire():
 	var launcher: int = 0
 	if not multiplayer.is_server():
 		launcher = 1
-	world.rpc("start_shelling", player.selectedShell, shellPathes[player.selectedShell], ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)
+	world.rpc("start_shelling", player.selectedShell, shellPathes[player.selectedShell], ac.get_breech_pos(), ac.V0, ac.get_aimed_theta(), launcher)
