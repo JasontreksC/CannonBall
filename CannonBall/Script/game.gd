@@ -60,13 +60,13 @@ func add_object(object: Node2D) -> bool:
 		return true
 
 ## 턴, 게임플로우 관리
-@rpc("any_peer", "call_local")
 func is_p1_turn() -> bool:
 	if turnCount % 2 == 1:
 		return true
 	else:
 		return false
 
+@rpc("any_peer", "call_local")
 func change_turn() -> void:
 	turnCount += 1
 	if is_p1_turn():
@@ -77,8 +77,9 @@ func change_turn() -> void:
 		players[1].isAttack = true
 		players[1].attackChance = true
 		players[0].isAttack = false
-		
-	update_lifetime_turn()
+	
+	if multiplayer.is_server():
+		update_lifetime_turn()
 	
 	#print("======================")
 	#print("현재 턴:", turnCount)
