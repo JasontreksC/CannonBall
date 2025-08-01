@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var particle: GPUParticles2D = $GPUParticles2D
+@onready var particle: GPUParticles2D = $CPUParticles2D
 var game: Game = null
 
 @rpc("any_peer", "call_local")
