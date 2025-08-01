@@ -13,12 +13,17 @@ var objects: Dictionary[String, Node2D]
 
 var G: float = 980
 var turnCount: int = 0
-var gameStarted: bool = false
+#var gameStarted: bool = false
 
-var tickPoolInfo: Dictionary[String, Array]
-var tickPoolCallback: Dictionary[String, Callable]
+#var tickPoolInfo: Dictionary[String, Array]
+#var tickPoolCallback: Dictionary[String, Callable]
+
+#var tickPool: Dictionary[String, Tick]
+var lifetimePool: Dictionary[String, Lifetime]
+
 var gameTime: float = 0
 
+## 오브젝트 풀링
 @rpc("any_peer", "call_local")
 func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
 	if objects.has(name):
@@ -54,8 +59,15 @@ func add_object(object: Node2D) -> bool:
 	else:
 		objects[object.name] = object
 		return true
-		
+
+## 턴, 게임플로우 관리
 @rpc("any_peer", "call_local")
+func is_p1_turn() -> bool:
+	if turnCount % 2 == 1:
+		return true
+	else:
+		return false
+
 func change_turn() -> void:
 	turnCount += 1
 	if is_p1_turn():
@@ -67,16 +79,16 @@ func change_turn() -> void:
 		players[1].attackChance = true
 		players[0].isAttack = false
 		
-	gameStarted = true
+	update_lifetime_turn()
 	
-	print("======================")
-	print("현재 턴:", turnCount)
-	if players[0].isAttack:
-		print("공격: P1")
-		print("수비: P2")
-	if players[1].isAttack:
-		print("공격: P2")
-		print("수비: P1")
+	#print("======================")
+	#print("현재 턴:", turnCount)
+	#if players[0].isAttack:
+		#print("공격: P1")
+		#print("수비: P2")
+	#if players[1].isAttack:
+		#print("공격: P2")
+		#print("수비: P1")
 
 @rpc("any_peer", "call_local")
 func transit_game_state(state: String):
@@ -87,8 +99,6 @@ func send_transmit(transmit: String):
 	if not transmitQueue.has(transmit):
 		transmitQueue.append(transmit)
 
-## 서버 전용
-
 func check_transmit(transmit: Array[String]) -> bool:
 	var result: bool = true
 	for t in transmit:
@@ -97,21 +107,31 @@ func check_transmit(transmit: Array[String]) -> bool:
 		else:
 			transmitQueue.erase(t)
 	return result
+	
+## 틱, 게임타임 관리
+#func regist_tick(key: String, interval: float, callback: Callable):
+	#tickPool[key] = Tick.new(interval, callback)
+	##tickPoolInfo[key] = [0, interval]
+	##tickPoolCallback[key] = callback
+#
+#func update_tick(delta: float):
+	#for key in tickPool.keys():
+		#var tk = tickPool[key]
+		#if tk.pass_time(delta):
+			#tk.callback.call()
+	#
+	#for key in tickPoolInfo.keys():
+		#var thisTick = tickPoolInfo[key]
+		#if thisTick[0] >= thisTick[1]:
+			#tickPoolCallback[key].call()
+			#thisTick[0] = 0
+		#
+		#else:
+			#thisTick[0] += delta
 
-func regist_tick(key: String, interval: float, callback: Callable):
-	tickPoolInfo[key] = [0, interval]
-	tickPoolCallback[key] = callback
+#func release_tick(key: String):
+	#tickPool.erase(key)
 
-func update_tick(delta: float):
-	for key in tickPoolInfo.keys():
-		var thisTick = tickPoolInfo[key]
-		if thisTick[0] >= thisTick[1]:
-			tickPoolCallback[key].call()
-			thisTick[0] = 0
-		
-		else:
-			thisTick[0] += delta
-		
 func update_game_time(delta: float) -> void:
 	if multiplayer.is_server():
 		if players[0].isAttack :
@@ -122,13 +142,29 @@ func update_game_time(delta: float) -> void:
 		
 		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
 
-func is_p1_turn() -> bool:
-	if turnCount % 2 == 1:
-		return true
-	else:
-		return false
+func regist_lifetime(key: String, turn: int, sec: float, callback: Callable):
+	lifetimePool[key] = Lifetime.new(turn, sec)
+	lifetimePool[key].callback = callback
 	
-
+func update_lifetime_turn():
+	for key in lifetimePool.keys():
+		var lft: Lifetime = lifetimePool[key]
+		if lft.turn > 0:
+			var live: bool = lft.pass_turn()
+			if not live and lft.sec == 0:
+				lft.callback.call()
+				lifetimePool.erase(key)
+			
+func update_lifetime_sec(delta: float):
+	for key in lifetimePool.keys():
+		var lft: Lifetime = lifetimePool[key]
+		if not lft.turn:
+			var live: bool = lft.pass_sec(delta)
+			if not live:
+				lft.callback.call()
+				lifetimePool.erase(key)
+		
+		
 func _enter_tree() -> void:
 	root = get_parent().root
 
@@ -178,7 +214,8 @@ func _process(delta: float) -> void:
 					rpc("transit_game_state", "Turn")
 			"Turn":
 				if multiplayer.is_server():
-					update_tick(delta)
+					#update_tick(delta)
+					update_lifetime_sec(delta)
 					update_game_time(delta)
 					
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
@@ -186,7 +223,8 @@ func _process(delta: float) -> void:
 						rpc("transit_game_state", "Shelling")
 			"Shelling":
 				if multiplayer.is_server():
-					update_tick(delta)
+					#update_tick(delta)
+					update_lifetime_sec(delta)
 				
 			"EndSession":
 				pass

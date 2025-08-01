@@ -56,10 +56,10 @@ func on_shelling_landed(key: String, pos: Vector2):
 	
 	match shellingQueue[key].shellType:
 		0: ## 일반탄
-			game.rpc("spawn_object", "res://Scene/explosion.tscn", "")
+			game.rpc("spawn_object", "res://Scene/explosion.tscn", OS.get_unique_id(), pos)
 			pass
 		1: ## 화염탄
-			game.rpc("spawn_object", "res://Scene/fire.tscn", "")
+			game.rpc("spawn_object", "res://Scene/fire.tscn", OS.get_unique_id(), pos)
 			pass
 		2: ## 독탄
 			pass

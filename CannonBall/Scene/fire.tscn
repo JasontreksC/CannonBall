@@ -1,12 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://vbo8nwvg3d3b"]
+[gd_scene load_steps=5 format=3 uid="uid://vbo8nwvg3d3b"]
 
-[ext_resource type="Shader" uid="uid://s4mnyl4kthwp" path="res://Shader/round.tres" id="1_n0jfg"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4y4p3"]
-shader = ExtResource("1_n0jfg")
-shader_parameter/TeamColor = Color(1, 0.207843, 0, 1)
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_cyldd"]
+[ext_resource type="Script" uid="uid://bg7vk1q7gph4b" path="res://Scene/fire.gd" id="1_n0jfg"]
 
 [sub_resource type="Curve" id="Curve_y4jvs"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.530625), 0.0, 0.0, 0, 0]
@@ -14,22 +8,30 @@ point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_n0jfg"]
 offsets = PackedFloat32Array(0, 0.523511, 0.836991)
-colors = PackedColorArray(1, 0, 0, 1, 0.98, 0.571667, 0, 1, 0.19, 0.19, 0.19, 1)
+colors = PackedColorArray(1, 0, 0, 1, 0.98, 0.571667, 0, 0.603922, 0.19, 0.19, 0.19, 0.352941)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n0jfg"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
 [node name="Fire" type="Node2D"]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_4y4p3")
-scale = Vector2(20, 20)
-texture = SubResource("CanvasTexture_cyldd")
+script = ExtResource("1_n0jfg")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-amount = 100
-emission_shape = 1
-emission_sphere_radius = 10.0
+amount = 500
+lifetime = 2.0
+emission_shape = 3
+emission_rect_extents = Vector2(300, 1)
 gravity = Vector2(0, -50)
 radial_accel_min = -10.0
 radial_accel_max = -2.0
-scale_amount_max = 10.0
+scale_amount_min = 5.0
+scale_amount_max = 20.0
 scale_amount_curve = SubResource("Curve_y4jvs")
 color_ramp = SubResource("Gradient_n0jfg")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_n0jfg")
+
+[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]

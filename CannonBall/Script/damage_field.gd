@@ -10,6 +10,7 @@ var range: float = 1000
 
 var game: Game = null
 var target: Player = null
+@onready var timer: Timer = $Timer
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
@@ -34,13 +35,14 @@ func activate():
 			game.ui.rpc("set_hp", attackTo, target.hp)
 	
 	if tickDamage:
-		game.regist_tick(self.name, 1, Callable(self, "tick"))
+		timer.start(1)
+		#game.regist_tick(self.name, 1, Callable(self, "tick"))
 	
-func tick():
-	if in_range(target.global_position.x):
-		target.get_damage(tickDamage)
-		game.ui.rpc("set_hp", attackTo, target.hp)
-		print("Tick Damage to: ", target.name)
+#func tick():
+	#if in_range(target.global_position.x):
+		#target.get_damage(tickDamage)
+		#game.ui.rpc("set_hp", attackTo, target.hp)
+		#print("Tick Damage to: ", target.name)
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
@@ -73,3 +75,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if lifetimeCount <= 0:
 		game.delete_object(self.name)
+
+
+func _on_timer_timeout() -> void:
+	if in_range(target.global_position.x):
+		target.get_damage(tickDamage)
+		game.ui.rpc("set_hp", attackTo, target.hp)
+		print("Tick Damage to: ", target.name)
