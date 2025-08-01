@@ -24,7 +24,8 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 	if not multiplayer.is_server():
 		return
 	
-	var shell: Shell = game.server_spawn_directly(load(shellPath), OS.get_unique_id(), p0)
+	var shell: Shell = game.server_spawn_directly(load(shellPath), "", p0)
+	print(shell.name)
 	shell.shellType = shellType
 	shell.p0 = p0
 	shell.v0 = v0

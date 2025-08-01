@@ -30,7 +30,8 @@ func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO
 	
 	var ps: PackedScene = load(path)
 	var inst: Node2D = ps.instantiate()
-	inst.name = object_name
+	if object_name:
+		inst.name = object_name
 	inst.global_position = pos
 	add_child(inst)
 	objects[object_name] = inst
@@ -45,11 +46,12 @@ func server_spawn_request() -> void:
 
 ## 멀티플레이를 위한 스폰이 아님. 즉 동기화 없이 서버에서만 존재하며 따라서 비동기적이지 않으므로 참조를 즉시 반환함.
 func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = Vector2.ZERO) -> Node2D:
-	if objects.has(object_name) or multiplayer.is_server() == false:
+	if objects.has(object_name) or not multiplayer.is_server():
 		return null
-
+	
 	var inst: Node2D = ps.instantiate()
-	inst.name = object_name
+	if object_name:
+		inst.name = object_name
 	inst.global_position = pos
 	add_child(inst)
 	objects[object_name] = inst
