@@ -19,13 +19,17 @@ var turnCount: int = 0
 
 #var tickPool: Dictionary[String, Tick]
 var lifetimePool: Dictionary[String, Lifetime]
-
 var gameTime: float = 0
 
 ## 오브젝트 풀링
 @rpc("any_peer", "call_local")
 func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
-	if objects.has(object_name) or not multiplayer.is_server():
+	if object_name == "none":
+		object_name = "object" + str(Time.get_ticks_usec())
+	elif objects.has(object_name):
+		return
+
+	if not multiplayer.is_server():
 		return
 	
 	var ps: PackedScene = load(path)
@@ -46,8 +50,13 @@ func server_spawn_request() -> void:
 
 ## 멀티플레이를 위한 스폰이 아님. 즉 동기화 없이 서버에서만 존재하며 따라서 비동기적이지 않으므로 참조를 즉시 반환함.
 func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = Vector2.ZERO) -> Node2D:
-	if objects.has(object_name) or not multiplayer.is_server():
-		return null
+	if object_name == "none":
+		object_name = "object" + str(Time.get_ticks_usec())
+	elif objects.has(object_name):
+		return
+
+	if not multiplayer.is_server():
+		return
 	
 	var inst: Node2D = ps.instantiate()
 	if object_name:
