@@ -17,17 +17,45 @@ var game: Game = null
 func on_spawned() -> void:
 	pass
 
+func land():
+	if not multiplayer.is_server():
+		return
+	
+	var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), OS.get_unique_id(), global_position)
+	df.target = game.players[1 - launcher]
+	match shellType:
+		0: ## 일반탄
+			df.hitDamage = 5
+			df.tickDamage = 0
+			df.lifetimeCount = 0
+			df.range = 600
+			
+			game.rpc("spawn_object", "res://Scene/explosion.tscn", OS.get_unique_id(), global_position)
+			
+		1: ## 화염탄
+			df.hitDamage = 0
+			df.tickDamage = 1
+			df.lifetimeCount = 2
+			df.range = 400
+	
+			game.rpc("spawn_object", "res://Scene/fire.tscn", OS.get_unique_id(), global_position)
+			
+		2: ## 독탄
+			df.hitDamage = 3
+			df.tickDamage = 0
+			df.lifetimeCount = 0
+			df.range = 1000	
+	
+	df.activate()
+	
+	game.rpc("delete_object", self.name)
+	game.rpc("transit_game_state", "Turn")
+
 func _enter_tree() -> void:
 	game = get_parent() as Game
 
 func _ready() -> void:
-	if multiplayer.is_server():
-		var prop: World.ShellProp = game.world.shellingQueue[self.name]
-		self.shellType = prop.shellType
-		self.p0 = prop.p0
-		self.v0 = prop.v0
-		self.theta0 = prop.theta0
-		self.launcher = prop.launcher
+	pass
 
 func _process(delta: float) -> void:
 	pass
@@ -35,12 +63,13 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
+		
 	## 탄착 여부 판정
 	if global_position.y >= -50 and isFalling and alive:
 		alive = false
-		game.delete_object(self.name)
-		game.world.shellingQueue[self.name].land_event.emit(self.name, Vector2(global_position.x, -50))
+		land()
 		return
+		
 	## 포물선 운동
 	t += delta
 	var x = v0 * cos(theta0) * t

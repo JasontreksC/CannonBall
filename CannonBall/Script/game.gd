@@ -25,19 +25,35 @@ var gameTime: float = 0
 ## 오브젝트 풀링
 @rpc("any_peer", "call_local")
 func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
-	if objects.has(object_name):
+	if objects.has(object_name) or not multiplayer.is_server():
 		return
 	
-	if multiplayer.is_server():
-		var ps: PackedScene = load(path)
-		var inst: Node2D = ps.instantiate()
-		inst.name = object_name
-		inst.global_position = pos
-		add_child(inst)
-		objects[object_name] = inst
-		
-		var senderID = multiplayer.get_remote_sender_id()
-		inst.rpc_id(senderID, "on_spawned")
+	var ps: PackedScene = load(path)
+	var inst: Node2D = ps.instantiate()
+	inst.name = object_name
+	inst.global_position = pos
+	add_child(inst)
+	objects[object_name] = inst
+	
+	var senderID = multiplayer.get_remote_sender_id()
+	inst.rpc_id(senderID, "on_spawned")
+
+## 모든 피어가 서버에 스폰을 요청함. 멀티플레이에서 동기화되는 객체에 대해 사용함. 비동기적으로 실행됨
+@rpc("any_peer", "call_local")
+func server_spawn_request() -> void: 
+	pass
+
+## 멀티플레이를 위한 스폰이 아님. 즉 동기화 없이 서버에서만 존재하며 따라서 비동기적이지 않으므로 참조를 즉시 반환함.
+func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = Vector2.ZERO) -> Node2D:
+	if objects.has(object_name) or not multiplayer.is_server():
+		return null
+
+	var inst: Node2D = ps.instantiate()
+	inst.name = object_name
+	inst.global_position = pos
+	add_child(inst)
+	objects[object_name] = inst
+	return inst
 
 @rpc("any_peer", "call_local")
 func delete_object(object_name: String):
