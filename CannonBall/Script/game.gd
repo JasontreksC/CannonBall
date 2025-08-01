@@ -25,7 +25,7 @@ var gameTime: float = 0
 ## 오브젝트 풀링
 @rpc("any_peer", "call_local")
 func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
-	if objects.has(name):
+	if objects.has(object_name):
 		return
 	
 	if multiplayer.is_server():
@@ -34,7 +34,7 @@ func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO
 		inst.name = object_name
 		inst.global_position = pos
 		add_child(inst)
-		objects[name] = inst
+		objects[object_name] = inst
 		
 		var senderID = multiplayer.get_remote_sender_id()
 		inst.rpc_id(senderID, "on_spawned")
