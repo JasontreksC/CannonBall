@@ -13,7 +13,6 @@ var objects: Dictionary[String, Node2D]
 
 var G: float = 980
 var turnCount: int = 0
-#var gameStarted: bool = false
 
 #var tickPoolInfo: Dictionary[String, Array]
 #var tickPoolCallback: Dictionary[String, Callable]
