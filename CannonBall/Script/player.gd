@@ -49,6 +49,7 @@ func get_damage(damage: int):
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
+	game = get_parent() as Game
 
 func _ready() -> void:
 	# _enter_tree()에서 설정한 멀티플레이어 권한은 고유의 id값이다.
