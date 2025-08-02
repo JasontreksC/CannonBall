@@ -8,8 +8,10 @@ var ui: LobbyUI = null
 var mySteamID: int = 0
 var validFriends: Dictionary[String, int]
 var invalidFriends: Dictionary[String, int]
+var hosting: bool = false
 
 func host_lobby():
+	hosting = true
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
 
 func join_lobby(new_lobby_id : int):
@@ -20,12 +22,12 @@ func create_steam_socket():
 	root.peer.create_host(0)
 	root.multiplayer.set_multiplayer_peer(root.peer)
 	root.multiplayer.peer_connected.connect(root.session_start)
-	root.session_start()
 	
 func connect_steam_socket(steam_id : int):
 	root.peer = SteamMultiplayerPeer.new()
 	root.peer.create_client(steam_id, 0)
 	root.multiplayer.set_multiplayer_peer(root.peer)
+	Steam.sendP2PPacket(ui.get_invite_steam_id(), var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
 
 ## 친구목록 및 초대
 func refresh_firend_list():
@@ -108,8 +110,7 @@ func _ready() -> void:
 			
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
-			root.uiMgr.set_ui(1)
-			root.sceneMgr.set_scene(1)
+				
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
 		else:
@@ -156,7 +157,21 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	Steam.run_callbacks()
-	recieve_invite()
+	if hosting:
+		var packetSize = Steam.getAvailableP2PPacketSize()
+		if packetSize > 0:
+			var packet = Steam.readP2PPacket(packetSize)
+			if packet:
+				var remote_steam_id = packet["remote_steam_id"]
+				if remote_steam_id == ui.get_invite_steam_id():
+					var message = bytes_to_var(packet["data"])
+					if message == "client_connected":
+						hosting = false
+						root.uiMgr.set_ui(1)
+						root.sceneMgr.set_scene(1)
+						root.session_start()
+	else:
+		recieve_invite()
 
 func _on_p2p_session_request(remote_id: int):
 	print("P2P 세션 요청 수신, 자동 수락:", remote_id)
