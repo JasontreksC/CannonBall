@@ -16,7 +16,8 @@ func _ready() -> void:
 	particle.emitting = true
 
 func _physics_process(delta: float) -> void:
-	particle.request_particles_process(delta)
+	if not particle.is_visible_in_tree():
+		particle.request_particles_process(delta)
 
 func _on_gpu_particles_2d_finished() -> void:
 	print("poision spread deleted")
