@@ -4,10 +4,12 @@ class_name DamageField
 ## SERVER ONLY: 서버에서만 작동하는 객체
 
 var attackTo: int = -1
+
+var range: float = 0
 var hitDamage: int = 0
 var tickDamage: int = 0  # 틱 대미지 간격은 1초로 고정
-var lifetimeCount: int = 0
-var range: float = 1000
+var tickInterval: float = 0
+var lifetimeTurn: int = 0
 
 var game: Game = null
 var target: Player = null
@@ -33,7 +35,10 @@ func activate():
 			game.ui.rpc("set_hp", attackTo, target.hp)
 	
 	if tickDamage:
-		timer.start(1)
+		timer.start(tickInterval)
+	
+	if lifetimeTurn:
+		game.regist_lifetime(self.name, lifetimeTurn, 0, on_lifetime_end)
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
@@ -41,10 +46,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	pass
 	
-func _process(delta: float) -> void:
-	if lifetimeCount <= 0:
-		game.delete_object(self.name)
-
+func on_lifetime_end() -> void:
+	game.delete_object(self.name)
 
 func _on_timer_timeout() -> void:
 	if in_range(target.global_position.x):

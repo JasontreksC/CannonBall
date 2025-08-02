@@ -12,6 +12,12 @@ shader_parameter/ColorParameter = Color(1, 0.407843, 0, 1)
 shader_parameter/Brightness = 10.0
 
 [node name="FireShell" instance=ExtResource("1_sf3w6")]
+hitDamage = 1.0
+hitRange = 300.0
+tickDamage = 1.0
+tickRange = 300.0
+tickInterval = 1.0
+lifetimeTurn = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
 material = SubResource("ShaderMaterial_vcak5")

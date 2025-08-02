@@ -2,6 +2,14 @@ extends Node2D
 class_name Shell
 
 var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
+
+@export_category("Damage Field Property")
+@export var range: float
+@export var hitDamage: float
+@export var tickDamage: float
+@export var tickInterval: float
+@export var lifetimeTurn: int
+
 var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
@@ -23,28 +31,21 @@ func land():
 	
 	var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", global_position)
 	df.target = game.players[1 - launcher]
+	df.range = range
+	df.hitDamage = hitDamage
+	df.tickDamage = tickDamage
+	df.tickInterval = tickInterval
+	df.lifetimeTurn = lifetimeTurn
+	
 	match shellType:
 		0: ## 일반탄
-			df.hitDamage = 5
-			df.tickDamage = 0
-			df.lifetimeCount = 0
-			df.range = 600
-			
 			game.rpc("spawn_object", "res://Scene/explosion.tscn", "none", global_position)
 			
 		1: ## 화염탄
-			df.hitDamage = 0
-			df.tickDamage = 1
-			df.lifetimeCount = 2
-			df.range = 400
-	
 			game.rpc("spawn_object", "res://Scene/fire.tscn", "none", global_position)
 			
 		2: ## 독탄
-			df.hitDamage = 3
-			df.tickDamage = 0
-			df.lifetimeCount = 0
-			df.range = 1000	
+			pass
 	
 	df.activate()
 	

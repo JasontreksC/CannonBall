@@ -10,6 +10,7 @@ var players: Array[Player]
 var objects: Dictionary[String, Node2D]
 
 @onready var world: World = $World
+@onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 var G: float = 980
 var turnCount: int = 0
@@ -22,16 +23,46 @@ var lifetimePool: Dictionary[String, Lifetime]
 var gameTime: float = 0
 
 ## 오브젝트 풀링
+#@rpc("any_peer", "call_local")
+#func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
+	#if object_name == "none":
+		#object_name = "object" + str(Time.get_ticks_usec())
+	#elif objects.has(object_name):
+		#return
+#
+	#if not multiplayer.is_server():
+		#return
+	#
+	#var ps: PackedScene = load(path)
+	#var inst: Node2D = ps.instantiate()
+	#if object_name:
+		#inst.name = object_name
+	#inst.global_position = pos
+	#add_child(inst)
+	#objects[object_name] = inst
+	#
+	#var senderID = multiplayer.get_remote_sender_id()
+	#inst.rpc_id(senderID, "on_spawned")
+
+## 모든 피어가 서버에 스폰을 요청함. 멀티플레이에서 동기화되는 객체에 대해 사용함. 비동기적으로 실행됨
 @rpc("any_peer", "call_local")
-func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
+func server_spawn_request(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void: 
 	if object_name == "none":
 		object_name = "object" + str(Time.get_ticks_usec())
 	elif objects.has(object_name):
 		return
-
 	if not multiplayer.is_server():
 		return
 	
+	var spawnable: bool = false
+	var count: int = spawner.get_spawnable_scene_count()
+	for i in range(count):
+		var spawnable_path: String = spawner.get_spawnable_scene(i)
+		if path == spawnable_path:
+			spawnable = true
+	if not spawnable:
+		return
+
 	var ps: PackedScene = load(path)
 	var inst: Node2D = ps.instantiate()
 	if object_name:
@@ -43,18 +74,12 @@ func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO
 	var senderID = multiplayer.get_remote_sender_id()
 	inst.rpc_id(senderID, "on_spawned")
 
-## 모든 피어가 서버에 스폰을 요청함. 멀티플레이에서 동기화되는 객체에 대해 사용함. 비동기적으로 실행됨
-@rpc("any_peer", "call_local")
-func server_spawn_request() -> void: 
-	pass
-
 ## 멀티플레이를 위한 스폰이 아님. 즉 동기화 없이 서버에서만 존재하며 따라서 비동기적이지 않으므로 참조를 즉시 반환함.
 func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = Vector2.ZERO) -> Node2D:
 	if object_name == "none":
 		object_name = "object" + str(Time.get_ticks_usec())
 	elif objects.has(object_name):
 		return
-
 	if not multiplayer.is_server():
 		return
 	

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b3j2oh0a5iehh" path="res://Asset/shell/poision_shell.png" id="2_lgct0"]
 
 [node name="PoisonShell" instance=ExtResource("1_pfqpl")]
+hitDamage = 3.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
 scale = Vector2(0.25, 0.25)
