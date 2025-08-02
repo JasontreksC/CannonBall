@@ -224,15 +224,15 @@ func _process(delta: float) -> void:
 			"EndSession":
 				root.sceneMgr.set_scene(2)
 		
-		if check_transmit(["p1_defeat"]):
-			print("p2 win!")
-			winner = 1
-		elif check_transmit(["p2_defeat"]):
-			print("p1 win!")
-			winner = 0
-			
-		if winner != -1:
-			stateMachine.transit("EndSession")
+	if check_transmit(["p1_defeat"]):
+		print("p2 win!")
+		winner = 1
+	elif check_transmit(["p2_defeat"]):
+		print("p1 win!")
+		winner = 0
+		
+	if winner != -1:
+		stateMachine.transit("EndSession")
 		
 func on_entry_WaitSession():
 	pass
