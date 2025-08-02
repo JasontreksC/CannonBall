@@ -1,23 +1,59 @@
 extends Node2D
 class_name Shell
 
+var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
+
+@export_category("Damage Field Property")
+@export var range: float
+@export var hitDamage: float
+@export var tickDamage: float
+@export var tickInterval: float
+@export var lifetimeTurn: int
+
 var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
+var launcher: int = 0
+
+var isFalling: bool = false
+var alive = true
 var t: float = 0
 
 var game: Game = null
 
-var isFalling: bool = false
-var alive = true
-var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
-var launcher: int = 0
-
-signal land_event
-
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
 	pass
+
+func land():
+	if not multiplayer.is_server():
+		return
+	
+	var pos = Vector2(global_position.x, 0)
+	
+	var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", pos)
+	df.attackTo = 1 - launcher
+	df.target = game.players[1 - launcher]
+	df.range = range
+	df.hitDamage = hitDamage
+	df.tickDamage = tickDamage
+	df.tickInterval = tickInterval
+	df.lifetimeTurn = lifetimeTurn
+	df.activate()
+	
+	match shellType:
+		0: ## 일반탄
+			game.rpc("server_spawn_request", "res://Scene/explosion.tscn", "none", pos)
+			
+		1: ## 화염탄
+			game.rpc("server_spawn_request", "res://Scene/fire.tscn", "none", pos)
+			
+		2: ## 독탄
+			game.rpc("server_spawn_request", "res://Scene/poison_spread.tscn", "none", pos)
+	
+	
+	game.rpc("delete_object", self.name)
+	game.rpc("transit_game_state", "Turn")
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
@@ -31,29 +67,21 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
-	
+		
+	## 탄착 여부 판정
 	if global_position.y >= -50 and isFalling and alive:
 		alive = false
-		game.rpc("delete_object", self.name)
-		emit_signal("land_event", Vector2(global_position.x, -50), shellType, launcher)
+		land()
 		return
-
-	
+		
+	## 포물선 운동
 	t += delta
 	var x = v0 * cos(theta0) * t
-	var y = v0 * sin(theta0) * t - 0.5 * game.G * pow(t, 2)
-	y *= -1
-	
+	var y = -v0 * sin(theta0) * t + 0.5 * game.G * pow(t, 2)
+	## 떨어지고 있는 중인지 판정
 	if ((p0.y + y) - global_position.y) < 0:
 		isFalling = false
 	else:
 		isFalling = true
 	
 	global_position = p0 + Vector2(x, y)
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	pass
-	#if body.get_meta("tag") == "world" and isFalling:
-		#alive = false
-		#game.rpc("delete_object", self.name)
-		#emit_signal("land_event", Vector2(global_position.x, -50), shellType, launcher)

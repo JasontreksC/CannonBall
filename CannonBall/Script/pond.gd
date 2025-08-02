@@ -23,9 +23,9 @@ func _physics_process(delta: float) -> void:
 		return
 	elif not multiplayer.is_server() and not effetivePlayer == 1:
 		return
-		
-	if not world.game.gameStarted:
+	if world.game.stateMachine.current_state_name() == "WaitSession":
 		return
+	
 	
 	if target == null:
 		target = world.game.players[effetivePlayer]

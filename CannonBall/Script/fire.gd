@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var particle: GPUParticles2D = $GPUParticles2D
+@onready var timer: Timer = $Timer
 var game: Game = null
 
 @rpc("any_peer", "call_local")
@@ -10,10 +11,17 @@ func on_spawned() -> void:
 func _enter_tree() -> void:
 	game = get_parent() as Game
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	particle.one_shot = true
+	particle.one_shot = false
 	particle.emitting = true
+	
+	if multiplayer.is_server():
+		game.regist_lifetime(self.name, 4, 0)
 
-func _on_gpu_particles_2d_finished() -> void:
+@rpc("any_peer", "call_local")
+func lifetime_end() -> void:
+	particle.emitting = false
+	timer.start(particle.lifetime)
+
+func _on_timer_timeout() -> void:
 	game.delete_object(self.name)
