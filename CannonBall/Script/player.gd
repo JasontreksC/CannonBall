@@ -180,7 +180,13 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-
+	
+	if hp <= 0:
+		if multiplayer.is_server():
+			game.rpc("send_transmit", "p1_defeat")
+		else:
+			game.rpc("send_transmit", "p2_defeat")
+	
 func h_movement(mode: String, speed: float, delta: float):
 	if not canMove:
 		return

@@ -17,6 +17,7 @@ var turnCount: int = 0
 
 var lifetimePool: Dictionary[String, Lifetime]
 var gameTime: float = 0
+var winner: int = -1
 
 ## 오브젝트 풀링
 ## 모든 피어가 서버에 스폰을 요청함. 멀티플레이에서 동기화되는 객체에 대해 사용함. 비동기적으로 실행됨
@@ -215,15 +216,25 @@ func _process(delta: float) -> void:
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
 						print("ShellingStarted!")
 						rpc("transit_game_state", "Shelling")
+						
 			"Shelling":
 				if multiplayer.is_server():
 					update_lifetime_sec(delta)
 				
 			"EndSession":
-				pass
+				root.sceneMgr.set_scene(2)
+		
+		if check_transmit(["p1_defeat"]):
+			print("p2 win!")
+			winner = 1
+		elif check_transmit(["p2_defeat"]):
+			print("p1 win!")
+			winner = 0
+			
+		if winner != -1:
+			stateMachine.transit("EndSession")
 		
 func on_entry_WaitSession():
-	print(stateMachine.current_state_name())
 	pass
 func on_exit_WaitSession():
 	pass
@@ -234,23 +245,23 @@ func on_entry_Turn():
 	players[0].canMove = true
 	players[1].canMove = true
 	
-	print(stateMachine.current_state_name())
-
 func on_exit_Turn():
 	pass
 func on_entry_Shelling():
-	print(stateMachine.current_state_name())
 	pass
 func on_exit_Shelling():
 	pass
 func on_entry_EndSession():
-	print(stateMachine.current_state_name())
-	pass
+	players[0].canMove = false
+	players[1].canMove = false
+	
+	lifetimePool.clear()
+	transmitQueue.clear()
+	
 func on_exit_EndSession():
 	pass
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
-	print(node.name)
 	if node is Player:
 		players.append(node as Player)
 	elif is_instance_valid(node.get_instance_id()):
