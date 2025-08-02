@@ -59,6 +59,7 @@ explosiveness = 0.98
 fixed_fps = 60
 interpolate = false
 collision_base_size = 0.0
+visibility_rect = Rect2(-50000, -100, 100000, 200)
 process_material = SubResource("ParticleProcessMaterial_ksd7w")
 
 [node name="Line2D" type="Line2D" parent="."]
