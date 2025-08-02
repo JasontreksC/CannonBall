@@ -208,7 +208,6 @@ func _process(delta: float) -> void:
 					rpc("transit_game_state", "Turn")
 			"Turn":
 				if multiplayer.is_server():
-					#update_tick(delta)
 					update_lifetime_sec(delta)
 					update_game_time(delta)
 					
@@ -217,7 +216,6 @@ func _process(delta: float) -> void:
 						rpc("transit_game_state", "Shelling")
 			"Shelling":
 				if multiplayer.is_server():
-					#update_tick(delta)
 					update_lifetime_sec(delta)
 				
 			"EndSession":
