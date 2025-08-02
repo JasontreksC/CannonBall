@@ -11,7 +11,7 @@ point_count = 2
 curve = SubResource("Curve_mbulw")
 
 [sub_resource type="Curve" id="Curve_seuo7"]
-_data = [Vector2(0, 0), 0.0, 7.76216, 0, 0, Vector2(0.351604, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 2.99371, 0, 0, Vector2(1, 0.989565), 0.0163642, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_btab0"]
@@ -35,8 +35,7 @@ initial_velocity_max = 2000.0
 velocity_limit_curve = SubResource("CurveTexture_dkwtk")
 gravity = Vector3(0, 0, 0)
 attractor_interaction_enabled = false
-scale_min = 0.2
-scale_max = 0.5
+scale_min = 0.5
 scale_curve = SubResource("CurveTexture_btab0")
 alpha_curve = SubResource("CurveTexture_seuo7")
 
@@ -50,11 +49,9 @@ script = ExtResource("1_seuo7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 process_mode = 3
-emitting = false
-amount = 500
+amount = 100
 texture = ExtResource("1_mbulw")
 lifetime = 8.0
-one_shot = true
 explosiveness = 0.98
 fixed_fps = 60
 interpolate = false
@@ -63,7 +60,6 @@ visibility_rect = Rect2(-50000, -100, 100000, 200)
 process_material = SubResource("ParticleProcessMaterial_ksd7w")
 
 [node name="Line2D" type="Line2D" parent="."]
-visible = false
 points = PackedVector2Array(-500, 0, 500, 0)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
