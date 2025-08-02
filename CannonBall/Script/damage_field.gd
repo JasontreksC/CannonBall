@@ -31,8 +31,9 @@ func activate():
 		
 	if hitDamage:
 		if in_range(target.global_position.x):
-			target.get_damage(hitDamage)
-			game.ui.rpc("set_hp", attackTo, target.hp)
+			#target.get_damage(hitDamage)
+			target.rpc("get_damage", hitDamage)
+			#game.ui.rpc("set_hp", attackTo, target.hp)
 	
 	if tickDamage:
 		timer.start(tickInterval)
@@ -52,6 +53,7 @@ func lifetime_end() -> void:
 
 func _on_timer_timeout() -> void:
 	if in_range(target.global_position.x):
-		target.get_damage(tickDamage)
-		game.ui.rpc("set_hp", attackTo, target.hp)
+		#target.get_damage(tickDamage)
+		target.rpc("get_damage", tickDamage)
+		#game.ui.rpc("set_hp", attackTo, target.hp)
 		print("Tick Damage to: ", target.name)
