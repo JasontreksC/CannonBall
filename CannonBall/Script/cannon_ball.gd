@@ -25,12 +25,16 @@ var peer: MultiplayerPeer = null
 	#gameScene.players.append(player)
 	
 func session_start(id=1):
-	var player: Player = player_scene.instantiate()
-	player.name = str(id)
+	#uiMgr.set_ui(1)
+	sceneMgr.set_scene(1)
+	var game: Game = sceneMgr.currentScene as Game
+	game.sessionID = id
 	
-	var gameScene: Game = sceneMgr.currentScene as Game
-	gameScene.call_deferred("add_child", player)
-	gameScene.players.append(player)
+	#var player: Player = player_scene.instantiate()
+	#player.name = str(id)
+	
+	#gameScene.call_deferred("add_child", player)
+	#gameScene.players.append(player)
 
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
@@ -61,7 +65,7 @@ func get_main_viewport_world() -> World2D:
 	#multiplayer.set_multiplayer_peer(peer)
 	#multiplayer.peer_connected.connect(_add_player)
 	#_add_player()
-	#
+	
 #func connect_steam_socket(steam_id : int):
 	#peer = SteamMultiplayerPeer.new()
 	#peer.create_client(steam_id, 0)
@@ -180,6 +184,6 @@ func _ready() -> void:
 	#print("P2P 세션 연결 실패:", remote_id, "오류 코드:", error)		
 	
 func _process(delta: float) -> void:
+	Steam.run_callbacks()
 	pass
-	#Steam.run_callbacks()
 	#recieve_invite()

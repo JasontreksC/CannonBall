@@ -1,4 +1,5 @@
 extends Node2D
+class_name Result
 
 var root: CannonBall = null
 var ui: ResultUI

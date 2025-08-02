@@ -7,6 +7,10 @@ class_name SceneManager
 @export var psGameScene: PackedScene
 @export var psResultScene: PackedScene
 
+var gameScene: Game = null
+var lobbyScene: Lobby = null
+var resultScene: Result = null
+
 var currentScene: Node2D = null
 var currentSceneNum: int = -1
 
@@ -17,24 +21,30 @@ func set_scene(num: int) -> void:
 	
 	if currentSceneNum == num:
 		return
-		
 	currentSceneNum = num
 	
 	if currentScene:
 		currentScene.queue_free()
+		#remove_child(currentScene)
 		currentScene = null
 	match num:
 		0:
+			#currentScene = lobbyScene
 			currentScene = psLobbyScene.instantiate()
 		1:
+			#currentScene = gameScene
 			currentScene = psGameScene.instantiate()
 		2:
+			#currentScene = resultScene
 			currentScene = psResultScene.instantiate()
 	
 	call_deferred("add_child", currentScene)
 
 func _ready() -> void:
 	pass
+	#lobbyScene = psLobbyScene.instantiate()
+	#gameScene = psGameScene.instantiate()
+	#resultScene = psResultScene.instantiate()
 
 func _process(delta: float) -> void:
 	pass

@@ -15,19 +15,19 @@ func host_lobby():
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
 
 func join_lobby(new_lobby_id : int):
+	Steam.sendP2PPacket(Steam.getLobbyOwner(new_lobby_id), var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
 	Steam.joinLobby(new_lobby_id)
 
 func create_steam_socket():	
 	root.peer = SteamMultiplayerPeer.new()
 	root.peer.create_host(0)
 	root.multiplayer.set_multiplayer_peer(root.peer)
-	#root.multiplayer.peer_connected.connect(root.session_start)
+	root.multiplayer.peer_connected.connect(root.session_start)
 	
 func connect_steam_socket(steam_id : int):
 	root.peer = SteamMultiplayerPeer.new()
 	root.peer.create_client(steam_id, 0)
 	root.multiplayer.set_multiplayer_peer(root.peer)
-	Steam.sendP2PPacket(steam_id, var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
 
 ## 친구목록 및 초대
 func refresh_firend_list():
@@ -122,8 +122,6 @@ func _ready() -> void:
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
-				root.uiMgr.set_ui(1)
-				sceneMgr.set_scene(1)
 				connect_steam_socket(id)
 		else:
 		# Get the failure reason
@@ -167,9 +165,6 @@ func _process(delta: float) -> void:
 					var message = bytes_to_var(packet["data"])
 					if message == "client_connected":
 						hosting = false
-						root.multiplayer.peer_connected.connect(root.session_start)
-						root.uiMgr.set_ui(1)
-						root.sceneMgr.set_scene(1)
 						root.session_start()
 	else:
 		recieve_invite()
