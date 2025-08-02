@@ -24,5 +24,4 @@ func lifetime_end() -> void:
 	timer.start(particle.lifetime)
 
 func _on_timer_timeout() -> void:
-	print("fire effect deleted")
 	game.delete_object(self.name)
