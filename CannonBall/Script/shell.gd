@@ -39,10 +39,10 @@ func land():
 	
 	match shellType:
 		0: ## 일반탄
-			game.rpc("spawn_object", "res://Scene/explosion.tscn", "none", global_position)
+			game.rpc("server_spawn_request", "res://Scene/explosion.tscn", "none", global_position)
 			
 		1: ## 화염탄
-			game.rpc("spawn_object", "res://Scene/fire.tscn", "none", global_position)
+			game.rpc("server_spawn_request", "res://Scene/fire.tscn", "none", global_position)
 			
 		2: ## 독탄
 			pass

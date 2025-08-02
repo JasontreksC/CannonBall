@@ -32,15 +32,15 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 	shell.theta0 = theta0
 	shell.launcher = launcher
 	
-@rpc("any_peer", "call_local")
-func spawn_effect(pos: Vector2, index: int, path: String) -> void:
-	if not multiplayer.is_server():
-		return
-	var psEffect: PackedScene = load(path)
-	var newEffect: Node2D = psEffect.instantiate()
-	add_child(newEffect)
-	newEffect.global_position = pos
-	newEffect.visibility_layer = index
+#@rpc("any_peer", "call_local")
+#func spawn_effect(pos: Vector2, index: int, path: String) -> void:
+	#if not multiplayer.is_server():
+		#return
+	#var psEffect: PackedScene = load(path)
+	#var newEffect: Node2D = psEffect.instantiate()
+	#add_child(newEffect)
+	#newEffect.global_position = pos
+	#newEffect.visibility_layer = index
 	
 	
 func _ready() -> void:
