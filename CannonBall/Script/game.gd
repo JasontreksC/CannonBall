@@ -237,13 +237,13 @@ func _process(delta: float) -> void:
 func on_entry_WaitSession():
 	pass
 func on_exit_WaitSession():
-	pass
+	ui.rpc("update_hp")
+	players[0].canMove = true
+	players[1].canMove = true
+
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
-		
-	players[0].canMove = true
-	players[1].canMove = true
 	
 func on_exit_Turn():
 	pass

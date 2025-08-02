@@ -130,8 +130,6 @@ func _ready() -> void:
 	if uiMgr.root.sceneMgr.currentSceneNum == 1:
 		svTelescope.world_2d = uiMgr.root.get_main_viewport_world()
 	
-	rpc("update_hp")
-	
 	if not multiplayer.is_server():
 		shellDial.position.x += 1920
 		shellDial.scale.x *= -1
