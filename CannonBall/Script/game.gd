@@ -6,7 +6,7 @@ var ui: InGameUI = null
 var stateMachine: StateMachine = StateMachine.new()
 var transmitQueue: Array[String]
 
-var sessionID: int = 0
+var peerID: int = 0
 var players: Array[Player]
 var objects: Dictionary[String, Node2D]
 
@@ -165,6 +165,11 @@ func update_lifetime_sec(delta: float):
 func _enter_tree() -> void:
 	root = get_parent().root
 	root.uiMgr.set_ui(1)
+	
+	if multiplayer.is_server():
+		rpc("server_spawn_request", "res://Scene/player.tscn", multiplayer.get_peers()[0])
+	else:
+		rpc("server_spawn_request", "res://Scene/player.tscn", multiplayer.get_peers()[0])
 	#rpc("server_spawn_request", "res://Scene/player.tscn", "")
 	#var player: Player = load("res://Scene/player.tscn").instantiate()
 	#player.name = str(sessionID)

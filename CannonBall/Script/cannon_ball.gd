@@ -37,11 +37,10 @@ func connect_steam_socket(steam_id : int):
 	multiplayer.set_multiplayer_peer(peer)
 	session_start()
 
-func session_start(id=1):
+func session_start():
 	#uiMgr.set_ui(1)
 	sceneMgr.set_scene(1)
 	var game: Game = sceneMgr.currentScene as Game
-	#game.sessionID = id
 	
 	#var player: Player = player_scene.instantiate()
 	#player.name = str(id)
