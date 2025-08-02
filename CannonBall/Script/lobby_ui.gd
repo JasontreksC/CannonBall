@@ -37,6 +37,7 @@ func _enter_tree() -> void:
 	lobby = uiMgr.root.sceneMgr.currentScene as Lobby
 
 func _ready() -> void:
+	set_my_steam_id(uiMgr.root.mySteamID)
 	pass
 
 func _process(delta: float) -> void:

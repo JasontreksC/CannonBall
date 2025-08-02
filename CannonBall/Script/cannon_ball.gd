@@ -13,7 +13,7 @@ class_name CannonBall
 
 # 멀티 플레이 관련 리소스
 var peer: MultiplayerPeer = null
-
+var mySteamID: int = 0
 @export var player_scene: PackedScene
 
 #func _add_player(id=1):
@@ -23,6 +23,7 @@ var peer: MultiplayerPeer = null
 	#var gameScene: Game = sceneMgr.currentScene as Game
 	#gameScene.call_deferred("add_child", player)
 	#gameScene.players.append(player)
+
 func create_steam_socket():	
 	peer = SteamMultiplayerPeer.new()
 	peer.create_host(0)
@@ -118,8 +119,69 @@ func get_main_viewport_world() -> World2D:
 	#uiMgr.get_current_ui_as_lobby().set_invite_steam_id(validFriends[fb.text])
 
 func _ready() -> void:
+	uiMgr.set_ui(0)
 	sceneMgr.set_scene(0)
 	
+	if Steam.steamInitEx(480):
+		mySteamID = Steam.getSteamID()
+		print("Steam 초기화 성공")
+		print("내 Steam ID: ", mySteamID)
+		
+		Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
+		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
+		
+		print(Steam.getPersonaName())
+	else:
+		print("Steam 초기화 실패")
+	
+	Steam.lobby_created.connect(
+	func(status: int, new_lobby_id: int):
+		if status == 1:
+			if uiMgr.get_current_ui(0).tInviteSteamID.text:
+				Steam.sendP2PPacket(uiMgr.get_current_ui(0).get_invite_steam_id(), var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+				print("invite sended!: ", uiMgr.get_current_ui(0).get_invite_steam_id())
+			
+			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
+				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
+				
+			create_steam_socket()
+			print("Lobby ID:", new_lobby_id)
+		else:
+			print("Error on create lobby!")
+	)
+	
+	Steam.lobby_joined.connect(
+	func (new_lobby_id: int, _permissions: int, _locked: bool, response: int):
+		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+			var id = Steam.getLobbyOwner(new_lobby_id)
+			if id != Steam.getSteamID():
+				connect_steam_socket(id)
+		else:
+		# Get the failure reason
+			var FAIL_REASON: String
+			match response:
+				Steam.CHAT_ROOM_ENTER_RESPONSE_DOESNT_EXIST:
+					FAIL_REASON = "This lobby no longer exists."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_NOT_ALLOWED:
+					FAIL_REASON = "You don't have permission to join this lobby."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_FULL:
+					FAIL_REASON = "The lobby is now full."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_ERROR:
+					FAIL_REASON = "Uh... something unexpected happened!"
+				Steam.CHAT_ROOM_ENTER_RESPONSE_BANNED:
+					FAIL_REASON = "You are banned from this lobby."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_LIMITED:
+					FAIL_REASON = "You cannot join due to having a limited account."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_CLAN_DISABLED:
+					FAIL_REASON = "This lobby is locked or disabled."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_COMMUNITY_BAN:
+					FAIL_REASON = "This lobby is community locked."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_MEMBER_BLOCKED_YOU:
+					FAIL_REASON = "A user in the lobby has blocked you from joining."
+				Steam.CHAT_ROOM_ENTER_RESPONSE_YOU_BLOCKED_MEMBER:
+					FAIL_REASON = "A user you have blocked is in the lobby."
+			print(FAIL_REASON)
+		)
 	#if Steam.steamInitEx(480):
 		#mySteamID = Steam.getSteamID()
 		#print("Steam 초기화 성공")

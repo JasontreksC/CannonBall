@@ -5,7 +5,6 @@ var root: CannonBall = null
 var sceneMgr: SceneManager = null
 var ui: LobbyUI = null
 
-var mySteamID: int = 0
 var validFriends: Dictionary[String, int]
 var invalidFriends: Dictionary[String, int]
 var hosting: bool = false
@@ -74,71 +73,7 @@ func _enter_tree() -> void:
 	root = sceneMgr.root as CannonBall
 
 func _ready() -> void:
-	root.uiMgr.set_ui(0)
 	ui = root.uiMgr.get_current_ui_as_lobby()
-	
-	if Steam.steamInitEx(480):
-		mySteamID = Steam.getSteamID()
-		print("Steam 초기화 성공")
-		print("내 Steam ID: ", mySteamID)
-		
-		Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
-		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
-		
-		print(Steam.getPersonaName())
-		ui.set_my_steam_id(mySteamID)
-	else:
-		print("Steam 초기화 실패")
-	
-	Steam.lobby_created.connect(
-	func(status: int, new_lobby_id: int):
-		if status == 1:
-			if ui.tInviteSteamID.text:
-				Steam.sendP2PPacket(ui.get_invite_steam_id(), var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
-				print("invite sended!: ", ui.get_invite_steam_id())
-			
-			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
-				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
-				
-			root.create_steam_socket()
-			print("Lobby ID:", new_lobby_id)
-		else:
-			print("Error on create lobby!")
-	)
-	
-	Steam.lobby_joined.connect(
-	func (new_lobby_id: int, _permissions: int, _locked: bool, response: int):
-		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
-			var id = Steam.getLobbyOwner(new_lobby_id)
-			if id != Steam.getSteamID():
-				root.connect_steam_socket(id)
-		else:
-		# Get the failure reason
-			var FAIL_REASON: String
-			match response:
-				Steam.CHAT_ROOM_ENTER_RESPONSE_DOESNT_EXIST:
-					FAIL_REASON = "This lobby no longer exists."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_NOT_ALLOWED:
-					FAIL_REASON = "You don't have permission to join this lobby."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_FULL:
-					FAIL_REASON = "The lobby is now full."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_ERROR:
-					FAIL_REASON = "Uh... something unexpected happened!"
-				Steam.CHAT_ROOM_ENTER_RESPONSE_BANNED:
-					FAIL_REASON = "You are banned from this lobby."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_LIMITED:
-					FAIL_REASON = "You cannot join due to having a limited account."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_CLAN_DISABLED:
-					FAIL_REASON = "This lobby is locked or disabled."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_COMMUNITY_BAN:
-					FAIL_REASON = "This lobby is community locked."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_MEMBER_BLOCKED_YOU:
-					FAIL_REASON = "A user in the lobby has blocked you from joining."
-				Steam.CHAT_ROOM_ENTER_RESPONSE_YOU_BLOCKED_MEMBER:
-					FAIL_REASON = "A user you have blocked is in the lobby."
-			print(FAIL_REASON)
-		)
-		
 	refresh_firend_list()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
