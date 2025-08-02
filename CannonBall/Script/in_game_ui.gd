@@ -50,6 +50,38 @@ func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
 ## HP
 
 @rpc("any_peer", "call_local")
+func update_hp() -> void:
+	var points = p1HPPoints.get_children()
+	var count = len(points)
+	var hpAmount = game.players[0].hp
+	if count < hpAmount:
+		for i in range(count, hpAmount):
+			var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
+			newPoint.name = "HPP" + str(count + i)
+			newPoint.position.x = 62 + 30 * i
+			if i % 2 == 1:
+				newPoint.scale.y *= -1
+			p1HPPoints.add_child(newPoint)
+	else:
+		for i in range(hpAmount, count):
+			points[i].free()
+			
+	points = p2HPPoints.get_children()
+	count = len(points)
+	hpAmount = game.players[1].hp
+	if count < hpAmount:
+		for i in range(count, hpAmount):
+			var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
+			newPoint.name = "HPP" + str(count + i)
+			newPoint.position.x = -62 - 30 * i
+			if i % 2 == 1:
+				newPoint.scale.y *= -1
+			p2HPPoints.add_child(newPoint)
+	else:
+		for i in range(hpAmount, count):
+			points[i].free()
+			
+@rpc("any_peer", "call_local")
 func set_hp(player: int, hpAmount: int):
 	var target: Node2D = null
 	if player == 0:
