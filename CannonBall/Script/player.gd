@@ -176,6 +176,8 @@ func _physics_process(delta: float) -> void:
 				elif Input.is_action_just_pressed("num3"):
 					print("독탄 선택")
 					selectedShell = 2
+				
+				print(str(game.players[0].hp) + " " + str(game.players[1].hp))
 	
 	# 높이를 항상 바닥에 고정
 	if not isInPond:
@@ -187,7 +189,6 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-		print(str(game.players[0].hp) + " " + str(game.players[1].hp))
 			
 	if hp <= 0:
 		if multiplayer.is_server():
