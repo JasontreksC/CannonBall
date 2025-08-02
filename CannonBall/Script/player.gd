@@ -37,7 +37,7 @@ var game: Game = null
 var cmc: CameraMovingController = null
 var cannon: Cannon = null
 
-@rpc("authority", "call_local")
+@rpc("any_peer", "call_local")
 func get_damage(damage: int):
 	hp -= damage
 	hp = max(hp, 0)
