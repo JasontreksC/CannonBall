@@ -15,10 +15,6 @@ func _ready() -> void:
 	particle.one_shot = true
 	particle.emitting = true
 
-func _physics_process(delta: float) -> void:
-	if not particle.is_visible_in_tree():
-		particle.request_particles_process(delta)
-
 func _on_gpu_particles_2d_finished() -> void:
 	print("poision spread deleted")
 	game.delete_object(self.name)

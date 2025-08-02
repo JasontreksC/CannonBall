@@ -49,6 +49,7 @@ properties/0/replication_mode = 1
 script = ExtResource("1_seuo7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+process_mode = 3
 emitting = false
 amount = 500
 texture = ExtResource("1_mbulw")
@@ -57,6 +58,7 @@ one_shot = true
 explosiveness = 0.98
 fixed_fps = 60
 interpolate = false
+collision_base_size = 0.0
 process_material = SubResource("ParticleProcessMaterial_ksd7w")
 
 [node name="Line2D" type="Line2D" parent="."]
