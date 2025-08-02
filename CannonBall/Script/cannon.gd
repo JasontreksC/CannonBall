@@ -6,10 +6,11 @@ class_name Cannon
 
 var stateMachine: StateMachine = StateMachine.new()
 
-# 이동시 바퀴 회전 처리를 위한 속성을 가진다.
+var heading: int = 0
 var prevPosX: float = 0
 var curVelocity: float = 0
 var isInPond: bool = false
+var reverseBlast: float = 0
 
 const FRONT_WHEEL_RADIUS: float = 72.0
 const BACK_WHEEL_RADIUS: float = 42.0
@@ -71,9 +72,11 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		global_position = world.get_spawn_spot("p1")
 		scale.x = 1
+		heading = 1
 	else:
 		global_position = world.get_spawn_spot("p2")
 		scale.x = -1
+		heading = -1
 		
 	prevPosX = global_position.x
 	
@@ -128,12 +131,15 @@ func _physics_process(delta: float) -> void:
 			"Fire":
 				stateMachine.transit("Idle")
 				player.attackChance = false
-				
+	if reverseBlast > 0:
+		global_position.x -= heading * reverseBlast * delta
+		reverseBlast = move_toward(reverseBlast, 0, 30 * delta)
+	
+	
 	update_cur_velocity(delta)	
 	# 항상 바닥에 고정
 	if not isInPond:
 		self.global_position.y = 0
-
 func on_exit_Idle():
 	pass
 func on_entry_Idle():
@@ -157,3 +163,4 @@ func on_fire():
 	if not multiplayer.is_server():
 		launcher = 1
 	world.rpc("start_shelling", player.selectedShell, shellPathes[player.selectedShell], ac.get_breech_pos(), ac.V0, ac.get_aimed_theta(), launcher)
+	reverseBlast += 100
