@@ -21,6 +21,7 @@ func _ready() -> void:
 func lifetime_end() -> void:
 	particle.one_shot = true
 	particle.emitting = false
+	particle.restart(true)
 
 func _on_gpu_particles_2d_finished() -> void:
 	print("fire effect deleted")
