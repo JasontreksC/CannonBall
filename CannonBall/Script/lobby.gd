@@ -14,7 +14,7 @@ func host_lobby():
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
 
 func join_lobby(new_lobby_id : int):
-	Steam.sendP2PPacket(Steam.getLobbyOwner(new_lobby_id), var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
+	#Steam.sendP2PPacket(Steam.getLobbyOwner(new_lobby_id), var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
 	Steam.joinLobby(new_lobby_id)
 
 ## 친구목록 및 초대
@@ -79,16 +79,18 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	#Steam.run_callbacks()
-	if hosting:
-		var packetSize = Steam.getAvailableP2PPacketSize()
-		if packetSize > 0:
-			var packet = Steam.readP2PPacket(packetSize)
-			if packet:
-				var remote_steam_id = packet["remote_steam_id"]
-				if remote_steam_id == ui.get_invite_steam_id():
-					var message = bytes_to_var(packet["data"])
-					if message == "client_connected":
-						hosting = false
-						root.session_start()
-	else:
+	#if hosting:
+		#var packetSize = Steam.getAvailableP2PPacketSize()
+		#if packetSize > 0:
+			#var packet = Steam.readP2PPacket(packetSize)
+			#if packet:
+				#var remote_steam_id = packet["remote_steam_id"]
+				#if remote_steam_id == ui.get_invite_steam_id():
+					#var message = bytes_to_var(packet["data"])
+					#if message == "client_connected":
+						#hosting = false
+						#root.session_start()
+	#else:
+		#recieve_invite()
+	if not hosting:
 		recieve_invite()
