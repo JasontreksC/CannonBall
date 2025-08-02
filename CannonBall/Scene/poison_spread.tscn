@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dadbuw6oeorgg"]
+[gd_scene load_steps=11 format=3 uid="uid://dadbuw6oeorgg"]
 
 [ext_resource type="Texture2D" uid="uid://bla10hrxsd0it" path="res://Asset/particles/poison_particle.png" id="1_mbulw"]
 [ext_resource type="Script" uid="uid://d0qkkbrflo823" path="res://Script/poison_spread.gd" id="1_seuo7"]
@@ -40,6 +40,11 @@ scale_max = 0.5
 scale_curve = SubResource("CurveTexture_btab0")
 alpha_curve = SubResource("CurveTexture_seuo7")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_seuo7"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="PoisonSpread" type="Node2D"]
 script = ExtResource("1_seuo7")
 
@@ -53,6 +58,10 @@ interpolate = false
 process_material = SubResource("ParticleProcessMaterial_ksd7w")
 
 [node name="Line2D" type="Line2D" parent="."]
+visible = false
 points = PackedVector2Array(-500, 0, 500, 0)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_seuo7")
 
 [connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]
