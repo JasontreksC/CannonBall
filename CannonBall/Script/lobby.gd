@@ -27,7 +27,7 @@ func connect_steam_socket(steam_id : int):
 	root.peer = SteamMultiplayerPeer.new()
 	root.peer.create_client(steam_id, 0)
 	root.multiplayer.set_multiplayer_peer(root.peer)
-	Steam.sendP2PPacket(ui.get_invite_steam_id(), var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
+	Steam.sendP2PPacket(steam_id, var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
 
 ## 친구목록 및 초대
 func refresh_firend_list():
