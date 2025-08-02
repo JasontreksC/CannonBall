@@ -136,7 +136,7 @@ func _physics_process(delta: float) -> void:
 		reverseBlast = move_toward(reverseBlast, 0, 100 * delta)
 	
 	update_cur_velocity(delta)
-	if curVelocity > 0:
+	if abs(curVelocity) > 0:
 		rotate_wheel(delta)
 	# 항상 바닥에 고정
 	if not isInPond:
