@@ -181,6 +181,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			isInCannon = false
 	
+	print(hp)
 	if hp <= 0:
 		if multiplayer.is_server():
 			game.rpc("send_transmit", "p1_defeat")
