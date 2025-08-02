@@ -30,6 +30,7 @@ func land():
 		return
 	
 	var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", global_position)
+	df.attackTo = 1 - launcher
 	df.target = game.players[1 - launcher]
 	df.range = range
 	df.hitDamage = hitDamage

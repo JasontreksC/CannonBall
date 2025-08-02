@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c3pybtbta3oar" path="res://Asset/shell/normal_shell.png" id="2_kbmx5"]
 
 [node name="NormalShell" instance=ExtResource("1_077g6")]
+range = 500.0
 hitDamage = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
