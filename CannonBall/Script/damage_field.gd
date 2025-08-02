@@ -38,7 +38,7 @@ func activate():
 		timer.start(tickInterval)
 	
 	if lifetimeTurn:
-		game.regist_lifetime(self.name, lifetimeTurn, 0, on_lifetime_end)
+		game.regist_lifetime(self.name, lifetimeTurn, 0)
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
@@ -46,7 +46,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	pass
 	
-func on_lifetime_end() -> void:
+@rpc("any_peer", "call_local")
+func lifetime_end() -> void:
 	game.delete_object(self.name)
 
 func _on_timer_timeout() -> void:

@@ -136,9 +136,8 @@ func update_game_time(delta: float) -> void:
 		
 		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
 
-func regist_lifetime(key: String, turn: int, sec: float, callback: Callable):
+func regist_lifetime(key: String, turn: int, sec: float):
 	lifetimePool[key] = Lifetime.new(turn, sec)
-	lifetimePool[key].callback = callback
 	
 func update_lifetime_turn():
 	for key in lifetimePool.keys():
@@ -146,7 +145,8 @@ func update_lifetime_turn():
 		if lft.turn > 0:
 			var live: bool = lft.pass_turn()
 			if not live and lft.sec == 0:
-				lft.callback.call()
+				#lft.callback.call()
+				objects[key].rpc("lifetime_end")
 				lifetimePool.erase(key)
 			
 func update_lifetime_sec(delta: float):
@@ -155,7 +155,8 @@ func update_lifetime_sec(delta: float):
 		if not lft.turn:
 			var live: bool = lft.pass_sec(delta)
 			if not live:
-				lft.callback.call()
+				#lft.callback.call()
+				objects[key].rpc("lifetime_end")
 				lifetimePool.erase(key)
 		
 		

@@ -14,11 +14,20 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	particle.one_shot = false
 	particle.emitting = true
-	game.regist_lifetime(self.name, 4, 0, stop)
+	
+	if multiplayer.is_server():
+		#game.regist_lifetime(self.name, 4, 0, stop)
+		game.regist_lifetime(self.name, 4, 0)
 
-func stop():
+@rpc("any_peer", "call_local")
+func lifetime_end() -> void:
+	particle.one_shot = true
 	particle.emitting = false
-	print("fire emitting stopped")
+	
+#func stop():
+	#particle.one_shot = true
+	#particle.emitting = false
+	#print("fire emitting stopped")
 	
 func _on_cpu_particles_2d_finished() -> void:
 	game.delete_object(self.name)
