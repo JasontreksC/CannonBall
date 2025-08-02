@@ -259,3 +259,11 @@ func _process(delta: float) -> void:
 	Steam.run_callbacks()
 	pass
 	#recieve_invite()
+	
+func _on_p2p_session_request(remote_id: int):
+	print("P2P 세션 요청 수신, 자동 수락:", remote_id)
+	Steam.acceptP2PSessionWithUser(remote_id)
+
+# 연결 실패 처리
+func _on_p2p_session_connect_fail(remote_id: int, error: int):
+	print("P2P 세션 연결 실패:", remote_id, "오류 코드:", error)		
