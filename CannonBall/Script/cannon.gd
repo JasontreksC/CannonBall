@@ -23,6 +23,7 @@ const SPEED: float = 300
 @onready var bBackWheel: Bone2D = $Skeleton2D/BnCarriage/BnBackWheel
 @onready var bBarrel: Bone2D = $Skeleton2D/BnCarriage/BnBarrel
 @onready var ac: AimController = $AimController
+@onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var world: World = $"../World"
 
 var game: Game = null
@@ -149,6 +150,9 @@ func on_exit_Fire():
 		game.rpc("send_transmit", "p2_fired")
 		
 func on_entry_Fire():
+	amp.play("fire")
+
+func on_fire():
 	var launcher: int = 0
 	if not multiplayer.is_server():
 		launcher = 1
