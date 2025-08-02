@@ -53,4 +53,6 @@ process_material = SubResource("ParticleProcessMaterial_n0jfg")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_n0jfg")
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]

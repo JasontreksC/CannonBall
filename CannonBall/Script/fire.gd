@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var particle: GPUParticles2D = $GPUParticles2D
+@onready var timer: Timer = $Timer
 var game: Game = null
 
 @rpc("any_peer", "call_local")
@@ -19,10 +20,9 @@ func _ready() -> void:
 
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:
-	particle.one_shot = true
 	particle.emitting = false
-	particle.restart(true)
+	timer.start(particle.lifetime)
 
-func _on_gpu_particles_2d_finished() -> void:
+func _on_timer_timeout() -> void:
 	print("fire effect deleted")
 	game.delete_object(self.name)
