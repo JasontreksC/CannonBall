@@ -23,7 +23,17 @@ var peer: MultiplayerPeer = null
 	#var gameScene: Game = sceneMgr.currentScene as Game
 	#gameScene.call_deferred("add_child", player)
 	#gameScene.players.append(player)
+func create_steam_socket():	
+	peer = SteamMultiplayerPeer.new()
+	peer.create_host(0)
+	multiplayer.set_multiplayer_peer(peer)
+	multiplayer.peer_connected.connect(session_start)
 	
+func connect_steam_socket(steam_id : int):
+	peer = SteamMultiplayerPeer.new()
+	peer.create_client(steam_id, 0)
+	multiplayer.set_multiplayer_peer(peer)
+
 func session_start(id=1):
 	#uiMgr.set_ui(1)
 	sceneMgr.set_scene(1)

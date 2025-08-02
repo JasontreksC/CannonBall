@@ -18,17 +18,6 @@ func join_lobby(new_lobby_id : int):
 	Steam.sendP2PPacket(Steam.getLobbyOwner(new_lobby_id), var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
 	Steam.joinLobby(new_lobby_id)
 
-func create_steam_socket():	
-	root.peer = SteamMultiplayerPeer.new()
-	root.peer.create_host(0)
-	root.multiplayer.set_multiplayer_peer(root.peer)
-	root.multiplayer.peer_connected.connect(root.session_start)
-	
-func connect_steam_socket(steam_id : int):
-	root.peer = SteamMultiplayerPeer.new()
-	root.peer.create_client(steam_id, 0)
-	root.multiplayer.set_multiplayer_peer(root.peer)
-
 ## 친구목록 및 초대
 func refresh_firend_list():
 	var firendCount = Steam.getFriendCount(Steam.FriendFlags.FRIEND_FLAG_ALL)
@@ -111,7 +100,7 @@ func _ready() -> void:
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
 				
-			create_steam_socket()
+			root.create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
 		else:
 			print("Error on create lobby!")
@@ -122,7 +111,7 @@ func _ready() -> void:
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
-				connect_steam_socket(id)
+				root.connect_steam_socket(id)
 		else:
 		# Get the failure reason
 			var FAIL_REASON: String
@@ -154,7 +143,7 @@ func _ready() -> void:
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	Steam.run_callbacks()
+	#Steam.run_callbacks()
 	if hosting:
 		var packetSize = Steam.getAvailableP2PPacketSize()
 		if packetSize > 0:
