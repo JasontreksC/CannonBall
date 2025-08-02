@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbolva68m23ov"]
+
+[ext_resource type="Script" uid="uid://do6md44cj1tvx" path="res://Script/result_ui.gd" id="1_kkocs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jtamo"]
+font_size = 128
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ResultUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kkocs")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -408.0
+offset_top = 300.0
+offset_right = 408.0
+offset_bottom = 478.0
+grow_horizontal = 2
+text = "Player 1 승리!"
+label_settings = SubResource("LabelSettings_jtamo")
+
+[node name="BT_Quit" type="Button" parent="."]
+offset_left = 613.0
+offset_top = 553.0
+offset_right = 722.0
+offset_bottom = 584.0
+scale = Vector2(2, 2)
+text = "로비로 나가기"
+
+[node name="BT_Retry" type="Button" parent="."]
+offset_left = 1013.0
+offset_top = 553.0
+offset_right = 1122.0
+offset_bottom = 584.0
+scale = Vector2(2, 2)
+text = "다시하기
+"
+
+[connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
+[connection signal="pressed" from="BT_Retry" to="." method="_on_bt_retry_pressed"]
