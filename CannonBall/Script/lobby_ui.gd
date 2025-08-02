@@ -2,6 +2,7 @@ extends Control
 class_name LobbyUI
 
 var uiMgr: UIManager = null
+var lobby: Lobby = null
 
 @onready var tMySteamID: TextEdit = $IDsFromHost/MySteamID
 @onready var tInviteSteamID: TextEdit = $IDsFromHost/InviteSteamID
@@ -25,22 +26,21 @@ func set_invited_lobby_id(id: int) -> void:
 	tInvitedLobbyID.text = str(id)
 
 func _on_bt_host_pressed() -> void:
-	uiMgr.root.host_lobby()
+	lobby.host_lobby()
 
 
 func _on_bt_join_pressed() -> void:
-	uiMgr.root.join_lobby(int(tInvitedLobbyID.text))
+	lobby.join_lobby(int(tInvitedLobbyID.text))
 	
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
+	lobby = uiMgr.root.sceneMgr.currentScene as Lobby
 
 func _ready() -> void:
-	tMySteamID.text = str(uiMgr.root.mySteamID)
-	uiMgr.root.refresh_firend_list()
+	pass
 
 func _process(delta: float) -> void:
 	pass
 
-
 func _on_bt_refresh_pressed() -> void:
-	uiMgr.root.refresh_firend_list()
+	lobby.refresh_firend_list()

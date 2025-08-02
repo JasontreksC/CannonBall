@@ -4,15 +4,18 @@ class_name UIManager
 
 @onready var root: CannonBall = $".."
 
-var psLobbyUI: PackedScene
-var psInGameUI: PackedScene
+@export var psLobbyUI: PackedScene
+@export var psInGameUI: PackedScene
+@export var psResultUI: PackedScene
 
 var currentUI: Control = null
-var currentUINum: int = 0
+var currentUINum: int = -1
 
 # 0: 로비 , 1: 인게임, 2: 종료
 func set_ui(num: int):
-	if num != 0 and num != 1 and num != 2:
+	if not [0, 1, 2].has(num):
+		return
+	if currentUINum == num:
 		return
 	
 	currentUINum = num
@@ -26,7 +29,8 @@ func set_ui(num: int):
 			currentUI = psLobbyUI.instantiate()
 		1:
 			currentUI = psInGameUI.instantiate()
-			
+		2:
+			currentUI = psResultUI.instantiate()
 	call_deferred("add_child", currentUI)
 
 func get_current_ui_as_lobby() -> LobbyUI:
@@ -41,9 +45,11 @@ func get_current_ui_as_in_game() -> InGameUI:
 	else:
 		return currentUI as InGameUI
 
-func _init() -> void:
-	psLobbyUI = load("res://Scene/lobby_ui.tscn")
-	psInGameUI = load("res://Scene/in_game_ui.tscn")
+func get_current_ui(num: int) -> Control:
+	if currentUINum != num:
+		return null
+	else:
+		return currentUI
 
 func _ready() -> void:
 	set_ui(0)

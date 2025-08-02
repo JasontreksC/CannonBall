@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://j2h0dfktxryh"]
+[gd_scene load_steps=10 format=3 uid="uid://j2h0dfktxryh"]
 
 [ext_resource type="Script" uid="uid://bje2m75ykq44v" path="res://Script/cannon_ball.gd" id="1_1vexa"]
 [ext_resource type="PackedScene" uid="uid://ind02kvqyd3c" path="res://Scene/player.tscn" id="2_ybuo8"]
 [ext_resource type="Script" uid="uid://cg6l881yefxhk" path="res://Script/scene_manager.gd" id="3_hax26"]
+[ext_resource type="PackedScene" uid="uid://de3nn3cvbodox" path="res://Scene/lobby.tscn" id="4_hax26"]
 [ext_resource type="Script" uid="uid://lrveg743s243" path="res://Script/ui_manager.gd" id="4_yo4rl"]
+[ext_resource type="PackedScene" uid="uid://ry7mm6mgg6iy" path="res://Scene/game.tscn" id="5_yo4rl"]
+[ext_resource type="PackedScene" uid="uid://dn2qylqxk6ojv" path="res://Scene/lobby_ui.tscn" id="7_qmgyv"]
+[ext_resource type="PackedScene" uid="uid://dk04etcfa0wra" path="res://Scene/in_game_ui.tscn" id="8_gfueo"]
+[ext_resource type="PackedScene" uid="uid://bbolva68m23ov" path="res://Scene/result_ui.tscn" id="9_gfueo"]
 
 [node name="CannonBall" type="Control"]
 layout_mode = 3
@@ -29,6 +34,12 @@ render_target_update_mode = 4
 
 [node name="SceneManager" type="Node" parent="SVC_Main/SV_Main"]
 script = ExtResource("3_hax26")
+psLobbyScene = ExtResource("4_hax26")
+psGameScene = ExtResource("5_yo4rl")
+psResultScene = ExtResource("5_yo4rl")
 
 [node name="UIManager" type="Node" parent="."]
 script = ExtResource("4_yo4rl")
+psLobbyUI = ExtResource("7_qmgyv")
+psInGameUI = ExtResource("8_gfueo")
+psResultUI = ExtResource("9_gfueo")
