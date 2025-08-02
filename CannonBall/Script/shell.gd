@@ -29,7 +29,9 @@ func land():
 	if not multiplayer.is_server():
 		return
 	
-	var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", global_position)
+	var pos = Vector2(global_position.x, 0)
+	
+	var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", pos)
 	df.attackTo = 1 - launcher
 	df.target = game.players[1 - launcher]
 	df.range = range
@@ -41,13 +43,13 @@ func land():
 	
 	match shellType:
 		0: ## 일반탄
-			game.rpc("server_spawn_request", "res://Scene/explosion.tscn", "none", global_position)
+			game.rpc("server_spawn_request", "res://Scene/explosion.tscn", "none", pos)
 			
 		1: ## 화염탄
-			game.rpc("server_spawn_request", "res://Scene/fire.tscn", "none", global_position)
+			game.rpc("server_spawn_request", "res://Scene/fire.tscn", "none", pos)
 			
 		2: ## 독탄
-			pass
+			game.rpc("server_spawn_request", "res://Scene/poison_spread.tscn", "none", pos)
 	
 	
 	game.rpc("delete_object", self.name)

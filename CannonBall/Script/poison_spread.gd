@@ -17,3 +17,4 @@ func _ready() -> void:
 
 func _on_gpu_particles_2d_finished() -> void:
 	game.delete_object(self.name)
+	print("poision spread deleted")
