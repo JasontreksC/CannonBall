@@ -36,6 +36,7 @@ func land():
 	df.tickDamage = tickDamage
 	df.tickInterval = tickInterval
 	df.lifetimeTurn = lifetimeTurn
+	df.activate()
 	
 	match shellType:
 		0: ## 일반탄
@@ -47,7 +48,6 @@ func land():
 		2: ## 독탄
 			pass
 	
-	df.activate()
 	
 	game.rpc("delete_object", self.name)
 	game.rpc("transit_game_state", "Turn")

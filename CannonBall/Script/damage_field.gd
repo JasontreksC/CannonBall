@@ -26,7 +26,7 @@ func in_range(targetX: float) -> bool:
 
 func activate():
 	if target == null:
-		push_error("damage field target null")
+		print("damage field target null")
 		return
 		
 	if hitDamage:

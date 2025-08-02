@@ -15,35 +15,10 @@ var objects: Dictionary[String, Node2D]
 var G: float = 980
 var turnCount: int = 0
 
-#var tickPoolInfo: Dictionary[String, Array]
-#var tickPoolCallback: Dictionary[String, Callable]
-
-#var tickPool: Dictionary[String, Tick]
 var lifetimePool: Dictionary[String, Lifetime]
 var gameTime: float = 0
 
 ## 오브젝트 풀링
-#@rpc("any_peer", "call_local")
-#func spawn_object(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void:
-	#if object_name == "none":
-		#object_name = "object" + str(Time.get_ticks_usec())
-	#elif objects.has(object_name):
-		#return
-#
-	#if not multiplayer.is_server():
-		#return
-	#
-	#var ps: PackedScene = load(path)
-	#var inst: Node2D = ps.instantiate()
-	#if object_name:
-		#inst.name = object_name
-	#inst.global_position = pos
-	#add_child(inst)
-	#objects[object_name] = inst
-	#
-	#var senderID = multiplayer.get_remote_sender_id()
-	#inst.rpc_id(senderID, "on_spawned")
-
 ## 모든 피어가 서버에 스폰을 요청함. 멀티플레이에서 동기화되는 객체에 대해 사용함. 비동기적으로 실행됨
 @rpc("any_peer", "call_local")
 func server_spawn_request(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void: 
@@ -132,15 +107,6 @@ func change_turn() -> void:
 	
 	if multiplayer.is_server():
 		update_lifetime_turn()
-	
-	#print("======================")
-	#print("현재 턴:", turnCount)
-	#if players[0].isAttack:
-		#print("공격: P1")
-		#print("수비: P2")
-	#if players[1].isAttack:
-		#print("공격: P2")
-		#print("수비: P1")
 
 @rpc("any_peer", "call_local")
 func transit_game_state(state: String):
@@ -159,30 +125,6 @@ func check_transmit(transmit: Array[String]) -> bool:
 		else:
 			transmitQueue.erase(t)
 	return result
-	
-## 틱, 게임타임 관리
-#func regist_tick(key: String, interval: float, callback: Callable):
-	#tickPool[key] = Tick.new(interval, callback)
-	##tickPoolInfo[key] = [0, interval]
-	##tickPoolCallback[key] = callback
-#
-#func update_tick(delta: float):
-	#for key in tickPool.keys():
-		#var tk = tickPool[key]
-		#if tk.pass_time(delta):
-			#tk.callback.call()
-	#
-	#for key in tickPoolInfo.keys():
-		#var thisTick = tickPoolInfo[key]
-		#if thisTick[0] >= thisTick[1]:
-			#tickPoolCallback[key].call()
-			#thisTick[0] = 0
-		#
-		#else:
-			#thisTick[0] += delta
-
-#func release_tick(key: String):
-	#tickPool.erase(key)
 
 func update_game_time(delta: float) -> void:
 	if multiplayer.is_server():

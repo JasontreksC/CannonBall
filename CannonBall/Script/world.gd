@@ -25,23 +25,11 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 		return
 	
 	var shell: Shell = game.server_spawn_directly(load(shellPath), "none", p0)
-	print(shell.name)
 	shell.shellType = shellType
 	shell.p0 = p0
 	shell.v0 = v0
 	shell.theta0 = theta0
 	shell.launcher = launcher
-	
-#@rpc("any_peer", "call_local")
-#func spawn_effect(pos: Vector2, index: int, path: String) -> void:
-	#if not multiplayer.is_server():
-		#return
-	#var psEffect: PackedScene = load(path)
-	#var newEffect: Node2D = psEffect.instantiate()
-	#add_child(newEffect)
-	#newEffect.global_position = pos
-	#newEffect.visibility_layer = index
-	
 	
 func _ready() -> void:
 	game = get_parent() as Game
