@@ -16,6 +16,10 @@ func _process(delta: float) -> void:
 
 
 func _on_bt_quit_pressed() -> void:
+	uiMgr.root.peer.close()
+	multiplayer.multiplayer_peer = null
+	
+	uiMgr.set_ui(0)
 	uiMgr.root.sceneMgr.set_scene(0)
 
 func _on_bt_retry_pressed() -> void:
