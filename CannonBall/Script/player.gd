@@ -201,7 +201,6 @@ func h_movement(mode: String, speed: float, delta: float):
 			# 대포 무브먼트
 			cannon.global_position.x += velocity * delta
 			self.global_position.x = cannon.get_handle_x()
-			cannon.rotate_wheel(delta)
 
 func _process(delta: float) -> void:
 	pass

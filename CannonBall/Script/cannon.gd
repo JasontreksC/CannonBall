@@ -133,10 +133,11 @@ func _physics_process(delta: float) -> void:
 				player.attackChance = false
 	if reverseBlast > 0:
 		global_position.x -= heading * reverseBlast * delta
-		reverseBlast = move_toward(reverseBlast, 0, 30 * delta)
+		reverseBlast = move_toward(reverseBlast, 0, 100 * delta)
 	
-	
-	update_cur_velocity(delta)	
+	update_cur_velocity(delta)
+	if curVelocity > 0:
+		rotate_wheel(delta)
 	# 항상 바닥에 고정
 	if not isInPond:
 		self.global_position.y = 0
