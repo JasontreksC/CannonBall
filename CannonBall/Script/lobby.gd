@@ -21,7 +21,7 @@ func create_steam_socket():
 	root.peer = SteamMultiplayerPeer.new()
 	root.peer.create_host(0)
 	root.multiplayer.set_multiplayer_peer(root.peer)
-	root.multiplayer.peer_connected.connect(root.session_start)
+	#root.multiplayer.peer_connected.connect(root.session_start)
 	
 func connect_steam_socket(steam_id : int):
 	root.peer = SteamMultiplayerPeer.new()
@@ -167,6 +167,7 @@ func _process(delta: float) -> void:
 					var message = bytes_to_var(packet["data"])
 					if message == "client_connected":
 						hosting = false
+						root.multiplayer.peer_connected.connect(root.session_start)
 						root.uiMgr.set_ui(1)
 						root.sceneMgr.set_scene(1)
 						root.session_start()
