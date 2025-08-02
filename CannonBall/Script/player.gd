@@ -41,11 +41,7 @@ var cannon: Cannon = null
 func get_damage(damage: int):
 	hp -= damage
 	hp = max(hp, 0)
-	
-	if multiplayer.is_server():
-		game.ui.rpc("set_hp", 0, hp)
-	else:
-		game.ui.rpc("set_hp", 1, hp)
+	game.ui.rpc("update_hp")
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())

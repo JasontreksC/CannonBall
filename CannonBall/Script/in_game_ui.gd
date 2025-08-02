@@ -81,35 +81,35 @@ func update_hp() -> void:
 		for i in range(hpAmount, count):
 			points[i].free()
 			
-@rpc("any_peer", "call_local")
-func set_hp(player: int, hpAmount: int):
-	var target: Node2D = null
-	if player == 0:
-		target = p1HPPoints
-	else:
-		target = p2HPPoints
-	
-	var points = target.get_children()
-	var count = len(points)
-	
-	if count < hpAmount:
-		for i in range(count, hpAmount):
-			var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
-			newPoint.name = "HPP" + str(count + i)
-			
-			if player == 0:
-				newPoint.position.x = 62 + 30 * i
-			else:
-				newPoint.position.x = -62 - 30 * i
-			
-			if i % 2 == 1:
-				newPoint.scale.y *= -1
-			
-			target.add_child(newPoint)
-			
-	else:
-		for i in range(hpAmount, count):
-			points[i].free()
+#@rpc("any_peer", "call_local")
+#func set_hp(player: int, hpAmount: int):
+	#var target: Node2D = null
+	#if player == 0:
+		#target = p1HPPoints
+	#else:
+		#target = p2HPPoints
+	#
+	#var points = target.get_children()
+	#var count = len(points)
+	#
+	#if count < hpAmount:
+		#for i in range(count, hpAmount):
+			#var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
+			#newPoint.name = "HPP" + str(count + i)
+			#
+			#if player == 0:
+				#newPoint.position.x = 62 + 30 * i
+			#else:
+				#newPoint.position.x = -62 - 30 * i
+			#
+			#if i % 2 == 1:
+				#newPoint.scale.y *= -1
+			#
+			#target.add_child(newPoint)
+			#
+	#else:
+		#for i in range(hpAmount, count):
+			#points[i].free()
 	
 	
 	## Shell Dial
