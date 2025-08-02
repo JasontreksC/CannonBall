@@ -14,7 +14,6 @@ func host_lobby():
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
 
 func join_lobby(new_lobby_id : int):
-	#Steam.sendP2PPacket(Steam.getLobbyOwner(new_lobby_id), var_to_bytes("client_connected"), Steam.P2P_SEND_RELIABLE)
 	Steam.joinLobby(new_lobby_id)
 
 ## 친구목록 및 초대

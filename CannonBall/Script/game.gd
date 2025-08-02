@@ -147,7 +147,6 @@ func update_lifetime_turn():
 		if lft.turn > 0:
 			var live: bool = lft.pass_turn()
 			if not live and lft.sec == 0:
-				#lft.callback.call()
 				objects[key].rpc("lifetime_end")
 				lifetimePool.erase(key)
 			
@@ -157,7 +156,6 @@ func update_lifetime_sec(delta: float):
 		if not lft.turn:
 			var live: bool = lft.pass_sec(delta)
 			if not live:
-				#lft.callback.call()
 				objects[key].rpc("lifetime_end")
 				lifetimePool.erase(key)
 		
@@ -165,12 +163,6 @@ func update_lifetime_sec(delta: float):
 func _enter_tree() -> void:
 	root = get_parent().root
 	root.uiMgr.set_ui(1)
-	
-	#rpc("server_spawn_request", "res://Scene/player.tscn", "")
-	#var player: Player = load("res://Scene/player.tscn").instantiate()
-	#player.name = str(sessionID)
-	#call_deferred("add_child", player)
-	#players.append(player)
 
 func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_in_game()
