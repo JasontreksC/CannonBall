@@ -14,33 +14,27 @@ class_name CannonBall
 # 멀티 플레이 관련 리소스
 var peer: MultiplayerPeer = null
 var mySteamID: int = 0
+
 @export var player_scene: PackedScene
 
-#func _add_player(id=1):
-	#var player: Player = player_scene.instantiate()
-	#player.name = str(id)
-	#
-	#var gameScene: Game = sceneMgr.currentScene as Game
-	#gameScene.call_deferred("add_child", player)
-	#gameScene.players.append(player)
+func _add_player(id=1):
+	var player: Player = player_scene.instantiate()
+	player.name = str(id)
+	var gameScene: Game = sceneMgr.currentScene as Game
+	gameScene.call_deferred("add_child", player)
+	gameScene.players.append(player)
 
 func create_steam_socket():	
 	peer = SteamMultiplayerPeer.new()
 	peer.create_host(0)
 	multiplayer.set_multiplayer_peer(peer)
-	#multiplayer.peer_connected.connect(session_start)
-	session_start()
+	multiplayer.peer_connected.connect(_add_player)
+	_add_player()
 	
 func connect_steam_socket(steam_id : int):
 	peer = SteamMultiplayerPeer.new()
 	peer.create_client(steam_id, 0)
 	multiplayer.set_multiplayer_peer(peer)
-	session_start()
-
-func session_start():
-	#uiMgr.set_ui(1)
-	sceneMgr.set_scene(1)
-	var game: Game = sceneMgr.currentScene as Game
 	
 	#var player: Player = player_scene.instantiate()
 	#player.name = str(id)
@@ -144,7 +138,8 @@ func _ready() -> void:
 			
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
-				
+			
+			sceneMgr.set_scene(1)
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
 		else:
@@ -156,6 +151,7 @@ func _ready() -> void:
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
+				sceneMgr.set_scene(1)
 				connect_steam_socket(id)
 		else:
 		# Get the failure reason

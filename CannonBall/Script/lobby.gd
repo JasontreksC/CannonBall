@@ -78,19 +78,5 @@ func _ready() -> void:
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	#Steam.run_callbacks()
-	#if hosting:
-		#var packetSize = Steam.getAvailableP2PPacketSize()
-		#if packetSize > 0:
-			#var packet = Steam.readP2PPacket(packetSize)
-			#if packet:
-				#var remote_steam_id = packet["remote_steam_id"]
-				#if remote_steam_id == ui.get_invite_steam_id():
-					#var message = bytes_to_var(packet["data"])
-					#if message == "client_connected":
-						#hosting = false
-						#root.session_start()
-	#else:
-		#recieve_invite()
 	if not hosting:
 		recieve_invite()
