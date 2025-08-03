@@ -8,6 +8,7 @@ class_name InGameUI
 
 ## HP
 @export var hpPointSprite: PackedScene
+@export var crvHPPRemoveVibration: Curve
 
 @onready var subuiHeader: TextureRect = $Header
 @onready var p1HPPoints: Node2D = $Header/P1HP/HPBase/HPPoints
@@ -80,38 +81,38 @@ func update_hp() -> void:
 	else:
 		for i in range(hpAmount, count):
 			points[i].free()
+
+
+@rpc("any_peer", "call_local")
+func generate_hp_points(player: int, count: int):
+	var points: Array[Node]
+	match player:
+		0:
+			points = p1HPPoints.get_children()
+		1:
+			points = p2HPPoints.get_children()
 			
-#@rpc("any_peer", "call_local")
-#func set_hp(player: int, hpAmount: int):
-	#var target: Node2D = null
-	#if player == 0:
-		#target = p1HPPoints
-	#else:
-		#target = p2HPPoints
-	#
-	#var points = target.get_children()
-	#var count = len(points)
-	#
-	#if count < hpAmount:
-		#for i in range(count, hpAmount):
-			#var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
-			#newPoint.name = "HPP" + str(count + i)
-			#
-			#if player == 0:
-				#newPoint.position.x = 62 + 30 * i
-			#else:
-				#newPoint.position.x = -62 - 30 * i
-			#
-			#if i % 2 == 1:
-				#newPoint.scale.y *= -1
-			#
-			#target.add_child(newPoint)
-			#
-	#else:
-		#for i in range(hpAmount, count):
-			#points[i].free()
+	while count:
+		var p := points.pop_front() as HPPoint
+		if p and not p.vitality:
+			p.generate()
+			count -= 1
+
+@rpc("any_peer", "call_local")
+func remove_hp_points(player: int, count: int):
+	var points: Array[Node]
+	match player:
+		0:
+			points = p1HPPoints.get_children()
+		1:
+			points = p2HPPoints.get_children()
 	
-	
+	while count:
+		var p := points.pop_back() as HPPoint
+		if p and p.vitality:
+			p.kill()
+			count -= 1
+			
 	## Shell Dial
 func set_shell_dial(num: int):
 	match num:

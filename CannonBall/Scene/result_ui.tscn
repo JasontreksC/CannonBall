@@ -30,6 +30,7 @@ text = "Player 1 승리!"
 label_settings = SubResource("LabelSettings_jtamo")
 
 [node name="BT_Quit" type="Button" parent="."]
+layout_mode = 0
 offset_left = 613.0
 offset_top = 553.0
 offset_right = 722.0
@@ -38,6 +39,7 @@ scale = Vector2(2, 2)
 text = "로비로 나가기"
 
 [node name="BT_Retry" type="Button" parent="."]
+layout_mode = 0
 offset_left = 1013.0
 offset_top = 553.0
 offset_right = 1122.0

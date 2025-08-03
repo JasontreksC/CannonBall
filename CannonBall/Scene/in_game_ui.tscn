@@ -1,10 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=28 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_point.tscn" id="2_dviy5"]
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
 [ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
-[ext_resource type="Shader" uid="uid://cyssw3boblilf" path="res://Shader/header_gradient.tres" id="4_fcixt"]
 [ext_resource type="Shader" uid="uid://bvrlkrmaw1jxg" path="res://Shader/just_color.tres" id="6_o5tdw"]
 [ext_resource type="Texture2D" uid="uid://d37n1yd2i04eb" path="res://Asset/ui_dashboard_1.png" id="7_brp0j"]
 [ext_resource type="Texture2D" uid="uid://b17q7wp0efyyn" path="res://Asset/ui_dashboard_2.png" id="8_wckav"]
@@ -18,6 +17,12 @@
 [ext_resource type="Texture2D" uid="uid://coknwbm1o0tp0" path="res://Asset/alpha_texture/crack.png" id="15_bucyv"]
 [ext_resource type="Texture2D" uid="uid://b3j2oh0a5iehh" path="res://Asset/shell/poision_shell.png" id="16_voeoa"]
 
+[sub_resource type="Curve" id="Curve_oqxxn"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 13.2822, 0, 0, Vector2(0.112864, 1), 0.0, 0.0, 0, 0, Vector2(0.292476, -1), 0.0, 0.0, 0, 0, Vector2(0.498786, 0.513056), 0.0, 0.0, 0, 0, Vector2(0.73665, -0.385918), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 6
+metadata/_snap_count = 2
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
 shader = ExtResource("2_wpxio")
 shader_parameter/hole_center = Vector2(0.5, 0.5)
@@ -27,10 +32,17 @@ shader_parameter/cross_color = Vector4(0, 0, 0, 1)
 shader_parameter/bg_color = Color(0, 0, 0, 1)
 shader_parameter/transparency_color = Color(0, 0, 0, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tkk48"]
-shader = ExtResource("4_fcixt")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0d0q2"]
+shader = ExtResource("14_7hrlq")
+shader_parameter/Texture2DParameter = ExtResource("15_bucyv")
+shader_parameter/ColorParameter = Color(1, 0.35, 0, 1)
+shader_parameter/Brightness = 1.0
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_pmkfs"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_voeoa"]
+shader = ExtResource("14_bucyv")
+shader_parameter/TeamColor = Color(1, 1, 1, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_0dgpy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dviy5"]
 shader = ExtResource("6_o5tdw")
@@ -52,18 +64,6 @@ gradient = SubResource("Gradient_i3syv")
 font_size = 240
 font_color = Color(0.540346, 0.895914, 0.928074, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0d0q2"]
-shader = ExtResource("14_7hrlq")
-shader_parameter/Texture2DParameter = ExtResource("15_bucyv")
-shader_parameter/ColorParameter = Color(1, 0.35, 0, 1)
-shader_parameter/Brightness = 1.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_voeoa"]
-shader = ExtResource("14_bucyv")
-shader_parameter/TeamColor = Color(1, 1, 1, 1)
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_0dgpy"]
-
 [node name="InGameUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -73,6 +73,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3xi00")
 hpPointSprite = ExtResource("2_dviy5")
+crvHPPRemoveVibration = SubResource("Curve_oqxxn")
 
 [node name="fps" type="Label" parent="."]
 layout_mode = 0
@@ -113,108 +114,6 @@ render_target_update_mode = 0
 [node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
 
 [node name="Background" parent="Telescope/SubViewportContainer/SubViewport" instance=ExtResource("3_quy4v")]
-
-[node name="Header" type="TextureRect" parent="."]
-material = SubResource("ShaderMaterial_tkk48")
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 150.0
-texture = SubResource("CanvasTexture_pmkfs")
-
-[node name="P1HP" type="Control" parent="Header"]
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-
-[node name="HPBase" type="Sprite2D" parent="Header/P1HP"]
-material = SubResource("ShaderMaterial_dviy5")
-position = Vector2(31, 40)
-scale = Vector2(88.115, 55.5)
-skew = 0.464258
-texture = SubResource("CanvasTexture_brp0j")
-
-[node name="HPPoints" type="Node2D" parent="Header/P1HP/HPBase"]
-scale = Vector2(0.0113488, 0.020937)
-skew = -0.274886
-
-[node name="P2HP" type="Control" parent="Header"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -1920.0
-offset_bottom = 1080.0
-grow_horizontal = 0
-
-[node name="HPBase" type="Sprite2D" parent="Header/P2HP"]
-material = SubResource("ShaderMaterial_dviy5")
-position = Vector2(1889, 40)
-scale = Vector2(88.115, 55.5)
-skew = -0.464258
-texture = SubResource("CanvasTexture_brp0j")
-
-[node name="HPPoints" type="Node2D" parent="Header/P2HP/HPBase"]
-scale = Vector2(0.0113488, 0.020937)
-skew = 0.274885
-
-[node name="Dashboard" type="Control" parent="Header"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -960.0
-offset_right = 960.0
-offset_bottom = 88.5
-grow_horizontal = 2
-pivot_offset = Vector2(960, 0)
-
-[node name="TurnInfo" type="Sprite2D" parent="Header/Dashboard"]
-material = SubResource("ShaderMaterial_qyub3")
-position = Vector2(957, 69.5)
-scale = Vector2(6.46875, 1.54688)
-texture = SubResource("GradientTexture2D_u4wab")
-
-[node name="OutlineLeft" type="Sprite2D" parent="Header/Dashboard"]
-texture_repeat = 1
-position = Vector2(931.96, 70)
-scale = Vector2(0.604375, 0.604375)
-texture = ExtResource("7_brp0j")
-region_enabled = true
-region_rect = Rect2(0, 0, 700, 210)
-
-[node name="OutlineRight" type="Sprite2D" parent="Header/Dashboard/OutlineLeft"]
-texture_repeat = 1
-position = Vector2(402, -0.5)
-texture = ExtResource("8_wckav")
-region_rect = Rect2(0, 0, 500, 210)
-
-[node name="P1Time" type="Label" parent="Header/Dashboard"]
-layout_mode = 0
-offset_left = 725.0
-offset_top = 41.0
-offset_right = 1959.0
-offset_bottom = 371.0
-scale = Vector2(0.163137, 0.163137)
-text = "60"
-label_settings = SubResource("LabelSettings_pmkfs")
-horizontal_alignment = 1
-
-[node name="P2Time" type="Label" parent="Header/Dashboard"]
-layout_mode = 0
-offset_left = 994.0
-offset_top = 41.0
-offset_right = 2228.0
-offset_bottom = 371.0
-scale = Vector2(0.163137, 0.163137)
-text = "60"
-label_settings = SubResource("LabelSettings_pmkfs")
-horizontal_alignment = 1
-
-[node name="AttackSymbol" type="Sprite2D" parent="Header/Dashboard"]
-position = Vector2(963, 70)
-rotation = -0.787711
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("9_wckav")
 
 [node name="ShellDial" type="TextureRect" parent="."]
 layout_mode = 1
@@ -307,6 +206,101 @@ material = SubResource("ShaderMaterial_voeoa")
 position = Vector2(333, 121)
 scale = Vector2(147.151, 147.151)
 texture = SubResource("CanvasTexture_0dgpy")
+
+[node name="P1HP" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="HPBase" type="Sprite2D" parent="P1HP"]
+material = SubResource("ShaderMaterial_dviy5")
+position = Vector2(31, 40)
+scale = Vector2(88.115, 55.5)
+skew = 0.464258
+texture = SubResource("CanvasTexture_brp0j")
+
+[node name="HPPoints" type="Node2D" parent="P1HP/HPBase"]
+scale = Vector2(0.0113488, 0.020937)
+skew = -0.274886
+
+[node name="P2HP" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1920.0
+offset_bottom = 1080.0
+grow_horizontal = 0
+
+[node name="HPBase" type="Sprite2D" parent="P2HP"]
+material = SubResource("ShaderMaterial_dviy5")
+position = Vector2(1889, 40)
+scale = Vector2(88.115, 55.5)
+skew = -0.464258
+texture = SubResource("CanvasTexture_brp0j")
+
+[node name="HPPoints" type="Node2D" parent="P2HP/HPBase"]
+scale = Vector2(0.0113488, 0.020937)
+skew = 0.274885
+
+[node name="Dashboard" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -960.0
+offset_right = 960.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+pivot_offset = Vector2(960, 0)
+
+[node name="TurnInfo" type="Sprite2D" parent="Dashboard"]
+material = SubResource("ShaderMaterial_qyub3")
+position = Vector2(957, 69.5)
+scale = Vector2(6.46875, 1.54688)
+texture = SubResource("GradientTexture2D_u4wab")
+
+[node name="OutlineLeft" type="Sprite2D" parent="Dashboard"]
+texture_repeat = 1
+position = Vector2(931.96, 70)
+scale = Vector2(0.604375, 0.604375)
+texture = ExtResource("7_brp0j")
+region_enabled = true
+region_rect = Rect2(0, 0, 700, 210)
+
+[node name="OutlineRight" type="Sprite2D" parent="Dashboard/OutlineLeft"]
+texture_repeat = 1
+position = Vector2(402, -0.5)
+texture = ExtResource("8_wckav")
+region_rect = Rect2(0, 0, 500, 210)
+
+[node name="P1Time" type="Label" parent="Dashboard"]
+layout_mode = 0
+offset_left = 725.0
+offset_top = 41.0
+offset_right = 1959.0
+offset_bottom = 371.0
+scale = Vector2(0.163137, 0.163137)
+text = "60"
+label_settings = SubResource("LabelSettings_pmkfs")
+horizontal_alignment = 1
+
+[node name="P2Time" type="Label" parent="Dashboard"]
+layout_mode = 0
+offset_left = 994.0
+offset_top = 41.0
+offset_right = 2228.0
+offset_bottom = 371.0
+scale = Vector2(0.163137, 0.163137)
+text = "60"
+label_settings = SubResource("LabelSettings_pmkfs")
+horizontal_alignment = 1
+
+[node name="AttackSymbol" type="Sprite2D" parent="Dashboard"]
+position = Vector2(963, 70)
+rotation = -0.787711
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_wckav")
 
 [connection signal="pressed" from="ShellDial/PolygonButton_Top" to="." method="_on_polygon_button_top_pressed"]
 [connection signal="pressed" from="ShellDial/PolygonButton_Mid" to="." method="_on_polygon_button_mid_pressed"]
