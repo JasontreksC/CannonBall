@@ -9,8 +9,11 @@ var vitality: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var mat: ShaderMaterial = preload("res://Shader/hp_point.gdshader").duplicate()
+	var mat := ShaderMaterial.new()
+	mat.shader = preload("res://Shader/hp_point.gdshader").duplicate()
 	mat.set_shader_parameter("inner_ratio", 0)
+	mat.set_shader_parameter("inner_color", Color(1, 0, 0))
+	mat.set_shader_parameter("outter_color", Color(0.25, 0, 0))
 	sprite.material = mat
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
