@@ -46,9 +46,9 @@ func get_damage(damage: int):
 	hp = max(hp, 0)
 	
 	if multiplayer.is_server():
-		game.ui.rpc("remove_hp_points", 0, 1)
+		game.ui.rpc("remove_hp_points", 0, damage)
 	else:
-		game.ui.rpc("remove_hp_points", 1, 1)
+		game.ui.rpc("remove_hp_points", 1, damage)
 	#game.ui.rpc("update_hp")
 
 func _enter_tree() -> void:
