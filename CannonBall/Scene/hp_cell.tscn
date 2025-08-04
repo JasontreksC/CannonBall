@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://fbrxb1i2vog1"]
 
-[ext_resource type="Script" uid="uid://5cu3t6d3corr" path="res://Script/hp_point.gd" id="1_lw3pi"]
+[ext_resource type="Script" uid="uid://5cu3t6d3corr" path="res://Script/hp_cell.gd" id="1_lw3pi"]
 [ext_resource type="Shader" uid="uid://x522m5huajb0" path="res://Shader/hp_point.gdshader" id="1_xcfp7"]
 [ext_resource type="Script" uid="uid://cgjrp217xxfik" path="res://addons/shaker/src/Vector2/shaker_component2D.gd" id="2_qai04"]
 [ext_resource type="Script" uid="uid://bps6bqb3l581x" path="res://addons/shaker/data/Vector2/BaseShakerType2D.gd" id="3_lw3pi"]
@@ -40,42 +40,6 @@ shader_parameter/inner_ratio = 0.0
 [sub_resource type="CanvasTexture" id="CanvasTexture_haa8g"]
 texture_filter = 4
 
-[sub_resource type="Animation" id="Animation_lw3pi"]
-resource_name = "generate"
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material:shader_parameter/inner_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.4, 0.0650879, 1, -0.0333333, -0.517873, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale:x")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(25, -0.25, 0, 0.4, 86.6448, 50, -0.266667, 67.4558, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale:y")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(25, -0.25, 0, 0.4, 86.6448, 50, -0.266667, 67.4558, 0, 0),
-"times": PackedFloat32Array(0, 1)
-}
-
 [sub_resource type="Animation" id="Animation_4v07l"]
 length = 0.001
 tracks/0/type = "bezier"
@@ -112,14 +76,51 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0)
 }
 
+[sub_resource type="Animation" id="Animation_lw3pi"]
+resource_name = "generate"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/inner_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.4, 0.0650879, 1, -0.0333333, -0.517873, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
+"times": PackedFloat32Array(0.5, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
+"times": PackedFloat32Array(0.5, 1)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4v07l"]
 _data = {
 &"RESET": SubResource("Animation_4v07l"),
 &"generate": SubResource("Animation_lw3pi")
 }
 
-[node name="HPPoint" type="Node2D"]
+[node name="HPCell" type="Node2D"]
 position = Vector2(1.18017e-05, -5.96046e-06)
+scale = Vector2(2, 2)
 script = ExtResource("1_lw3pi")
 
 [node name="ShakerComponent2D" type="Node2D" parent="."]

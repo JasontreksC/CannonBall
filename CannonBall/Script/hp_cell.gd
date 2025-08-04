@@ -1,5 +1,5 @@
 extends Node2D
-class_name HPPoint
+class_name HPCell
 
 @onready var shaker: ShakerComponent2D = $ShakerComponent2D
 @onready var sprite: Sprite2D = $ShakerComponent2D/Sprite2D

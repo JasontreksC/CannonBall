@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
-[ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_point.tscn" id="2_dviy5"]
+[ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_cell.tscn" id="2_dviy5"]
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
 [ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 [ext_resource type="Shader" uid="uid://bvrlkrmaw1jxg" path="res://Shader/just_color.tres" id="6_o5tdw"]
@@ -219,7 +219,7 @@ scale = Vector2(88.115, 55.5)
 skew = 0.464258
 texture = SubResource("CanvasTexture_brp0j")
 
-[node name="HPPoints" type="Node2D" parent="P1HP/HPBase"]
+[node name="HPCells" type="Node2D" parent="P1HP/HPBase"]
 scale = Vector2(0.0113488, 0.020937)
 skew = -0.274886
 
@@ -239,7 +239,7 @@ scale = Vector2(88.115, 55.5)
 skew = -0.464258
 texture = SubResource("CanvasTexture_brp0j")
 
-[node name="HPPoints" type="Node2D" parent="P2HP/HPBase"]
+[node name="HPCells" type="Node2D" parent="P2HP/HPBase"]
 scale = Vector2(0.0113488, 0.020937)
 skew = 0.274885
 
