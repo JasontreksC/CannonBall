@@ -39,8 +39,12 @@ var cannon: Cannon = null
 
 @rpc("any_peer", "call_local")
 func get_damage(damage: int):
+	if not is_multiplayer_authority():
+		return
+	
 	hp -= damage
 	hp = max(hp, 0)
+	
 	if multiplayer.is_server():
 		game.ui.rpc("remove_hp_points", 0, damage)
 	else:
