@@ -119,12 +119,12 @@ _data = {
 }
 
 [node name="HPCell" type="Node2D"]
-position = Vector2(1.18017e-05, -5.96046e-06)
+position = Vector2(1.01328e-05, -8.55327e-06)
 script = ExtResource("1_lw3pi")
 
 [node name="ShakerComponent2D" type="Node2D" parent="."]
 script = ExtResource("2_qai04")
-intensity = 6.0
+intensity = 12.0
 duration = 1.0
 shake_speed = 5.0
 shakerPreset = SubResource("Resource_4v07l")

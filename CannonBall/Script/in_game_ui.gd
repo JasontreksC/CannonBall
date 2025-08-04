@@ -96,6 +96,7 @@ func generate_hp_points(player: int, count: int):
 		if cell and not cell.vitality:
 			cell.generate()
 			count -= 1
+			await get_tree().create_timer(0.1).timeout
 
 @rpc("any_peer", "call_local")
 func remove_hp_points(player: int, count: int):
