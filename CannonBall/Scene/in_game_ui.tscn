@@ -214,6 +214,7 @@ texture = SubResource("CanvasTexture_0dgpy")
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="HPBase" type="Sprite2D" parent="P1HP"]
 material = SubResource("ShaderMaterial_dviy5")
@@ -234,6 +235,7 @@ anchor_right = 1.0
 offset_left = -1920.0
 offset_bottom = 1080.0
 grow_horizontal = 0
+mouse_filter = 2
 
 [node name="HPBase" type="Sprite2D" parent="P2HP"]
 material = SubResource("ShaderMaterial_dviy5")
@@ -256,6 +258,7 @@ offset_right = 960.0
 offset_bottom = 1080.0
 grow_horizontal = 2
 pivot_offset = Vector2(960, 0)
+mouse_filter = 2
 
 [node name="TurnInfo" type="Sprite2D" parent="Dashboard"]
 material = SubResource("ShaderMaterial_qyub3")
