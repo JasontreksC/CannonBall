@@ -135,7 +135,7 @@ func _ready() -> void:
 	
 	for i in range(20):
 		var psHPCell: PackedScene = load("res://Scene/hp_cell.tscn")
-		var p1HPCell: HPCell = psHPCell.instantiate()
+		var p1HPCell: HPCell = psHPCell.instantiate() as HPCell
 		if i % 2 == 1:
 				p1HPCell.scale.y *= -1
 		p1HPCell.position.x = 62 + 30 * i
