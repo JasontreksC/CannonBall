@@ -61,7 +61,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(25, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(50, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
 tracks/2/type = "bezier"
@@ -72,7 +72,7 @@ tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(25, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(50, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
 
@@ -85,9 +85,9 @@ tracks/0/path = NodePath(".:material:shader_parameter/inner_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.4, 0.0650879, 1, -0.0333333, -0.517873, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.4, 0.0650879, 1, -0.0333333, -0.517873, 0.25, 0, 1, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
 }
 tracks/1/type = "bezier"
 tracks/1/imported = false
@@ -96,9 +96,9 @@ tracks/1/path = NodePath(".:scale:x")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
-"times": PackedFloat32Array(0.5, 1)
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(50, 0, 0, 0, 0, 50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
 }
 tracks/2/type = "bezier"
 tracks/2/imported = false
@@ -107,9 +107,9 @@ tracks/2/path = NodePath(".:scale:y")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
-"times": PackedFloat32Array(0.5, 1)
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(50, 0, 0, 0, 0, 50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4v07l"]
@@ -120,7 +120,6 @@ _data = {
 
 [node name="HPCell" type="Node2D"]
 position = Vector2(1.18017e-05, -5.96046e-06)
-scale = Vector2(2, 2)
 script = ExtResource("1_lw3pi")
 
 [node name="ShakerComponent2D" type="Node2D" parent="."]
@@ -133,7 +132,7 @@ metadata/_custom_type_script = "uid://cgjrp217xxfik"
 
 [node name="Sprite2D" type="Sprite2D" parent="ShakerComponent2D"]
 material = SubResource("ShaderMaterial_2e65n")
-scale = Vector2(25, 25)
+scale = Vector2(50, 50)
 texture = SubResource("CanvasTexture_haa8g")
 region_rect = Rect2(-50, 0, 100, 100)
 
