@@ -238,8 +238,10 @@ func on_entry_WaitSession():
 	pass
 func on_exit_WaitSession():
 	#ui.rpc("update_hp")
-	ui.rpc("generate_hp_points", 0, 20)
-	ui.rpc("generate_hp_points", 1, 20)
+	ui.generate_hp_points(0, 20)
+	ui.generate_hp_points(1, 20)
+	#ui.rpc("generate_hp_points", 0, 20)
+	#ui.rpc("generate_hp_points", 1, 20)
 	players[0].canMove = true
 	players[1].canMove = true
 
