@@ -58,7 +58,7 @@ func activate():
 		game.regist_lifetime(self.name, lifetimeTurn, 0)
 
 func _enter_tree() -> void:
-	game = get_parent() as Game
+	game = get_parent().get_parent() as Game
 
 func _ready() -> void:
 	pass
