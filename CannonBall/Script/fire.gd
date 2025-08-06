@@ -2,7 +2,10 @@ extends Node2D
 
 @onready var particle: GPUParticles2D = $GPUParticles2D
 @onready var timer: Timer = $Timer
+var extendX: float = 300
+
 var game: Game = null
+
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:

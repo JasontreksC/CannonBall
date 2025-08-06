@@ -7,8 +7,10 @@ var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
 @export var range: float
 @export var hitDamage: float
 @export var tickDamage: float
-@export var tickInterval: float
 @export var lifetimeTurn: int
+@export var tickInterval: float
+
+@export var spawnableEffects: Dictionary[String, PackedScene]
 
 var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
@@ -31,7 +33,10 @@ func land():
 	
 	var pos = Vector2(global_position.x, 0)
 	
-	var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", pos)
+	var psDF: PackedScene = load("res://Scene/damage_field.tscn")
+	var df: DamageField = psDF.instantiate()
+	#var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", pos)
+	df.global_position = pos
 	df.attackTo = 1 - launcher
 	df.shellType = shellType
 	df.target = game.players[1 - launcher]
@@ -40,7 +45,7 @@ func land():
 	df.tickDamage = tickDamage
 	df.tickInterval = tickInterval
 	df.lifetimeTurn = lifetimeTurn
-	df.activate()
+	add_child(df)
 
 	var ponds: Array[Node] 
 	var bushes: Array[Node]
@@ -50,13 +55,17 @@ func land():
 	else:
 		ponds = game.world.nP2Ponds.get_children()
 		bushes = game.world.nP2Bush.get_children()
+		
 	match shellType:
 		0: ## 일반탄
-			game.rpc("server_spawn_request", "res://Scene/explosion.tscn", "none", pos)
-				
+			game.server_spawn_directly(spawnableEffects["explo"], "none", {
+				"position": pos
+			})
+
 		1: ## 화염탄
 			for p: Pond in ponds:
 				if p.in_range(pos.x):
+					df.tickDamage = 0
 					pass
 				else:
 					if pos.x < p.leftX and abs(p.leftX - pos.x) < 150:
@@ -65,12 +74,18 @@ func land():
 					elif pos.x > p.rightX and abs(p.rightX - pos.x) < 150:
 						var fireLeftX = p.rightX
 						df.modify_range_L(fireLeftX)
-						
-					game.rpc("server_spawn_request", "res://Scene/fire.tscn", "none", pos)
-			
+					
+					var newCenter = (df.leftX + df.rightX) / 2
+					var newRange = df.rightX - df.leftX
+					game.server_spawn_directly(spawnableEffects["fire"], "none", {
+						"position": Vector2(newCenter, 0),
+						"extendX": newRange / 2
+					})
+	
 		2: ## 독탄
-			
-			game.rpc("server_spawn_request", "res://Scene/poison_spread.tscn", "none", pos)
+			game.server_spawn_directly(spawnableEffects["poison"], "none", pos)
+	
+	df.activate()
 	
 	
 	game.rpc("delete_object", self.name)

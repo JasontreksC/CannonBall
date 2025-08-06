@@ -21,9 +21,9 @@ var gameTime: float = 0
 var winner: int = -1
 
 ## 오브젝트 풀링
-## 모든 피어가 서버에 스폰을 요청함. 멀티플레이에서 동기화되는 객체에 대해 사용함. 비동기적으로 실행됨
+## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
-func server_spawn_request(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void: 
+func spawn_every_peer(path: String, object_name: String, props: Dictionary[StringName, Variant]={}) -> void: 
 	if object_name == "none":
 		object_name = "object" + str(Time.get_ticks_usec())
 	elif objects.has(object_name):
@@ -44,15 +44,18 @@ func server_spawn_request(path: String, object_name: String, pos: Vector2 = Vect
 	var inst: Node2D = ps.instantiate()
 	if object_name:
 		inst.name = object_name
-	inst.global_position = pos
+	
+	for k in props.keys():
+		inst.set(k, props[k])
+
 	add_child(inst)
 	objects[object_name] = inst
 	
 	var senderID = multiplayer.get_remote_sender_id()
 	inst.rpc_id(senderID, "on_spawned")
 
-## 멀티플레이를 위한 스폰이 아님. 즉 동기화 없이 서버에서만 존재하며 따라서 비동기적이지 않으므로 참조를 즉시 반환함.
-func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = Vector2.ZERO) -> Node2D:
+## 서버가 직접 스폰함. 클라에게도 스폰됨.
+func server_spawn_directly(ps: PackedScene, object_name: String, props: Dictionary[StringName, Variant]={}) -> Node2D:
 	if object_name == "none":
 		object_name = "object" + str(Time.get_ticks_usec())
 	elif objects.has(object_name):
@@ -60,10 +63,22 @@ func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = 
 	if not multiplayer.is_server():
 		return
 	
+	var spawnable: bool = false
+	var count: int = spawner.get_spawnable_scene_count()
+	for i in range(count):
+		var spawnable_path: String = spawner.get_spawnable_scene(i)
+		if ps.resource_path == spawnable_path:
+			spawnable = true
+	if not spawnable:
+		return
+	
 	var inst: Node2D = ps.instantiate()
 	if object_name:
 		inst.name = object_name
-	inst.global_position = pos
+	
+	for k in props.keys():
+		inst.set(k, props[k])
+	
 	add_child(inst)
 	objects[object_name] = inst
 	return inst

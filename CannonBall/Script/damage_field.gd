@@ -48,7 +48,7 @@ func activate():
 	if hitDamage:
 		if in_range(target.global_position.x):
 			#target.get_damage(hitDamage)
-			target.rpc("get_damage", hitDamage,shellType)
+			target.rpc("get_damage", hitDamage, shellType)
 			#game.ui.rpc("set_hp", attackTo, target.hp)
 	
 	if tickDamage:
@@ -65,7 +65,7 @@ func _ready() -> void:
 	
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:
-	game.delete_object(self.name)
+	queue_free()
 
 func _on_timer_timeout() -> void:
 	if in_range(target.global_position.x):
