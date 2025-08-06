@@ -83,7 +83,9 @@ func land():
 					})
 	
 		2: ## 독탄
-			game.server_spawn_directly(spawnableEffects["poison"], "none", pos)
+			game.server_spawn_directly(spawnableEffects["poison"], "none", {
+				"global_position": pos
+			})
 	
 	df.activate()
 	
