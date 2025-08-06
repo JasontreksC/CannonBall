@@ -18,6 +18,12 @@ var isInPond: bool = false
 var selectedShell: int = 0
 var isWalking: bool = false
 
+enum HitType {
+	RADIAL,
+	FLAME,
+	TOXIC
+}
+
 @export var psCMC: PackedScene
 
 # 멀티플레이 동기화
@@ -38,9 +44,11 @@ var cmc: CameraMovingController = null
 var cannon: Cannon = null
 
 @rpc("any_peer", "call_local")
-func get_damage(damage: int):
+func get_damage(damage: int, hitType: HitType):
 	if not is_multiplayer_authority():
 		return
+	if isInPond and hitType == HitType.RADIAL:
+		damage /= 2
 	
 	hp -= damage
 	hp = max(hp, 0)
@@ -98,11 +106,11 @@ func _ready() -> void:
 	stateMachine.register_transit("ReadyFire", "HandleCannon", 0)
 	stateMachine.register_transit("HandleCannon", "ReadyFire", 0)
 	
-	stateMachine.register_state_event("Idle", "exit", on_exit_Idle)	
-	stateMachine.register_state_event("Idle", "entry", on_entry_Idle)	
-	stateMachine.register_state_event("HandleCannon", "exit", on_exit_HandleCannon)	
-	stateMachine.register_state_event("HandleCannon", "entry", on_entry_HandleCannon)	
-	stateMachine.register_state_event("ReadyFire", "exit", on_exit_ReadyFire)	
+	stateMachine.register_state_event("Idle", "exit", on_exit_Idle)
+	stateMachine.register_state_event("Idle", "entry", on_entry_Idle)
+	stateMachine.register_state_event("HandleCannon", "exit", on_exit_HandleCannon)
+	stateMachine.register_state_event("HandleCannon", "entry", on_entry_HandleCannon)
+	stateMachine.register_state_event("ReadyFire", "exit", on_exit_ReadyFire)
 	stateMachine.register_state_event("ReadyFire", "entry", on_entry_ReadyFire)
 	
 	stateMachine.init_current_state("Idle")

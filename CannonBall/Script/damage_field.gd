@@ -5,6 +5,8 @@ class_name DamageField
 
 var attackTo: int = -1
 
+var shellType: int = -1
+	
 var range: float = 0
 var hitDamage: int = 0
 var tickDamage: int = 0  # 틱 대미지 간격은 1초로 고정
@@ -14,6 +16,8 @@ var lifetimeTurn: int = 0
 var game: Game = null
 var target: Player = null
 @onready var timer: Timer = $Timer
+
+
 
 func in_range(targetX: float) -> bool:
 	var left = global_position.x - range / 2
@@ -32,7 +36,7 @@ func activate():
 	if hitDamage:
 		if in_range(target.global_position.x):
 			#target.get_damage(hitDamage)
-			target.rpc("get_damage", hitDamage)
+			target.rpc("get_damage", hitDamage,shellType)
 			#game.ui.rpc("set_hp", attackTo, target.hp)
 	
 	if tickDamage:
