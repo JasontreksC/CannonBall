@@ -45,7 +45,7 @@ func land():
 	df.tickDamage = tickDamage
 	df.tickInterval = tickInterval
 	df.lifetimeTurn = lifetimeTurn
-	add_child(df)
+	game.world.add_child(df)
 
 	var ponds: Array[Node] 
 	var bushes: Array[Node]
