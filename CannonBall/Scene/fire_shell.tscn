@@ -12,7 +12,7 @@ shader_parameter/ColorParameter = Color(1, 0.407843, 0, 1)
 shader_parameter/Brightness = 10.0
 
 [node name="FireShell" instance=ExtResource("1_sf3w6")]
-range = 300.0
+range = 600.0
 hitDamage = 1.0
 tickDamage = 1.0
 tickInterval = 2.0
