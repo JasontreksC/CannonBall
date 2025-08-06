@@ -59,7 +59,7 @@ func land():
 	match shellType:
 		0: ## 일반탄
 			game.server_spawn_directly(spawnableEffects["explo"], "none", {
-				"position": pos
+				"global_position": pos
 			})
 
 		1: ## 화염탄
@@ -78,7 +78,7 @@ func land():
 					var newCenter = (df.leftX + df.rightX) / 2
 					var newRange = df.rightX - df.leftX
 					game.server_spawn_directly(spawnableEffects["fire"], "none", {
-						"position": Vector2(newCenter, 0),
+						"global_position": Vector2(newCenter, 0),
 						"extendX": newRange / 2
 					})
 	
