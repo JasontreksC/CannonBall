@@ -17,6 +17,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	particle.one_shot = false
 	particle.emitting = true
+	var ppm: ParticleProcessMaterial = particle.process_material
+	ppm.emission_box_extents.x = extendX
 	
 	if multiplayer.is_server():
 		game.regist_lifetime(self.name, 4, 0)
