@@ -41,15 +41,35 @@ func land():
 	df.tickInterval = tickInterval
 	df.lifetimeTurn = lifetimeTurn
 	df.activate()
-	
+
+	var ponds: Array[Node] 
+	var bushes: Array[Node]
+	if df.attackTo == 0:
+		ponds = game.world.nP1Ponds.get_children()
+		bushes = game.world.nP1Bush.get_children()
+	else:
+		ponds = game.world.nP2Ponds.get_children()
+		bushes = game.world.nP2Bush.get_children()
 	match shellType:
 		0: ## 일반탄
 			game.rpc("server_spawn_request", "res://Scene/explosion.tscn", "none", pos)
-			
+				
 		1: ## 화염탄
-			game.rpc("server_spawn_request", "res://Scene/fire.tscn", "none", pos)
+			for p: Pond in ponds:
+				if p.in_range(pos.x):
+					pass
+				else:
+					if pos.x < p.leftX and abs(p.leftX - pos.x) < 150:
+						var fireRightX = p.leftX
+						df.modify_range_R(fireRightX)
+					elif pos.x > p.rightX and abs(p.rightX - pos.x) < 150:
+						var fireLeftX = p.rightX
+						df.modify_range_L(fireLeftX)
+						
+					game.rpc("server_spawn_request", "res://Scene/fire.tscn", "none", pos)
 			
 		2: ## 독탄
+			
 			game.rpc("server_spawn_request", "res://Scene/poison_spread.tscn", "none", pos)
 	
 	

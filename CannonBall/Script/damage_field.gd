@@ -8,22 +8,34 @@ var attackTo: int = -1
 var shellType: int = -1
 	
 var range: float = 0
+var leftX: float = 0
+var rightX: float = 0
 var hitDamage: int = 0
 var tickDamage: int = 0  # 틱 대미지 간격은 1초로 고정
 var tickInterval: float = 0
 var lifetimeTurn: int = 0
+var modifiedL: bool = false
+var modifiedR: bool = false
 
 var game: Game = null
 var target: Player = null
 @onready var timer: Timer = $Timer
 
-
+func modify_range_L(left: float):
+	modifiedL = true
+	leftX = left
+	
+func modify_range_R(right: float):
+	modifiedR = true
+	rightX = right
 
 func in_range(targetX: float) -> bool:
-	var left = global_position.x - range / 2
-	var right = global_position.x + range / 2
+	if not modifiedL:
+		leftX = global_position.x - range / 2
+	if not modifiedR:
+		rightX = global_position.x + range / 2
 	
-	if targetX > left and targetX < right:
+	if targetX > leftX and targetX < rightX:
 		return true
 	else:
 		return false
@@ -58,6 +70,6 @@ func lifetime_end() -> void:
 func _on_timer_timeout() -> void:
 	if in_range(target.global_position.x):
 		#target.get_damage(tickDamage)
-		target.rpc("get_damage", tickDamage)
+		target.rpc("get_damage", tickDamage,shellType)
 		#game.ui.rpc("set_hp", attackTo, target.hp)
 		print("Tick Damage to: ", target.name)

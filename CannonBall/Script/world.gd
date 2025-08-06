@@ -8,6 +8,12 @@ class_name World
 @onready var nP1SpawnSpot: Node2D = $P1SpawnSpot
 @onready var nP2SpawnSpot: Node2D = $P2SpawnSpot
 
+@onready var nP1Ponds: Node2D = $BenefitFields/P1Ponds
+@onready var nP2Ponds: Node2D = $BenefitFields/P2Ponds
+#
+@onready var nP1Bush: Node2D = $BenefitFields/P1Bush
+@onready var nP2Bush: Node2D = $BenefitFields/P2Bush
+
 var game: Game = null
 
 func get_spawn_spot(tag: String) -> Vector2:
