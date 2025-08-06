@@ -5,15 +5,12 @@ class_name Bush
 @export var bushRange: float = 600
 
 @onready var spBush: Sprite2D = $SP_Bush
+@onready var world: World = $"../../.."
 
 var leftX: float
 var rightX: float
 
-var world: World = null
 var target: Player = null
-
-func _enter_tree() -> void:
-	world = get_parent().get_parent() as World
 
 func _ready() -> void:
 	leftX = global_position.x - bushRange / 2
