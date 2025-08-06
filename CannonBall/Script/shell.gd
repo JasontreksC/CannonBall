@@ -63,24 +63,37 @@ func land():
 			})
 
 		1: ## 화염탄
+			var drawn: bool = false
+			var modified: bool = false
+			var modifiedR: float = 0
+			var modifiedX: float = 0
+			
 			for p: Pond in ponds:
 				if p.in_range(pos.x):
 					df.tickDamage = 0
-					pass
-				else:
+					drawn = true
+				elif abs(p.global_position.x - pos.x) < p.pondRadius + (df.range / 2):
 					if pos.x < p.leftX and abs(p.leftX - pos.x) < 150:
-						var fireRightX = p.leftX
-						df.modify_range_R(fireRightX)
+						df.modify_range_R(p.leftX)
 					elif pos.x > p.rightX and abs(p.rightX - pos.x) < 150:
-						var fireLeftX = p.rightX
-						df.modify_range_L(fireLeftX)
-					
-					var newCenter = (df.leftX + df.rightX) / 2
-					var newRange = df.rightX - df.leftX
-					game.server_spawn_directly(spawnableEffects["fire"], "none", {
-						"global_position": Vector2(newCenter, 0),
-						"extendX": newRange / 2
-					})
+						df.modify_range_L(p.rightX)
+					modified = true
+					modifiedR = df.rightX - df.leftX
+					modifiedX = (df.leftX + df.rightX) / 2
+			
+			if modified:
+				game.server_spawn_directly(spawnableEffects["fire"], "none", {
+					"global_position": Vector2(modifiedX, 0),
+					"extendX": modifiedR
+				})
+			elif drawn:
+				game.server_spawn_directly(spawnableEffects["explo"], "none", {
+					"global_position": pos,
+				})
+			else:
+				game.server_spawn_directly(spawnableEffects["fire"], "none", {
+					"global_position": pos,
+				})
 	
 		2: ## 독탄
 			game.server_spawn_directly(spawnableEffects["poison"], "none", {
