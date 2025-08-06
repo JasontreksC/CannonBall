@@ -23,7 +23,7 @@ var winner: int = -1
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
-func spawn_every_peer(path: String, object_name: String, props: Dictionary[StringName, Variant]={}) -> void: 
+func server_spawn_request(path: String, object_name: String, props: Dictionary[StringName, Variant]={}) -> void: 
 	if object_name == "none":
 		object_name = "object" + str(Time.get_ticks_usec())
 	elif objects.has(object_name):

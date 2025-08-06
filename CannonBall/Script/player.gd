@@ -75,7 +75,7 @@ func _ready() -> void:
 
 	## 대포 생성
 	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
-	#  서버의 경우 직접 호출 
+	#  서버의 경우 직접 호출
 	game.rpc("server_spawn_request", "res://Scene/cannon.tscn", self.name + "cannon")
 	
 	# 카메라 무빙 컨트롤러 생성
