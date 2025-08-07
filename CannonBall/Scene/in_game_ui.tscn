@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=29 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_cell.tscn" id="2_dviy5"]
@@ -63,6 +63,9 @@ gradient = SubResource("Gradient_i3syv")
 [sub_resource type="LabelSettings" id="LabelSettings_pmkfs"]
 font_size = 240
 font_color = Color(0.540346, 0.895914, 0.928074, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_oqxxn"]
+font_size = 128
 
 [node name="InGameUI" type="Control"]
 layout_mode = 3
@@ -307,6 +310,23 @@ position = Vector2(963, 70)
 rotation = -0.787711
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("9_wckav")
+
+[node name="State" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="State"]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 490.0
+offset_right = 1132.0
+offset_bottom = 665.0
+text = "State"
+label_settings = SubResource("LabelSettings_oqxxn")
 
 [connection signal="pressed" from="ShellDial/PolygonButton_Top" to="." method="_on_polygon_button_top_pressed"]
 [connection signal="pressed" from="ShellDial/PolygonButton_Mid" to="." method="_on_polygon_button_mid_pressed"]
