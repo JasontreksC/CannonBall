@@ -47,7 +47,7 @@ func server_spawn_request(path: String, object_name: String, props: Dictionary[S
 	
 	for k in props.keys():
 		inst.set(k, props[k])
-
+	
 	add_child(inst)
 	objects[object_name] = inst
 	

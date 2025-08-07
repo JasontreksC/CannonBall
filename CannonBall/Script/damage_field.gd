@@ -29,6 +29,12 @@ func modify_range_R(right: float):
 	modifiedR = true
 	rightX = right
 
+func set_left_x(left: float):
+	leftX = left
+
+func set_right_x(right: float):
+	rightX = right
+
 func in_range(targetX: float) -> bool:
 	if not modifiedL:
 		leftX = global_position.x - range / 2

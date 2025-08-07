@@ -67,33 +67,56 @@ func land():
 			var modified: bool = false
 			var modifiedR: float = 0
 			var modifiedX: float = 0
-			
+
 			for p: Pond in ponds:
 				if p.in_range(pos.x):
 					df.tickDamage = 0
 					drawn = true
-				elif abs(p.global_position.x - pos.x) < p.pondRadius + (df.range / 2):
-					if pos.x < p.leftX and abs(p.leftX - pos.x) < 150:
-						df.modify_range_R(p.leftX)
-					elif pos.x > p.rightX and abs(p.rightX - pos.x) < 150:
-						df.modify_range_L(p.rightX)
-					modified = true
-					modifiedR = df.rightX - df.leftX
-					modifiedX = (df.leftX + df.rightX) / 2
-			
-			if modified:
-				game.server_spawn_directly(spawnableEffects["fire"], "none", {
-					"global_position": Vector2(modifiedX, 0),
-					"extendX": modifiedR
-				})
-			elif drawn:
-				game.server_spawn_directly(spawnableEffects["explo"], "none", {
-					"global_position": pos,
-				})
+				
+				else:
+					if p.in_range(pos.x + df.range / 2): ## 오른쪽 끝이 연못 안에
+						df.set_right_x(p.leftX)
+					else:
+						df.set_right_x(pos.x + df.range / 2)
+					
+					if p.in_range(pos.x - df.range / 2): ## 왼쪽 끝이 연못 안에
+						df.set_left_x(p.rightX)
+					else:
+						df.set_left_x(pos.x - df.range / 2)
+						
+				#elif abs(p.global_position.x - pos.x) < p.pondRadius + (df.range / 2):
+					#modifiedR += clamp(abs(p.leftX - pos.x), 0, 150)
+					#modifiedR += clamp(abs(p.rightX - pos.x), 0, 150)
+					#
+					#if pos.x < p.leftX and abs(p.leftX - pos.x) < 150:
+						#df.modify_range_R(p.leftX)
+					#elif pos.x > p.rightX and abs(p.rightX - pos.x) < 150:
+						#df.modify_range_L(p.rightX)
+					#modified = true
+					#modifiedR = df.rightX - df.leftX
+					#modifiedX = (df.leftX + df.rightX) / 2
+	
+			if drawn:
+				pass
 			else:
 				game.server_spawn_directly(spawnableEffects["fire"], "none", {
-					"global_position": pos,
+					"global_position": Vector2(df.leftX + df.rightX / 2, 0),
+					"extendX": abs(df.leftX - df.rightX) / 2
 				})
+			
+			#if modified:
+				#game.server_spawn_directly(spawnableEffects["fire"], "none", {
+					#"global_position": Vector2(modifiedX, 0),
+					#"extendX": modifiedR
+				#})
+			#elif drawn:
+				#game.server_spawn_directly(spawnableEffects["explo"], "none", {
+					#"global_position": pos
+				#})
+			#else:
+				#game.server_spawn_directly(spawnableEffects["fire"], "none", {
+					#"global_position": pos
+				#})
 	
 		2: ## 독탄
 			game.server_spawn_directly(spawnableEffects["poison"], "none", {

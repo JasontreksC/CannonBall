@@ -11,6 +11,13 @@ var game: Game = null
 func on_spawned() -> void:
 	var ppm: ParticleProcessMaterial = particle.process_material
 	ppm.emission_box_extents.x = extendX
+	particle.restart()
+
+func set_extend(radius: float):
+	pass
+	#var ppm: ParticleProcessMaterial = particle.process_material
+	#ppm.emission_box_extents.x = extendX
+	#particle.restart()
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
