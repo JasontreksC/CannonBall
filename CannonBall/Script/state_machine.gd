@@ -51,7 +51,7 @@ func execute_transit(to: String) -> bool:
 	var key = hash(current_state.name + to)
 	if not transits.has(key):
 		return false
-	if current_transit.key == key:
+	if current_transit and current_transit.key == key:
 		return false
 	
 	is_transit_finished = false
