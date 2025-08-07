@@ -619,14 +619,19 @@ region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
 
 [node name="BenefitFields" type="Node2D" parent="."]
 
-[node name="Bush1" parent="BenefitFields" instance=ExtResource("3_ejll3")]
-position = Vector2(-2588, 0)
+[node name="P1Ponds" type="Node2D" parent="BenefitFields"]
 
-[node name="Pond" parent="BenefitFields" instance=ExtResource("4_scul4")]
+[node name="Pond" parent="BenefitFields/P1Ponds" instance=ExtResource("4_scul4")]
 z_index = 60
 position = Vector2(-3600, 0)
 scale = Vector2(2, 2)
 pondRadius = 500.0
 
-[node name="Bush2" parent="BenefitFields" instance=ExtResource("3_ejll3")]
+[node name="P1Bush" type="Node2D" parent="BenefitFields"]
+
+[node name="Bush" parent="BenefitFields/P1Bush" instance=ExtResource("3_ejll3")]
 position = Vector2(-2588, 0)
+
+[node name="P2Ponds" type="Node2D" parent="BenefitFields"]
+
+[node name="P2Bush" type="Node2D" parent="BenefitFields"]

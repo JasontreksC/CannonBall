@@ -42,6 +42,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Fire" type="Node2D"]
+z_index = 100
 script = ExtResource("1_n0jfg")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]

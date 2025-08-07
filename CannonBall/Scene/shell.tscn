@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bp8yuq71ym25a"]
+[gd_scene load_steps=7 format=3 uid="uid://bp8yuq71ym25a"]
 
 [ext_resource type="Script" uid="uid://b7mlp15n5g8hl" path="res://Script/shell.gd" id="1_1vmgh"]
+[ext_resource type="PackedScene" uid="uid://co2yk1rkb2o2j" path="res://Scene/explosion.tscn" id="2_qjqgp"]
+[ext_resource type="PackedScene" uid="uid://vbo8nwvg3d3b" path="res://Scene/fire.tscn" id="3_bo4vo"]
+[ext_resource type="PackedScene" uid="uid://dadbuw6oeorgg" path="res://Scene/poison_spread.tscn" id="4_4knom"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yxusm"]
 radius = 50.0
@@ -13,6 +16,11 @@ properties/0/replication_mode = 1
 [node name="Shell" type="Node2D"]
 z_index = -20
 script = ExtResource("1_1vmgh")
+spawnableEffects = Dictionary[String, PackedScene]({
+"explo": ExtResource("2_qjqgp"),
+"fire": ExtResource("3_bo4vo"),
+"poison": ExtResource("4_4knom")
+})
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2

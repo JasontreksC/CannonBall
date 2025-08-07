@@ -19,11 +19,10 @@ var turnCount: int = 0
 var lifetimePool: Dictionary[String, Lifetime]
 var gameTime: float = 0
 var winner: int = -1
-
 ## 오브젝트 풀링
-## 모든 피어가 서버에 스폰을 요청함. 멀티플레이에서 동기화되는 객체에 대해 사용함. 비동기적으로 실행됨
+## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
-func server_spawn_request(path: String, object_name: String, pos: Vector2 = Vector2.ZERO) -> void: 
+func server_spawn_request(path: String, object_name: String, props: Dictionary[StringName, Variant]={}) -> void: 
 	if object_name == "none":
 		object_name = "object" + str(Time.get_ticks_usec())
 	elif objects.has(object_name):
@@ -44,15 +43,18 @@ func server_spawn_request(path: String, object_name: String, pos: Vector2 = Vect
 	var inst: Node2D = ps.instantiate()
 	if object_name:
 		inst.name = object_name
-	inst.global_position = pos
+	
+	for k in props.keys():
+		inst.set(k, props[k])
+	
 	add_child(inst)
 	objects[object_name] = inst
 	
 	var senderID = multiplayer.get_remote_sender_id()
 	inst.rpc_id(senderID, "on_spawned")
 
-## 멀티플레이를 위한 스폰이 아님. 즉 동기화 없이 서버에서만 존재하며 따라서 비동기적이지 않으므로 참조를 즉시 반환함.
-func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = Vector2.ZERO) -> Node2D:
+## 서버가 직접 스폰함. 클라에게도 스폰됨.
+func server_spawn_directly(ps: PackedScene, object_name: String, props: Dictionary[StringName, Variant]={}) -> Node2D:
 	if object_name == "none":
 		object_name = "object" + str(Time.get_ticks_usec())
 	elif objects.has(object_name):
@@ -60,10 +62,22 @@ func server_spawn_directly(ps: PackedScene, object_name: String, pos: Vector2 = 
 	if not multiplayer.is_server():
 		return
 	
+	var spawnable: bool = false
+	var count: int = spawner.get_spawnable_scene_count()
+	for i in range(count):
+		var spawnable_path: String = spawner.get_spawnable_scene(i)
+		if ps.resource_path == spawnable_path:
+			spawnable = true
+	if not spawnable:
+		return
+	
 	var inst: Node2D = ps.instantiate()
 	if object_name:
 		inst.name = object_name
-	inst.global_position = pos
+	
+	for k in props.keys():
+		inst.set(k, props[k])
+	
 	add_child(inst)
 	objects[object_name] = inst
 	return inst
@@ -90,19 +104,20 @@ func add_object(object: Node2D) -> bool:
 
 ## 턴, 게임플로우 관리
 func is_p1_turn() -> bool:
-	if turnCount % 2 == 1:
+	if turnCount % 2 == 0:
 		return true
 	else:
 		return false
 
 @rpc("any_peer", "call_local")
 func change_turn() -> void:
-	turnCount += 1
 	if is_p1_turn():
+		print("p1attack")
 		players[0].isAttack = true
 		players[0].attackChance = true
 		players[1].isAttack = false
 	else: 
+		print("p2attack")
 		players[1].isAttack = true
 		players[1].attackChance = true
 		players[0].isAttack = false
@@ -112,7 +127,7 @@ func change_turn() -> void:
 
 @rpc("any_peer", "call_local")
 func transit_game_state(state: String):
-	stateMachine.transit(state)
+	stateMachine.execute_transit(state)
 
 @rpc("any_peer", "call_local")
 func send_transmit(transmit: String):
@@ -158,7 +173,10 @@ func update_lifetime_sec(delta: float):
 			if not live:
 				objects[key].rpc("lifetime_end")
 				lifetimePool.erase(key)
-		
+
+func quit_game():
+	root.sceneMgr.set_scene(2)
+	root.sceneMgr.currentScene.set("winner", winner)
 		
 func _enter_tree() -> void:
 	root = get_parent().root
@@ -169,97 +187,107 @@ func _ready() -> void:
 	if ui:
 		ui.game = self
 		
-	stateMachine.register_state("WaitSession")
-	stateMachine.register_state("Turn")
-	stateMachine.register_state("Shelling")
-	stateMachine.register_state("EndSession")
+	stateMachine.regist_state("WaitSession")
+	stateMachine.regist_state("Turn")
+	stateMachine.regist_state("Shelling")
+	stateMachine.regist_state("EndSession")
 	
-	stateMachine.register_transit("WaitSession", "Turn", 0)
-	stateMachine.register_transit("Turn", "Shelling", 0)
-	stateMachine.register_transit("Turn", "EndSession", 0)
-	stateMachine.register_transit("Shelling", "Turn", 0)
-	stateMachine.register_transit("Shelling", "EndSession", 0)
+	stateMachine.regist_transit("WaitSession", "Turn", 3)
+	stateMachine.regist_transit("Turn", "Shelling", 0)
+	stateMachine.regist_transit("Turn", "EndSession", 0)
+	stateMachine.regist_transit("Shelling", "Turn", 3)
+	stateMachine.regist_transit("Shelling", "EndSession", 0)
 
-	stateMachine.register_state_event("WaitSession", "entry", on_entry_WaitSession)
-	stateMachine.register_state_event("WaitSession", "exit", on_exit_WaitSession)
-	stateMachine.register_state_event("Turn", "entry", on_entry_Turn)
-	stateMachine.register_state_event("Turn", "exit", on_exit_Turn)
-	stateMachine.register_state_event("Shelling", "entry", on_entry_Shelling)
-	stateMachine.register_state_event("Shelling", "exit", on_exit_Shelling)
-	stateMachine.register_state_event("EndSession", "entry", on_entry_EndSession)
-	stateMachine.register_state_event("EndSession", "exit", on_exit_EndSession)
-
+	stateMachine.regist_state_event("WaitSession", "exit", on_exit_WaitSession)
+	stateMachine.regist_state_event("Turn", "entry", on_entry_Turn)
+	stateMachine.regist_state_event("Turn", "exit", on_exit_Turn)
+	stateMachine.regist_state_event("Shelling", "entry", on_entry_Shelling)
+	stateMachine.regist_state_event("Shelling", "exit", on_exit_Shelling)
+	stateMachine.regist_state_event("EndSession", "entry", on_entry_EndSession)
+	
 	stateMachine.init_current_state("WaitSession")
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
+		var timeLeft: float = stateMachine.get_current_process_time()
+		ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % ceil(timeLeft))
+		
+	elif stateMachine.is_transit_process("Turn", "Shelling", delta):
 		pass
-	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
-		pass
-	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
-		pass
+		
 	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
+		var timeLeft: float = stateMachine.get_current_process_time()
+		ui.set_state_text("공수전환까지 %d초 전" % ceil(timeLeft))
+		
+	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
 		pass
+		
 	elif stateMachine.is_transit_process("Shelling", "EndSession", delta):
 		pass
+		
 	# 상태 전환 프로세스가 없으면 각 상태에서의 행동 처리
 	else:
 		match stateMachine.current_state_name():
 			"WaitSession":
-				if len(players) == 2:
+				if check_transmit(["client_connected"]):
 					rpc("transit_game_state", "Turn")
+					
 			"Turn":
 				if multiplayer.is_server():
 					update_lifetime_sec(delta)
 					update_game_time(delta)
 					
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
-						print("ShellingStarted!")
 						rpc("transit_game_state", "Shelling")
-						
+					
 			"Shelling":
 				if multiplayer.is_server():
 					update_lifetime_sec(delta)
-				
+					
 			"EndSession":
-				root.sceneMgr.set_scene(2)
-		
+				print("엔드 세션")
+				pass
+	
 	if check_transmit(["p1_defeat"]):
-		print("p2 win!")
+		stateMachine.execute_transit("EndSession")
 		winner = 1
 	elif check_transmit(["p2_defeat"]):
-		print("p1 win!")
+		stateMachine.execute_transit("EndSession")
 		winner = 0
 		
-	if winner != -1:
-		stateMachine.transit("EndSession")
-		
-func on_entry_WaitSession():
-	pass
 func on_exit_WaitSession():
-	ui.rpc("update_hp")
+	ui.generate_hp_points(0, 20)
+	ui.generate_hp_points(1, 20)
 	players[0].canMove = true
 	players[1].canMove = true
+	
 
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
 	
+	if is_p1_turn():
+		ui.set_state_text("Player1 공격!")
+	else:
+		ui.set_state_text("Player2 공격!")
+		
 func on_exit_Turn():
-	pass
+	turnCount += 1
+		
 func on_entry_Shelling():
 	pass
 func on_exit_Shelling():
 	pass
 func on_entry_EndSession():
+	ui.set_state_text("게임 종료!")
+	
 	players[0].canMove = false
 	players[1].canMove = false
 	
 	lifetimePool.clear()
 	transmitQueue.clear()
 	
-func on_exit_EndSession():
-	pass
+	get_tree().create_timer(5).timeout.connect(quit_game)
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:

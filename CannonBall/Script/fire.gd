@@ -2,11 +2,22 @@ extends Node2D
 
 @onready var particle: GPUParticles2D = $GPUParticles2D
 @onready var timer: Timer = $Timer
+var extendX: float = 300
+
 var game: Game = null
+
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
+	var ppm: ParticleProcessMaterial = particle.process_material
+	ppm.emission_box_extents.x = extendX
+	particle.restart()
+
+func set_extend(radius: float):
 	pass
+	#var ppm: ParticleProcessMaterial = particle.process_material
+	#ppm.emission_box_extents.x = extendX
+	#particle.restart()
 
 func _enter_tree() -> void:
 	game = get_parent() as Game

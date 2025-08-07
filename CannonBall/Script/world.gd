@@ -7,6 +7,10 @@ class_name World
 # 턴제 시스템 - 플레이어가 공격을 할때마다 턴 전환, 플레이어에게 공격인지 수비인지 전달함
 @onready var nP1SpawnSpot: Node2D = $P1SpawnSpot
 @onready var nP2SpawnSpot: Node2D = $P2SpawnSpot
+@onready var nP1Ponds: Node2D = $BenefitFields/P1Ponds
+@onready var nP2Ponds: Node2D = $BenefitFields/P2Ponds
+@onready var nP1Bush: Node2D = $BenefitFields/P1Bush
+@onready var nP2Bush: Node2D = $BenefitFields/P2Bush
 
 var game: Game = null
 
@@ -24,13 +28,19 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 	if not multiplayer.is_server():
 		return
 	
-	var shell: Shell = game.server_spawn_directly(load(shellPath), "none", p0)
-	shell.shellType = shellType
-	shell.p0 = p0
-	shell.v0 = v0
-	shell.theta0 = theta0
-	shell.launcher = launcher
-	
+	var shell: Shell = game.server_spawn_directly(load(shellPath), "none", {
+		"shellType": shellType,
+		"p0": p0,
+		"v0": v0,
+		"theta0": theta0,
+		"launcher": launcher
+	})
+	#shell.shellType = shellType
+	#shell.p0 = p0
+	#shell.v0 = v0
+	#shell.theta0 = theta0
+	#shell.launcher = launcher
+
 func _ready() -> void:
 	game = get_parent() as Game
 		

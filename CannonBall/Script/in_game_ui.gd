@@ -8,14 +8,14 @@ class_name InGameUI
 
 ## HP
 @export var hpPointSprite: PackedScene
+@export var crvHPPRemoveVibration: Curve
 
-@onready var subuiHeader: TextureRect = $Header
-@onready var p1HPPoints: Node2D = $Header/P1HP/HPBase/HPPoints
-@onready var p2HPPoints: Node2D = $Header/P2HP/HPBase/HPPoints
+@onready var p1HPCells: Node2D = $P1HP/HPBase/HPCells
+@onready var p2HPCells: Node2D = $P2HP/HPBase/HPCells
 @onready var lbFps: Label = $fps
 
-@onready var lbP1Time: Label = $Header/Dashboard/P1Time
-@onready var lbP2Time: Label = $Header/Dashboard/P2Time
+@onready var lbP1Time: Label = $Dashboard/P1Time
+@onready var lbP2Time: Label = $Dashboard/P2Time
 
 ## ShellDial
 @onready var shellDial: TextureRect = $ShellDial
@@ -23,6 +23,9 @@ class_name InGameUI
 @onready var spShell1: Sprite2D = $ShellDial/PolygonButton_Mid/SP_Shell1
 @onready var spShell2: Sprite2D = $ShellDial/PolygonButton_Bot/SP_Shell2
 @onready var spShellOutline: Sprite2D = $ShellDial/SP_Outline
+
+## state
+@onready var stateText: Control = $State
 
 var uiMgr: UIManager = null
 var game: Game = null
@@ -46,72 +49,41 @@ func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
 	camTelescope.zoom.x += zoomValue
 	camTelescope.zoom.y += zoomValue
 	camTelescope.zoom = camTelescope.zoom.clamp(Vector2(0.5, 0.5), Vector2(2, 2))
-
 ## HP
 
 @rpc("any_peer", "call_local")
-func update_hp() -> void:
-	var points = p1HPPoints.get_children()
-	var count = len(points)
-	var hpAmount = game.players[0].hp
-	if count < hpAmount:
-		for i in range(count, hpAmount):
-			var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
-			newPoint.name = "HPP" + str(count + i)
-			newPoint.position.x = 62 + 30 * i
-			if i % 2 == 1:
-				newPoint.scale.y *= -1
-			p1HPPoints.add_child(newPoint)
-	else:
-		for i in range(hpAmount, count):
-			points[i].free()
+func generate_hp_points(player: int, count: int):
+	var cells: Array[Node]
+	match player:
+		0:
+			cells = p1HPCells.get_children()
+		1:
+			cells = p2HPCells.get_children()
 			
-	points = p2HPPoints.get_children()
-	count = len(points)
-	hpAmount = game.players[1].hp
-	if count < hpAmount:
-		for i in range(count, hpAmount):
-			var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
-			newPoint.name = "HPP" + str(count + i)
-			newPoint.position.x = -62 - 30 * i
-			if i % 2 == 1:
-				newPoint.scale.y *= -1
-			p2HPPoints.add_child(newPoint)
-	else:
-		for i in range(hpAmount, count):
-			points[i].free()
+	while count:
+		var cell := cells.pop_front() as HPCell
+		if cell and not cell.vitality:
+			cell.generate()
+			count -= 1
+			await get_tree().create_timer(0.1).timeout
+
+@rpc("any_peer", "call_local")
+func remove_hp_points(player: int, count: int):
+	var cells: Array[Node]
+	match player:
+		0:
+			cells = p1HPCells.get_children()
+		1:
+			cells = p2HPCells.get_children()
+	
+	cells.reverse()
+	for c: HPCell in cells:
+		if c.vitality:
+			c.kill()
+			count -= 1
+		if count <= 0:
+			break
 			
-#@rpc("any_peer", "call_local")
-#func set_hp(player: int, hpAmount: int):
-	#var target: Node2D = null
-	#if player == 0:
-		#target = p1HPPoints
-	#else:
-		#target = p2HPPoints
-	#
-	#var points = target.get_children()
-	#var count = len(points)
-	#
-	#if count < hpAmount:
-		#for i in range(count, hpAmount):
-			#var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
-			#newPoint.name = "HPP" + str(count + i)
-			#
-			#if player == 0:
-				#newPoint.position.x = 62 + 30 * i
-			#else:
-				#newPoint.position.x = -62 - 30 * i
-			#
-			#if i % 2 == 1:
-				#newPoint.scale.y *= -1
-			#
-			#target.add_child(newPoint)
-			#
-	#else:
-		#for i in range(hpAmount, count):
-			#points[i].free()
-	
-	
 	## Shell Dial
 func set_shell_dial(num: int):
 	match num:
@@ -121,8 +93,12 @@ func set_shell_dial(num: int):
 			spShellOutline.global_position = spShell1.global_position
 		2:
 			spShellOutline.global_position = spShell2.global_position
-			pass	
 
+## state
+func set_state_text(text: String) -> void:
+	var label: Label =  stateText.get_child(0)
+	label.text = text
+	
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
 
@@ -133,7 +109,20 @@ func _ready() -> void:
 	if not multiplayer.is_server():
 		shellDial.position.x += 1920
 		shellDial.scale.x *= -1
-
+	
+	for i in range(20):
+		var psHPCell: PackedScene = load("res://Scene/hp_cell.tscn")
+		var p1HPCell: HPCell = psHPCell.instantiate() as HPCell
+		if i % 2 == 1:
+				p1HPCell.scale.y *= -1
+		p1HPCell.position.x = 62 + 30 * i
+		p1HPCells.add_child(p1HPCell)
+				
+		var p2HPCell: HPCell = p1HPCell.duplicate()
+		p2HPCell.position.x =  -62 - 30 * i
+		p2HPCells.add_child(p2HPCell)
+		
+	
 var sec: float = 0
 var fps: float = 0
 func _process(delta: float) -> void:

@@ -80,22 +80,22 @@ func _ready() -> void:
 		
 	prevPosX = global_position.x
 	
-	stateMachine.register_state("Idle")
-	stateMachine.register_state("Aim")
-	stateMachine.register_state("Fire")
+	stateMachine.regist_state("Idle")
+	stateMachine.regist_state("Aim")
+	stateMachine.regist_state("Fire")
 	
 	
-	stateMachine.register_transit("Idle", "Aim", 0)
-	stateMachine.register_transit("Aim", "Idle", 0)
-	stateMachine.register_transit("Aim", "Fire", 0)
-	stateMachine.register_transit("Fire", "Idle", 0)
+	stateMachine.regist_transit("Idle", "Aim", 0)
+	stateMachine.regist_transit("Aim", "Idle", 0)
+	stateMachine.regist_transit("Aim", "Fire", 0)
+	stateMachine.regist_transit("Fire", "Idle", 0)
 	
-	stateMachine.register_state_event("Idle", "exit", on_exit_Idle)
-	stateMachine.register_state_event("Idle", "entry", on_entry_Idle)
-	stateMachine.register_state_event("Aim", "exit", on_exit_Aim)
-	stateMachine.register_state_event("Aim", "entry", on_entry_Aim)
-	stateMachine.register_state_event("Fire", "exit", on_exit_Fire)
-	stateMachine.register_state_event("Fire", "entry", on_entry_Fire)
+	stateMachine.regist_state_event("Idle", "exit", on_exit_Idle)
+	stateMachine.regist_state_event("Idle", "entry", on_entry_Idle)
+	stateMachine.regist_state_event("Aim", "exit", on_exit_Aim)
+	stateMachine.regist_state_event("Aim", "entry", on_entry_Aim)
+	stateMachine.regist_state_event("Fire", "exit", on_exit_Fire)
+	stateMachine.regist_state_event("Fire", "entry", on_entry_Fire)
 	
 	stateMachine.init_current_state("Idle")
 
@@ -129,7 +129,7 @@ func _physics_process(delta: float) -> void:
 					stateMachine.transit_by_input("clickL", "Fire")
 					
 			"Fire":
-				stateMachine.transit("Idle")
+				stateMachine.execute_transit("Idle")
 				player.attackChance = false
 	if reverseBlast > 0:
 		global_position.x -= heading * reverseBlast * delta
@@ -150,7 +150,7 @@ func on_exit_Aim():
 func on_entry_Aim():
 	pass
 func on_exit_Fire():
-	player.stateMachine.transit("Idle")
+	player.stateMachine.execute_transit("Idle")
 	if multiplayer.is_server():
 		game.rpc("send_transmit", "p1_fired")
 	else:

@@ -14,6 +14,10 @@ config/name="CannonBall"
 run/main_scene="uid://j2h0dfktxryh"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
+[autoload]
+
+Shaker="*res://addons/shaker/src/Shaker.gd"
+
 [display]
 
 window/size/viewport_width=1920
@@ -23,7 +27,7 @@ window/per_pixel_transparency/allowed=true
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/shaker/plugin.cfg")
 
 [input]
 

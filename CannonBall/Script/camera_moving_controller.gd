@@ -67,6 +67,12 @@ func process_zoom() -> void:
 		return
 	var lerp_value = moveCurve.sample(progress)
 	camera.zoom = prevZoom.lerp(targetZoom, lerp_value)
+
+@rpc("any_peer", "call_local")
+func zoom_out(to : float, delta : float) -> void:
+	camera.zoom.x = move_toward(camera.zoom.x, to, delta)
+	camera.zoom.y = move_toward(camera.zoom.y, to, delta)
+	
 	
 func _ready() -> void:
 	prevZoom = camera.zoom

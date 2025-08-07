@@ -18,6 +18,12 @@ var isInPond: bool = false
 var selectedShell: int = 0
 var isWalking: bool = false
 
+enum HitType {
+	RADIAL,
+	FLAME,
+	TOXIC
+}
+
 @export var psCMC: PackedScene
 
 # 멀티플레이 동기화
@@ -38,10 +44,25 @@ var cmc: CameraMovingController = null
 var cannon: Cannon = null
 
 @rpc("any_peer", "call_local")
-func get_damage(damage: int):
+func get_damage(damage: int, hitType: HitType):
+	if not is_multiplayer_authority():
+		return
+	if isInPond and hitType == HitType.RADIAL:
+		damage /= 2
+	
+	damage = min(damage, hp)
 	hp -= damage
-	hp = max(hp, 0)
-	game.ui.rpc("update_hp")
+	
+	if multiplayer.is_server():
+		game.ui.rpc("remove_hp_points", 0, damage)
+	else:
+		game.ui.rpc("remove_hp_points", 1, damage)
+	
+	if hp == 0:
+		if multiplayer.is_server():
+			game.rpc("send_transmit", "p1_defeat")
+		else:
+			game.rpc("send_transmit", "p2_defeat")
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -54,12 +75,15 @@ func _ready() -> void:
 	if not is_multiplayer_authority():
 		return
 	
+	if not multiplayer.is_server():
+		game.rpc("send_transmit", "client_connected")
+	
 	game = get_parent() as Game
 	game.ui = game.root.uiMgr.get_current_ui_as_in_game()
 
 	## 대포 생성
 	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
-	#  서버의 경우 직접 호출 
+	#  서버의 경우 직접 호출
 	game.rpc("server_spawn_request", "res://Scene/cannon.tscn", self.name + "cannon")
 	
 	# 카메라 무빙 컨트롤러 생성
@@ -79,23 +103,23 @@ func _ready() -> void:
 		character.scale.x = -1
 
 	# 상태 머신 정의
-	stateMachine.register_state("Idle")
-	stateMachine.register_state("HandleCannon")
-	stateMachine.register_state("ReadyFire")
+	stateMachine.regist_state("Idle")
+	stateMachine.regist_state("HandleCannon")
+	stateMachine.regist_state("ReadyFire")
 	
-	stateMachine.register_transit("Idle", "HandleCannon", 0)
-	stateMachine.register_transit("HandleCannon", "Idle", 0)
-	stateMachine.register_transit("Idle", "ReadyFire", 0)
-	stateMachine.register_transit("ReadyFire", "Idle", 0)
-	stateMachine.register_transit("ReadyFire", "HandleCannon", 0)
-	stateMachine.register_transit("HandleCannon", "ReadyFire", 0)
+	stateMachine.regist_transit("Idle", "HandleCannon", 0)
+	stateMachine.regist_transit("HandleCannon", "Idle", 0)
+	stateMachine.regist_transit("Idle", "ReadyFire", 0)
+	stateMachine.regist_transit("ReadyFire", "Idle", 0)
+	stateMachine.regist_transit("ReadyFire", "HandleCannon", 0)
+	stateMachine.regist_transit("HandleCannon", "ReadyFire", 0)
 	
-	stateMachine.register_state_event("Idle", "exit", on_exit_Idle)	
-	stateMachine.register_state_event("Idle", "entry", on_entry_Idle)	
-	stateMachine.register_state_event("HandleCannon", "exit", on_exit_HandleCannon)	
-	stateMachine.register_state_event("HandleCannon", "entry", on_entry_HandleCannon)	
-	stateMachine.register_state_event("ReadyFire", "exit", on_exit_ReadyFire)	
-	stateMachine.register_state_event("ReadyFire", "entry", on_entry_ReadyFire)
+	stateMachine.regist_state_event("Idle", "exit", on_exit_Idle)
+	stateMachine.regist_state_event("Idle", "entry", on_entry_Idle)
+	stateMachine.regist_state_event("HandleCannon", "exit", on_exit_HandleCannon)
+	stateMachine.regist_state_event("HandleCannon", "entry", on_entry_HandleCannon)
+	stateMachine.regist_state_event("ReadyFire", "exit", on_exit_ReadyFire)
+	stateMachine.regist_state_event("ReadyFire", "entry", on_entry_ReadyFire)
 	
 	stateMachine.init_current_state("Idle")
 	
@@ -183,12 +207,6 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-			
-	if hp <= 0:
-		if multiplayer.is_server():
-			game.rpc("send_transmit", "p1_defeat")
-		else:
-			game.rpc("send_transmit", "p2_defeat")
 	
 func h_movement(mode: String, speed: float, delta: float):
 	if not canMove:
@@ -222,7 +240,7 @@ func on_entry_Idle():
 	amt.set("parameters/conditions/is_state_idle", true)
 	
 	if cannon:
-		cannon.stateMachine.transit("Idle")
+		cannon.stateMachine.execute_transit("Idle")
 
 func on_exit_HandleCannon():
 	amt.set("parameters/conditions/is_state_hc", false)
@@ -236,7 +254,7 @@ func on_entry_HandleCannon():
 		character.scale.x = -1
 	
 	if cannon:
-		cannon.stateMachine.transit("Move")
+		cannon.stateMachine.execute_transit("Move")
 
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
@@ -250,7 +268,7 @@ func on_entry_ReadyFire():
 		character.scale.x = -1
 	
 	if cannon:
-		cannon.stateMachine.transit("Aim")
+		cannon.stateMachine.execute_transit("Aim")
 		
 	# 카메라 위치를 이동시킴
 	cmc.set_target_node(nCamTargetAim, 0.2)

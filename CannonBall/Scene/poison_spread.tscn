@@ -45,6 +45,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="PoisonSpread" type="Node2D"]
+z_index = 100
 script = ExtResource("1_seuo7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
