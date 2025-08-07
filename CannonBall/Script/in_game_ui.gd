@@ -76,11 +76,13 @@ func remove_hp_points(player: int, count: int):
 		1:
 			cells = p2HPCells.get_children()
 	
-	while count > 0:
-		var cell := cells.pop_back() as HPCell
-		if cell and cell.vitality:
-			cell.kill()
+	cells.reverse()
+	for c: HPCell in cells:
+		if c.vitality:
+			c.kill()
 			count -= 1
+		if count <= 0:
+			break
 			
 	## Shell Dial
 func set_shell_dial(num: int):

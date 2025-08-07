@@ -50,8 +50,8 @@ func get_damage(damage: int, hitType: HitType):
 	if isInPond and hitType == HitType.RADIAL:
 		damage /= 2
 	
+	damage = min(damage, hp)
 	hp -= damage
-	hp = max(hp, 0)
 	
 	if multiplayer.is_server():
 		game.ui.rpc("remove_hp_points", 0, damage)
