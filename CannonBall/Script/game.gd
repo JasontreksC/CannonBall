@@ -192,7 +192,7 @@ func _ready() -> void:
 	stateMachine.register_transit("WaitSession", "Turn", 3)
 	stateMachine.register_transit("Turn", "Shelling", 0)
 	stateMachine.register_transit("Turn", "EndSession", 0)
-	stateMachine.register_transit("Shelling", "Turn", 0)
+	stateMachine.register_transit("Shelling", "Turn", 3)
 	stateMachine.register_transit("Shelling", "EndSession", 0)
 
 	stateMachine.register_state_event("WaitSession", "entry", on_entry_WaitSession)
@@ -269,16 +269,17 @@ func on_entry_Turn():
 		rpc("change_turn")
 	
 func on_exit_Turn():
+	pass
+		
+func on_entry_Shelling():
+	pass
+func on_exit_Shelling():
 	for i in range(3):
 		ui.set_state_text("공수전환까지 %d초 전" % (3 - i))
 		await get_tree().create_timer(1).timeout
 		ui.set_state_text("시작!")
 		rpc("transit_game_state", "Turn")		
-		
-func on_entry_Shelling():
-	pass
-func on_exit_Shelling():
-	pass
+
 func on_entry_EndSession():
 	players[0].canMove = false
 	players[1].canMove = false
