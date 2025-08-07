@@ -205,7 +205,8 @@ func _ready() -> void:
 	stateMachine.register_state_event("EndSession", "exit", on_exit_EndSession)
 	
 	stateMachine.init_current_state("WaitSession")
-	on_entry_WaitSession()
+	if not multiplayer.is_server():
+		rpc("send_transmit", "client_connected")
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
@@ -257,8 +258,7 @@ func _process(delta: float) -> void:
 		stateMachine.transit("EndSession")
 		
 func on_entry_WaitSession():
-	if not multiplayer.is_server():
-		rpc("send_transmit", "client_connected")
+	pass
 		
 func on_exit_WaitSession():
 	ui.generate_hp_points(0, 20)
