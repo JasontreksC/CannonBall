@@ -285,8 +285,7 @@ func on_entry_EndSession():
 	lifetimePool.clear()
 	transmitQueue.clear()
 	
-	get_tree().create_timer(5).timeout
-	quit_game()
+	get_tree().create_timer(5).timeout.connect(quit_game)
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
