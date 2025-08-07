@@ -266,6 +266,11 @@ func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
 	
+	if is_p1_turn():
+		ui.set_state_text("Player1 공격!")
+	else:
+		ui.set_state_text("Player2 공격!")
+		
 func on_exit_Turn():
 	turnCount += 1
 		
