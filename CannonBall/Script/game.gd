@@ -191,9 +191,9 @@ func _ready() -> void:
 	
 	stateMachine.register_transit("WaitSession", "Turn", 3)
 	stateMachine.register_transit("Turn", "Shelling", 0)
-	stateMachine.register_transit("Turn", "EndSession", 0)
+	stateMachine.register_transit("Turn", "EndSession", 3)
 	stateMachine.register_transit("Shelling", "Turn", 3)
-	stateMachine.register_transit("Shelling", "EndSession", 0)
+	stateMachine.register_transit("Shelling", "EndSession", 3)
 
 	stateMachine.register_state_event("WaitSession", "entry", on_entry_WaitSession)
 	stateMachine.register_state_event("WaitSession", "exit", on_exit_WaitSession)
@@ -212,6 +212,8 @@ func _process(delta: float) -> void:
 	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
 		pass
 	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
+		players[0].cmc.rpc("zoom_out", 0.1, delta)
+		players[1].cmc.rpc("zoom_out", 0.1, delta)
 		pass
 	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
 		pass
@@ -240,7 +242,7 @@ func _process(delta: float) -> void:
 			"Shelling":
 				if multiplayer.is_server():
 					update_lifetime_sec(delta)
-				
+					
 			"EndSession":
 				root.sceneMgr.set_scene(2)
 		
@@ -281,6 +283,8 @@ func on_exit_Shelling():
 		rpc("transit_game_state", "Turn")		
 
 func on_entry_EndSession():
+	ui.set_state_text("게임 종료!")
+	
 	players[0].canMove = false
 	players[1].canMove = false
 	
