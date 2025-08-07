@@ -203,8 +203,9 @@ func _ready() -> void:
 	stateMachine.register_state_event("Shelling", "exit", on_exit_Shelling)
 	stateMachine.register_state_event("EndSession", "entry", on_entry_EndSession)
 	stateMachine.register_state_event("EndSession", "exit", on_exit_EndSession)
-
+	
 	stateMachine.init_current_state("WaitSession")
+	on_entry_WaitSession()
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
@@ -221,16 +222,13 @@ func _process(delta: float) -> void:
 	else:
 		match stateMachine.current_state_name():
 			"WaitSession":
-				if not multiplayer.is_server():
-					rpc("send_transmit", "client_connected")
-				
-				else:
-					if check_transmit(["client_connected"]):
-						for i in range(3):
-							ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % (3 - i))
-							await get_tree().create_timer(1).timeout
-						ui.set_state_text("시작!")
-						rpc("transit_game_state", "Turn")		
+				if check_transmit(["client_connected"]):
+					print("Hello")
+					for i in range(3):
+						ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % (3 - i))
+						await get_tree().create_timer(1).timeout
+					ui.set_state_text("시작!")
+					rpc("transit_game_state", "Turn")		
 					
 			"Turn":
 				if multiplayer.is_server():
@@ -259,7 +257,9 @@ func _process(delta: float) -> void:
 		stateMachine.transit("EndSession")
 		
 func on_entry_WaitSession():
-	pass
+	if not multiplayer.is_server():
+		rpc("send_transmit", "client_connected")
+		
 func on_exit_WaitSession():
 	ui.generate_hp_points(0, 20)
 	ui.generate_hp_points(1, 20)
