@@ -24,6 +24,9 @@ class_name InGameUI
 @onready var spShell2: Sprite2D = $ShellDial/PolygonButton_Bot/SP_Shell2
 @onready var spShellOutline: Sprite2D = $ShellDial/SP_Outline
 
+## state
+@onready var stateText: Control = $State
+
 var uiMgr: UIManager = null
 var game: Game = null
 
@@ -46,41 +49,7 @@ func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
 	camTelescope.zoom.x += zoomValue
 	camTelescope.zoom.y += zoomValue
 	camTelescope.zoom = camTelescope.zoom.clamp(Vector2(0.5, 0.5), Vector2(2, 2))
-
 ## HP
-
-#@rpc("any_peer", "call_local")
-#func update_hp() -> void:
-	#var cells = p1HPCells.get_children()
-	#var count = len(cells)
-	#var hpAmount = game.players[0].hp
-	#if count < hpAmount:
-		#for i in range(count, hpAmount):
-			#var newCell: Sprite2D = hpPointSprite.instantiate() as Sprite2D
-			#newCell.name = "HPP" + str(count + i)
-			#newCell.position.x = 62 + 30 * i
-			#if i % 2 == 1:
-				#newCell.scale.y *= -1
-			#p1HPCells.add_child(newCell)
-	#else:
-		#for i in range(hpAmount, count):
-			#cells[i].free()
-			#
-	#points = p2HPPoints.get_children()
-	#count = len(points)
-	#hpAmount = game.players[1].hp
-	#if count < hpAmount:
-		#for i in range(count, hpAmount):
-			#var newPoint: Sprite2D = hpPointSprite.instantiate() as Sprite2D
-			#newPoint.name = "HPP" + str(count + i)
-			#newPoint.position.x = -62 - 30 * i
-			#if i % 2 == 1:
-				#newPoint.scale.y *= -1
-			#p2HPPoints.add_child(newPoint)
-	#else:
-		#for i in range(hpAmount, count):
-			#points[i].free()
-
 
 @rpc("any_peer", "call_local")
 func generate_hp_points(player: int, count: int):
@@ -123,6 +92,11 @@ func set_shell_dial(num: int):
 		2:
 			spShellOutline.global_position = spShell2.global_position
 
+## state
+func set_state_text(text: String) -> void:
+	var label: Label =  stateText.get_child(0)
+	label.text = text
+	
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
 
