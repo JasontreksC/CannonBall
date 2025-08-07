@@ -98,8 +98,8 @@ func is_transit_process(from: String, to: String, delta: float) -> bool:
 func get_state(name: String) -> State:
 	return states[name]
 
-func get_transit_process_time() -> float:
-	return current_transit.process_time
+func get_current_process_time() -> float:
+	return current_process_time
 	
 func transit_by_input(action: StringName, to: String) -> bool:
 	if Input.is_action_just_pressed(action):

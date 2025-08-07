@@ -214,7 +214,7 @@ func _process(delta: float) -> void:
 		players[0].cmc.rpc("zoom_out", 0.1, delta)
 		players[1].cmc.rpc("zoom_out", 0.1, delta)
 	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
-		var timeLeft: float = stateMachine.get_transit_process_time()
+		var timeLeft: float = stateMachine.get_current_process_time()
 		ui.set_state_text("공수전환까지 %d초 전" % round(timeLeft))
 	elif stateMachine.is_transit_process("Shelling", "EndSession", delta):
 		pass
