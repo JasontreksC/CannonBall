@@ -325,6 +325,7 @@ offset_left = 403.0
 offset_top = 488.0
 offset_right = 722.0
 offset_bottom = 663.0
+text = "상대를 기다리는중..."
 label_settings = SubResource("LabelSettings_oqxxn")
 
 [connection signal="pressed" from="ShellDial/PolygonButton_Top" to="." method="_on_polygon_button_top_pressed"]
