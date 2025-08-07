@@ -70,6 +70,9 @@ func _ready() -> void:
 	if not is_multiplayer_authority():
 		return
 	
+	if not multiplayer.is_server():
+		game.rpc("send_transmit", "client_connected")
+	
 	game = get_parent() as Game
 	game.ui = game.root.uiMgr.get_current_ui_as_in_game()
 
