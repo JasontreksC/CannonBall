@@ -116,10 +116,12 @@ func change_turn() -> void:
 		players[0].isAttack = true
 		players[0].attackChance = true
 		players[1].isAttack = false
+		ui.set_state_text("Player 1 공격!")
 	else: 
 		players[1].isAttack = true
 		players[1].attackChance = true
 		players[0].isAttack = false
+		ui.set_state_text("Player 2 공격!")
 	
 	if multiplayer.is_server():
 		update_lifetime_turn()
@@ -264,10 +266,6 @@ func on_exit_WaitSession():
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
-	if is_p1_turn():
-		ui.set_state_text("Player1 공격!")
-	else:
-		ui.set_state_text("Player2 공격!")
 	
 func on_exit_Turn():
 	pass
