@@ -19,9 +19,6 @@ var turnCount: int = 0
 var lifetimePool: Dictionary[String, Lifetime]
 var gameTime: float = 0
 var winner: int = -1
-var endSessionTime: float = 0
-var endSessionSec: int = 3 
-
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
@@ -129,7 +126,7 @@ func change_turn() -> void:
 
 @rpc("any_peer", "call_local")
 func transit_game_state(state: String):
-	stateMachine.transit(state)
+	stateMachine.execute_transit(state)
 
 @rpc("any_peer", "call_local")
 func send_transmit(transmit: String):
@@ -186,25 +183,25 @@ func _ready() -> void:
 	if ui:
 		ui.game = self
 		
-	stateMachine.register_state("WaitSession")
-	stateMachine.register_state("Turn")
-	stateMachine.register_state("Shelling")
-	stateMachine.register_state("EndSession")
+	stateMachine.regist_state("WaitSession")
+	stateMachine.regist_state("Turn")
+	stateMachine.regist_state("Shelling")
+	stateMachine.regist_state("EndSession")
 	
-	stateMachine.register_transit("WaitSession", "Turn", 3)
-	stateMachine.register_transit("Turn", "Shelling", 0)
-	stateMachine.register_transit("Turn", "EndSession", 3)
-	stateMachine.register_transit("Shelling", "Turn", 3)
-	stateMachine.register_transit("Shelling", "EndSession", 3)
+	stateMachine.regist_transit("WaitSession", "Turn", 3)
+	stateMachine.regist_transit("Turn", "Shelling", 0)
+	stateMachine.regist_transit("Turn", "EndSession", 3)
+	stateMachine.regist_transit("Shelling", "Turn", 3)
+	stateMachine.regist_transit("Shelling", "EndSession", 3)
 
-	stateMachine.register_state_event("WaitSession", "entry", on_entry_WaitSession)
-	stateMachine.register_state_event("WaitSession", "exit", on_exit_WaitSession)
-	stateMachine.register_state_event("Turn", "entry", on_entry_Turn)
-	stateMachine.register_state_event("Turn", "exit", on_exit_Turn)
-	stateMachine.register_state_event("Shelling", "entry", on_entry_Shelling)
-	stateMachine.register_state_event("Shelling", "exit", on_exit_Shelling)
-	stateMachine.register_state_event("EndSession", "entry", on_entry_EndSession)
-	stateMachine.register_state_event("EndSession", "exit", on_exit_EndSession)
+	stateMachine.regist_state_event("WaitSession", "entry", on_entry_WaitSession)
+	stateMachine.regist_state_event("WaitSession", "exit", on_exit_WaitSession)
+	stateMachine.regist_state_event("Turn", "entry", on_entry_Turn)
+	stateMachine.regist_state_event("Turn", "exit", on_exit_Turn)
+	stateMachine.regist_state_event("Shelling", "entry", on_entry_Shelling)
+	stateMachine.regist_state_event("Shelling", "exit", on_exit_Shelling)
+	stateMachine.regist_state_event("EndSession", "entry", on_entry_EndSession)
+	stateMachine.regist_state_event("EndSession", "exit", on_exit_EndSession)
 	
 	stateMachine.init_current_state("WaitSession")
 func _process(delta: float) -> void:
@@ -216,15 +213,9 @@ func _process(delta: float) -> void:
 	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
 		players[0].cmc.rpc("zoom_out", 0.1, delta)
 		players[1].cmc.rpc("zoom_out", 0.1, delta)
-		pass
 	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
-		endSessionTime += delta
-		if endSessionTime >= 1:
-			endSessionSec -= 1
-			ui.set_state_text("공수전환까지 %d초 전" % endSessionSec)
-			endSessionTime = 0
-			
-		pass
+		var timeLeft: float = stateMachine.get_transit_process_time()
+		ui.set_state_text("공수전환까지 %d초 전" % round(timeLeft))
 	elif stateMachine.is_transit_process("Shelling", "EndSession", delta):
 		pass
 	# 상태 전환 프로세스가 없으면 각 상태에서의 행동 처리
@@ -247,34 +238,27 @@ func _process(delta: float) -> void:
 						print("ShellingStarted!")
 						rpc("transit_game_state", "Shelling")
 					
-				if check_transmit(["p1_defeat"]):
-					print("p2 win!")
-					winner = 1
-				elif check_transmit(["p2_defeat"]):
-					print("p1 win!")
-					winner = 0
-				if winner != -1:
-					stateMachine.transit("EndSession")
-					
 			"Shelling":
 				if multiplayer.is_server():
 					update_lifetime_sec(delta)
 					
-				if check_transmit(["p1_defeat"]):
-					print("p2 win!")
-					winner = 1
-				elif check_transmit(["p2_defeat"]):
-					print("p1 win!")
-					winner = 0
-				if winner != -1:
-					stateMachine.transit("EndSession")
-					
 			"EndSession":
 				root.sceneMgr.set_scene(2)
-		
+	
+	if check_transmit(["p1_defeat"]):
+		print("p2 win!")
+		winner = 1
+	elif check_transmit(["p2_defeat"]):
+		print("p1 win!")
+		winner = 0
+
 	if winner != -1:
-		stateMachine.transit("EndSession")
-		
+		stateMachine.break_transit()
+		stateMachine.execute_transit("EndSession")
+
+func on_transit_ws_to_turn():
+	pass
+
 func on_entry_WaitSession():
 	pass
 		
@@ -311,6 +295,7 @@ func on_entry_EndSession():
 	
 func on_exit_EndSession():
 	pass
+
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:

@@ -99,23 +99,23 @@ func _ready() -> void:
 		character.scale.x = -1
 
 	# 상태 머신 정의
-	stateMachine.register_state("Idle")
-	stateMachine.register_state("HandleCannon")
-	stateMachine.register_state("ReadyFire")
+	stateMachine.regist_state("Idle")
+	stateMachine.regist_state("HandleCannon")
+	stateMachine.regist_state("ReadyFire")
 	
-	stateMachine.register_transit("Idle", "HandleCannon", 0)
-	stateMachine.register_transit("HandleCannon", "Idle", 0)
-	stateMachine.register_transit("Idle", "ReadyFire", 0)
-	stateMachine.register_transit("ReadyFire", "Idle", 0)
-	stateMachine.register_transit("ReadyFire", "HandleCannon", 0)
-	stateMachine.register_transit("HandleCannon", "ReadyFire", 0)
+	stateMachine.regist_transit("Idle", "HandleCannon", 0)
+	stateMachine.regist_transit("HandleCannon", "Idle", 0)
+	stateMachine.regist_transit("Idle", "ReadyFire", 0)
+	stateMachine.regist_transit("ReadyFire", "Idle", 0)
+	stateMachine.regist_transit("ReadyFire", "HandleCannon", 0)
+	stateMachine.regist_transit("HandleCannon", "ReadyFire", 0)
 	
-	stateMachine.register_state_event("Idle", "exit", on_exit_Idle)
-	stateMachine.register_state_event("Idle", "entry", on_entry_Idle)
-	stateMachine.register_state_event("HandleCannon", "exit", on_exit_HandleCannon)
-	stateMachine.register_state_event("HandleCannon", "entry", on_entry_HandleCannon)
-	stateMachine.register_state_event("ReadyFire", "exit", on_exit_ReadyFire)
-	stateMachine.register_state_event("ReadyFire", "entry", on_entry_ReadyFire)
+	stateMachine.regist_state_event("Idle", "exit", on_exit_Idle)
+	stateMachine.regist_state_event("Idle", "entry", on_entry_Idle)
+	stateMachine.regist_state_event("HandleCannon", "exit", on_exit_HandleCannon)
+	stateMachine.regist_state_event("HandleCannon", "entry", on_entry_HandleCannon)
+	stateMachine.regist_state_event("ReadyFire", "exit", on_exit_ReadyFire)
+	stateMachine.regist_state_event("ReadyFire", "entry", on_entry_ReadyFire)
 	
 	stateMachine.init_current_state("Idle")
 	
@@ -243,7 +243,7 @@ func on_entry_Idle():
 	amt.set("parameters/conditions/is_state_idle", true)
 	
 	if cannon:
-		cannon.stateMachine.transit("Idle")
+		cannon.stateMachine.execute_transit("Idle")
 
 func on_exit_HandleCannon():
 	amt.set("parameters/conditions/is_state_hc", false)
@@ -257,7 +257,7 @@ func on_entry_HandleCannon():
 		character.scale.x = -1
 	
 	if cannon:
-		cannon.stateMachine.transit("Move")
+		cannon.stateMachine.execute_transit("Move")
 
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
@@ -271,7 +271,7 @@ func on_entry_ReadyFire():
 		character.scale.x = -1
 	
 	if cannon:
-		cannon.stateMachine.transit("Aim")
+		cannon.stateMachine.execute_transit("Aim")
 		
 	# 카메라 위치를 이동시킴
 	cmc.set_target_node(nCamTargetAim, 0.2)

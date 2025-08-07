@@ -124,8 +124,6 @@ func land():
 			})
 	
 	df.activate()
-	
-	
 	game.rpc("delete_object", self.name)
 	game.rpc("transit_game_state", "Turn")
 

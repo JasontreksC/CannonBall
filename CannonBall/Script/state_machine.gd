@@ -3,20 +3,20 @@ class_name StateMachine
 
 var states : Dictionary[String, State]
 var transits : Dictionary[int, Transit]
-var prev_state = State.new()
-var current_state = State.new()
-var current_transit = Transit.new()
+var prev_state: State
+var current_state: State
+var current_transit: Transit
 var current_process_time : float
 var is_transit_finished : bool
 
-func register_state(name: String) -> bool:
+func regist_state(name: String) -> bool:
 	if states.has(name):
 		return false
 	states[name] = State.new()
 	states[name].name = name
 	return true
 	
-func register_transit(from: String, to: String, process_time: float) -> bool:
+func regist_transit(from: String, to: String, process_time: float) -> bool:
 	var key = hash(from + to)
 	if transits.has(key):
 		return false
@@ -26,18 +26,28 @@ func register_transit(from: String, to: String, process_time: float) -> bool:
 	transits[key].process_time = process_time
 	return true
 
-func register_state_event(name: String, exit_or_entry: String, event: Callable) -> bool:
+func regist_state_event(name: String, exit_or_entry: String, event: Callable) -> bool:
 	if states.has(name):
 		if exit_or_entry == "exit":
-			return states[name].register_exit(event)
+			return states[name].regist_exit(event)
 		elif exit_or_entry == "entry":
-			return states[name].register_entry(event)
+			return states[name].regist_entry(event)
 	return false
-	
+
+func regist_transit_event(from: String, to: String, event: Callable) -> bool:
+	var key = hash(from + to)
+	if transits.has(key):
+		var transit = transits[key]
+		if transit.is_connected("transit_event", event):
+			return false
+		transit.connect("transit_event", event)
+		return true
+	return false
+
 func init_current_state(name: String):
 	current_state = states[name]
 
-func transit(to: String) -> bool:
+func execute_transit(to: String) -> bool:
 	var key = hash(current_state.name + to)
 	if not transits.has(key):
 		return false
@@ -60,7 +70,7 @@ func transit(to: String) -> bool:
 func transit_back():
 	if prev_state == null:
 		return false
-	return transit(prev_state.name)
+	return execute_transit(prev_state.name)
 
 func is_state(name: String) -> bool:
 	return current_state.name == name
@@ -69,6 +79,8 @@ func current_state_name() -> String:
 	return current_state.name
 
 func is_transit_process(from: String, to: String, delta: float) -> bool:
+	if current_transit == null:
+		return false
 	if current_transit.key != hash(from + to) or is_transit_finished:
 		return false
 		
@@ -94,7 +106,13 @@ func transit_by_input(action: StringName, to: String) -> bool:
 		if (to == "back"):
 			transit_back()
 		else:
-			transit(to)
+			execute_transit(to)
 		return true
 	else:
 		return false
+
+func break_transit():
+	if not is_transit_finished:
+		current_transit = null
+		current_process_time = 0
+		is_transit_finished = true
