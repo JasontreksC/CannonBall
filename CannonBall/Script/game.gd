@@ -222,7 +222,14 @@ func _process(delta: float) -> void:
 		match stateMachine.current_state_name():
 			"WaitSession":
 				if len(players) == 2:
+					for i in range(3):
+						ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % (3 - i))
+						await get_tree().create_timer(1).timeout
+					
+					await get_tree().create_timer(3).timeout
 					rpc("transit_game_state", "Turn")
+				else:
+					ui.set_state_text("상대를 기다리는중...")
 			"Turn":
 				if multiplayer.is_server():
 					update_lifetime_sec(delta)
@@ -250,7 +257,6 @@ func _process(delta: float) -> void:
 		stateMachine.transit("EndSession")
 		
 func on_entry_WaitSession():
-	ui.set_state_text("상대를 기다리는중...")
 	pass
 func on_exit_WaitSession():
 	#ui.rpc("update_hp")
@@ -260,10 +266,6 @@ func on_exit_WaitSession():
 	#ui.rpc("generate_hp_points", 1, 20)
 	players[0].canMove = true
 	players[1].canMove = true
-	
-	for i in range(3):
-		ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % (3 - i))
-		await get_tree().create_timer(1).timeout
 
 func on_entry_Turn():
 	if multiplayer.is_server():

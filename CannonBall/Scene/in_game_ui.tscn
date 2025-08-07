@@ -65,7 +65,7 @@ font_size = 240
 font_color = Color(0.540346, 0.895914, 0.928074, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_oqxxn"]
-font_size = 128
+font_size = 100
 
 [node name="InGameUI" type="Control"]
 layout_mode = 3
@@ -321,11 +321,10 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="State"]
 layout_mode = 0
-offset_left = 813.0
-offset_top = 490.0
-offset_right = 1132.0
-offset_bottom = 665.0
-text = "State"
+offset_left = 403.0
+offset_top = 488.0
+offset_right = 722.0
+offset_bottom = 663.0
 label_settings = SubResource("LabelSettings_oqxxn")
 
 [connection signal="pressed" from="ShellDial/PolygonButton_Top" to="." method="_on_polygon_button_top_pressed"]
