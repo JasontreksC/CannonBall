@@ -19,6 +19,8 @@ var turnCount: int = 0
 var lifetimePool: Dictionary[String, Lifetime]
 var gameTime: float = 0
 var winner: int = -1
+var endSessionTime: float = 0
+var endSessionSec: int = 3 
 
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
@@ -216,6 +218,12 @@ func _process(delta: float) -> void:
 		players[1].cmc.rpc("zoom_out", 0.1, delta)
 		pass
 	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
+		endSessionTime += delta
+		if endSessionTime >= 1:
+			endSessionSec -= 1
+			ui.set_state_text("공수전환까지 %d초 전" % endSessionSec)
+			endSessionTime = 0
+			
 		pass
 	elif stateMachine.is_transit_process("Shelling", "EndSession", delta):
 		pass
@@ -280,7 +288,6 @@ func on_exit_Shelling():
 		ui.set_state_text("공수전환까지 %d초 전" % (3 - i))
 		await get_tree().create_timer(1).timeout
 		ui.set_state_text("시작!")
-		rpc("transit_game_state", "Turn")		
 
 func on_entry_EndSession():
 	ui.set_state_text("게임 종료!")
