@@ -17,7 +17,6 @@ var attackChance: bool = false
 var isInPond: bool = false
 var selectedShell: int = 0
 var isWalking: bool = false
-var isAlive: bool = true
 
 enum HitType {
 	RADIAL,
@@ -58,7 +57,12 @@ func get_damage(damage: int, hitType: HitType):
 		game.ui.rpc("remove_hp_points", 0, damage)
 	else:
 		game.ui.rpc("remove_hp_points", 1, damage)
-	#game.ui.rpc("update_hp")
+	
+	if hp == 0:
+		if multiplayer.is_server():
+			game.rpc("send_transmit", "p1_defeat")
+		else:
+			game.rpc("send_transmit", "p2_defeat")
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -203,13 +207,6 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-			
-	if hp <= 0 and isAlive == false:
-		isAlive = true
-		if multiplayer.is_server():
-			game.rpc("send_transmit", "p1_defeat")
-		else:
-			game.rpc("send_transmit", "p2_defeat")
 	
 func h_movement(mode: String, speed: float, delta: float):
 	if not canMove:
