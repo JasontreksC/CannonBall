@@ -172,7 +172,10 @@ func update_lifetime_sec(delta: float):
 			if not live:
 				objects[key].rpc("lifetime_end")
 				lifetimePool.erase(key)
-		
+
+func quit_game():
+	root.sceneMgr.set_scene(2)
+	root.sceneMgr.currentScene.set("winner", winner)
 		
 func _enter_tree() -> void:
 	root = get_parent().root
@@ -190,44 +193,43 @@ func _ready() -> void:
 	
 	stateMachine.regist_transit("WaitSession", "Turn", 3)
 	stateMachine.regist_transit("Turn", "Shelling", 0)
-	stateMachine.regist_transit("Turn", "EndSession", 3)
+	stateMachine.regist_transit("Turn", "EndSession", 0)
 	stateMachine.regist_transit("Shelling", "Turn", 3)
-	stateMachine.regist_transit("Shelling", "EndSession", 3)
+	stateMachine.regist_transit("Shelling", "EndSession", 0)
 
-	stateMachine.regist_state_event("WaitSession", "entry", on_entry_WaitSession)
 	stateMachine.regist_state_event("WaitSession", "exit", on_exit_WaitSession)
 	stateMachine.regist_state_event("Turn", "entry", on_entry_Turn)
 	stateMachine.regist_state_event("Turn", "exit", on_exit_Turn)
 	stateMachine.regist_state_event("Shelling", "entry", on_entry_Shelling)
 	stateMachine.regist_state_event("Shelling", "exit", on_exit_Shelling)
 	stateMachine.regist_state_event("EndSession", "entry", on_entry_EndSession)
-	stateMachine.regist_state_event("EndSession", "exit", on_exit_EndSession)
 	
 	stateMachine.init_current_state("WaitSession")
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
+		var timeLeft: float = stateMachine.get_current_process_time()
+		ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % ceil(timeLeft))
+		
+	elif stateMachine.is_transit_process("Turn", "Shelling", delta):
 		pass
-	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
-		pass
-	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
-		players[0].cmc.rpc("zoom_out", 0.1, delta)
-		players[1].cmc.rpc("zoom_out", 0.1, delta)
+		
 	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
 		var timeLeft: float = stateMachine.get_current_process_time()
-		ui.set_state_text("공수전환까지 %d초 전" % round(timeLeft))
+		ui.set_state_text("공수전환까지 %d초 전" % ceil(timeLeft))
+		
+	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
+		pass
+		
 	elif stateMachine.is_transit_process("Shelling", "EndSession", delta):
 		pass
+		
 	# 상태 전환 프로세스가 없으면 각 상태에서의 행동 처리
 	else:
 		match stateMachine.current_state_name():
 			"WaitSession":
 				if check_transmit(["client_connected"]):
-					for i in range(3):
-						ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % (3 - i))
-						await get_tree().create_timer(1).timeout
-					ui.set_state_text("시작!")
-					rpc("transit_game_state", "Turn")		
+					rpc("transit_game_state", "Turn")
 					
 			"Turn":
 				if multiplayer.is_server():
@@ -235,7 +237,6 @@ func _process(delta: float) -> void:
 					update_game_time(delta)
 					
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
-						print("ShellingStarted!")
 						rpc("transit_game_state", "Shelling")
 					
 			"Shelling":
@@ -243,24 +244,15 @@ func _process(delta: float) -> void:
 					update_lifetime_sec(delta)
 					
 			"EndSession":
-				root.sceneMgr.set_scene(2)
+				print("엔드 세션")
+				pass
 	
 	if check_transmit(["p1_defeat"]):
-		print("p2 win!")
+		stateMachine.execute_transit("EndSession")
 		winner = 1
 	elif check_transmit(["p2_defeat"]):
-		print("p1 win!")
-		winner = 0
-
-	if winner != -1:
-		stateMachine.break_transit()
 		stateMachine.execute_transit("EndSession")
-
-func on_transit_ws_to_turn():
-	pass
-
-func on_entry_WaitSession():
-	pass
+		winner = 0
 		
 func on_exit_WaitSession():
 	ui.generate_hp_points(0, 20)
@@ -272,6 +264,10 @@ func on_exit_WaitSession():
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
+	if is_p1_turn():
+		ui.set_state_text("Player1 공격!")
+	else:
+		ui.set_state_text("Player2 공격!")
 	
 func on_exit_Turn():
 	pass
@@ -279,11 +275,7 @@ func on_exit_Turn():
 func on_entry_Shelling():
 	pass
 func on_exit_Shelling():
-	for i in range(3):
-		ui.set_state_text("공수전환까지 %d초 전" % (3 - i))
-		await get_tree().create_timer(1).timeout
-		ui.set_state_text("시작!")
-
+	pass
 func on_entry_EndSession():
 	ui.set_state_text("게임 종료!")
 	
@@ -293,9 +285,8 @@ func on_entry_EndSession():
 	lifetimePool.clear()
 	transmitQueue.clear()
 	
-func on_exit_EndSession():
-	pass
-
+	get_tree().create_timer(5).timeout
+	quit_game()
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
