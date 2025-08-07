@@ -1,6 +1,7 @@
 extends Control
 class_name ResultUI
 
+@onready var lbWinner: Label = $Winner
 var uiMgr: UIManager = null
 
 func _enter_tree() -> void:
