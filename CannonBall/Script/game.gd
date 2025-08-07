@@ -238,20 +238,31 @@ func _process(delta: float) -> void:
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
 						print("ShellingStarted!")
 						rpc("transit_game_state", "Shelling")
-						
+					
+				if check_transmit(["p1_defeat"]):
+					print("p2 win!")
+					winner = 1
+				elif check_transmit(["p2_defeat"]):
+					print("p1 win!")
+					winner = 0
+				if winner != -1:
+					stateMachine.transit("EndSession")
+					
 			"Shelling":
 				if multiplayer.is_server():
 					update_lifetime_sec(delta)
 					
+				if check_transmit(["p1_defeat"]):
+					print("p2 win!")
+					winner = 1
+				elif check_transmit(["p2_defeat"]):
+					print("p1 win!")
+					winner = 0
+				if winner != -1:
+					stateMachine.transit("EndSession")
+					
 			"EndSession":
 				root.sceneMgr.set_scene(2)
-		
-	if check_transmit(["p1_defeat"]):
-		print("p2 win!")
-		winner = 1
-	elif check_transmit(["p2_defeat"]):
-		print("p1 win!")
-		winner = 0
 		
 	if winner != -1:
 		stateMachine.transit("EndSession")
@@ -279,8 +290,7 @@ func on_exit_Shelling():
 	for i in range(3):
 		ui.set_state_text("공수전환까지 %d초 전" % (3 - i))
 		await get_tree().create_timer(1).timeout
-		ui.set_state_text("시작!")
-		rpc("transit_game_state", "Turn")		
+		ui.set_state_text("시작!")	
 
 func on_entry_EndSession():
 	ui.set_state_text("게임 종료!")
