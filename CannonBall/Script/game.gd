@@ -226,7 +226,7 @@ func _process(delta: float) -> void:
 						ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % (3 - i))
 						await get_tree().create_timer(1).timeout
 					
-					await get_tree().create_timer(3).timeout
+					ui.set_state_text("시작!")
 					rpc("transit_game_state", "Turn")
 				else:
 					ui.set_state_text("상대를 기다리는중...")
