@@ -31,6 +31,7 @@ lifetime = 5.0
 one_shot = true
 explosiveness = 1.0
 fixed_fps = 60
+visibility_rect = Rect2(-50000, -100, 100000, 200)
 process_material = SubResource("ParticleProcessMaterial_y823t")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
