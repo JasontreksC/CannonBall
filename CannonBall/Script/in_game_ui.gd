@@ -123,15 +123,8 @@ func _ready() -> void:
 		p2HPCells.add_child(p2HPCell)
 		
 	
-var sec: float = 0
-var fps: float = 0
 func _process(delta: float) -> void:
-	sec += delta
-	fps += 1
-	if sec >= 1.0:
-		lbFps.text = str(fps)
-		sec = 0
-		fps = 0
+	lbFps.text = str(Engine.get_frames_per_second())
 		
 @rpc("any_peer", "call_local")		
 func set_player_life_time(p1time: float, p2time: float) -> void:
