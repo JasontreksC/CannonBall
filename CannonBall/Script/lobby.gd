@@ -16,6 +16,14 @@ func host_lobby():
 func join_lobby(new_lobby_id : int):
 	Steam.joinLobby(new_lobby_id)
 
+func local_host():
+	sceneMgr.set_scene(1)
+	root.create_local_socket()
+
+func local_join():
+	sceneMgr.set_scene(1)
+	root.connect_local_socket()
+
 ## 친구목록 및 초대
 func refresh_firend_list():
 	var firendCount = Steam.getFriendCount(Steam.FriendFlags.FRIEND_FLAG_ALL)

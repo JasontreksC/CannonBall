@@ -36,6 +36,18 @@ func connect_steam_socket(steam_id : int):
 	peer.create_client(steam_id, 0)
 	multiplayer.set_multiplayer_peer(peer)
 
+func create_local_socket():
+	peer = ENetMultiplayerPeer.new()
+	peer.create_server(135)
+	multiplayer.set_multiplayer_peer(peer)
+	multiplayer.peer_connected.connect(_add_player)
+	_add_player()
+
+func connect_local_socket():
+	peer = ENetMultiplayerPeer.new()
+	peer.create_client("localhost", 135)
+	multiplayer.set_multiplayer_peer(peer)
+
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
 
