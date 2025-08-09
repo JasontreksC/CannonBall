@@ -31,7 +31,7 @@ load_path = "res://.godot/imported/T_VFX_CloudNoise_Tiled.png-b5b334e7609f811793
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7b53x"]
 shader = ExtResource("2_4y4p3")
 shader_parameter/Scale = Vector2(3, 1)
-shader_parameter/Speed = Vector2(0, 1)
+shader_parameter/Speed = Vector2(0, 0.5)
 shader_parameter/Texture_Main = SubResource("CompressedTexture2D_ce50g")
 shader_parameter/Texture_Add = SubResource("GradientTexture2D_k8jac")
 shader_parameter/w_per_h = 0.07
@@ -45,6 +45,9 @@ shader_parameter/Texture_5 = SubResource("GradientTexture1D_55nal")
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("SP_Fire:scale")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Fire" type="Node2D"]
 z_index = 100
