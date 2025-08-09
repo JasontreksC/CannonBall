@@ -66,7 +66,7 @@ func land():
 	df.tickInterval = tickInterval
 	df.lifetimeTurn = lifetimeTurn
 
-	game.world.add_child(df)
+	game.world.dfPool.add_child(df)
 
 	var ponds: Array[Node] 
 	var bushes: Array[Node]
@@ -101,10 +101,11 @@ func land():
 					df.rightX = substracted.y
 					df.refresh_radius_center()
 		
-				game.server_spawn_directly(spawnableEffects["fire"], "none", {
+				var fxFireField = game.server_spawn_directly(spawnableEffects["fire"], "none", {
 					"global_position": df.global_position,
 					"width": df.radius * 2
 				})
+				game.regist_lifetime(fxFireField.name, df.lifetimeTurn, 1)
 			
 	
 		2: ## 독탄

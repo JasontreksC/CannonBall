@@ -18,6 +18,8 @@ func pass_sec(delta: float) -> bool:
 	sec = max(sec - delta, 0)
 	return true
 
+
+
 func _init(_turn: int, _sec: float) -> void:
 	self.turn = _turn
 	self.sec = _sec
