@@ -36,6 +36,7 @@ shader_parameter/wave_t_speed = 0.904
 shader_parameter/wave_t_offset = 1.497
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_rqb6c"]
+texture_filter = 5
 
 [node name="Pond" type="Node2D"]
 script = ExtResource("1_ph7nl")
