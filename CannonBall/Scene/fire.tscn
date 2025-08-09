@@ -1,60 +1,69 @@
-[gd_scene load_steps=10 format=3 uid="uid://vbo8nwvg3d3b"]
+[gd_scene load_steps=14 format=3 uid="uid://vbo8nwvg3d3b"]
 
 [ext_resource type="Script" uid="uid://bg7vk1q7gph4b" path="res://Script/fire.gd" id="1_n0jfg"]
+[ext_resource type="Shader" uid="uid://bfxc0b1oxel8c" path="res://Shader/fire_field.tres" id="2_4y4p3"]
 
-[sub_resource type="Curve" id="Curve_n0jfg"]
-_data = [Vector2(0.501337, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_4y4p3"]
-curve = SubResource("Curve_n0jfg")
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8k7fc"]
+load_path = "res://.godot/imported/T_Gradient_circle22.jpg-eeea2ba304219c38d982e8605bea1d64.ctex"
 
 [sub_resource type="Gradient" id="Gradient_cyldd"]
-offsets = PackedFloat32Array(0, 0.346041, 0.721408, 1)
-colors = PackedColorArray(1, 0.109, 0.00999999, 1, 1, 0.55, 0, 1, 0.0926009, 0.0724215, 0.0477578, 1, 0.05, 0.05, 0.05, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_kp85i"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eoyux"]
 gradient = SubResource("Gradient_cyldd")
+fill_from = Vector2(1, 1)
 
-[sub_resource type="Curve" id="Curve_1bjgf"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.478226), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="Gradient" id="Gradient_kp85i"]
+offsets = PackedFloat32Array(0, 0.455814, 0.553488, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.924, 0, 0.124, 1, 1, 0.5, 0.1, 1, 5, 0.9, 0.5, 1)
 
-[sub_resource type="CurveTexture" id="CurveTexture_7b53x"]
-curve = SubResource("Curve_1bjgf")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_55nal"]
+gradient = SubResource("Gradient_kp85i")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n0jfg"]
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(300, 1, 0)
-gravity = Vector3(0, -50, 0)
-radial_accel_min = -10.0
-radial_accel_max = -2.0
-scale_min = 20.0
-scale_max = 50.0
-scale_curve = SubResource("CurveTexture_7b53x")
-color_ramp = SubResource("GradientTexture1D_kp85i")
-alpha_curve = SubResource("CurveTexture_4y4p3")
+[sub_resource type="Gradient" id="Gradient_1bjgf"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k8jac"]
+gradient = SubResource("Gradient_1bjgf")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ce50g"]
+load_path = "res://.godot/imported/T_VFX_CloudNoise_Tiled.png-b5b334e7609f8117933204aae9ea10cf.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7b53x"]
+shader = ExtResource("2_4y4p3")
+shader_parameter/Scale = Vector2(3, 1)
+shader_parameter/Speed = Vector2(0, 0.5)
+shader_parameter/Texture_Main = SubResource("CompressedTexture2D_ce50g")
+shader_parameter/Texture_Add = SubResource("GradientTexture2D_k8jac")
+shader_parameter/w_per_h = 0.07
+shader_parameter/Texture_3 = SubResource("CompressedTexture2D_8k7fc")
+shader_parameter/Texture_4 = SubResource("GradientTexture2D_eoyux")
+shader_parameter/Texture_5 = SubResource("GradientTexture1D_55nal")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_nj271"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n0jfg"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("SP_Fire:scale")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Fire" type="Node2D"]
 z_index = 100
 script = ExtResource("1_n0jfg")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-amount = 100
-lifetime = 2.0
-visibility_rect = Rect2(-50000, -100, 100000, 200)
-process_material = SubResource("ParticleProcessMaterial_n0jfg")
+[node name="SP_Fire" type="Sprite2D" parent="."]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_7b53x")
+position = Vector2(0, 1)
+scale = Vector2(600, 200)
+texture = SubResource("CanvasTexture_nj271")
+offset = Vector2(0, -0.3)
 
 [node name="Timer" type="Timer" parent="."]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_n0jfg")
 
-[connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

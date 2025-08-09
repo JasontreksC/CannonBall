@@ -53,6 +53,11 @@ func _physics_process(delta: float) -> void:
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func substract_area_x(origin: Vector2) -> Vector2:
+	if in_range(origin.x): ## 왼쪽 끝이 연못 안에
+		origin.x = rightX
+
+	if in_range(origin.y): ## 오른쪽 끝이 연못 안에
+		origin.y = leftX
+
+	return origin

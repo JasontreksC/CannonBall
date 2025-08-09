@@ -45,3 +45,11 @@ func _process(delta: float) -> void:
 
 func _on_bt_refresh_pressed() -> void:
 	lobby.refresh_firend_list()
+
+
+func _on_bt_local_host_pressed() -> void:
+	lobby.local_host()
+
+
+func _on_bt_local_join_pressed() -> void:
+	lobby.local_join()

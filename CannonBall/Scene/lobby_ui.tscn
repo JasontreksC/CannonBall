@@ -123,6 +123,38 @@ offset_bottom = 843.0
 scale = Vector2(1.51377, 1.51377)
 text = "친구목록 새로고침"
 
+[node name="BT_LocalHost" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -765.0
+offset_top = -232.0
+offset_right = -483.0
+offset_bottom = -82.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Local Host"
+
+[node name="BT_LocalJoin" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -404.0
+offset_top = -226.0
+offset_right = -122.0
+offset_bottom = -76.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Local Join"
+
 [connection signal="pressed" from="BT_Host" to="." method="_on_bt_host_pressed"]
 [connection signal="pressed" from="BT_Join" to="." method="_on_bt_join_pressed"]
 [connection signal="pressed" from="BT_Refresh" to="." method="_on_bt_refresh_pressed"]
+[connection signal="pressed" from="BT_LocalHost" to="." method="_on_bt_local_host_pressed"]
+[connection signal="pressed" from="BT_LocalJoin" to="." method="_on_bt_local_join_pressed"]

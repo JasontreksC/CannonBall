@@ -260,6 +260,7 @@ func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
 	cmc.set_target_node(nCamTargetDefault, 0.2)
 	game.ui.off_observe()
+	cannon.stateMachine.execute_transit("Idle")
 	
 func on_entry_ReadyFire():
 	if multiplayer.is_server():

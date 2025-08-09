@@ -2,7 +2,7 @@ extends Node2D
 class_name Bush
 
 @export var effetivePlayer:int = 0
-@export var bushRange: float = 600
+@export var radius: float = 300
 
 @onready var spBush: Sprite2D = $SP_Bush
 @onready var world: World = $"../../.."
@@ -13,8 +13,8 @@ var rightX: float
 var target: Player = null
 
 func _ready() -> void:
-	leftX = global_position.x - bushRange / 2
-	rightX = global_position.x + bushRange / 2
+	leftX = global_position.x - radius
+	rightX = global_position.x + radius
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.is_server() and not effetivePlayer == 0:
@@ -37,6 +37,3 @@ func _physics_process(delta: float) -> void:
 	
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX
-				
-func _process(delta: float) -> void:
-	pass

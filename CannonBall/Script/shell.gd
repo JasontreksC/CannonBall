@@ -27,6 +27,26 @@ var game: Game = null
 func on_spawned() -> void:
 	pass
 
+func search_landed_pond(ponds: Array[Node]) -> Pond:
+	for p: Pond in ponds:
+		if p.in_range(global_position.x):
+			return p
+	return null
+
+func search_overlapped_ponds(df: DamageField, ponds: Array[Node]) -> Array[Pond]:
+	var overlappedPonds: Array[Pond] = []
+	for p: Pond in ponds:
+		if df.in_range(p.leftX) or df.in_range(p.rightX):
+			overlappedPonds.append(p)
+	return overlappedPonds
+
+func search_overlapped_bushes(df: DamageField, bushes: Array[Node]) -> Array[Bush]:
+	var overlappedBushes: Array[Bush] = []
+	for b: Bush in bushes:
+		if df.in_range(b.leftX) or df.in_range(b.rightX):
+			overlappedBushes.append(b)
+	return overlappedBushes
+
 func land():
 	if not multiplayer.is_server():
 		return
@@ -35,88 +55,57 @@ func land():
 	
 	var psDF: PackedScene = load("res://Scene/damage_field.tscn")
 	var df: DamageField = psDF.instantiate()
-	#var df: DamageField = game.server_spawn_directly(load("res://Scene/damage_field.tscn"), "none", pos)
+
 	df.global_position = pos
-	df.attackTo = 1 - launcher
 	df.shellType = shellType
 	df.target = game.players[1 - launcher]
-	df.range = range
+	df.set_radius(range / 2)
+
 	df.hitDamage = hitDamage
 	df.tickDamage = tickDamage
 	df.tickInterval = tickInterval
 	df.lifetimeTurn = lifetimeTurn
+
 	game.world.add_child(df)
 
 	var ponds: Array[Node] 
 	var bushes: Array[Node]
 	if df.attackTo == 0:
-		ponds = game.world.nP1Ponds.get_children()
-		bushes = game.world.nP1Bush.get_children()
+		ponds = game.world.nP1Ponds.get_children() as Array[Node]
+		bushes = game.world.nP1Bush.get_children() as Array[Node]
 	else:
-		ponds = game.world.nP2Ponds.get_children()
-		bushes = game.world.nP2Bush.get_children()
-		
+		ponds = game.world.nP2Ponds.get_children() as Array[Node]
+		bushes = game.world.nP2Bush.get_children() as Array[Node]
+
 	match shellType:
 		0: ## 일반탄
+			var landedPond: Pond = search_landed_pond(ponds)
+			if landedPond:
+				pass # 연못 탄착 이펙트
+			else:
+				pass # 일반 탄착 이펙트
 			game.server_spawn_directly(spawnableEffects["explo"], "none", {
 				"global_position": pos
 			})
 
 		1: ## 화염탄
-			var drawn: bool = false
-			var modified: bool = false
-			var modifiedR: float = 0
-			var modifiedX: float = 0
-
-			for p: Pond in ponds:
-				if p.in_range(pos.x):
-					df.tickDamage = 0
-					drawn = true
-				
-				else:
-					if p.in_range(pos.x + df.range / 2): ## 오른쪽 끝이 연못 안에
-						df.set_right_x(p.leftX)
-					else:
-						df.set_right_x(pos.x + df.range / 2)
-					
-					if p.in_range(pos.x - df.range / 2): ## 왼쪽 끝이 연못 안에
-						df.set_left_x(p.rightX)
-					else:
-						df.set_left_x(pos.x - df.range / 2)
-						
-				#elif abs(p.global_position.x - pos.x) < p.pondRadius + (df.range / 2):
-					#modifiedR += clamp(abs(p.leftX - pos.x), 0, 150)
-					#modifiedR += clamp(abs(p.rightX - pos.x), 0, 150)
-					#
-					#if pos.x < p.leftX and abs(p.leftX - pos.x) < 150:
-						#df.modify_range_R(p.leftX)
-					#elif pos.x > p.rightX and abs(p.rightX - pos.x) < 150:
-						#df.modify_range_L(p.rightX)
-					#modified = true
-					#modifiedR = df.rightX - df.leftX
-					#modifiedX = (df.leftX + df.rightX) / 2
-	
-			if drawn:
-				pass
+			var landedPond: Pond = search_landed_pond(ponds)
+			if landedPond:
+				pass # 연못 탄착 이펙트, 틱 대미지 X
 			else:
+				var overlappedPonds: Array[Pond] = search_overlapped_ponds(df, ponds)
+
+				for p in overlappedPonds: # 대미지 필드에서 연못과 겹치는 부분을 제거 
+					var substracted: Vector2 = p.substract_area_x(Vector2(df.leftX, df.rightX))
+					df.leftX = substracted.x
+					df.rightX = substracted.y
+					df.refresh_radius_center()
+		
 				game.server_spawn_directly(spawnableEffects["fire"], "none", {
-					"global_position": Vector2(df.leftX + df.rightX / 2, 0),
-					"extendX": abs(df.leftX - df.rightX) / 2
+					"global_position": df.global_position,
+					"width": df.radius * 2
 				})
 			
-			#if modified:
-				#game.server_spawn_directly(spawnableEffects["fire"], "none", {
-					#"global_position": Vector2(modifiedX, 0),
-					#"extendX": modifiedR
-				#})
-			#elif drawn:
-				#game.server_spawn_directly(spawnableEffects["explo"], "none", {
-					#"global_position": pos
-				#})
-			#else:
-				#game.server_spawn_directly(spawnableEffects["fire"], "none", {
-					#"global_position": pos
-				#})
 	
 		2: ## 독탄
 			game.server_spawn_directly(spawnableEffects["poison"], "none", {

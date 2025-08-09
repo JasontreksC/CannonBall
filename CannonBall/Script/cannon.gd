@@ -120,7 +120,7 @@ func _physics_process(delta: float) -> void:
 				
 			"Aim":
 				var dir = Input.get_axis("left", "right")
-				var aimed_x = ac.aim(dir, 500, delta)
+				var aimed_x = ac.aim(dir, 1000, delta)
 
 				game.ui.aim_to_cam_telescope(aimed_x)
 					

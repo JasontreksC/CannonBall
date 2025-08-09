@@ -1,38 +1,30 @@
 extends Node2D
 
-@onready var particle: GPUParticles2D = $GPUParticles2D
+@onready var spFire: Sprite2D = $SP_Fire
 @onready var timer: Timer = $Timer
-var extendX: float = 300
+var width: float = 300
 
 var game: Game = null
 
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
-	var ppm: ParticleProcessMaterial = particle.process_material
-	ppm.emission_box_extents.x = extendX
-	particle.restart()
+	spFire.scale.x = width
+	spFire.scale.y = 200
 
-func set_extend(radius: float):
-	pass
-	#var ppm: ParticleProcessMaterial = particle.process_material
-	#ppm.emission_box_extents.x = extendX
-	#particle.restart()
+	var mat: ShaderMaterial = spFire.material as ShaderMaterial
+	mat.set_shader_parameter("w_per_h", spFire.scale.y / spFire.scale.x * 0.2)
+	mat.set_shader_parameter("Scale", Vector2(spFire.scale.x / spFire.scale.y, 1.0))
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
 
 func _ready() -> void:
-	particle.one_shot = false
-	particle.emitting = true
-	
-	if multiplayer.is_server():
-		game.regist_lifetime(self.name, 4, 0)
+	pass
 
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:
-	particle.emitting = false
-	timer.start(particle.lifetime)
-
-func _on_timer_timeout() -> void:
 	game.delete_object(self.name)
+
+# func _on_timer_timeout() -> void:
+# 	game.delete_object(self.name)
