@@ -215,8 +215,6 @@ texture = SubResource("CanvasTexture_0dgpy")
 
 [node name="P1HP" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
 mouse_filter = 2
 
 [node name="HPBase" type="Sprite2D" parent="P1HP"]
@@ -236,7 +234,7 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -1920.0
-offset_bottom = 1080.0
+offset_right = -1920.0
 grow_horizontal = 0
 mouse_filter = 2
 
@@ -256,22 +254,18 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -960.0
-offset_right = 960.0
-offset_bottom = 1080.0
 grow_horizontal = 2
-pivot_offset = Vector2(960, 0)
 mouse_filter = 2
 
 [node name="TurnInfo" type="Sprite2D" parent="Dashboard"]
 material = SubResource("ShaderMaterial_qyub3")
-position = Vector2(957, 69.5)
+position = Vector2(-8.00006, 69.5)
 scale = Vector2(6.46875, 1.54688)
 texture = SubResource("GradientTexture2D_u4wab")
 
 [node name="OutlineLeft" type="Sprite2D" parent="Dashboard"]
 texture_repeat = 1
-position = Vector2(931.96, 70)
+position = Vector2(-33.04, 70)
 scale = Vector2(0.604375, 0.604375)
 texture = ExtResource("7_brp0j")
 region_enabled = true
@@ -285,9 +279,9 @@ region_rect = Rect2(0, 0, 500, 210)
 
 [node name="P1Time" type="Label" parent="Dashboard"]
 layout_mode = 0
-offset_left = 725.0
+offset_left = -240.0
 offset_top = 41.0
-offset_right = 1959.0
+offset_right = 994.0
 offset_bottom = 371.0
 scale = Vector2(0.163137, 0.163137)
 text = "60"
@@ -296,9 +290,9 @@ horizontal_alignment = 1
 
 [node name="P2Time" type="Label" parent="Dashboard"]
 layout_mode = 0
-offset_left = 994.0
+offset_left = 28.9999
 offset_top = 41.0
-offset_right = 2228.0
+offset_right = 1263.0
 offset_bottom = 371.0
 scale = Vector2(0.163137, 0.163137)
 text = "60"
@@ -306,25 +300,29 @@ label_settings = SubResource("LabelSettings_pmkfs")
 horizontal_alignment = 1
 
 [node name="AttackSymbol" type="Sprite2D" parent="Dashboard"]
-position = Vector2(963, 70)
+position = Vector2(-2.00006, 70)
 rotation = -0.787711
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("9_wckav")
 
 [node name="State" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -461.0
+offset_top = -21.0
+offset_right = -461.0
+offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="State"]
 layout_mode = 0
-offset_left = 403.0
-offset_top = 488.0
-offset_right = 722.0
-offset_bottom = 663.0
+offset_right = 908.0
+offset_bottom = 139.0
 text = "상대를 기다리는중..."
 label_settings = SubResource("LabelSettings_oqxxn")
 
