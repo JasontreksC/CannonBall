@@ -847,3 +847,5 @@ position = Vector2(3985, 0)
 
 [node name="Bush3" parent="BenefitFields/P2Bush" instance=ExtResource("3_ejll3")]
 position = Vector2(4849, 0)
+
+[node name="DamageFields" type="Node2D" parent="."]
