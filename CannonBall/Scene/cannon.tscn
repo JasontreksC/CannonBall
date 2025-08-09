@@ -205,6 +205,8 @@ position = Vector2(-38, 0)
 
 [node name="AimController" type="Node2D" parent="."]
 script = ExtResource("5_y1q7a")
+minAimAngle = -5.0
+V0 = 4000.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_tscwj")
