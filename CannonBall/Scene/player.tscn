@@ -697,7 +697,7 @@ script = ExtResource("1_ui7ge")
 psCMC = ExtResource("2_o1tno")
 
 [node name="CameraTarget_Default" type="Node2D" parent="."]
-position = Vector2(0, -350)
+position = Vector2(0, 300)
 
 [node name="CameraTarget_Aim" type="Node2D" parent="CameraTarget_Default"]
 position = Vector2(700, 0)

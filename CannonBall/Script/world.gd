@@ -11,6 +11,7 @@ class_name World
 @onready var nP2Ponds: Node2D = $BenefitFields/P2Ponds
 @onready var nP1Bush: Node2D = $BenefitFields/P1Bush
 @onready var nP2Bush: Node2D = $BenefitFields/P2Bush
+@onready var dfPool: Node2D = $DamageFields
 
 var game: Game = null
 
@@ -47,3 +48,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
+
+func on_turn_count():
+	if not multiplayer.is_server():
+		return
+	
+	var dfs: Array[Node] = game.world.dfPool.get_children()
+	for df: DamageField in dfs:
+		if df.lifetimeTurn <= 0:
+			df.queue_free()
+		else:
+			df.lifetimeTurn -= 1
+		print("df 남은 턴: %d" % df.lifetimeTurn)

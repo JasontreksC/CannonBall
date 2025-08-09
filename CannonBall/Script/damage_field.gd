@@ -47,8 +47,8 @@ func activate():
 	if tickDamage:
 		timer.start(tickInterval)
 	
-	if lifetimeTurn:
-		game.regist_lifetime(self.name, lifetimeTurn, 0)
+	if lifetimeTurn <= 0:
+		queue_free()
 
 func _enter_tree() -> void:
 	game = get_parent().get_parent() as Game
@@ -56,9 +56,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	pass
 	
-@rpc("any_peer", "call_local")
-func lifetime_end() -> void:
-	queue_free()
 
 func _on_timer_timeout() -> void:
 	if in_range(target.global_position.x):

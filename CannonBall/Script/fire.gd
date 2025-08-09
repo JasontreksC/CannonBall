@@ -9,18 +9,18 @@ var game: Game = null
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
+	pass
+
+func _enter_tree() -> void:
+	game = get_parent() as Game
+
+func _ready() -> void:
 	spFire.scale.x = width
 	spFire.scale.y = 200
 
 	var mat: ShaderMaterial = spFire.material as ShaderMaterial
 	mat.set_shader_parameter("w_per_h", spFire.scale.y / spFire.scale.x * 0.2)
 	mat.set_shader_parameter("Scale", Vector2(spFire.scale.x / spFire.scale.y, 1.0))
-
-func _enter_tree() -> void:
-	game = get_parent() as Game
-
-func _ready() -> void:
-	pass
 
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:

@@ -121,9 +121,6 @@ func change_turn() -> void:
 		players[1].isAttack = true
 		players[1].attackChance = true
 		players[0].isAttack = false
-	
-	if multiplayer.is_server():
-		update_lifetime_turn()
 
 @rpc("any_peer", "call_local")
 func transit_game_state(state: String):
@@ -159,20 +156,22 @@ func regist_lifetime(key: String, turn: int, sec: float):
 func update_lifetime_turn():
 	for key in lifetimePool.keys():
 		var lft: Lifetime = lifetimePool[key]
-		if lft.turn > 0:
-			var live: bool = lft.pass_turn()
-			if not live and lft.sec == 0:
-				objects[key].rpc("lifetime_end")
-				lifetimePool.erase(key)
+		var live: bool = lft.pass_turn()
+		if not live:
+			objects[key].rpc("lifetime_end")
+			lifetimePool.erase(key)
 			
-func update_lifetime_sec(delta: float):
-	for key in lifetimePool.keys():
-		var lft: Lifetime = lifetimePool[key]
-		if not lft.turn:
-			var live: bool = lft.pass_sec(delta)
-			if not live:
-				objects[key].rpc("lifetime_end")
-				lifetimePool.erase(key)
+#func update_lifetime_sec(delta: float):
+	#for key in lifetimePool.keys():
+		#var lft: Lifetime = lifetimePool[key]
+		#if lft.turn:
+			#return
+		#var live: bool = lft.pass_sec(delta)
+		#if not live:
+			#objects[key].rpc("lifetime_end")
+			#lifetimePool.erase(key)
+		
+		
 
 func quit_game():
 	root.sceneMgr.set_scene(2)
@@ -234,15 +233,16 @@ func _process(delta: float) -> void:
 					
 			"Turn":
 				if multiplayer.is_server():
-					update_lifetime_sec(delta)
+					#update_lifetime_sec(delta)
 					update_game_time(delta)
 					
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
 						rpc("transit_game_state", "Shelling")
 					
 			"Shelling":
-				if multiplayer.is_server():
-					update_lifetime_sec(delta)
+				pass
+			#if multiplayer.is_server():
+					#update_lifetime_sec(delta)
 					
 			"EndSession":
 				print("엔드 세션")
@@ -277,7 +277,10 @@ func on_exit_Turn():
 func on_entry_Shelling():
 	pass
 func on_exit_Shelling():
-	pass
+	if multiplayer.is_server():
+		update_lifetime_turn()
+		world.on_turn_count()
+
 func on_entry_EndSession():
 	ui.set_state_text("게임 종료!")
 	

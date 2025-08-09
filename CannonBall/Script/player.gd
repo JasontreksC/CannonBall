@@ -85,13 +85,6 @@ func _ready() -> void:
 	#  서버에서 생성하기 위해 원격 함수 호출(클라->서버)
 	#  서버의 경우 직접 호출
 	game.rpc("server_spawn_request", "res://Scene/cannon.tscn", self.name + "cannon")
-	
-	# 카메라 무빙 컨트롤러 생성
-	cmc = psCMC.instantiate()
-	game.add_child(cmc)
-	cmc.name = name + "_cmc"
-	cmc.targetNode = $CameraTarget_Default
-	cmc.camera.make_current()
 
 	if multiplayer.is_server():
 		global_position = world.get_spawn_spot("p1")
@@ -129,6 +122,15 @@ func _ready() -> void:
 			smPandent.set_shader_parameter("TeamColor", Color.RED)
 		else:
 			smPandent.set_shader_parameter("TeamColor", Color.BLUE)
+	
+	# 카메라 무빙 컨트롤러 생성
+	cmc = psCMC.instantiate()
+	cmc.name = name + "_cmc"
+	cmc.global_position = global_position
+	game.add_child(cmc)
+	# cmc.set_target_zoom(Vector2(0.7, 0.7))
+	cmc.set_target(nCamTargetDefault)
+	cmc.camera.make_current()
 	
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
@@ -258,7 +260,7 @@ func on_entry_HandleCannon():
 
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
-	cmc.set_target_node(nCamTargetDefault, 0.2)
+	cmc.set_target(nCamTargetDefault, 0.7)
 	game.ui.off_observe()
 	cannon.stateMachine.execute_transit("Idle")
 	
@@ -272,5 +274,5 @@ func on_entry_ReadyFire():
 		cannon.stateMachine.execute_transit("Aim")
 		
 	# 카메라 위치를 이동시킴
-	cmc.set_target_node(nCamTargetAim, 0.2)
+	cmc.set_target(nCamTargetAim, 0.8)
 	game.ui.on_observe()

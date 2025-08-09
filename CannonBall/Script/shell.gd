@@ -16,6 +16,7 @@ var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
 var launcher: int = 0
+var timeScale: float = 0.75
 
 var isFalling: bool = false
 var alive = true
@@ -66,7 +67,7 @@ func land():
 	df.tickInterval = tickInterval
 	df.lifetimeTurn = lifetimeTurn
 
-	game.world.add_child(df)
+	game.world.dfPool.add_child(df)
 
 	var ponds: Array[Node] 
 	var bushes: Array[Node]
@@ -100,11 +101,12 @@ func land():
 					df.leftX = substracted.x
 					df.rightX = substracted.y
 					df.refresh_radius_center()
-		
-				game.server_spawn_directly(spawnableEffects["fire"], "none", {
+
+				var fxFireField = game.server_spawn_directly(spawnableEffects["fire"], "none", {
 					"global_position": df.global_position,
 					"width": df.radius * 2
 				})
+				game.regist_lifetime(fxFireField.name, df.lifetimeTurn, 1)
 			
 	
 		2: ## 독탄
@@ -136,7 +138,7 @@ func _physics_process(delta: float) -> void:
 		return
 		
 	## 포물선 운동
-	t += delta
+	t += delta * timeScale
 	var x = v0 * cos(theta0) * t
 	var y = -v0 * sin(theta0) * t + 0.5 * game.G * pow(t, 2)
 	## 떨어지고 있는 중인지 판정
