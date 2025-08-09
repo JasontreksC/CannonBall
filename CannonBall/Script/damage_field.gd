@@ -7,40 +7,29 @@ var attackTo: int = -1
 
 var shellType: int = -1
 	
-var range: float = 0
+var radius: float = 0
 var leftX: float = 0
 var rightX: float = 0
 var hitDamage: int = 0
 var tickDamage: int = 0  # 틱 대미지 간격은 1초로 고정
 var tickInterval: float = 0
 var lifetimeTurn: int = 0
-var modifiedL: bool = false
-var modifiedR: bool = false
 
 var game: Game = null
 var target: Player = null
 @onready var timer: Timer = $Timer
 
-func modify_range_L(left: float):
-	modifiedL = true
-	leftX = left
-	
-func modify_range_R(right: float):
-	modifiedR = true
-	rightX = right
+func set_radius(r: float):
+	radius = r
+	leftX = global_position.x - radius
+	rightX = global_position.x + radius
 
-func set_left_x(left: float):
-	leftX = left
-
-func set_right_x(right: float):
-	rightX = right
+func refresh_radius_center():
+	var range: float = max(rightX - leftX, 0)
+	radius = range / 2
+	global_position.x = (leftX + rightX) / 2
 
 func in_range(targetX: float) -> bool:
-	if not modifiedL:
-		leftX = global_position.x - range / 2
-	if not modifiedR:
-		rightX = global_position.x + range / 2
-	
 	if targetX > leftX and targetX < rightX:
 		return true
 	else:
