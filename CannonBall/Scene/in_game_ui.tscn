@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=30 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_cell.tscn" id="2_dviy5"]
-[ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
+[ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope.gdshader" id="3_oqxxn"]
 [ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
+[ext_resource type="Texture2D" uid="uid://eyiexi4hnjxy" path="res://Asset/ui/telescope.png" id="4_7hrlq"]
 [ext_resource type="Shader" uid="uid://bvrlkrmaw1jxg" path="res://Shader/just_color.tres" id="6_o5tdw"]
 [ext_resource type="Texture2D" uid="uid://d37n1yd2i04eb" path="res://Asset/ui_dashboard_1.png" id="7_brp0j"]
 [ext_resource type="Texture2D" uid="uid://b17q7wp0efyyn" path="res://Asset/ui_dashboard_2.png" id="8_wckav"]
@@ -17,20 +18,14 @@
 [ext_resource type="Texture2D" uid="uid://coknwbm1o0tp0" path="res://Asset/alpha_texture/crack.png" id="15_bucyv"]
 [ext_resource type="Texture2D" uid="uid://b3j2oh0a5iehh" path="res://Asset/shell/poision_shell.png" id="16_voeoa"]
 
-[sub_resource type="Curve" id="Curve_oqxxn"]
-_limits = [-1.0, 1.0, 0.0, 1.0]
-_data = [Vector2(0, 0), 0.0, 13.2822, 0, 0, Vector2(0.112864, 1), 0.0, 0.0, 0, 0, Vector2(0.292476, -1), 0.0, 0.0, 0, 0, Vector2(0.498786, 0.513056), 0.0, 0.0, 0, 0, Vector2(0.73665, -0.385918), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 6
-metadata/_snap_count = 2
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7hrlq"]
+shader = ExtResource("3_oqxxn")
+shader_parameter/telescope_texture = ExtResource("4_7hrlq")
+shader_parameter/radius = 0.45
+shader_parameter/strength = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
-shader = ExtResource("2_wpxio")
-shader_parameter/hole_center = Vector2(0.5, 0.5)
-shader_parameter/hole_radius = 0.4
-shader_parameter/thickness = 0.005
-shader_parameter/cross_color = Vector4(0, 0, 0, 1)
-shader_parameter/bg_color = Color(0, 0, 0, 1)
-shader_parameter/transparency_color = Color(0, 0, 0, 0)
+[sub_resource type="ViewportTexture" id="ViewportTexture_oqxxn"]
+viewport_path = NodePath("Telescope/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0d0q2"]
 shader = ExtResource("14_7hrlq")
@@ -76,7 +71,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3xi00")
 hpPointSprite = ExtResource("2_dviy5")
-crvHPPRemoveVibration = SubResource("Curve_oqxxn")
 
 [node name="fps" type="Label" parent="."]
 layout_mode = 0
@@ -86,9 +80,9 @@ offset_right = 49.0
 offset_bottom = 169.0
 text = "0"
 
-[node name="Telescope" type="ColorRect" parent="."]
+[node name="Telescope" type="TextureRect" parent="."]
 visible = false
-material = SubResource("ShaderMaterial_ms5rh")
+material = SubResource("ShaderMaterial_7hrlq")
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -96,27 +90,25 @@ anchor_right = 1.0
 offset_left = -1080.0
 offset_bottom = 1080.0
 grow_horizontal = 0
-mouse_filter = 1
-color = Color(0, 0, 0, 1)
+texture = SubResource("ViewportTexture_oqxxn")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Telescope"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 1080.0
-offset_bottom = 1080.0
-
-[node name="SubViewport" type="SubViewport" parent="Telescope/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="Telescope"]
 handle_input_locally = false
 msaa_2d = 1
 use_hdr_2d = true
 texture_mipmap_bias = -2.0
 canvas_item_default_texture_filter = 2
 size = Vector2i(1080, 1080)
-render_target_update_mode = 0
+render_target_update_mode = 3
 
-[node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
+[node name="Camera2D" type="Camera2D" parent="Telescope/SubViewport"]
 
-[node name="Background" parent="Telescope/SubViewportContainer/SubViewport" instance=ExtResource("3_quy4v")]
+[node name="Background" parent="Telescope/SubViewport" instance=ExtResource("3_quy4v")]
+
+[node name="Sprite2D" type="Sprite2D" parent="Telescope"]
+position = Vector2(540, 540)
+scale = Vector2(2, 2)
+texture = ExtResource("4_7hrlq")
 
 [node name="ShellDial" type="TextureRect" parent="."]
 layout_mode = 1

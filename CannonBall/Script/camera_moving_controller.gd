@@ -4,21 +4,12 @@ class_name CameraMovingController
 @onready var camera := $Camera2D
 @onready var timer: Timer = $Timer
 
-# @export var MAX_SPEED = 500
-# @export var MIN_SPEED_FOLLOW = 100
-# var followSpeed: float = 1000
-# @export var moveCurve : Curve
-# @export var zoomCurve : Curve
-
 var targetNode: Node2D = null
 var targetZoom : Vector2
 var totalDistX : float = 0
-# var prevPos : Vector2
 var prevZoom : Vector2
 
 var offset : Vector2
-# var durationTime = 0
-# var elapsedTime = 0
 var progress : float
 var zoommig: bool = false
 

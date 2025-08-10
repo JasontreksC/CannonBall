@@ -10,6 +10,7 @@ var walkSpeed: float = 500.0
 var cannonSpeed: float = 300.0
 var velocity: float = 0
 
+var telescopeZoomOption: int = 1
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
@@ -184,11 +185,19 @@ func _physics_process(delta: float) -> void:
 				stateMachine.transit_by_input("aim", "back")
 				
 				# 만원경으로 조준
-				var dir = 0
-				if Input.is_action_just_pressed("wheel_up"): dir = 1
-				elif Input.is_action_just_pressed("wheel_down"): dir = -1
-				game.ui.zoom_cam_telescope(dir, 10, delta)
+				if game.ui.zoomFinished:
+					if Input.is_action_just_pressed("wheel_up"):
+						telescopeZoomOption += 1
+						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
+						game.ui.zoom_cam_telescope(telescopeZoomOption)
+
+					elif Input.is_action_just_pressed("wheel_down"):
+						telescopeZoomOption -= 1
+						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
+						game.ui.zoom_cam_telescope(telescopeZoomOption)				
 				
+
+
 				if Input.is_action_just_pressed("num1"):
 					print("일반탄 선택")
 					selectedShell = 0
