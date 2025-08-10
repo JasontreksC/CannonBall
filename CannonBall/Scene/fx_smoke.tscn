@@ -1,0 +1,435 @@
+[gd_scene load_steps=47 format=3 uid="uid://etrvlgkdjfwx"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kqn7g"]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeMultiplyAdd" id="VisualShaderNodeMultiplyAdd_jn8pb"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(1, 1), 2, Vector2(0, 0)]
+op_type = 1
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_75blf"]
+parameter_name = "mask"
+texture_filter = 4
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_em28c"]
+expanded_output_ports = [0]
+source = 5
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_rmaqo"]
+parameter_name = "smoke_color"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_2sri6"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_1vkd8"]
+default_input_values = [0, 0.0, 1, 0.2]
+operator = 1
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_7i7c7"]
+function = 31
+
+[sub_resource type="VisualShaderNodeClamp" id="VisualShaderNodeClamp_0ysiu"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_nqogg"]
+expanded_output_ports = [0]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_pqaj8"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_1c8xd"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_gg1ms"]
+parameter_name = "smoke_pattern"
+texture_filter = 4
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_vrn7l"]
+expanded_output_ports = [0]
+source = 5
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_du1u3"]
+parameter_name = "scale"
+hint = 1
+min = 0.1
+
+[sub_resource type="VisualShaderNodeVec2Parameter" id="VisualShaderNodeVec2Parameter_kis2e"]
+parameter_name = "offset"
+
+[sub_resource type="VisualShader" id="VisualShader_scjg3"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 smoke_color : source_color;
+uniform float scale : hint_range(0.10000000149012, 1.0);
+uniform vec2 offset;
+uniform sampler2D smoke_pattern : filter_linear_mipmap, repeat_enable;
+uniform sampler2D mask : filter_linear_mipmap, repeat_enable;
+
+
+
+void fragment() {
+// ColorParameter:13
+	vec4 n_out13p0 = smoke_color;
+
+
+// Input:5
+	vec2 n_out5p0 = UV;
+
+
+// FloatParameter:8
+	float n_out8p0 = scale;
+
+
+// Vector2Parameter:9
+	vec2 n_out9p0 = offset;
+
+
+// MultiplyAdd:10
+	vec2 n_out10p0 = fma(n_out5p0, vec2(n_out8p0), n_out9p0);
+
+
+	vec4 n_out7p0;
+// Texture2D:7
+	n_out7p0 = texture(smoke_pattern, n_out10p0);
+	float n_out7p1 = n_out7p0.r;
+
+
+// VectorOp:15
+	vec4 n_out15p0 = n_out13p0 * vec4(n_out7p1);
+
+
+	vec4 n_out12p0;
+// Texture2D:12
+	n_out12p0 = texture(mask, UV);
+	float n_out12p1 = n_out12p0.r;
+
+
+// FloatFunc:19
+	float n_out19p0 = 1.0 - n_out12p1;
+
+
+// FloatOp:18
+	float n_out18p0 = n_out7p1 - n_out19p0;
+
+
+// Clamp:20
+	float n_in20p1 = 0.00000;
+	float n_in20p2 = 1.00000;
+	float n_out20p0 = clamp(n_out18p0, n_in20p1, n_in20p2);
+
+
+// Input:24
+	vec4 n_out24p0 = COLOR;
+	float n_out24p4 = n_out24p0.a;
+
+
+// FloatOp:25
+	float n_out25p0 = n_out20p0 * n_out24p4;
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out15p0.xyz);
+	COLOR.a = n_out25p0;
+
+
+}
+"
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(2280, 340)
+nodes/fragment/5/node = SubResource("VisualShaderNodeInput_1c8xd")
+nodes/fragment/5/position = Vector2(-860, -320)
+nodes/fragment/6/node = SubResource("VisualShaderNodeTexture2DParameter_gg1ms")
+nodes/fragment/6/position = Vector2(-860, 480)
+nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_vrn7l")
+nodes/fragment/7/position = Vector2(-60, 300)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatParameter_du1u3")
+nodes/fragment/8/position = Vector2(-800, -200)
+nodes/fragment/9/node = SubResource("VisualShaderNodeVec2Parameter_kis2e")
+nodes/fragment/9/position = Vector2(-800, 160)
+nodes/fragment/10/node = SubResource("VisualShaderNodeMultiplyAdd_jn8pb")
+nodes/fragment/10/position = Vector2(-420, -140)
+nodes/fragment/11/node = SubResource("VisualShaderNodeTexture2DParameter_75blf")
+nodes/fragment/11/position = Vector2(-100, 720)
+nodes/fragment/12/node = SubResource("VisualShaderNodeTexture_em28c")
+nodes/fragment/12/position = Vector2(300, 720)
+nodes/fragment/13/node = SubResource("VisualShaderNodeColorParameter_rmaqo")
+nodes/fragment/13/position = Vector2(-40, -60)
+nodes/fragment/15/node = SubResource("VisualShaderNodeVectorOp_2sri6")
+nodes/fragment/15/position = Vector2(340, -20)
+nodes/fragment/18/node = SubResource("VisualShaderNodeFloatOp_1vkd8")
+nodes/fragment/18/position = Vector2(1400, 360)
+nodes/fragment/19/node = SubResource("VisualShaderNodeFloatFunc_7i7c7")
+nodes/fragment/19/position = Vector2(1040, 760)
+nodes/fragment/20/node = SubResource("VisualShaderNodeClamp_0ysiu")
+nodes/fragment/20/position = Vector2(1680, 460)
+nodes/fragment/24/node = SubResource("VisualShaderNodeInput_nqogg")
+nodes/fragment/24/position = Vector2(1580, 680)
+nodes/fragment/25/node = SubResource("VisualShaderNodeFloatOp_pqaj8")
+nodes/fragment/25/position = Vector2(1960, 500)
+nodes/fragment/connections = PackedInt32Array(6, 0, 7, 2, 5, 0, 10, 0, 8, 0, 10, 1, 9, 0, 10, 2, 10, 0, 7, 0, 11, 0, 12, 2, 13, 0, 15, 0, 7, 1, 15, 1, 7, 1, 18, 0, 18, 0, 20, 0, 19, 0, 18, 1, 12, 1, 19, 0, 15, 0, 0, 0, 20, 0, 25, 0, 25, 0, 0, 1, 24, 4, 25, 1)
+nodes/collide/2/node = SubResource("VisualShaderNodeInput_kqn7g")
+nodes/collide/2/position = Vector2(-271.505, 174.555)
+nodes/start_custom/0/position = Vector2(-220, 60)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jn8pb"]
+load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_42fnj"]
+load_path = "res://.godot/imported/T_VFX_CloudNoise_Tiled.png-55fa4d0a200688fd0a4ab3ddcfe686c9.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kqn7g"]
+shader = SubResource("VisualShader_scjg3")
+shader_parameter/smoke_color = Color(0.190865, 0.188674, 0.204417, 1)
+shader_parameter/scale = 0.638
+shader_parameter/offset = Vector2(1.11, -0.45)
+shader_parameter/smoke_pattern = SubResource("CompressedTexture2D_42fnj")
+shader_parameter/mask = SubResource("CompressedTexture2D_jn8pb")
+
+[sub_resource type="Curve" id="Curve_kqn7g"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.130573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_jn8pb"]
+curve = SubResource("Curve_kqn7g")
+
+[sub_resource type="Curve" id="Curve_jn8pb"]
+_limits = [-360.0, 360.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_75blf"]
+curve = SubResource("Curve_jn8pb")
+
+[sub_resource type="Curve" id="Curve_75blf"]
+_limits = [1.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_em28c"]
+curve = SubResource("Curve_75blf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_42fnj"]
+lifetime_randomness = 0.7
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(50, 50, 0)
+angle_min = -180.0
+angle_max = 180.0
+angle_curve = SubResource("CurveTexture_75blf")
+gravity = Vector3(0, -100, 0)
+scale_min = 100.0
+scale_max = 150.0
+scale_curve = SubResource("CurveTexture_em28c")
+alpha_curve = SubResource("CurveTexture_jn8pb")
+turbulence_noise_scale = 2.985
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_42fnj"]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeMultiplyAdd" id="VisualShaderNodeMultiplyAdd_kqn7g"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(1, 1), 2, Vector2(0, 0)]
+op_type = 1
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_jn8pb"]
+parameter_name = "mask"
+texture_filter = 4
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_75blf"]
+expanded_output_ports = [0]
+source = 5
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_em28c"]
+parameter_name = "smoke_color"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_rmaqo"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_2sri6"]
+default_input_values = [0, 0.0, 1, 0.2]
+operator = 1
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_1vkd8"]
+function = 31
+
+[sub_resource type="VisualShaderNodeClamp" id="VisualShaderNodeClamp_7i7c7"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_0ysiu"]
+expanded_output_ports = [0]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_nqogg"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_pqaj8"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_1c8xd"]
+parameter_name = "smoke_pattern"
+texture_filter = 4
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_gg1ms"]
+expanded_output_ports = [0]
+source = 5
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_vrn7l"]
+parameter_name = "scale"
+hint = 1
+min = 0.1
+
+[sub_resource type="VisualShaderNodeVec2Parameter" id="VisualShaderNodeVec2Parameter_du1u3"]
+parameter_name = "offset"
+
+[sub_resource type="VisualShader" id="VisualShader_kis2e"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 smoke_color : source_color;
+uniform float scale : hint_range(0.10000000149012, 1.0);
+uniform vec2 offset;
+uniform sampler2D smoke_pattern : filter_linear_mipmap, repeat_enable;
+uniform sampler2D mask : filter_linear_mipmap, repeat_enable;
+
+
+
+void fragment() {
+// ColorParameter:13
+	vec4 n_out13p0 = smoke_color;
+
+
+// Input:5
+	vec2 n_out5p0 = UV;
+
+
+// FloatParameter:8
+	float n_out8p0 = scale;
+
+
+// Vector2Parameter:9
+	vec2 n_out9p0 = offset;
+
+
+// MultiplyAdd:10
+	vec2 n_out10p0 = fma(n_out5p0, vec2(n_out8p0), n_out9p0);
+
+
+	vec4 n_out7p0;
+// Texture2D:7
+	n_out7p0 = texture(smoke_pattern, n_out10p0);
+	float n_out7p1 = n_out7p0.r;
+
+
+// VectorOp:15
+	vec4 n_out15p0 = n_out13p0 * vec4(n_out7p1);
+
+
+	vec4 n_out12p0;
+// Texture2D:12
+	n_out12p0 = texture(mask, UV);
+	float n_out12p1 = n_out12p0.r;
+
+
+// FloatFunc:19
+	float n_out19p0 = 1.0 - n_out12p1;
+
+
+// FloatOp:18
+	float n_out18p0 = n_out7p1 - n_out19p0;
+
+
+// Clamp:20
+	float n_in20p1 = 0.00000;
+	float n_in20p2 = 1.00000;
+	float n_out20p0 = clamp(n_out18p0, n_in20p1, n_in20p2);
+
+
+// Input:24
+	vec4 n_out24p0 = COLOR;
+	float n_out24p4 = n_out24p0.a;
+
+
+// FloatOp:25
+	float n_out25p0 = n_out20p0 * n_out24p4;
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out15p0.xyz);
+	COLOR.a = n_out25p0;
+
+
+}
+"
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(2280, 340)
+nodes/fragment/5/node = SubResource("VisualShaderNodeInput_pqaj8")
+nodes/fragment/5/position = Vector2(-860, -320)
+nodes/fragment/6/node = SubResource("VisualShaderNodeTexture2DParameter_1c8xd")
+nodes/fragment/6/position = Vector2(-860, 480)
+nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_gg1ms")
+nodes/fragment/7/position = Vector2(-60, 300)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatParameter_vrn7l")
+nodes/fragment/8/position = Vector2(-800, -200)
+nodes/fragment/9/node = SubResource("VisualShaderNodeVec2Parameter_du1u3")
+nodes/fragment/9/position = Vector2(-800, 160)
+nodes/fragment/10/node = SubResource("VisualShaderNodeMultiplyAdd_kqn7g")
+nodes/fragment/10/position = Vector2(-420, -140)
+nodes/fragment/11/node = SubResource("VisualShaderNodeTexture2DParameter_jn8pb")
+nodes/fragment/11/position = Vector2(-100, 720)
+nodes/fragment/12/node = SubResource("VisualShaderNodeTexture_75blf")
+nodes/fragment/12/position = Vector2(300, 720)
+nodes/fragment/13/node = SubResource("VisualShaderNodeColorParameter_em28c")
+nodes/fragment/13/position = Vector2(-40, -60)
+nodes/fragment/15/node = SubResource("VisualShaderNodeVectorOp_rmaqo")
+nodes/fragment/15/position = Vector2(340, -20)
+nodes/fragment/18/node = SubResource("VisualShaderNodeFloatOp_2sri6")
+nodes/fragment/18/position = Vector2(1400, 360)
+nodes/fragment/19/node = SubResource("VisualShaderNodeFloatFunc_1vkd8")
+nodes/fragment/19/position = Vector2(1040, 760)
+nodes/fragment/20/node = SubResource("VisualShaderNodeClamp_7i7c7")
+nodes/fragment/20/position = Vector2(1680, 460)
+nodes/fragment/24/node = SubResource("VisualShaderNodeInput_0ysiu")
+nodes/fragment/24/position = Vector2(1580, 680)
+nodes/fragment/25/node = SubResource("VisualShaderNodeFloatOp_nqogg")
+nodes/fragment/25/position = Vector2(1960, 500)
+nodes/fragment/connections = PackedInt32Array(6, 0, 7, 2, 5, 0, 10, 0, 8, 0, 10, 1, 9, 0, 10, 2, 10, 0, 7, 0, 11, 0, 12, 2, 13, 0, 15, 0, 7, 1, 15, 1, 7, 1, 18, 0, 18, 0, 20, 0, 19, 0, 18, 1, 12, 1, 19, 0, 15, 0, 0, 0, 20, 0, 25, 0, 25, 0, 0, 1, 24, 4, 25, 1)
+nodes/collide/2/node = SubResource("VisualShaderNodeInput_42fnj")
+nodes/collide/2/position = Vector2(-271.505, 174.555)
+nodes/start_custom/0/position = Vector2(-220, 60)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_75blf"]
+load_path = "res://.godot/imported/T_VFX_MarbleNoise_tiled.png-2f4d65c1c4e9e7e4d913f91b3470efbc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_42fnj"]
+shader = SubResource("VisualShader_kis2e")
+shader_parameter/smoke_color = Color(0.0696651, 0.0685323, 0.0766598, 1)
+shader_parameter/scale = 0.638
+shader_parameter/offset = Vector2(1.11, -0.45)
+shader_parameter/smoke_pattern = SubResource("CompressedTexture2D_75blf")
+shader_parameter/mask = SubResource("CompressedTexture2D_jn8pb")
+
+[node name="FxSmoke" type="Node2D"]
+
+[node name="Particle1" type="GPUParticles2D" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_kqn7g")
+amount = 50
+lifetime = 3.0
+process_material = SubResource("ParticleProcessMaterial_42fnj")
+
+[node name="Particle2" type="GPUParticles2D" parent="."]
+z_index = -1
+texture_repeat = 2
+material = SubResource("ShaderMaterial_42fnj")
+amount = 20
+lifetime = 3.0
+process_material = SubResource("ParticleProcessMaterial_42fnj")

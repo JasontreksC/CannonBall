@@ -150,8 +150,10 @@ func update_game_time(delta: float) -> void:
 		
 		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
 
-func regist_lifetime(key: String, turn: int, sec: float):
-	lifetimePool[key] = Lifetime.new(turn, sec)
+@rpc("any_peer", "call_local")
+func regist_lifetime(key: String, turn: int):
+	if multiplayer.is_server():
+		lifetimePool[key] = Lifetime.new(turn)
 	
 func update_lifetime_turn():
 	for key in lifetimePool.keys():
@@ -260,6 +262,8 @@ func on_exit_WaitSession():
 	ui.generate_hp_points(1, 20)
 	players[0].canMove = true
 	players[1].canMove = true
+
+	world.rpc("set_player_refs")
 	
 
 func on_entry_Turn():

@@ -805,22 +805,24 @@ z_index = 60
 position = Vector2(-3600, 0)
 scale = Vector2(2, 2)
 pondRadius = 500.0
+pondID = 1
 
 [node name="Pond2" parent="BenefitFields/P1Ponds" instance=ExtResource("4_scul4")]
 z_index = 60
 position = Vector2(-6800, 0)
 scale = Vector2(2, 2)
 pondRadius = 500.0
+pondID = 2
 
-[node name="P1Bush" type="Node2D" parent="BenefitFields"]
+[node name="P1Bushes" type="Node2D" parent="BenefitFields"]
 
-[node name="Bush1" parent="BenefitFields/P1Bush" instance=ExtResource("3_ejll3")]
+[node name="Bush1" parent="BenefitFields/P1Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(-2588, 0)
 
-[node name="Bush2" parent="BenefitFields/P1Bush" instance=ExtResource("3_ejll3")]
+[node name="Bush2" parent="BenefitFields/P1Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(-4819, 0)
 
-[node name="Bush3" parent="BenefitFields/P1Bush" instance=ExtResource("3_ejll3")]
+[node name="Bush3" parent="BenefitFields/P1Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(-8774, 0)
 
 [node name="P2Ponds" type="Node2D" parent="BenefitFields"]
@@ -829,23 +831,27 @@ position = Vector2(-8774, 0)
 z_index = 60
 position = Vector2(2600, 0)
 scale = Vector2(2, 2)
+effetivePlayer = 1
 pondRadius = 500.0
+pondID = 1
 
 [node name="Pond2" parent="BenefitFields/P2Ponds" instance=ExtResource("4_scul4")]
 z_index = 60
 position = Vector2(6800, 0)
 scale = Vector2(2, 2)
+effetivePlayer = 1
 pondRadius = 500.0
+pondID = 2
 
-[node name="P2Bush" type="Node2D" parent="BenefitFields"]
+[node name="P2Bushes" type="Node2D" parent="BenefitFields"]
 
-[node name="Bush1" parent="BenefitFields/P2Bush" instance=ExtResource("3_ejll3")]
+[node name="Bush1" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(1682, 0)
 
-[node name="Bush2" parent="BenefitFields/P2Bush" instance=ExtResource("3_ejll3")]
+[node name="Bush2" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(3985, 0)
 
-[node name="Bush3" parent="BenefitFields/P2Bush" instance=ExtResource("3_ejll3")]
+[node name="Bush3" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(4849, 0)
 
 [node name="DamageFields" type="Node2D" parent="."]

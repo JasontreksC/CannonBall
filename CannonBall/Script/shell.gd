@@ -10,8 +10,6 @@ var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
 @export var lifetimeTurn: int
 @export var tickInterval: float
 
-@export var spawnableEffects: Dictionary[String, PackedScene]
-
 var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
@@ -60,6 +58,7 @@ func land():
 	df.global_position = pos
 	df.shellType = shellType
 	df.target = game.players[1 - launcher]
+	df.attackTo = 1 - launcher
 	df.set_radius(range / 2)
 
 	df.hitDamage = hitDamage
@@ -73,19 +72,20 @@ func land():
 	var bushes: Array[Node]
 	if df.attackTo == 0:
 		ponds = game.world.nP1Ponds.get_children() as Array[Node]
-		bushes = game.world.nP1Bush.get_children() as Array[Node]
+		bushes = game.world.nP1Bushes.get_children() as Array[Node]
 	else:
 		ponds = game.world.nP2Ponds.get_children() as Array[Node]
-		bushes = game.world.nP2Bush.get_children() as Array[Node]
+		bushes = game.world.nP2Bushes.get_children() as Array[Node]
 
-	match shellType:
+	match shellType: 
 		0: ## 일반탄
 			var landedPond: Pond = search_landed_pond(ponds)
 			if landedPond:
 				pass # 연못 탄착 이펙트
 			else:
 				pass # 일반 탄착 이펙트
-			game.server_spawn_directly(spawnableEffects["explo"], "none", {
+			
+			game.server_spawn_directly(load(game.spawner.get_spawnable_scene(5)) as PackedScene, "none", {
 				"global_position": pos
 			})
 
@@ -102,15 +102,14 @@ func land():
 					df.rightX = substracted.y
 					df.refresh_radius_center()
 
-				var fxFireField = game.server_spawn_directly(spawnableEffects["fire"], "none", {
+				var fxFireField = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(6)) as PackedScene, "none", {
 					"global_position": df.global_position,
 					"width": df.radius * 2
 				})
-				game.regist_lifetime(fxFireField.name, df.lifetimeTurn, 1)
-			
+				game.regist_lifetime(fxFireField.name, df.lifetimeTurn)
 	
 		2: ## 독탄
-			game.server_spawn_directly(spawnableEffects["poison"], "none", {
+			game.server_spawn_directly(load(game.spawner.get_spawnable_scene(7)) as PackedScene, "none", {
 				"global_position": pos
 			})
 	

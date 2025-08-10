@@ -1,0 +1,109 @@
+[gd_scene load_steps=19 format=3 uid="uid://iahjy3vehb1k"]
+
+[ext_resource type="Script" uid="uid://d1b6tfydwaxfi" path="res://Script/fx_flame.gd" id="1_a54sa"]
+[ext_resource type="Shader" uid="uid://br01u0n2nfl3t" path="res://Scene/glow.tres" id="1_hvq6x"]
+[ext_resource type="Script" uid="uid://d245udsl2w1c6" path="res://addons/shaker/src/shaker_component.gd" id="2_dhcw4"]
+[ext_resource type="Shader" uid="uid://s4mnyl4kthwp" path="res://Shader/round.tres" id="2_mwkhl"]
+[ext_resource type="Script" uid="uid://dos7skjy20jww" path="res://addons/shaker/data/ShakerProperty.gd" id="3_70t8q"]
+[ext_resource type="Script" uid="uid://psuvrsw8sxm" path="res://addons/shaker/data/Single/ShakerTypeRandom1D.gd" id="4_a54sa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_67tkb"]
+shader = ExtResource("2_mwkhl")
+
+[sub_resource type="Curve" id="Curve_hvq6x"]
+_limits = [0.99, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 0.99), 0.0, 121.287, 0, 0, Vector2(0.118, 5), 0.0, 0.0, 0, 0, Vector2(0.683, 5), 0.0, 0.0, 0, 0, Vector2(1, 0.99), -24.8374, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_mwkhl"]
+curve = SubResource("Curve_hvq6x")
+
+[sub_resource type="Curve" id="Curve_mwkhl"]
+_data = [Vector2(0.777919, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -8.36638, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_dhcw4"]
+curve = SubResource("Curve_mwkhl")
+
+[sub_resource type="Curve" id="Curve_dhcw4"]
+_limits = [0.0, 500.0, 0.0, 1.0]
+_data = [Vector2(0, 500), 0.0, 0.0, 0, 0, Vector2(0.247462, 74.2949), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_70t8q"]
+curve = SubResource("Curve_dhcw4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gvqel"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 150.0
+initial_velocity_max = 160.0
+orbit_velocity_min = -0.2
+orbit_velocity_max = 0.2
+velocity_limit_curve = SubResource("CurveTexture_70t8q")
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 5.0
+scale_max = 8.0
+scale_curve = SubResource("CurveTexture_dhcw4")
+color = Color(1, 0.278431, 0, 1)
+emission_curve = SubResource("CurveTexture_mwkhl")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hvq6x"]
+shader = ExtResource("1_hvq6x")
+shader_parameter/base_color = Color(1, 0.278431, 0, 1)
+shader_parameter/emission = 3.805
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mwkhl"]
+load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
+
+[sub_resource type="Resource" id="Resource_a54sa"]
+script = ExtResource("4_a54sa")
+seed = 3
+amplitude = 1.0
+offset = 6.0
+BlendingMode = 0
+fade_in = 0.0
+fade_out = 0.0
+start_percent = 0.0
+end_percent = 1.0
+_temp_graph = false
+bake_internal = 64
+metadata/_custom_type_script = "uid://psuvrsw8sxm"
+
+[sub_resource type="Resource" id="Resource_1806s"]
+script = ExtResource("3_70t8q")
+property_name = "flame_shake"
+shake_type = SubResource("Resource_a54sa")
+metadata/_custom_type_script = "uid://dos7skjy20jww"
+
+[node name="FxFlame" type="Node2D"]
+script = ExtResource("1_a54sa")
+
+[node name="SubFlame" type="GPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_67tkb")
+scale = Vector2(0.989552, 0.990041)
+amount = 2
+explosiveness = 0.4
+randomness = 1.0
+fixed_fps = 60
+interpolate = false
+collision_base_size = 0.0
+process_material = SubResource("ParticleProcessMaterial_gvqel")
+
+[node name="MainFlame" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_hvq6x")
+scale = Vector2(0.105, 0.105)
+texture = SubResource("CompressedTexture2D_mwkhl")
+
+[node name="ShakerComponent" type="Node" parent="." node_paths=PackedStringArray("Targets")]
+script = ExtResource("2_dhcw4")
+custom_target = true
+Targets = [NodePath("..")]
+AutoPlay = true
+duration = 1.0
+shake_speed = 0.1
+shakerProperty = Array[ExtResource("3_70t8q")]([SubResource("Resource_1806s")])
+metadata/_custom_type_script = "uid://d245udsl2w1c6"

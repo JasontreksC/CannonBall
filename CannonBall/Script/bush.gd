@@ -12,20 +12,31 @@ var rightX: float
 
 var target: Player = null
 
+func in_range(targetX: float) -> bool:
+	return targetX > leftX and targetX < rightX
+
+@rpc("any_peer", "call_local")
+func start_burn() -> void:
+	world.game.rpc("regist_lifetime", self.name, 4)
+
+@rpc("any_peer", "call_local")
+func lifetime_end() -> void:
+	world.game.delete_object(self.name)
+
+
 func _ready() -> void:
 	leftX = global_position.x - radius
 	rightX = global_position.x + radius
 
 func _physics_process(delta: float) -> void:
-	if multiplayer.is_server() and not effetivePlayer == 0:
+	if multiplayer.is_server() and effetivePlayer == 1:
 		return
-	elif not multiplayer.is_server() and not effetivePlayer == 1:
+	elif not multiplayer.is_server() and effetivePlayer == 0:
 		return
 	if world.game.stateMachine.current_state_name() == "WaitSession":
 		return
 
 	if target == null:
-		target = world.game.players[effetivePlayer]
 		return
 
 	if in_range(target.global_position.x):
@@ -34,6 +45,3 @@ func _physics_process(delta: float) -> void:
 		spBush.modulate.a = 0.5
 	else:
 		spBush.modulate.a = 1.0
-	
-func in_range(targetX: float) -> bool:
-	return targetX > leftX and targetX < rightX

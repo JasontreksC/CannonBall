@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://co2yk1rkb2o2j"]
 
-[ext_resource type="Script" uid="uid://70v1h8mp57e" path="res://Script/explosion.gd" id="1_w8ob6"]
+[ext_resource type="Script" uid="uid://70v1h8mp57e" path="res://Script/fx_explosion.gd" id="1_w8ob6"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y823t"]
 lifetime_randomness = 0.2
@@ -20,7 +20,7 @@ properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[node name="Explosion" type="Node2D"]
+[node name="FxExplosion" type="Node2D"]
 z_index = 100
 script = ExtResource("1_w8ob6")
 

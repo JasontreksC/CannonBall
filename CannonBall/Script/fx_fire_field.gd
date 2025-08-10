@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var spFire: Sprite2D = $SP_Fire
 @onready var timer: Timer = $Timer
-var width: float = 300
+@export var width: float = 300
 
 var game: Game = null
 
@@ -16,8 +16,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	spFire.scale.x = width
-	spFire.scale.y = 200
-
+	
+	print(spFire.scale)
+	
 	var mat: ShaderMaterial = spFire.material as ShaderMaterial
 	mat.set_shader_parameter("w_per_h", spFire.scale.y / spFire.scale.x * 0.2)
 	mat.set_shader_parameter("Scale", Vector2(spFire.scale.x / spFire.scale.y, 1.0))

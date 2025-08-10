@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dadbuw6oeorgg"]
 
 [ext_resource type="Texture2D" uid="uid://bla10hrxsd0it" path="res://Asset/particles/poison_particle.png" id="1_mbulw"]
-[ext_resource type="Script" uid="uid://d0qkkbrflo823" path="res://Script/poison_spread.gd" id="1_seuo7"]
+[ext_resource type="Script" uid="uid://d0qkkbrflo823" path="res://Script/fx_poison_spread.gd" id="1_seuo7"]
 
 [sub_resource type="Curve" id="Curve_mbulw"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -44,15 +44,17 @@ properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[node name="PoisonSpread" type="Node2D"]
+[node name="FxPoisonSpread" type="Node2D"]
 z_index = 100
 script = ExtResource("1_seuo7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 process_mode = 3
+emitting = false
 amount = 100
 texture = ExtResource("1_mbulw")
 lifetime = 8.0
+one_shot = true
 explosiveness = 0.98
 fixed_fps = 60
 interpolate = false

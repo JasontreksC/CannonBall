@@ -33,60 +33,12 @@ z_index = -4096
 texture = SubResource("GradientTexture2D_86rd8")
 offset = Vector2(960, 540)
 
-[node name="PL_Clouds1" type="ParallaxLayer" parent="."]
-texture_repeat = 2
-position = Vector2(946, 302)
-motion_scale = Vector2(0.5, 0.5)
-motion_offset = Vector2(0, -500)
-motion_mirroring = Vector2(2500, 0)
-
-[node name="Cloud1" type="Sprite2D" parent="PL_Clouds1"]
-texture_repeat = 2
-position = Vector2(7, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_3w1m4")
-region_rect = Rect2(0, 0, 1920, 1080)
-
-[node name="Cloud2" type="Sprite2D" parent="PL_Clouds1"]
-texture_repeat = 2
-position = Vector2(-380, 86)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_2tbj5")
-region_rect = Rect2(0, 0, 1920, 1080)
-
-[node name="Cloud3" type="Sprite2D" parent="PL_Clouds1"]
-texture_repeat = 2
-position = Vector2(638, 67)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_g008t")
-region_rect = Rect2(0, 0, 1920, 1080)
-
-[node name="PL_Clouds2" type="ParallaxLayer" parent="."]
-texture_repeat = 2
-position = Vector2(946, 302)
-motion_scale = Vector2(0.75, 0.75)
-motion_offset = Vector2(0, -700)
-motion_mirroring = Vector2(3000, 0)
-
-[node name="Cloud4" type="Sprite2D" parent="PL_Clouds2"]
-texture_repeat = 2
-position = Vector2(-639, 165)
-scale = Vector2(1.01, 1.01)
-texture = ExtResource("4_0k6rt")
-region_rect = Rect2(0, 0, 1920, 1080)
-
-[node name="Cloud5" type="Sprite2D" parent="PL_Clouds2"]
-texture_repeat = 2
-position = Vector2(379, 175)
-scale = Vector2(1.025, 1.025)
-texture = ExtResource("5_d8sss")
-region_rect = Rect2(0, 0, 1920, 1080)
-
 [node name="PL_Mountains" type="ParallaxLayer" parent="."]
+z_index = -100
 texture_repeat = 2
 position = Vector2(946, 302)
-motion_scale = Vector2(0.25, 1)
-motion_offset = Vector2(0, -1000)
+motion_scale = Vector2(0.01, 0.01)
+motion_offset = Vector2(0, -300)
 motion_mirroring = Vector2(2929.35, 0)
 
 [node name="Mountain1" type="Sprite2D" parent="PL_Mountains"]
@@ -123,3 +75,54 @@ scale = Vector2(2, 3.41333)
 texture = ExtResource("8_8fa28")
 region_enabled = true
 region_rect = Rect2(0, 68.09, 622.82, 150)
+
+[node name="PL_Clouds1" type="ParallaxLayer" parent="."]
+z_index = -90
+texture_repeat = 2
+position = Vector2(946, 302)
+motion_scale = Vector2(0.15, 0.15)
+motion_offset = Vector2(0, -300)
+motion_mirroring = Vector2(2500, 0)
+
+[node name="Cloud1" type="Sprite2D" parent="PL_Clouds1"]
+texture_repeat = 2
+position = Vector2(7, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_3w1m4")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="Cloud2" type="Sprite2D" parent="PL_Clouds1"]
+texture_repeat = 2
+position = Vector2(-380, 86)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_2tbj5")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="Cloud3" type="Sprite2D" parent="PL_Clouds1"]
+texture_repeat = 2
+position = Vector2(638, 67)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_g008t")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="PL_Clouds2" type="ParallaxLayer" parent="."]
+z_index = -80
+texture_repeat = 2
+position = Vector2(946, 302)
+motion_scale = Vector2(0.3, 0.3)
+motion_offset = Vector2(0, -400)
+motion_mirroring = Vector2(3000, 0)
+
+[node name="Cloud4" type="Sprite2D" parent="PL_Clouds2"]
+texture_repeat = 2
+position = Vector2(-639, 165)
+scale = Vector2(1.01, 1.01)
+texture = ExtResource("4_0k6rt")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="Cloud5" type="Sprite2D" parent="PL_Clouds2"]
+texture_repeat = 2
+position = Vector2(379, 175)
+scale = Vector2(1.025, 1.025)
+texture = ExtResource("5_d8sss")
+region_rect = Rect2(0, 0, 1920, 1080)

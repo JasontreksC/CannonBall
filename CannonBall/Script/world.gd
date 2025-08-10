@@ -9,8 +9,8 @@ class_name World
 @onready var nP2SpawnSpot: Node2D = $P2SpawnSpot
 @onready var nP1Ponds: Node2D = $BenefitFields/P1Ponds
 @onready var nP2Ponds: Node2D = $BenefitFields/P2Ponds
-@onready var nP1Bush: Node2D = $BenefitFields/P1Bush
-@onready var nP2Bush: Node2D = $BenefitFields/P2Bush
+@onready var nP1Bushes: Node2D = $BenefitFields/P1Bushes
+@onready var nP2Bushes: Node2D = $BenefitFields/P2Bushes
 @onready var dfPool: Node2D = $DamageFields
 
 var game: Game = null
@@ -36,15 +36,63 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 		"theta0": theta0,
 		"launcher": launcher
 	})
-	#shell.shellType = shellType
-	#shell.p0 = p0
-	#shell.v0 = v0
-	#shell.theta0 = theta0
-	#shell.launcher = launcher
+
+@rpc("any_peer", "call_local")
+func set_player_refs() -> void:
+	var ponds: Array[Node]
+	var bushes: Array[Node]
+
+	if multiplayer.is_server():
+		ponds = nP1Ponds.get_children()
+		bushes = nP1Bushes.get_children()
+
+		for p: Pond in ponds:
+			p.target = game.players[0]
+		for b: Bush in bushes:
+			b.target = game.players[0]
+
+	else:
+		ponds = nP2Ponds.get_children()
+		bushes = nP2Bushes.get_children()
+
+		for p: Pond in ponds:
+			p.target = game.players[1]
+		for b: Bush in bushes:
+			b.target = game.players[1]
 
 func _ready() -> void:
 	game = get_parent() as Game
-		
+
+func _physics_process(delta: float) -> void:
+	if game.stateMachine.current_state_name() == "WaitSession":
+		return
+
+	var ponds: Array[Node]
+	var bushes: Array[Node]
+
+	if multiplayer.is_server():
+		ponds = nP1Ponds.get_children()
+		bushes = nP1Bushes.get_children()
+	else:
+		ponds = nP2Ponds.get_children()
+		bushes = nP2Bushes.get_children()
+	
+	# 연못 검사: 플레이어
+	for p: Pond in ponds:
+		if p.in_range(p.target.global_position.x):
+			p.target.inPondID = p.pondID
+			break
+		else:
+			p.target.inPondID = 0
+	
+	# 연못 검사: 대포
+	for p: Pond in ponds:
+		if p.in_range(p.target.cannon.global_position.x):
+			p.target.cannon.inPondID = p.pondID
+			break
+		else:
+			p.target.cannon.inPondID = 0
+
 func _process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return

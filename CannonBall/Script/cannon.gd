@@ -9,7 +9,7 @@ var stateMachine: StateMachine = StateMachine.new()
 var heading: int = 0
 var prevPosX: float = 0
 var curVelocity: float = 0
-var isInPond: bool = false
+var inPondID: int = 0
 var reverseBlast: float = 0
 var aimSpeedOptions: Array[float] = [2000, 1000, 500]
 
@@ -140,7 +140,7 @@ func _physics_process(delta: float) -> void:
 	if abs(curVelocity) > 0:
 		rotate_wheel(delta)
 	# 항상 바닥에 고정
-	if not isInPond:
+	if not inPondID:
 		self.global_position.y = 0
 func on_exit_Idle():
 	pass
