@@ -10,13 +10,14 @@ var walkSpeed: float = 500.0
 var cannonSpeed: float = 300.0
 var velocity: float = 0
 
+var telescopeZoomOption: int = 1
 var isInCannon: bool = false
 var stateMachine: StateMachine = StateMachine.new()
 var isAttack: bool = true
 var attackChance: bool = false
-var isInPond: bool = false
 var selectedShell: int = 0
-var isWalking: bool = false
+# var isWalking: bool = false
+var inPondID: int = 0
 
 enum HitType {
 	RADIAL,
@@ -47,7 +48,7 @@ var cannon: Cannon = null
 func get_damage(damage: int, hitType: HitType):
 	if not is_multiplayer_authority():
 		return
-	if isInPond and hitType == HitType.RADIAL:
+	if inPondID and hitType == HitType.RADIAL:
 		damage /= 2
 	
 	damage = min(damage, hp)
@@ -184,11 +185,19 @@ func _physics_process(delta: float) -> void:
 				stateMachine.transit_by_input("aim", "back")
 				
 				# 만원경으로 조준
-				var dir = 0
-				if Input.is_action_just_pressed("wheel_up"): dir = 1
-				elif Input.is_action_just_pressed("wheel_down"): dir = -1
-				game.ui.zoom_cam_telescope(dir, 10, delta)
+				if game.ui.zoomFinished:
+					if Input.is_action_just_pressed("wheel_up"):
+						telescopeZoomOption += 1
+						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
+						game.ui.zoom_cam_telescope(telescopeZoomOption)
+
+					elif Input.is_action_just_pressed("wheel_down"):
+						telescopeZoomOption -= 1
+						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
+						game.ui.zoom_cam_telescope(telescopeZoomOption)				
 				
+
+
 				if Input.is_action_just_pressed("num1"):
 					print("일반탄 선택")
 					selectedShell = 0
@@ -198,9 +207,9 @@ func _physics_process(delta: float) -> void:
 				elif Input.is_action_just_pressed("num3"):
 					print("독탄 선택")
 					selectedShell = 2
-	
+
 	# 높이를 항상 바닥에 고정
-	if not isInPond:
+	if not inPondID:
 		self.global_position.y = 0
 
 	if cannon:

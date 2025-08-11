@@ -4,6 +4,7 @@ class_name Pond
 @export var effetivePlayer:int = 0
 @export var pondRadius: float = 220
 @export var pondDepth: float = 100
+@export var pondID: int = 0
 
 var leftX: float
 var rightX: float
@@ -19,36 +20,27 @@ func _ready() -> void:
 	rightX = global_position.x + pondRadius
 
 func _physics_process(delta: float) -> void:
-	if multiplayer.is_server() and not effetivePlayer == 0:
+	if multiplayer.is_server() and effetivePlayer == 1:
 		return
-	elif not multiplayer.is_server() and not effetivePlayer == 1:
+	elif not multiplayer.is_server() and effetivePlayer == 0:
 		return
 	if world.game.stateMachine.current_state_name() == "WaitSession":
 		return
 	
-	
 	if target == null:
-		target = world.game.players[effetivePlayer]
 		return
 	
-	if in_range(target.global_position.x):
-		target.isInPond = true
+	if target.inPondID == self.pondID:
 		var distance: float = abs(target.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
 		var yInPond: float = lerp(0.0, pondDepth, t)
 		target.global_position.y = yInPond
-		target.cannon.global_position.y = yInPond
-	else:
-		target.isInPond = false
 
-	if in_range(target.cannon.global_position.x):
-		target.cannon.isInPond = true
+	if target.cannon.inPondID == self.pondID:
 		var distance: float = abs(target.cannon.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
 		var yInPond: float = lerp(0.0, pondDepth, t)
 		target.cannon.global_position.y = yInPond
-	else:
-		target.cannon.isInPond = false
 
 func in_range(targetX: float) -> bool:
 	return targetX > leftX and targetX < rightX

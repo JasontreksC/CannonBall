@@ -2,18 +2,19 @@ extends Control
 class_name InGameUI
 
 ## Telescope
-@onready var crTelescope: ColorRect = $Telescope
-@onready var svTelescope: SubViewport = $Telescope/SubViewportContainer/SubViewport
-@onready var camTelescope: Camera2D = $Telescope/SubViewportContainer/SubViewport/Camera2D
+@onready var crTelescope: TextureRect = $Telescope
+@onready var svTelescope: SubViewport = $Telescope/SubViewport
+@onready var camTelescope: Camera2D = $Telescope/SubViewport/Camera2D
+var telescopeZoomOptions: Array[float] = [0.3, 0.6, 1.0]
+var zoomFinished: bool = true
 
 ## HP
 @export var hpPointSprite: PackedScene
-@export var crvHPPRemoveVibration: Curve
-
 @onready var p1HPCells: Node2D = $P1HP/HPBase/HPCells
 @onready var p2HPCells: Node2D = $P2HP/HPBase/HPCells
 @onready var lbFps: Label = $fps
 
+# Time
 @onready var lbP1Time: Label = $Dashboard/P1Time
 @onready var lbP2Time: Label = $Dashboard/P2Time
 
@@ -44,11 +45,12 @@ func off_observe() -> void:
 func aim_to_cam_telescope(aimed_x: float) -> void:
 	camTelescope.global_position = Vector2(aimed_x, -100)
 
-func zoom_cam_telescope(zoom_dir: int, zoom_speed: float, delta: float) -> void:
-	var zoomValue = zoom_dir * zoom_speed * delta
-	camTelescope.zoom.x += zoomValue
-	camTelescope.zoom.y += zoomValue
-	camTelescope.zoom = camTelescope.zoom.clamp(Vector2(0.5, 0.5), Vector2(2, 2))
+func zoom_cam_telescope(option: int) -> void:
+	zoomFinished = false
+	var tween: Tween = create_tween()
+	tween.tween_property(camTelescope, "zoom", Vector2(telescopeZoomOptions[option], telescopeZoomOptions[option]), 0.5)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.finished.connect(func(): zoomFinished = true)
 ## HP
 
 @rpc("any_peer", "call_local")
@@ -121,7 +123,6 @@ func _ready() -> void:
 		var p2HPCell: HPCell = p1HPCell.duplicate()
 		p2HPCell.position.x =  -62 - 30 * i
 		p2HPCells.add_child(p2HPCell)
-		
 	
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())

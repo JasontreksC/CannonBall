@@ -1,0 +1,75 @@
+[gd_resource type="VisualShader" load_steps=6 format=3 uid="uid://br01u0n2nfl3t"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_3xhfl"]
+parameter_name = "emission"
+hint = 1
+min = 2.0
+max = 5.0
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_p718r"]
+parameter_name = "base_color"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_msnln"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_3xhfl"]
+default_input_values = [0, 0.0, 1, 2.0]
+operator = 5
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_3xhfl"]
+expanded_output_ports = [0]
+input_name = "color"
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 base_color : source_color;
+uniform float emission : hint_range(2.0, 5.0);
+
+
+
+void fragment() {
+// ColorParameter:11
+	vec4 n_out11p0 = base_color;
+
+
+// FloatParameter:10
+	float n_out10p0 = emission;
+
+
+// VectorOp:12
+	vec3 n_out12p0 = vec3(n_out11p0.xyz) * vec3(n_out10p0);
+
+
+// Input:9
+	vec4 n_out9p0 = COLOR;
+	float n_out9p1 = n_out9p0.r;
+
+
+// FloatOp:13
+	float n_in13p1 = 2.00000;
+	float n_out13p0 = pow(n_out9p1, n_in13p1);
+
+
+// Output:0
+	COLOR.rgb = n_out12p0;
+	COLOR.a = n_out13p0;
+
+
+}
+"
+graph_offset = Vector2(-460.095, -183.207)
+mode = 1
+flags/light_only = false
+nodes/fragment/9/node = SubResource("VisualShaderNodeInput_3xhfl")
+nodes/fragment/9/position = Vector2(-360, 220)
+nodes/fragment/10/node = SubResource("VisualShaderNodeFloatParameter_3xhfl")
+nodes/fragment/10/position = Vector2(-780, 100)
+nodes/fragment/11/node = SubResource("VisualShaderNodeColorParameter_p718r")
+nodes/fragment/11/position = Vector2(-780, -140)
+nodes/fragment/12/node = SubResource("VisualShaderNodeVectorOp_msnln")
+nodes/fragment/12/position = Vector2(-380, -80)
+nodes/fragment/13/node = SubResource("VisualShaderNodeFloatOp_3xhfl")
+nodes/fragment/13/position = Vector2(40, 220)
+nodes/fragment/connections = PackedInt32Array(11, 0, 12, 0, 10, 0, 12, 1, 12, 0, 0, 0, 9, 1, 13, 0, 13, 0, 0, 1)
