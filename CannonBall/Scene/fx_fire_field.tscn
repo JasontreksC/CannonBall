@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://dc64ulpev07vq"]
 
-[ext_resource type="Script" uid="uid://bg7vk1q7gph4b" path="res://Script/fx_fire_field.gd" id="1_ju5y0"]
-[ext_resource type="Shader" uid="uid://bfxc0b1oxel8c" path="res://Shader/fire_field.tres" id="2_dfhjc"]
+[ext_resource type="Script" path="res://Script/fx_fire_field.gd" id="1_ju5y0"]
+[ext_resource type="Shader" uid="uid://dxbtld6bpcy4n" path="res://Shader/fire_field.tres" id="2_dfhjc"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8k7fc"]
 load_path = "res://.godot/imported/T_Gradient_circle22.jpg-eeea2ba304219c38d982e8605bea1d64.ctex"

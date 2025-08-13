@@ -37,7 +37,6 @@ func on_spawned() -> void:
 		player = game.players[0]
 	else:
 		player = game.players[1]
-		
 	player.cannon = self
 
 # 손잡이, 즉 플레이어가 대포 조종시 위치하게 될 부분의 x좌표를 반환한다.

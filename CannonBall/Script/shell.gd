@@ -107,7 +107,7 @@ func land():
 					"width": newXR.radius * 2
 				})
 				# 화염 이펙트의 라이프턴 등록
-				game.regist_lifetime(fxFireField.name, lifetimeTurn)
+				game.regist_lifeturn(fxFireField.name, lifetimeTurn)
 
 				if overlappedBushes.size() > 0: # 덤불과 겹침
 					for b in overlappedBushes:

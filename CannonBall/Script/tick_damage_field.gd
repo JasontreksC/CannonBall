@@ -10,7 +10,7 @@ var tickDamage: int = 0  # 틱 대미지 간격은 1초로 고정
 var tickInterval: float = 0
 var lifeturn: int = 0
 
-var game: Game = null
+var world: World = null
 @onready var timer: Timer = $Timer
 
 func activate():
@@ -18,11 +18,11 @@ func activate():
 		timer.start(tickInterval)
 
 func _enter_tree() -> void:
-	game = get_parent().get_parent() as Game
+	world = get_parent().get_parent() as World
 
 func _ready() -> void:
 	pass
 	
 func _on_timer_timeout() -> void:
-	if xrange.in_range(game.players[target].global_position.x):
-		game.players[target].rpc("get_damage", tickDamage, type)
+	if xrange.in_range(world.game.players[target].global_position.x):
+		world.game.players[target].rpc("get_damage", tickDamage, type)
