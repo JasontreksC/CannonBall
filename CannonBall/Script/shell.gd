@@ -1,12 +1,18 @@
 extends Node2D
 class_name Shell
 
+enum DamageType {
+	RADIAL = 0, # 연못 피해절감
+	AREAL = 1      
+}
+
+
 var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
 
 @export_category("Damage Field Property")
 @export var range: float
-@export var hitDamage: float
-@export var tickDamage: float
+@export var hitDamage: int
+@export var tickDamage: int
 @export var lifetimeTurn: int
 @export var tickInterval: float
 
@@ -28,21 +34,21 @@ func on_spawned() -> void:
 
 func search_landed_pond(ponds: Array[Node]) -> Pond:
 	for p: Pond in ponds:
-		if p.in_range(global_position.x):
+		if p.xrange.in_range(global_position.x):
 			return p
 	return null
 
-func search_overlapped_ponds(df: DamageField, ponds: Array[Node]) -> Array[Pond]:
+func search_overlapped_ponds(xr: XRange, ponds: Array[Node]) -> Array[Pond]:
 	var overlappedPonds: Array[Pond] = []
 	for p: Pond in ponds:
-		if df.in_range(p.leftX) or df.in_range(p.rightX):
+		if p.xrange.is_overlapping(xr):
 			overlappedPonds.append(p)
 	return overlappedPonds
 
-func search_overlapped_bushes(df: DamageField, bushes: Array[Node]) -> Array[Bush]:
+func search_overlapped_bushes(xr: XRange, bushes: Array[Node]) -> Array[Bush]:
 	var overlappedBushes: Array[Bush] = []
 	for b: Bush in bushes:
-		if df.in_range(b.leftX) or df.in_range(b.rightX):
+		if b.xrange.is_overlapping(xr):
 			overlappedBushes.append(b)
 	return overlappedBushes
 
@@ -50,70 +56,78 @@ func land():
 	if not multiplayer.is_server():
 		return
 	
-	var pos = Vector2(global_position.x, 0)
-	
-	var psDF: PackedScene = load("res://Scene/damage_field.tscn")
-	var df: DamageField = psDF.instantiate()
+	var newXR: XRange = XRange.new()
+	newXR.set_from_center(global_position.x, range / 2)
 
-	df.global_position = pos
-	df.shellType = shellType
-	df.target = game.players[1 - launcher]
-	df.attackTo = 1 - launcher
-	df.set_radius(range / 2)
-
-	df.hitDamage = hitDamage
-	df.tickDamage = tickDamage
-	df.tickInterval = tickInterval
-	df.lifetimeTurn = lifetimeTurn
-
-	game.world.dfPool.add_child(df)
+	# var df: DamageField = game.world.gen_damage_field(pos, shellType, 1 - launcher, range / 2, hitDamage, tickDamage, tickInterval, lifetimeTurn)
 
 	var ponds: Array[Node] 
 	var bushes: Array[Node]
-	if df.attackTo == 0:
+	if launcher == 1:
 		ponds = game.world.nP1Ponds.get_children() as Array[Node]
 		bushes = game.world.nP1Bushes.get_children() as Array[Node]
 	else:
 		ponds = game.world.nP2Ponds.get_children() as Array[Node]
 		bushes = game.world.nP2Bushes.get_children() as Array[Node]
 
+	var landedPond: Pond = search_landed_pond(ponds)
+	var overlappedPonds: Array[Pond] = search_overlapped_ponds(newXR, ponds)
+	var overlappedBushes: Array[Bush] = search_overlapped_bushes(newXR, bushes)
+
+	var genertated_hdf: HitDamageField = null
+	var genertated_tdf: TickDamageField = null
+
 	match shellType: 
 		0: ## 일반탄
-			var landedPond: Pond = search_landed_pond(ponds)
+			genertated_hdf = game.world.gen_HDF(newXR, DamageType.RADIAL, 1 - launcher, hitDamage, 0.0)
+
 			if landedPond:
 				pass # 연못 탄착 이펙트
 			else:
-				pass # 일반 탄착 이펙트
+				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(5)) as PackedScene, "none", {
+					"global_position": Vector2(newXR.centerX, 0)
+				})
 			
-			game.server_spawn_directly(load(game.spawner.get_spawnable_scene(5)) as PackedScene, "none", {
-				"global_position": pos
-			})
 
 		1: ## 화염탄
-			var landedPond: Pond = search_landed_pond(ponds)
-			if landedPond:
-				pass # 연못 탄착 이펙트, 틱 대미지 X
-			else:
-				var overlappedPonds: Array[Pond] = search_overlapped_ponds(df, ponds)
+			genertated_hdf = game.world.gen_HDF(newXR, DamageType.RADIAL, 1 - launcher, hitDamage, 0.0)
 
-				for p in overlappedPonds: # 대미지 필드에서 연못과 겹치는 부분을 제거 
-					var substracted: Vector2 = p.substract_area_x(Vector2(df.leftX, df.rightX))
-					df.leftX = substracted.x
-					df.rightX = substracted.y
-					df.refresh_radius_center()
+			if landedPond: # 연못 안에 들어옴
+				newXR.radius = 0
+				pass
+			else:		   # 연못 밖
+				if overlappedPonds.size() > 0: # 연못과 겹침
+					for p in overlappedPonds: # 대미지 필드에서 연못과 겹치는 부분을 제거
+						newXR.substract(p.xrange)
 
+				# 화염 필드 생성 및 틱 대미지 필드 생성
+				genertated_tdf = game.world.gen_TDF(newXR, DamageType.AREAL, 1 - launcher, tickDamage, tickInterval, lifetimeTurn)
 				var fxFireField = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(6)) as PackedScene, "none", {
-					"global_position": df.global_position,
-					"width": df.radius * 2
+					"global_position": Vector2(newXR.centerX, 0),
+					"width": newXR.radius * 2
 				})
-				game.regist_lifetime(fxFireField.name, df.lifetimeTurn)
+				# 화염 이펙트의 라이프턴 등록
+				game.regist_lifetime(fxFireField.name, lifetimeTurn)
+
+				if overlappedBushes.size() > 0: # 덤불과 겹침
+					for b in overlappedBushes:
+						b.start_burn()          # 덤불 점화 
 	
 		2: ## 독탄
-			game.server_spawn_directly(load(game.spawner.get_spawnable_scene(7)) as PackedScene, "none", {
-				"global_position": pos
-			})
+			if landedPond:
+				genertated_tdf = game.world.gen_TDF(landedPond.xrange, DamageType.AREAL, 1 - launcher, tickDamage, tickInterval, lifetimeTurn)
+				landedPond.rpc("set_poisoned")
+			else:
+				genertated_hdf = game.world.gen_HDF(newXR, DamageType.AREAL, 1 - launcher, hitDamage, lifetimeTurn)
+				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(7)) as PackedScene, "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+				})
 	
-	df.activate()
+	if genertated_hdf:
+		genertated_hdf.activate()
+	if genertated_tdf:
+		genertated_tdf.activate()
+	
 	game.rpc("delete_object", self.name)
 	game.rpc("transit_game_state", "Turn")
 

@@ -2,22 +2,35 @@ extends Node2D
 class_name Bush
 
 @export var effetivePlayer:int = 0
-@export var radius: float = 300
+@export var bushRadius: float = 300
+
+@export var psFxFlame: PackedScene
+@export var psFxSmoke: PackedScene
 
 @onready var spBush: Sprite2D = $SP_Bush
 @onready var world: World = $"../../.."
 
-var leftX: float
-var rightX: float
+@onready var nBurnSpots: Node2D = $BurnFxSpots
 
+var xrange: XRange = XRange.new()
 var target: Player = null
 
-func in_range(targetX: float) -> bool:
-	return targetX > leftX and targetX < rightX
-
-@rpc("any_peer", "call_local")
 func start_burn() -> void:
-	world.game.rpc("regist_lifetime", self.name, 4)
+	if not multiplayer.is_server():
+		return
+
+	world.game.regist_lifetime(self.name, 4)
+
+	var spots: Array[Node] = nBurnSpots.get_children()
+	for s: Node2D in spots:
+		world.game.server_spawn_directly(psFxFlame, "none", {
+			"global_position": s.global_position
+		})
+		world.game.server_spawn_directly(psFxSmoke, "none", {
+			"global_position": s.global_position
+		})
+
+
 
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:
@@ -25,8 +38,7 @@ func lifetime_end() -> void:
 
 
 func _ready() -> void:
-	leftX = global_position.x - radius
-	rightX = global_position.x + radius
+	xrange.set_from_center(global_position.x, bushRadius)
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.is_server() and effetivePlayer == 1:
@@ -39,9 +51,9 @@ func _physics_process(delta: float) -> void:
 	if target == null:
 		return
 
-	if in_range(target.global_position.x):
+	if xrange.in_range(target.global_position.x):
 		spBush.modulate.a = 0.5
-	elif in_range(target.cannon.global_position.x):
+	elif xrange.in_range(target.cannon.global_position.x):
 		spBush.modulate.a = 0.5
 	else:
 		spBush.modulate.a = 1.0

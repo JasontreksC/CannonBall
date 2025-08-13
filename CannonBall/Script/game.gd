@@ -162,18 +162,6 @@ func update_lifetime_turn():
 		if not live:
 			objects[key].rpc("lifetime_end")
 			lifetimePool.erase(key)
-			
-#func update_lifetime_sec(delta: float):
-	#for key in lifetimePool.keys():
-		#var lft: Lifetime = lifetimePool[key]
-		#if lft.turn:
-			#return
-		#var live: bool = lft.pass_sec(delta)
-		#if not live:
-			#objects[key].rpc("lifetime_end")
-			#lifetimePool.erase(key)
-		
-		
 
 func quit_game():
 	root.sceneMgr.set_scene(2)

@@ -60,6 +60,33 @@ func set_player_refs() -> void:
 		for b: Bush in bushes:
 			b.target = game.players[1]
 
+func gen_HDF(xr: XRange, type: int, target: int, hitDamage: int, lifetime: float) -> HitDamageField:
+	var psHDF: PackedScene = load("res://Scene/hit_damage_field.tscn")
+	var hdf: HitDamageField = psHDF.instantiate()
+
+	hdf.xrange = xr
+	hdf.type = type
+	hdf.target = target
+	hdf.hitDamage = hitDamage
+	hdf.lifetime = lifetime
+	
+	dfPool.call_deferred("add_child", hdf)
+	return hdf
+
+func gen_TDF(xr: XRange, type: int, target: int, tickDamage: int, tickInterval: float, lifeturn: float) -> TickDamageField:
+	var psTDF: PackedScene = load("res://Scene/tick_damage_field.tscn")
+	var tdf: TickDamageField = psTDF.instantiate()
+
+	tdf.xrange = xr
+	tdf.type = type
+	tdf.target = target
+	tdf.tickDamage = tickDamage
+	tdf.tickInterval = tickInterval
+	tdf.lifetimeTurn = lifeturn
+
+	dfPool.call_deferred("add_child", tdf)
+	return tdf
+
 func _ready() -> void:
 	game = get_parent() as Game
 
@@ -102,9 +129,9 @@ func on_turn_count():
 		return
 	
 	var dfs: Array[Node] = game.world.dfPool.get_children()
-	for df: DamageField in dfs:
-		if df.lifetimeTurn <= 0:
+	for df: TickDamageField in dfs:
+		if df.lifeturn <= 0:
 			df.queue_free()
 		else:
-			df.lifetimeTurn -= 1
-		print("df 남은 턴: %d" % df.lifetimeTurn)
+			df.lifeturn -= 1
+		print("df 남은 턴: %d" % df.lifeturn)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://etrvlgkdjfwx"]
+[gd_scene load_steps=48 format=3 uid="uid://etrvlgkdjfwx"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kqn7g"]
 input_name = "color"
@@ -417,6 +417,11 @@ shader_parameter/offset = Vector2(1.11, -0.45)
 shader_parameter/smoke_pattern = SubResource("CompressedTexture2D_75blf")
 shader_parameter/mask = SubResource("CompressedTexture2D_jn8pb")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_42fnj"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
 [node name="FxSmoke" type="Node2D"]
 
 [node name="Particle1" type="GPUParticles2D" parent="."]
@@ -433,3 +438,6 @@ material = SubResource("ShaderMaterial_42fnj")
 amount = 20
 lifetime = 3.0
 process_material = SubResource("ParticleProcessMaterial_42fnj")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_42fnj")

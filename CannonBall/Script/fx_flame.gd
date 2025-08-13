@@ -9,14 +9,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	#var value: float = shaker.shakerProperty[0].get_value(0)
-	print(shaker.shakerProperty[0].get_value(0))
-	
 	spMainFlame.material.set("shader_parameter/emission", shaker.shakerProperty[0].get_value(0))
-	#var mat: ShaderMaterial = spMainFlame.material
-	#mat.set_shader_parameter("emission", shaker.shakerProperty[0].get_value(0))
-	#print(flame_shake)
-	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
