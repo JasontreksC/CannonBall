@@ -5,6 +5,7 @@
 
 [node name="NormalShell" instance=ExtResource("1_077g6")]
 range = 800.0
+hitDamage = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
 scale = Vector2(0.25, 0.25)

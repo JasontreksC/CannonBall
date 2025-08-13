@@ -8,7 +8,7 @@ var transmitQueue: Array[String]
 
 var peerID: int = 0
 var players: Array[Player]
-var objects: Dictionary[String, Node2D]
+# var objects: Dictionary[String, Node2D]
 
 @onready var world: World = $World
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
@@ -22,14 +22,13 @@ var winner: int = -1
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
-func server_spawn_request(path: String, object_name: String, props: Dictionary[StringName, Variant]={}) -> void: 
-	if object_name == "none":
-		object_name = "object" + str(Time.get_ticks_usec())
-	elif objects.has(object_name):
-		return
+func server_spawn_request(path: String, object_name: String, props: Dictionary={}) -> void: 
 	if not multiplayer.is_server():
 		return
-	
+
+	if object_name == "none":
+		object_name = "object" + str(Time.get_ticks_usec())
+
 	var spawnable: bool = false
 	var count: int = spawner.get_spawnable_scene_count()
 	for i in range(count):
@@ -37,28 +36,24 @@ func server_spawn_request(path: String, object_name: String, props: Dictionary[S
 		if path == spawnable_path:
 			spawnable = true
 	if not spawnable:
+		print("스폰할려는 오브젝트 씬이 MuliplaySpawner에 등록되어 있지 않음!")
 		return
 
 	var ps: PackedScene = load(path)
 	var inst: Node2D = ps.instantiate()
-	if object_name:
-		inst.name = object_name
+
+	inst.name = object_name
 	
 	for k in props.keys():
 		inst.set(k, props[k])
 	
 	add_child(inst)
-	objects[object_name] = inst
 	
 	var senderID = multiplayer.get_remote_sender_id()
 	inst.rpc_id(senderID, "on_spawned")
 
 ## 서버가 직접 스폰함. 클라에게도 스폰됨.
 func server_spawn_directly(ps: PackedScene, object_name: String, props: Dictionary[StringName, Variant]={}) -> Node2D:
-	if object_name == "none":
-		object_name = "object" + str(Time.get_ticks_usec())
-	elif objects.has(object_name):
-		return
 	if not multiplayer.is_server():
 		return
 	
@@ -69,38 +64,35 @@ func server_spawn_directly(ps: PackedScene, object_name: String, props: Dictiona
 		if ps.resource_path == spawnable_path:
 			spawnable = true
 	if not spawnable:
+		print("스폰할려는 오브젝트 씬이 MuliplaySpawner에 등록되어 있지 않음!")
 		return
 	
 	var inst: Node2D = ps.instantiate()
-	if object_name:
-		inst.name = object_name
+	inst.name = object_name + str(Time.get_ticks_usec())
 	
 	for k in props.keys():
 		inst.set(k, props[k])
 	
 	add_child(inst)
-	objects[object_name] = inst
 	return inst
 
 @rpc("any_peer", "call_local")
-func delete_object(object_name: String):
-	if objects.has(object_name):
-		var inst: Node2D = objects[object_name]
-		inst.queue_free()
-		objects.erase(object_name)
+func delete_object(node_path: String):
+	if has_node(node_path):
+		get_node(node_path).queue_free()
 		
-func get_object(name: String) -> Node2D:
-	if objects.has(name):
-		return objects[name]
-	else:
-		return null
+# func get_object(name: String) -> Node2D:
+# 	if objects.has(name):
+# 		return objects[name]
+# 	else:
+# 		return null
 		
-func add_object(object: Node2D) -> bool:
-	if objects.has(name):
-		return false
-	else:
-		objects[object.name] = object
-		return true
+# func add_object(object: Node2D) -> bool:
+# 	if objects.has(name):
+# 		return false
+# 	else:
+# 		objects[object.name] = object
+# 		return true
 
 ## 턴, 게임플로우 관리
 func is_p1_turn() -> bool:
@@ -151,18 +143,25 @@ func update_game_time(delta: float) -> void:
 		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
 
 @rpc("any_peer", "call_local")
-func regist_lifetime(key: String, turn: int):
+func regist_lifeturn(key: String, turn: int):
 	if multiplayer.is_server():
 		lifetimePool[key] = Lifetime.new(turn)
 	
-func update_lifetime_turn():
+func update_lifeturn():
 	for key in lifetimePool.keys():
 		var lft: Lifetime = lifetimePool[key]
 		var live: bool = lft.pass_turn()
 		if not live:
-			objects[key].rpc("lifetime_end")
-			lifetimePool.erase(key)
-
+			if has_node(key):
+				get_node(key).rpc("lifetime_end")
+				lifetimePool.erase(key)
+			# if objects.has(key):  # 키가 오브젝트 이름일 때 (동적 오브젝트 풀링)
+			# 	objects[key].rpc("lifetime_end")
+			# 	lifetimePool.erase(key)
+			# else:                 # 키가 노드 경로일 때 (적정 오브젝트 트리구조)
+			# 	if self.has_node(key):
+			# 		self.get_node(key).rpc("lifetime_end")
+			# 		lifetimePool.erase(key)
 func quit_game():
 	root.sceneMgr.set_scene(2)
 	root.sceneMgr.currentScene.set("winner", winner)
@@ -251,9 +250,6 @@ func on_exit_WaitSession():
 	players[0].canMove = true
 	players[1].canMove = true
 
-	world.rpc("set_player_refs")
-	
-
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
@@ -270,7 +266,7 @@ func on_entry_Shelling():
 	pass
 func on_exit_Shelling():
 	if multiplayer.is_server():
-		update_lifetime_turn()
+		update_lifeturn()
 		world.on_turn_count()
 
 func on_entry_EndSession():
@@ -287,5 +283,5 @@ func on_entry_EndSession():
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
 		players.append(node as Player)
-	elif is_instance_valid(node.get_instance_id()):
-		add_object(node)
+	# elif is_instance_valid(node.get_instance_id()):
+	# 	add_object(node)

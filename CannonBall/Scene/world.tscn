@@ -831,7 +831,7 @@ position = Vector2(-8774, 0)
 z_index = 60
 position = Vector2(2600, 0)
 scale = Vector2(2, 2)
-effetivePlayer = 1
+target = 1
 pondRadius = 500.0
 pondID = 1
 
@@ -839,7 +839,7 @@ pondID = 1
 z_index = 60
 position = Vector2(6800, 0)
 scale = Vector2(2, 2)
-effetivePlayer = 1
+target = 1
 pondRadius = 500.0
 pondID = 2
 
@@ -847,11 +847,14 @@ pondID = 2
 
 [node name="Bush1" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(1682, 0)
+target = 1
 
 [node name="Bush2" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(3985, 0)
+target = 1
 
 [node name="Bush3" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
 position = Vector2(4849, 0)
+target = 1
 
 [node name="DamageFields" type="Node2D" parent="."]

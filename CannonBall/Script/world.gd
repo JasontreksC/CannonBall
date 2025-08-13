@@ -37,29 +37,6 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 		"launcher": launcher
 	})
 
-@rpc("any_peer", "call_local")
-func set_player_refs() -> void:
-	var ponds: Array[Node]
-	var bushes: Array[Node]
-
-	if multiplayer.is_server():
-		ponds = nP1Ponds.get_children()
-		bushes = nP1Bushes.get_children()
-
-		for p: Pond in ponds:
-			p.target = game.players[0]
-		for b: Bush in bushes:
-			b.target = game.players[0]
-
-	else:
-		ponds = nP2Ponds.get_children()
-		bushes = nP2Bushes.get_children()
-
-		for p: Pond in ponds:
-			p.target = game.players[1]
-		for b: Bush in bushes:
-			b.target = game.players[1]
-
 func gen_HDF(xr: XRange, type: int, target: int, hitDamage: int, lifetime: float) -> HitDamageField:
 	var psHDF: PackedScene = load("res://Scene/hit_damage_field.tscn")
 	var hdf: HitDamageField = psHDF.instantiate()
@@ -70,10 +47,10 @@ func gen_HDF(xr: XRange, type: int, target: int, hitDamage: int, lifetime: float
 	hdf.hitDamage = hitDamage
 	hdf.lifetime = lifetime
 	
-	dfPool.call_deferred("add_child", hdf)
+	dfPool.add_child(hdf)
 	return hdf
 
-func gen_TDF(xr: XRange, type: int, target: int, tickDamage: int, tickInterval: float, lifeturn: float) -> TickDamageField:
+func gen_TDF(xr: XRange, type: int, target: int, tickDamage: int, tickInterval: float, lifeturn: int) -> TickDamageField:
 	var psTDF: PackedScene = load("res://Scene/tick_damage_field.tscn")
 	var tdf: TickDamageField = psTDF.instantiate()
 
@@ -82,9 +59,9 @@ func gen_TDF(xr: XRange, type: int, target: int, tickDamage: int, tickInterval: 
 	tdf.target = target
 	tdf.tickDamage = tickDamage
 	tdf.tickInterval = tickInterval
-	tdf.lifetimeTurn = lifeturn
+	tdf.lifeturn = lifeturn
 
-	dfPool.call_deferred("add_child", tdf)
+	dfPool.add_child(tdf)
 	return tdf
 
 func _ready() -> void:
@@ -97,7 +74,7 @@ func _physics_process(delta: float) -> void:
 	var ponds: Array[Node]
 	var bushes: Array[Node]
 
-	if multiplayer.is_server():
+	if multiplayer.is_server():	
 		ponds = nP1Ponds.get_children()
 		bushes = nP1Bushes.get_children()
 	else:
@@ -106,19 +83,19 @@ func _physics_process(delta: float) -> void:
 	
 	# 연못 검사: 플레이어
 	for p: Pond in ponds:
-		if p.in_range(p.target.global_position.x):
-			p.target.inPondID = p.pondID
+		if p.xrange.in_range(game.players[p.target].global_position.x):
+			game.players[p.target].inPondID = p.pondID
 			break
 		else:
-			p.target.inPondID = 0
+			game.players[p.target].inPondID = 0
 	
 	# 연못 검사: 대포
 	for p: Pond in ponds:
-		if p.in_range(p.target.cannon.global_position.x):
-			p.target.cannon.inPondID = p.pondID
+		if p.xrange.in_range(game.players[p.target].cannon.global_position.x):
+			game.players[p.target].cannon.inPondID = p.pondID
 			break
 		else:
-			p.target.cannon.inPondID = 0
+			game.players[p.target].cannon.inPondID = 0
 
 func _process(delta: float) -> void:
 	if not multiplayer.is_server():
@@ -129,9 +106,10 @@ func on_turn_count():
 		return
 	
 	var dfs: Array[Node] = game.world.dfPool.get_children()
-	for df: TickDamageField in dfs:
-		if df.lifeturn <= 0:
-			df.queue_free()
-		else:
-			df.lifeturn -= 1
-		print("df 남은 턴: %d" % df.lifeturn)
+	for df in dfs:
+		if df is TickDamageField:
+			var lt: int = df.get("lifeturn")
+			if lt <= 0:
+				df.queue_free()
+			else:
+				df.set("lifeturn", lt - 1)

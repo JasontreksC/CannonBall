@@ -1,4 +1,6 @@
-[gd_scene load_steps=48 format=3 uid="uid://etrvlgkdjfwx"]
+[gd_scene load_steps=49 format=3 uid="uid://etrvlgkdjfwx"]
+
+[ext_resource type="Script" uid="uid://coa4vt12sw08l" path="res://Script/fx_smoke.gd" id="1_kqn7g"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kqn7g"]
 input_name = "color"
@@ -423,6 +425,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 2
 
 [node name="FxSmoke" type="Node2D"]
+script = ExtResource("1_kqn7g")
 
 [node name="Particle1" type="GPUParticles2D" parent="."]
 texture_repeat = 2

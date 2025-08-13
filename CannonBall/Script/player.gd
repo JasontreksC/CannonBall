@@ -19,12 +19,6 @@ var selectedShell: int = 0
 # var isWalking: bool = false
 var inPondID: int = 0
 
-enum HitType {
-	RADIAL,
-	FLAME,
-	TOXIC
-}
-
 @export var psCMC: PackedScene
 
 # 멀티플레이 동기화
@@ -45,10 +39,10 @@ var cmc: CameraMovingController = null
 var cannon: Cannon = null
 
 @rpc("any_peer", "call_local")
-func get_damage(damage: int, hitType: HitType):
+func get_damage(damage: int, type: int):
 	if not is_multiplayer_authority():
 		return
-	if inPondID and hitType == HitType.RADIAL:
+	if inPondID and type == 0:
 		damage /= 2
 	
 	damage = min(damage, hp)
