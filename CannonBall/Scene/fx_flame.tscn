@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://iahjy3vehb1k"]
+[gd_scene load_steps=22 format=3 uid="uid://iahjy3vehb1k"]
 
 [ext_resource type="Script" uid="uid://d1b6tfydwaxfi" path="res://Script/fx_flame.gd" id="1_a54sa"]
 [ext_resource type="Shader" uid="uid://br01u0n2nfl3t" path="res://Scene/glow.tres" id="1_hvq6x"]
@@ -11,8 +11,8 @@
 shader = ExtResource("2_mwkhl")
 
 [sub_resource type="Curve" id="Curve_hvq6x"]
-_limits = [0.99, 5.0, 0.0, 1.0]
-_data = [Vector2(0, 0.99), 0.0, 121.287, 0, 0, Vector2(0.118, 5), 0.0, 0.0, 0, 0, Vector2(0.683, 5), 0.0, 0.0, 0, 0, Vector2(1, 0.99), -24.8374, 0.0, 0, 0]
+_limits = [0.99, 10.0, 0.0, 1.0]
+_data = [Vector2(0, 0.99), 0.0, 121.287, 0, 0, Vector2(0.118, 10), 0.0, 0.0, 0, 0, Vector2(0.683, 10), 0.0, 0.0, 0, 0, Vector2(1, 0.99), -24.8374, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="CurveTexture" id="CurveTexture_mwkhl"]
@@ -54,7 +54,7 @@ emission_curve = SubResource("CurveTexture_mwkhl")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hvq6x"]
 shader = ExtResource("1_hvq6x")
 shader_parameter/base_color = Color(1, 0.278431, 0, 1)
-shader_parameter/emission = 3.805
+shader_parameter/emission = 10.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mwkhl"]
 load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
@@ -62,8 +62,8 @@ load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391
 [sub_resource type="Resource" id="Resource_a54sa"]
 script = ExtResource("4_a54sa")
 seed = 3
-amplitude = 1.0
-offset = 6.0
+amplitude = 2.0
+offset = 10.0
 BlendingMode = 0
 fade_in = 0.0
 fade_out = 0.0
@@ -79,7 +79,23 @@ property_name = "flame_shake"
 shake_type = SubResource("Resource_a54sa")
 metadata/_custom_type_script = "uid://dos7skjy20jww"
 
+[sub_resource type="Gradient" id="Gradient_a54sa"]
+offsets = PackedFloat32Array(0, 0.75)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1806s"]
+gradient = SubResource("Gradient_a54sa")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_a54sa"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
 [node name="FxFlame" type="Node2D"]
+z_index = 100
 script = ExtResource("1_a54sa")
 
 [node name="SubFlame" type="GPUParticles2D" parent="."]
@@ -95,7 +111,7 @@ process_material = SubResource("ParticleProcessMaterial_gvqel")
 
 [node name="MainFlame" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_hvq6x")
-scale = Vector2(0.105, 0.105)
+scale = Vector2(0.055, 0.055)
 texture = SubResource("CompressedTexture2D_mwkhl")
 
 [node name="ShakerComponent" type="Node" parent="." node_paths=PackedStringArray("Targets")]
@@ -107,3 +123,11 @@ duration = 1.0
 shake_speed = 0.1
 shakerProperty = Array[ExtResource("3_70t8q")]([SubResource("Resource_1806s")])
 metadata/_custom_type_script = "uid://d245udsl2w1c6"
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0.278431, 0, 1)
+energy = 5.0
+texture = SubResource("GradientTexture2D_1806s")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_a54sa")
