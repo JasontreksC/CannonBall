@@ -2,9 +2,8 @@
 
 [ext_resource type="Script" path="res://Script/fx_fire_field.gd" id="1_ju5y0"]
 [ext_resource type="Shader" uid="uid://dxbtld6bpcy4n" path="res://Shader/fire_field.tres" id="2_dfhjc"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8k7fc"]
-load_path = "res://.godot/imported/T_Gradient_circle22.jpg-eeea2ba304219c38d982e8605bea1d64.ctex"
+[ext_resource type="Texture2D" uid="uid://ciem8l1tgm04n" path="res://Asset/alpha_texture/T_Gradient_circle22.jpg" id="3_rwv0w"]
+[ext_resource type="Texture2D" uid="uid://dhs8xc24lyhor" path="res://Asset/alpha_texture/T_VFX_Noise_465.png" id="4_q4u50"]
 
 [sub_resource type="Gradient" id="Gradient_cyldd"]
 
@@ -25,17 +24,14 @@ gradient = SubResource("Gradient_kp85i")
 gradient = SubResource("Gradient_1bjgf")
 fill_to = Vector2(0, 1)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ce50g"]
-load_path = "res://.godot/imported/T_VFX_Noise_465.png-4c176163abf16c4b346309600f61d6ab.ctex"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7b53x"]
 shader = ExtResource("2_dfhjc")
 shader_parameter/Scale = Vector2(2, 1)
 shader_parameter/Speed = Vector2(0, 1)
-shader_parameter/Texture_Main = SubResource("CompressedTexture2D_ce50g")
+shader_parameter/Texture_Main = ExtResource("4_q4u50")
 shader_parameter/Texture_Add = SubResource("GradientTexture2D_k8jac")
 shader_parameter/w_per_h = 0.1
-shader_parameter/Texture_3 = SubResource("CompressedTexture2D_8k7fc")
+shader_parameter/Texture_3 = ExtResource("3_rwv0w")
 shader_parameter/Texture_4 = SubResource("GradientTexture2D_eoyux")
 shader_parameter/Texture_5 = SubResource("GradientTexture1D_55nal")
 
