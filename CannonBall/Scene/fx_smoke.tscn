@@ -1,6 +1,8 @@
 [gd_scene load_steps=49 format=3 uid="uid://etrvlgkdjfwx"]
 
 [ext_resource type="Script" uid="uid://coa4vt12sw08l" path="res://Script/fx_smoke.gd" id="1_kqn7g"]
+[ext_resource type="Texture2D" uid="uid://c6hgkkgiaeffq" path="res://Asset/alpha_texture/T_VFX_CloudNoise_Tiled.png" id="2_jn8pb"]
+[ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="3_75blf"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kqn7g"]
 input_name = "color"
@@ -182,15 +184,12 @@ nodes/start_custom/0/position = Vector2(-220, 60)
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jn8pb"]
 load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_42fnj"]
-load_path = "res://.godot/imported/T_VFX_CloudNoise_Tiled.png-55fa4d0a200688fd0a4ab3ddcfe686c9.ctex"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqn7g"]
 shader = SubResource("VisualShader_scjg3")
 shader_parameter/smoke_color = Color(0.190865, 0.188674, 0.204417, 1)
 shader_parameter/scale = 0.638
 shader_parameter/offset = Vector2(1.11, -0.45)
-shader_parameter/smoke_pattern = SubResource("CompressedTexture2D_42fnj")
+shader_parameter/smoke_pattern = ExtResource("2_jn8pb")
 shader_parameter/mask = SubResource("CompressedTexture2D_jn8pb")
 
 [sub_resource type="Curve" id="Curve_kqn7g"]
@@ -408,15 +407,12 @@ nodes/collide/2/node = SubResource("VisualShaderNodeInput_42fnj")
 nodes/collide/2/position = Vector2(-271.505, 174.555)
 nodes/start_custom/0/position = Vector2(-220, 60)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_75blf"]
-load_path = "res://.godot/imported/T_VFX_MarbleNoise_tiled.png-2f4d65c1c4e9e7e4d913f91b3470efbc.ctex"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_42fnj"]
 shader = SubResource("VisualShader_kis2e")
 shader_parameter/smoke_color = Color(0.0696651, 0.0685323, 0.0766598, 1)
 shader_parameter/scale = 0.638
 shader_parameter/offset = Vector2(1.11, -0.45)
-shader_parameter/smoke_pattern = SubResource("CompressedTexture2D_75blf")
+shader_parameter/smoke_pattern = ExtResource("3_75blf")
 shader_parameter/mask = SubResource("CompressedTexture2D_jn8pb")
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_42fnj"]

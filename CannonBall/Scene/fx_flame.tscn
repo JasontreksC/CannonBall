@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://d245udsl2w1c6" path="res://addons/shaker/src/shaker_component.gd" id="2_dhcw4"]
 [ext_resource type="Shader" uid="uid://s4mnyl4kthwp" path="res://Shader/round.tres" id="2_mwkhl"]
 [ext_resource type="Script" uid="uid://dos7skjy20jww" path="res://addons/shaker/data/ShakerProperty.gd" id="3_70t8q"]
+[ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="4_1806s"]
 [ext_resource type="Script" uid="uid://psuvrsw8sxm" path="res://addons/shaker/data/Single/ShakerTypeRandom1D.gd" id="4_a54sa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_67tkb"]
@@ -55,9 +56,6 @@ emission_curve = SubResource("CurveTexture_mwkhl")
 shader = ExtResource("1_hvq6x")
 shader_parameter/base_color = Color(1, 0.278431, 0, 1)
 shader_parameter/emission = 10.0
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mwkhl"]
-load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
 
 [sub_resource type="Resource" id="Resource_a54sa"]
 script = ExtResource("4_a54sa")
@@ -112,7 +110,7 @@ process_material = SubResource("ParticleProcessMaterial_gvqel")
 [node name="MainFlame" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_hvq6x")
 scale = Vector2(0.055, 0.055)
-texture = SubResource("CompressedTexture2D_mwkhl")
+texture = ExtResource("4_1806s")
 
 [node name="ShakerComponent" type="Node" parent="." node_paths=PackedStringArray("Targets")]
 script = ExtResource("2_dhcw4")
