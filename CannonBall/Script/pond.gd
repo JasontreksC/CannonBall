@@ -19,11 +19,11 @@ func set_poisoned() -> void:
 
 func _enter_tree() -> void:
 	world = get_parent().get_parent().get_parent() as World
-	
+	 
 func _ready() -> void:
 	#mat = spWater.material.duplicate()
 	#spWater.material = mat
-	spWater.material = load("res://Shader/pond.tres")
+	spWater.material = load("res://Shader/pond.tres").duplicate()
 	xrange.set_from_center(global_position.x, pondRadius)
 
 func _physics_process(delta: float) -> void:
