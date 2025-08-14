@@ -23,7 +23,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	#mat = spWater.material.duplicate()
 	#spWater.material = mat
-	spWater.material = load("res://Shader/pond.tres").duplicate()
+	spWater.material = spWater.material.duplicate()
 	xrange.set_from_center(global_position.x, pondRadius)
 
 func _physics_process(delta: float) -> void:
