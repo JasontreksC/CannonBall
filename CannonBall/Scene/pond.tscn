@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c4jubbdwfrrsf" path="res://Script/pond.gd" id="1_ph7nl"]
 [ext_resource type="Texture2D" uid="uid://1jvtcjhg0gkq" path="res://Asset/environment/pond.png" id="4_185b3"]
 [ext_resource type="Shader" uid="uid://ds0mwffha5i1j" path="res://Shader/pond.gdshader" id="4_oo7iw"]
-[ext_resource type="Material" uid="uid://d251ap52oq173" path="res://Shader/pond.tres" id="5_185b3"]
+[ext_resource type="Material" uid="uid://d251ap52oq173" path="res://Material/pond.tres" id="5_185b3"]
 [ext_resource type="Texture2D" uid="uid://dq3h3ggl0j0ge" path="res://Asset/environment/ground.png" id="5_rqb6c"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oo7iw"]

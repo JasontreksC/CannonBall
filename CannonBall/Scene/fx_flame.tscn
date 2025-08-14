@@ -93,7 +93,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 2
 
 [node name="FxFlame" type="Node2D"]
-z_index = 100
+z_index = 60
 script = ExtResource("1_a54sa")
 
 [node name="SubFlame" type="GPUParticles2D" parent="."]

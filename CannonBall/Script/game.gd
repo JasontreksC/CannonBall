@@ -78,6 +78,8 @@ func server_spawn_directly(ps: PackedScene, object_name: String, props: Dictiona
 
 @rpc("any_peer", "call_local")
 func delete_object(node_path: String):
+	if not multiplayer.is_server():
+		return
 	if has_node(node_path):
 		get_node(node_path).queue_free()
 		

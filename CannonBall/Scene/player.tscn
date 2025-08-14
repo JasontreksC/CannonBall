@@ -12,7 +12,6 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c68nv"]
 shader = ExtResource("9_ij4jb")
-shader_parameter/TeamColor = Color(1, 1, 1, 1)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_c31lq"]
 
