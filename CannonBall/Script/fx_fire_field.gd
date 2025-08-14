@@ -15,13 +15,11 @@ func _enter_tree() -> void:
 	game = get_parent() as Game
 
 func _ready() -> void:
+	spFire.material = spFire.material.duplicate()
+
 	spFire.scale.x = width
-	
-	print(spFire.scale)
-	
-	var mat: ShaderMaterial = spFire.material as ShaderMaterial
-	mat.set_shader_parameter("w_per_h", spFire.scale.y / spFire.scale.x * 0.2)
-	mat.set_shader_parameter("Scale", Vector2(spFire.scale.x / spFire.scale.y, 1.0))
+	spFire.material.set("shader_parameter/w_per_h", spFire.scale.y / spFire.scale.x * 0.2)
+	spFire.material.set("shader_parameter/Scale", Vector2(spFire.scale.x / spFire.scale.y, 1.0))
 
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:
