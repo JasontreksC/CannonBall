@@ -8,20 +8,22 @@ class_name Pond
 @export var pondDepth: float = 100
 @export var pondID: int = 0
 
-var mat : ShaderMaterial = ShaderMaterial.new()
+#var mat : ShaderMaterial
 var xrange: XRange = XRange.new()
 var world: World = null
 
 @rpc("any_peer", "call_local")
 func set_poisoned() -> void:
+	print(name, ": poisoned")
 	$SP_Water.material.set("shader_parameter/poisoned", 1.0)
 
 func _enter_tree() -> void:
 	world = get_parent().get_parent().get_parent() as World
 	
 func _ready() -> void:
-	mat.shader = load("res://Shader/water.gdshader")
-	spWater.material = mat
+	#mat = spWater.material.duplicate()
+	#spWater.material = mat
+	spWater.material = load("res://Shader/pond.tres")
 	xrange.set_from_center(global_position.x, pondRadius)
 
 func _physics_process(delta: float) -> void:
