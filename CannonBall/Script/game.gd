@@ -119,7 +119,8 @@ func change_turn() -> void:
 		players[0].isAttack = false
 
 @rpc("any_peer", "call_local")
-func transit_game_state(state: String):
+func transit_game_state(state: String, delay: float=0):
+	await get_tree().create_timer(delay).timeout
 	stateMachine.execute_transit(state)
 
 @rpc("any_peer", "call_local")

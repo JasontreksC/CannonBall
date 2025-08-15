@@ -145,7 +145,7 @@ func land():
 		genertated_tdf.activate()
 	
 	game.rpc("delete_object", self.name)
-	game.rpc("transit_game_state", "Turn")
+	game.rpc("transit_game_state", "Turn", 3)
 
 func _enter_tree() -> void:
 	game = get_parent() as Game

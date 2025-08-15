@@ -8,7 +8,7 @@ var MAX_SPEED: float = 5000
 var MIN_SPEED: float = 10
 
 var ACCELLER: float = 1000
-var DECELLER: float = 500
+var DECELLER: float = 2000
 var DECELL_DISTANCE: float = 100
 var Y_OFFSET: float = 300
 
@@ -59,35 +59,11 @@ func _process(delta: float) -> void:
 			direction = -1
 		distance = abs(displacement)
 		speed = clamp(distance * 2, MIN_SPEED, MAX_SPEED)
-		
-		
-		
-		#if distance > DECELL_DISTANCE:
-			#speed = move_toward(speed, MAX_SPEED, ACCELLER * delta)
-		#else:
-			#speed = move_toward(speed, MIN_SPEED, DECELLER * delta)
-		
-		#velocity = direction * speed * delta
-		self.global_position.x = move_toward(self.global_position.x, targetNode.global_position.x, speed * delta)
-		self.global_position.y = Y_OFFSET
-		#self.global_position.x += velocity
-		#self.global_position.y = Y_OFFSET
-			
-	camera.position.y = -540 / camera.zoom.y
-		
+		self.global_position.x = move_toward(self.global_position.x, targetNode.global_position.x, speed * delta)	
 	
-	#offset = camera.get_screen_center_position()
-#
-	#if targetNode:
-		#global_position.x = targetNode.global_position.x
-		#global_position.y = -540 / camera.zoom.y + 300
-#
-		#if totalDistX > 0:
-			#var pre_progress = progress
-			#progress = 1 - abs(offset.x - targetNode.global_position.x) / totalDistX
-			#progress = max(progress, pre_progress)
-		#else:
-			#progress = 1
-#
-		#progress = clamp(progress, 0, 1)
-		#camera.zoom = prevZoom.lerp(targetZoom, progress)
+	else:
+		speed = move_toward(speed, 0, delta * DECELLER)
+		self.global_position.x += direction * speed * delta
+
+	self.global_position.y = Y_OFFSET
+	camera.position.y = -540 / camera.zoom.y
