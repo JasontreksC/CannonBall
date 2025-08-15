@@ -20,17 +20,24 @@ var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
 var launcher: int = 0
-var timeScale: float = 0.75
+var timeScale: float = 1.0
+var direction: Vector2
 
 var isFalling: bool = false
 var alive = true
 var t: float = 0
 
+var attatchedFx: Array[String]
+
 var game: Game = null
+var sprite: Sprite2D = null
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
-	pass
+	if multiplayer.is_server():
+		game.players[0].overview_shell(self)
+	else:
+		game.players[1].overview_shell(self)
 
 func search_landed_pond(ponds: Array[Node]) -> Pond:
 	for p: Pond in ponds:
@@ -100,14 +107,25 @@ func land():
 					for p in overlappedPonds: # 대미지 필드에서 연못과 겹치는 부분을 제거
 						newXR.substract(p.xrange)
 
-				# 화염 필드 생성 및 틱 대미지 필드 생성
+				# 틱 대미지 필드 생성
 				genertated_tdf = game.world.gen_TDF(newXR, DamageType.AREAL, 1 - launcher, tickDamage, tickInterval, lifetimeTurn)
+				
+				# 화염 필드 이펙트
 				var fxFireField = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(6)) as PackedScene, "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 					"width": newXR.radius * 2
 				})
-				# 화염 이펙트의 라이프턴 등록
 				game.regist_lifeturn(fxFireField.name, lifetimeTurn)
+
+				# 연기 이펙트
+				var fxSmoke = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(9)) as PackedScene, "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+					"smokeAmount": 100,
+					"smokeLifetime": 5,
+					"spawnBox": Vector2(newXR.radius, 50),
+					"upAccell": -150
+				})
+				game.regist_lifeturn(fxSmoke.name, lifetimeTurn)
 
 				if overlappedBushes.size() > 0: # 덤불과 겹침
 					for b in overlappedBushes:
@@ -128,16 +146,18 @@ func land():
 	if genertated_tdf:
 		genertated_tdf.activate()
 	
+	for fx: String in attatchedFx:
+		if game.has_node(fx):
+			game.get_node(fx).rpc("lifetime_end")
+
 	game.rpc("delete_object", self.name)
-	game.rpc("transit_game_state", "Turn")
+	game.rpc("transit_game_state", "Turn", 3)
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
 
 func _ready() -> void:
-	pass
-
-func _process(delta: float) -> void:
+	sprite = get_node("Sprite2D") as Sprite2D
 	pass
 	
 func _physics_process(delta: float) -> void:
@@ -160,4 +180,14 @@ func _physics_process(delta: float) -> void:
 	else:
 		isFalling = true
 	
-	global_position = p0 + Vector2(x, y)
+	#global_position = p0 + Vector2(x, y)
+	var new_pos: Vector2 = p0 + Vector2(x, y)
+	direction = global_position.direction_to(new_pos)
+	global_position = new_pos
+	#global_position = global_position.round()
+	
+	
+func _process(delta: float) -> void:
+	sprite.global_position = global_position
+	pass
+	

@@ -26,9 +26,12 @@ const SPEED: float = 300
 @onready var bBarrel: Bone2D = $Skeleton2D/BnCarriage/BnBarrel
 @onready var ac: AimController = $AimController
 @onready var amp: AnimationPlayer = $AnimationPlayer
-@onready var world: World = $"../World"
+@onready var nBreech: Node2D = $Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Breech
+@onready var nMuzzle: Node2D = $Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Muzzle
+
 
 var game: Game = null
+var world: World = null
 var player: Player = null
 
 @rpc("any_peer", "call_local")
@@ -63,6 +66,7 @@ func rotate_wheel(delta: float):
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
+	world = game.world
 	set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
@@ -159,9 +163,14 @@ func on_exit_Fire():
 func on_entry_Fire():
 	amp.play("fire")
 
+	var burstDir: Vector2 = nBreech.global_position.direction_to(nMuzzle.global_position).normalized()
+	game.rpc("server_spawn_request", "res://Scene/fx_burst.tscn", "none", {
+		"global_position" : nMuzzle.global_position,
+		"direction" : burstDir})
+
 func on_fire():
 	var launcher: int = 0
 	if not multiplayer.is_server():
 		launcher = 1
 	world.rpc("start_shelling", player.selectedShell, shellPathes[player.selectedShell], ac.get_breech_pos(), ac.V0, ac.get_aimed_theta(), launcher)
-	reverseBlast += 100
+	reverseBlast += 200

@@ -10,7 +10,7 @@ class_name AimController
 @export var maxAimAngle : float = -45
 
 # 대포의 초기 속도. 이 속도를 sin/cos 함수로 x축 방향, y축 방향으로 분해한다.
-@export var V0 : float = 2000
+@export var V0 : float = 2500
 
 # breech는 포신의 가장 안쪽, 즉 포탄의 운동이 시작되는 위치이며
 # muzzel은 포구, 즉 포탄이 포신 밖으로 나오는 출구이다.
