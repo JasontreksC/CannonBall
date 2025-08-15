@@ -34,5 +34,4 @@ func _process(delta: float) -> void:
 
 
 func _on_gp_smoke_finished() -> void:
-	# game.delete_object(self.name)
 	game.rpc("delete_object", self.name)

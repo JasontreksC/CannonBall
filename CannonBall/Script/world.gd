@@ -36,6 +36,28 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 		"theta0": theta0,
 		"launcher": launcher
 	})
+
+	match shellType:
+		0:
+			var fxSmoke: Node2D = game.server_spawn_directly(load("res://Scene/fx_smoke.tscn"), "none", {
+				"attatch" : shell.name,
+				"smokeAmount" : 200,
+				"smokeLifetime" : 5.0,
+				"upAccell" : 0,
+				"smokeScaleFactor" : 2
+			})
+			shell.attatchedFx.append(fxSmoke.name)
+		1:
+			var fxSmoke: Node2D = game.server_spawn_directly(load("res://Scene/fx_smoke.tscn"), "none", {
+				"attatch" : shell.name,
+				"smokeAmount" : 200,
+				"smokeLifetime" : 5.0,
+				"upAccell" : 0,
+				"smokeScaleFactor" : 2
+			})
+			shell.attatchedFx.append(fxSmoke.name)
+		2:
+			pass
 	
 	shell.rpc_id(multiplayer.get_remote_sender_id(), "on_spawned")
 

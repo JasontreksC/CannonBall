@@ -27,6 +27,8 @@ var isFalling: bool = false
 var alive = true
 var t: float = 0
 
+var attatchedFx: Array[String]
+
 var game: Game = null
 var sprite: Sprite2D = null
 
@@ -144,6 +146,10 @@ func land():
 	if genertated_tdf:
 		genertated_tdf.activate()
 	
+	for fx: String in attatchedFx:
+		if game.has_node(fx):
+			game.get_node(fx).rpc("lifetime_end")
+
 	game.rpc("delete_object", self.name)
 	game.rpc("transit_game_state", "Turn", 3)
 

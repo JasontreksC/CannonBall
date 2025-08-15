@@ -16,4 +16,4 @@ func _ready() -> void:
 	particle.emitting = true
 
 func _on_gpu_particles_2d_finished() -> void:
-	game.delete_object(self.name)
+	game.rpc("delete_object", self.name)

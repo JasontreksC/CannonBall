@@ -3,10 +3,12 @@ extends Node2D
 @onready var particle1: GPUParticles2D = $Particle1
 @onready var particle2: GPUParticles2D = $Particle2
 
+@export var attatch: String = ""
 @export var smokeAmount: int = 50
 @export var smokeLifetime: float = 3.0
 @export var spawnBox: Vector2 = Vector2(50, 50)
-@export var upAccell: float = -100 
+@export var upAccell: float = -100
+@export var smokeScaleFactor: float = 1.0 
 
 var mat: ParticleProcessMaterial
 var game: Game = null
@@ -21,11 +23,17 @@ func _ready():
 	particle2.lifetime = smokeLifetime
 	
 	mat = particle1.process_material.duplicate()
-	mat.set("gravity/y", upAccell)
+	mat.set("gravity", Vector3(0, upAccell, 0))
 	mat.set("emission_box_extents", Vector3(spawnBox.x, spawnBox.y,  0))
-
+	mat.set("scale_min", 100 * smokeScaleFactor)
+	mat.set("scale_max", 200 * smokeScaleFactor)
+	
 	particle1.process_material = mat
 	particle2.process_material = mat
+
+func _process(delta: float) -> void:
+	if game.has_node(attatch):
+		self.global_position = game.get_node(attatch).global_position
 
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:
@@ -34,4 +42,3 @@ func lifetime_end() -> void:
 	
 	await get_tree().create_timer(max(particle1.lifetime, particle2.lifetime)).timeout
 	game.rpc("delete_object", self.name)
-	# game.delete_object(self.name)

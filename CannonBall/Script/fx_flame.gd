@@ -23,5 +23,3 @@ func lifetime_end() -> void:
 	
 	await get_tree().create_timer(gpuSubFlame.lifetime).timeout
 	game.rpc("delete_object", self.name)
-	# game.delete_object(self.name)
-	print("flame deleted")
