@@ -19,6 +19,8 @@ var turnCount: int = 0
 var lifetimePool: Dictionary[String, Lifetime]
 var gameTime: float = 0
 var winner: int = -1
+var activatedShell: String
+
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
@@ -270,6 +272,9 @@ func on_exit_Shelling():
 	if multiplayer.is_server():
 		update_lifeturn()
 		world.on_turn_count()
+		players[0].overview_reset()
+	else:
+		players[1].overview_reset()
 
 func on_entry_EndSession():
 	ui.set_state_text("게임 종료!")

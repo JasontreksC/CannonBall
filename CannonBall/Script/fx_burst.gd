@@ -4,6 +4,7 @@ extends Node2D
 
 @onready var gpSmoke: GPUParticles2D = $GP_Smoke
 @onready var gpFlame: GPUParticles2D = $GP_Flame
+@onready var fxBlink: Node2D = $FxBlink
 
 var game: Game = null
 
@@ -23,6 +24,9 @@ func _ready() -> void:
 	gpSmoke.one_shot = true
 	gpFlame.emitting = true
 	gpSmoke.emitting = true
+	
+	var ampBlink: AnimationPlayer = fxBlink.get_child(1)
+	ampBlink.play("blink")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

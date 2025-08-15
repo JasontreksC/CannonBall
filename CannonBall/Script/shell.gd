@@ -20,17 +20,22 @@ var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
 var launcher: int = 0
-var timeScale: float = 0.75
+var timeScale: float = 1.0
+var direction: Vector2
 
 var isFalling: bool = false
 var alive = true
 var t: float = 0
 
 var game: Game = null
+var sprite: Sprite2D = null
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
-	pass
+	if multiplayer.is_server():
+		game.players[0].overview_shell(self)
+	else:
+		game.players[1].overview_shell(self)
 
 func search_landed_pond(ponds: Array[Node]) -> Pond:
 	for p: Pond in ponds:
@@ -146,9 +151,7 @@ func _enter_tree() -> void:
 	game = get_parent() as Game
 
 func _ready() -> void:
-	pass
-
-func _process(delta: float) -> void:
+	sprite = get_node("Sprite2D") as Sprite2D
 	pass
 	
 func _physics_process(delta: float) -> void:
@@ -171,4 +174,14 @@ func _physics_process(delta: float) -> void:
 	else:
 		isFalling = true
 	
-	global_position = p0 + Vector2(x, y)
+	#global_position = p0 + Vector2(x, y)
+	var new_pos: Vector2 = p0 + Vector2(x, y)
+	direction = global_position.direction_to(new_pos)
+	global_position = new_pos
+	#global_position = global_position.round()
+	
+	
+func _process(delta: float) -> void:
+	sprite.global_position = global_position
+	pass
+	

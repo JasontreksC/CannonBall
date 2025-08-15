@@ -1,9 +1,10 @@
-[gd_scene load_steps=40 format=3 uid="uid://eriwpbivkspp"]
+[gd_scene load_steps=41 format=3 uid="uid://eriwpbivkspp"]
 
 [ext_resource type="Script" uid="uid://clxvigsqvso6p" path="res://Script/fx_burst.gd" id="1_8uaop"]
 [ext_resource type="Shader" uid="uid://br01u0n2nfl3t" path="res://Scene/glow.tres" id="2_8uaop"]
 [ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="2_nf4r3"]
 [ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="3_ddqip"]
+[ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="5_ddqip"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_42fnj"]
 input_name = "color"
@@ -320,6 +321,8 @@ explosiveness = 1.0
 interpolate = false
 visibility_rect = Rect2(-100, -100, 100000, 200)
 process_material = SubResource("ParticleProcessMaterial_71gf4")
+
+[node name="FxBlink" parent="." instance=ExtResource("5_ddqip")]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_nf4r3")

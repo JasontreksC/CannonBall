@@ -59,6 +59,15 @@ func get_damage(damage: int, type: int):
 		else:
 			game.rpc("send_transmit", "p2_defeat")
 
+func overview_shell(shell: Shell) -> void:
+	if shell:
+		cmc.set_target(shell)
+		cmc.set_zoom(0.4, 1)
+
+func overview_reset() -> void:
+	cmc.set_target(nCamTargetDefault)
+	cmc.set_zoom(0.7, 0.5)
+
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 	game = get_parent() as Game
@@ -162,7 +171,6 @@ func _physics_process(delta: float) -> void:
 				h_movement("self", walkSpeed, delta)
 				amt.set("parameters/BT_Idle/Blend2/blend_amount", clamp(abs(velocity), 0, 1))
 				
-				
 			"HandleCannon":
 				# 대포 무브먼트에 고정
 				if cannon:
@@ -176,7 +184,8 @@ func _physics_process(delta: float) -> void:
 				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
 				
 			"ReadyFire":
-				stateMachine.transit_by_input("aim", "back")
+				if stateMachine.transit_by_input("aim", "back"):
+					overview_reset()
 				
 				# 만원경으로 조준
 				if game.ui.zoomFinished:
@@ -212,6 +221,9 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
+			
+	if Input.is_action_just_pressed("space"):
+		overview_reset()
 	
 func h_movement(mode: String, speed: float, delta: float):
 	if not canMove:
@@ -233,9 +245,6 @@ func h_movement(mode: String, speed: float, delta: float):
 			# 대포 무브먼트
 			cannon.global_position.x += velocity * delta
 			self.global_position.x = cannon.get_handle_x()
-
-func _process(delta: float) -> void:
-	pass
 
 # 전환 이벤트. 상태 전환이 발생했을 때 한번만 실행된다.
 func on_exit_Idle():
@@ -263,7 +272,8 @@ func on_entry_HandleCannon():
 
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
-	cmc.set_target(nCamTargetDefault, 0.7)
+	#cmc.set_target(nCamTargetDefault, 0.7)
+	
 	game.ui.off_observe()
 	cannon.stateMachine.execute_transit("Idle")
 	
@@ -277,5 +287,5 @@ func on_entry_ReadyFire():
 		cannon.stateMachine.execute_transit("Aim")
 		
 	# 카메라 위치를 이동시킴
-	cmc.set_target(nCamTargetAim, 0.8)
+	cmc.set_target(nCamTargetAim)
 	game.ui.on_observe()

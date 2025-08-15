@@ -28,7 +28,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_hnf0f"]
 resource_name = "blink"
 length = 0.25
-loop_mode = 1
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -58,4 +57,3 @@ texture = SubResource("GradientTexture2D_m651h")
 libraries = {
 &"": SubResource("AnimationLibrary_vxy51")
 }
-autoplay = "blink"

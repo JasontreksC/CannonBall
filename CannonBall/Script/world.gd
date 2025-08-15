@@ -36,6 +36,8 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 		"theta0": theta0,
 		"launcher": launcher
 	})
+	
+	shell.rpc_id(multiplayer.get_remote_sender_id(), "on_spawned")
 
 func gen_HDF(xr: XRange, type: int, target: int, hitDamage: int, lifetime: float) -> HitDamageField:
 	var psHDF: PackedScene = load("res://Scene/hit_damage_field.tscn")
