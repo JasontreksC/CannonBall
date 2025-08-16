@@ -92,7 +92,7 @@ func _ready() -> void:
 	game = get_parent() as Game
 
 func _physics_process(delta: float) -> void:
-	if game.stateMachine.current_state_name() == "WaitSession":
+	if game.stateMachine.current_state_name() == "WaitSession" or game.stateMachine.current_state_name() == "EndSession":
 		return
 
 	var ponds: Array[Node]

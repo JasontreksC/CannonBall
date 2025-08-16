@@ -2,7 +2,7 @@ extends Sprite2D
 
 var emission: float = 20
 @onready var fireShell: Shell = $".."
-@onready var fxFire: Node2D = $FxFire
+@onready var fireTail: Node2D = $SP_FireTail
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,4 +13,4 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	self.material = self.material.duplicate()
 	self.material.set("shader_parameter/emission", emission)
-	fxFire.global_rotation = fireShell.direction.angle() - PI / 2
+	fireTail.global_rotation = fireShell.direction.angle() - PI / 2
