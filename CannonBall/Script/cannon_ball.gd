@@ -29,7 +29,8 @@ func create_steam_socket():
 	peer = SteamMultiplayerPeer.new()
 	peer.create_host(0)
 	multiplayer.set_multiplayer_peer(peer)
-	multiplayer.peer_connected.connect(_add_player)
+	if not multiplayer.peer_connected.is_connected(_add_player):
+		multiplayer.peer_connected.connect(_add_player)
 	_add_player()
 	
 func connect_steam_socket(steam_id : int):
