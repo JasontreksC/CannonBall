@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 		return
 	elif not multiplayer.is_server() and target == 0:
 		return
-	if world.game.stateMachine.current_state_name() == "WaitSession":
+	if world.game.stateMachine.current_state_name() == "WaitSession" or world.game.stateMachine.current_state_name() == "EndSession" :
 		return
 	
 	if target == null:

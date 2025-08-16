@@ -92,7 +92,8 @@ func land():
 				pass # 연못 탄착 이펙트
 			else:
 				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(5)) as PackedScene, "none", {
-					"global_position": Vector2(newXR.centerX, 0)
+					"global_position": Vector2(newXR.centerX, 0),
+					"direction" : direction
 				})
 			
 
