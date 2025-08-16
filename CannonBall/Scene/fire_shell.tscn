@@ -1,15 +1,40 @@
-[gd_scene load_steps=6 format=3 uid="uid://byegb5y77y21a"]
+[gd_scene load_steps=13 format=3 uid="uid://byegb5y77y21a"]
 
 [ext_resource type="PackedScene" uid="uid://bp8yuq71ym25a" path="res://Scene/shell.tscn" id="1_sf3w6"]
 [ext_resource type="Shader" uid="uid://chslhsr7t500r" path="res://Shader/fire_surf.tres" id="2_3artd"]
 [ext_resource type="Texture2D" uid="uid://c3pybtbta3oar" path="res://Asset/shell/normal_shell.png" id="2_h5kdm"]
 [ext_resource type="Texture2D" uid="uid://coknwbm1o0tp0" path="res://Asset/alpha_texture/crack.png" id="3_3artd"]
+[ext_resource type="Script" uid="uid://br2ffb3fea4ea" path="res://Script/sp_fire_shell.gd" id="5_61dmc"]
+[ext_resource type="Script" uid="uid://d245udsl2w1c6" path="res://addons/shaker/src/shaker_component.gd" id="5_f1a3t"]
+[ext_resource type="Script" uid="uid://dos7skjy20jww" path="res://addons/shaker/data/ShakerProperty.gd" id="6_3d0bb"]
+[ext_resource type="Script" uid="uid://psuvrsw8sxm" path="res://addons/shaker/data/Single/ShakerTypeRandom1D.gd" id="7_3d0bb"]
+[ext_resource type="PackedScene" uid="uid://bhpfkmntil7wk" path="res://Scene/fx_fire.tscn" id="8_6723q"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vcak5"]
 shader = ExtResource("2_3artd")
 shader_parameter/Texture2DParameter = ExtResource("3_3artd")
-shader_parameter/ColorParameter = Color(1, 0.407843, 0, 1)
-shader_parameter/Brightness = 10.0
+shader_parameter/ColorParameter = Color(1, 0.164706, 0, 1)
+shader_parameter/emission = 20.0
+
+[sub_resource type="Resource" id="Resource_61dmc"]
+script = ExtResource("7_3d0bb")
+seed = 5
+amplitude = 10.0
+offset = 20.0
+BlendingMode = 0
+fade_in = 0.0
+fade_out = 0.0
+start_percent = 0.0
+end_percent = 1.0
+_temp_graph = false
+bake_internal = 64
+metadata/_custom_type_script = "uid://psuvrsw8sxm"
+
+[sub_resource type="Resource" id="Resource_6723q"]
+script = ExtResource("6_3d0bb")
+property_name = "emission"
+shake_type = SubResource("Resource_61dmc")
+metadata/_custom_type_script = "uid://dos7skjy20jww"
 
 [node name="FireShell" instance=ExtResource("1_sf3w6")]
 range = 600.0
@@ -18,10 +43,22 @@ tickDamage = 1
 lifetimeTurn = 4
 tickInterval = 2.0
 
-[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+[node name="SP_FireShell" type="Sprite2D" parent="." index="0"]
 material = SubResource("ShaderMaterial_vcak5")
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_h5kdm")
+script = ExtResource("5_61dmc")
+
+[node name="ShakerComponent" type="Node" parent="SP_FireShell" index="0"]
+script = ExtResource("5_f1a3t")
+AutoPlay = true
+play = true
+shakerProperty = Array[ExtResource("6_3d0bb")]([SubResource("Resource_6723q")])
+metadata/_custom_type_script = "uid://d245udsl2w1c6"
+
+[node name="FxFire" parent="SP_FireShell" index="1" instance=ExtResource("8_6723q")]
+z_index = -20
+scale = Vector2(2, 2)
 
 [node name="Area2D" parent="." index="1"]
 visible = false

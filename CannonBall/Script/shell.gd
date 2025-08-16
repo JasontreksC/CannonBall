@@ -15,13 +15,13 @@ var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
 @export var tickDamage: int
 @export var lifetimeTurn: int
 @export var tickInterval: float
+@export var direction: Vector2
 
 var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
 var launcher: int = 0
 var timeScale: float = 1.0
-var direction: Vector2
 
 var isFalling: bool = false
 var alive = true
@@ -154,10 +154,11 @@ func land():
 	game.rpc("transit_game_state", "Turn", 3)
 
 func _enter_tree() -> void:
+	set_multiplayer_authority(1)
 	game = get_parent() as Game
 
 func _ready() -> void:
-	sprite = get_node("Sprite2D") as Sprite2D
+	sprite = get_child(0) as Sprite2D
 	pass
 	
 func _physics_process(delta: float) -> void:
@@ -188,6 +189,5 @@ func _physics_process(delta: float) -> void:
 	
 	
 func _process(delta: float) -> void:
-	sprite.global_position = global_position
 	pass
 	

@@ -31,11 +31,10 @@ viewport_path = NodePath("Telescope/SubViewport")
 shader = ExtResource("14_7hrlq")
 shader_parameter/Texture2DParameter = ExtResource("15_bucyv")
 shader_parameter/ColorParameter = Color(1, 0.35, 0, 1)
-shader_parameter/Brightness = 1.0
+shader_parameter/emission = 3.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_voeoa"]
 shader = ExtResource("14_bucyv")
-shader_parameter/TeamColor = Color(1, 1, 1, 1)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_0dgpy"]
 
