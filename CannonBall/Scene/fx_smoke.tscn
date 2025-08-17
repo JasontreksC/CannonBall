@@ -1,7 +1,7 @@
 [gd_scene load_steps=31 format=3 uid="uid://etrvlgkdjfwx"]
 
 [ext_resource type="Script" uid="uid://coa4vt12sw08l" path="res://Script/fx_smoke.gd" id="1_kqn7g"]
-[ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Scene/smoke_particle.tres" id="2_75blf"]
+[ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Material/smoke_particle.tres" id="2_75blf"]
 [ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="3_75blf"]
 
 [sub_resource type="Curve" id="Curve_kqn7g"]
