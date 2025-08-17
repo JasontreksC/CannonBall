@@ -57,3 +57,4 @@ texture = SubResource("GradientTexture2D_m651h")
 libraries = {
 &"": SubResource("AnimationLibrary_vxy51")
 }
+autoplay = "blink"

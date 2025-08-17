@@ -1,8 +1,6 @@
-[gd_scene load_steps=31 format=3 uid="uid://co2yk1rkb2o2j"]
+[gd_resource type="ShaderMaterial" load_steps=20 format=3 uid="uid://db8g0cp30dsja"]
 
-[ext_resource type="Script" uid="uid://70v1h8mp57e" path="res://Script/fx_explosion.gd" id="1_w8ob6"]
-[ext_resource type="Texture2D" uid="uid://c6hgkkgiaeffq" path="res://Asset/alpha_texture/T_VFX_CloudNoise_Tiled.png" id="2_70tkk"]
-[ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="3_kou1b"]
+[ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="1_x7nha"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kou1b"]
 input_name = "color"
@@ -183,78 +181,9 @@ nodes/start_custom/0/position = Vector2(-220, 60)
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wtnip"]
 load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_14n6s"]
+[resource]
 shader = SubResource("VisualShader_y3qc7")
-shader_parameter/scale = 0.799
+shader_parameter/scale = 0.375
 shader_parameter/offset = Vector2(1.11, -0.45)
-shader_parameter/smoke_pattern = ExtResource("2_70tkk")
+shader_parameter/smoke_pattern = ExtResource("1_x7nha")
 shader_parameter/mask = SubResource("CompressedTexture2D_wtnip")
-
-[sub_resource type="Curve" id="Curve_t264x"]
-_data = [Vector2(0.637255, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_jbhpk"]
-curve = SubResource("Curve_t264x")
-
-[sub_resource type="Curve" id="Curve_70tkk"]
-_limits = [0.0, 5.0, 0.0, 1.0]
-_data = [Vector2(0, 0.00687146), 0.0, 11.9168, 0, 0, Vector2(0.240343, 2.47777), -3.04229, 0.0, 0, 0, Vector2(1, 0.77015), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_kou1b"]
-curve = SubResource("Curve_70tkk")
-
-[sub_resource type="Curve" id="Curve_46lp1"]
-_limits = [100.0, 3000.0, 0.0, 1.0]
-_data = [Vector2(0, 3000), 0.0, 0.0, 0, 0, Vector2(0.172, 100), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_t264x"]
-curve = SubResource("Curve_46lp1")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_70tkk"]
-lifetime_randomness = 1.0
-particle_flag_disable_z = true
-angle_min = -720.0
-angle_max = 720.0
-direction = Vector3(0, -1, 0)
-spread = 90.0
-initial_velocity_min = 1000.0
-initial_velocity_max = 3000.0
-angular_velocity_min = -90.0
-angular_velocity_max = 90.0
-velocity_limit_curve = SubResource("CurveTexture_t264x")
-gravity = Vector3(0, 0, 0)
-scale_min = 300.0
-scale_max = 300.0
-scale_curve = SubResource("CurveTexture_kou1b")
-color = Color(0.18359, 0.18359, 0.18359, 1)
-alpha_curve = SubResource("CurveTexture_jbhpk")
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_w8ob6"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 2
-
-[node name="FxExplosion" type="Node2D"]
-z_index = 100
-script = ExtResource("1_w8ob6")
-
-[node name="Smoke" type="GPUParticles2D" parent="."]
-material = SubResource("ShaderMaterial_14n6s")
-emitting = false
-amount = 100
-lifetime = 5.0
-one_shot = true
-explosiveness = 1.0
-interpolate = false
-visibility_rect = Rect2(-50000, -100, 100000, 200)
-process_material = SubResource("ParticleProcessMaterial_70tkk")
-
-[node name="FxBlink" parent="." instance=ExtResource("3_kou1b")]
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_w8ob6")
-
-[connection signal="finished" from="Smoke" to="." method="_on_smoke_finished"]

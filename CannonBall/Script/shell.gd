@@ -89,11 +89,21 @@ func land():
 			genertated_hdf = game.world.gen_HDF(newXR, DamageType.RADIAL, 1 - launcher, hitDamage, 0.0)
 
 			if landedPond:
-				pass # 연못 탄착 이펙트
+				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+				 	"dir": direction,
+					"mode" : 1
+				})
 			else:
 				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(5)) as PackedScene, "none", {
+					"global_position": Vector2(newXR.centerX, 0)
+				})
+				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
 					"global_position": Vector2(newXR.centerX, 0),
-					"direction" : direction
+				 	"dir": direction,
+					"s_min": 15,
+					"s_max": 30,
+					"mode" : 0 
 				})
 			
 
@@ -102,7 +112,11 @@ func land():
 
 			if landedPond: # 연못 안에 들어옴
 				newXR.radius = 0
-				pass
+				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+				 	"dir": direction,
+					"mode" : 1
+				})
 			else:		   # 연못 밖
 				if overlappedPonds.size() > 0: # 연못과 겹침
 					for p in overlappedPonds: # 대미지 필드에서 연못과 겹치는 부분을 제거
@@ -110,6 +124,18 @@ func land():
 
 				# 틱 대미지 필드 생성
 				genertated_tdf = game.world.gen_TDF(newXR, DamageType.AREAL, 1 - launcher, tickDamage, tickInterval, lifetimeTurn)
+				
+				# 화염 폭발
+				game.server_spawn_directly(load("res://Scene/fx_fire_exlposion.tscn"), "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+				})				
+				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+				 	"dir": direction,
+					"s_min": 15,
+					"s_max": 30,
+					"mode" : 0 
+				})
 				
 				# 화염 필드 이펙트
 				var fxFireField = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(6)) as PackedScene, "none", {
@@ -136,6 +162,12 @@ func land():
 			if landedPond:
 				genertated_tdf = game.world.gen_TDF(landedPond.xrange, DamageType.AREAL, 1 - launcher, tickDamage, tickInterval, lifetimeTurn)
 				landedPond.rpc("set_poisoned")
+
+				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+				 	"dir": direction,
+					"mode" : 1
+				})
 			else:
 				genertated_hdf = game.world.gen_HDF(newXR, DamageType.AREAL, 1 - launcher, hitDamage, lifetimeTurn)
 				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(7)) as PackedScene, "none", {

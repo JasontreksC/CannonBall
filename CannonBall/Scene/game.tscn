@@ -13,7 +13,7 @@ environment = ExtResource("3_4jv7b")
 [node name="World" parent="." instance=ExtResource("2_gevu4")]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://bwrx2pgx1ludf", "uid://dysx527hnqw2v", "uid://byegb5y77y21a", "uid://dk8wqlremdrpq", "uid://co2yk1rkb2o2j", "uid://dc64ulpev07vq", "uid://dadbuw6oeorgg", "uid://iahjy3vehb1k", "uid://etrvlgkdjfwx", "uid://eriwpbivkspp")
+_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://bwrx2pgx1ludf", "uid://dysx527hnqw2v", "uid://byegb5y77y21a", "uid://dk8wqlremdrpq", "uid://co2yk1rkb2o2j", "uid://dc64ulpev07vq", "uid://dadbuw6oeorgg", "uid://iahjy3vehb1k", "uid://etrvlgkdjfwx", "uid://eriwpbivkspp", "uid://bhhrsex2ogmi0", "uid://d4lfxkcy1m8to")
 spawn_path = NodePath("..")
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]
