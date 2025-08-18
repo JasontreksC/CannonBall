@@ -84,19 +84,6 @@ func delete_object(node_path: String):
 		return
 	if has_node(node_path):
 		get_node(node_path).queue_free()
-		
-# func get_object(name: String) -> Node2D:
-# 	if objects.has(name):
-# 		return objects[name]
-# 	else:
-# 		return null
-		
-# func add_object(object: Node2D) -> bool:
-# 	if objects.has(name):
-# 		return false
-# 	else:
-# 		objects[object.name] = object
-# 		return true
 
 ## 턴, 게임플로우 관리
 func is_p1_turn() -> bool:
@@ -160,13 +147,7 @@ func update_lifeturn():
 			if has_node(key):
 				get_node(key).rpc("lifetime_end")
 				lifetimePool.erase(key)
-			# if objects.has(key):  # 키가 오브젝트 이름일 때 (동적 오브젝트 풀링)
-			# 	objects[key].rpc("lifetime_end")
-			# 	lifetimePool.erase(key)
-			# else:                 # 키가 노드 경로일 때 (적정 오브젝트 트리구조)
-			# 	if self.has_node(key):
-			# 		self.get_node(key).rpc("lifetime_end")
-			# 		lifetimePool.erase(key)
+
 func quit_game():
 	root.sceneMgr.set_scene(2)
 	root.sceneMgr.currentScene.set("winner", winner)
@@ -176,6 +157,9 @@ func _enter_tree() -> void:
 	root.uiMgr.set_ui(1)
 
 func _ready() -> void:
+	peerID = multiplayer.get_unique_id()
+	print(peerID)
+	
 	ui = root.uiMgr.get_current_ui_as_in_game()
 	if ui:
 		ui.game = self

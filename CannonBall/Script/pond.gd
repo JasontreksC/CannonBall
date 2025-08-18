@@ -14,15 +14,17 @@ var world: World = null
 
 @rpc("any_peer", "call_local")
 func set_poisoned() -> void:
-	print(name, ": poisoned")
-	$SP_Water.material.set("shader_parameter/poisoned", 1.0)
+	create_tween().tween_property($SP_Water.material, "shader_parameter/poisoned", 1, 1)
+	world.game.regist_lifeturn(self.get_path(), 4)
+
+@rpc("any_peer", "call_local")
+func lifetime_end() -> void:
+	create_tween().tween_property($SP_Water.material, "shader_parameter/poisoned", 0, 1)
 
 func _enter_tree() -> void:
 	world = get_parent().get_parent().get_parent() as World
-	 
+
 func _ready() -> void:
-	#mat = spWater.material.duplicate()
-	#spWater.material = mat
 	spWater.material = spWater.material.duplicate()
 	xrange.set_from_center(global_position.x, pondRadius)
 

@@ -14,7 +14,7 @@ func _ready() -> void:
 	gpuSmoke.one_shot = true
 	
 	var blinkAmp: AnimationPlayer = blink.get_node("AnimationPlayer")
-	blinkAmp.play("blink")
+	blinkAmp.play("blink_stronger")
 	
 func _on_smoke_finished() -> void:
 	game.rpc("delete_object", self.name)

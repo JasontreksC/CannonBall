@@ -36,32 +36,32 @@ as_normal_map = true
 noise = SubResource("FastNoiseLite_cwa6f")
 
 [sub_resource type="Curve" id="Curve_g3fjn"]
-_limits = [0.99, 5.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 2.99261), 0.0, 0.0, 0, 0]
-point_count = 2
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0311475, 1.3586), 3.54005, 3.54005, 0, 0, Vector2(1, 3), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_22mmi"]
 curve = SubResource("Curve_g3fjn")
 
 [sub_resource type="Curve" id="Curve_fe2rv"]
-_limits = [1.0, 50.0, 0.0, 1.0]
-_data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(0.485294, 50), 0.0, 0.0, 0, 0, Vector2(0.606209, 11.6534), 0.0, 0.0, 0, 0]
-point_count = 3
+_limits = [10.0, 50.0, 0.0, 1.0]
+_data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(1, 10), -120.582, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_g3fjn"]
 curve = SubResource("Curve_fe2rv")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0bsif"]
 particle_flag_disable_z = true
-emission_shape_offset = Vector3(-1000, -1200, 0)
-emission_shape_scale = Vector3(2000, 2000, 1)
+emission_shape_offset = Vector3(-1250, -400, 0)
+emission_shape_scale = Vector3(2500, 500, 1)
 emission_shape = 4
 emission_point_texture = SubResource("NoiseTexture2D_id0p0")
 emission_point_count = 105
 angle_min = -142.6
 angle_max = 161.6
 spread = 180.0
-initial_velocity_min = 20.0
+initial_velocity_min = 10.0
 initial_velocity_max = 50.0
 velocity_limit_curve = SubResource("CurveTexture_g3fjn")
 gravity = Vector3(0, 0, 0)
@@ -80,13 +80,14 @@ properties/0/spawn = true
 properties/0/replication_mode = 2
 
 [node name="FxFireExlposion" type="Node2D"]
+z_index = 100
 script = ExtResource("1_0bsif")
 
 [node name="FireExplo" type="GPUParticles2D" parent="."]
 material = ExtResource("1_id0p0")
 amount = 100
 lifetime = 3.0
-explosiveness = 0.9
+explosiveness = 0.95
 fixed_fps = 60
 interpolate = false
 visibility_rect = Rect2(-50000, -100, 100000, 200)
@@ -94,5 +95,10 @@ process_material = SubResource("ParticleProcessMaterial_0bsif")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_fyloc")
+
+[node name="Line2D2" type="Line2D" parent="."]
+points = PackedVector2Array(-600, 0, 600, 0)
+width = 100.0
+default_color = Color(1, 0, 1, 0.690196)
 
 [connection signal="finished" from="FireExplo" to="." method="_on_fire_explo_finished"]

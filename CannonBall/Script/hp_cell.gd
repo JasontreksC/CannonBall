@@ -24,7 +24,10 @@ func kill():
 	vitality = false
 	shaker.play_shake()
 	var mat: ShaderMaterial = sprite.material
-	mat.set_shader_parameter("inner_ratio", 0)
+	sprite.material.set("shader_parameter/inner_color", Color(1, 0.8, 0.8))
+
+	await get_tree().create_timer(3).timeout
+	create_tween().tween_property(mat, "shader_parameter/inner_ratio", 0, 0.25).set_ease(Tween.EASE_IN)
 
 func generate():
 	vitality = true

@@ -119,7 +119,6 @@ _data = {
 }
 
 [node name="HPCell" type="Node2D"]
-position = Vector2(1.01328e-05, -8.55327e-06)
 script = ExtResource("1_lw3pi")
 
 [node name="ShakerComponent2D" type="Node2D" parent="."]

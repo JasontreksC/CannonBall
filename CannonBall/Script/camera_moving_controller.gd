@@ -3,6 +3,7 @@ class_name CameraMovingController
 
 @onready var camera: Camera2D = $Camera2D
 @onready var timer: Timer = $Timer
+@onready var shaker: ShakerComponent2D = $Camera2D/ShakerComponent2D
 
 var MAX_SPEED: float = 5000
 var MIN_SPEED: float = 10
@@ -44,7 +45,12 @@ func set_target(node: Node2D) -> void:
 	
 func set_zoom(zoom: float, dur: float) -> void:
 	create_tween().tween_property(camera, "zoom", Vector2(zoom, zoom), dur).set_ease(Tween.EASE_IN_OUT)
-	
+
+func shake(amp: float) -> void:
+	shaker.shakerPreset.PositionShake[0].amplitude = Vector2(amp, amp)
+	print(shaker.shakerPreset.PositionShake[0].amplitude)
+	shaker.play_shake()
+
 func _ready() -> void:
 	prevZoom = camera.zoom
 	targetZoom = prevZoom
