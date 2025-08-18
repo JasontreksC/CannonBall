@@ -59,6 +59,16 @@ func get_damage(damage: int, type: int):
 		else:
 			game.rpc("send_transmit", "p2_defeat")
 
+@rpc("any_peer", "call_local")
+func shake_camera(from_x: float, range: float) -> void:
+	if not is_multiplayer_authority():
+		return
+		
+	var distance: float = abs(from_x - cmc.camera.global_position.x)
+	var t: float = inverse_lerp(range, 0, distance)
+	var amp = lerp(0, 100, t)
+	cmc.shake(amp)
+
 func overview_shell(shell: Shell) -> void:
 	if shell:
 		cmc.set_target(shell)

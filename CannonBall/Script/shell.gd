@@ -183,6 +183,9 @@ func land():
 		if game.has_node(fx):
 			game.get_node(fx).rpc("lifetime_end")
 
+	## 카메라 흔들림
+	game.players[1 - launcher].rpc("shake_camera", global_position.x, 2000)
+	
 	game.rpc("delete_object", self.name)
 	game.rpc("transit_game_state", "Turn", 3)
 

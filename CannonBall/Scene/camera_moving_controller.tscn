@@ -1,12 +1,47 @@
-[gd_scene load_steps=2 format=3 uid="uid://dv453ijcwqcn6"]
+[gd_scene load_steps=9 format=3 uid="uid://dv453ijcwqcn6"]
 
 [ext_resource type="Script" uid="uid://bouv6swbmsa2k" path="res://Script/camera_moving_controller.gd" id="1_trrk0"]
+[ext_resource type="Script" uid="uid://cgjrp217xxfik" path="res://addons/shaker/src/Vector2/shaker_component2D.gd" id="2_fmf4n"]
+[ext_resource type="Script" uid="uid://bps6bqb3l581x" path="res://addons/shaker/data/Vector2/BaseShakerType2D.gd" id="3_fol7r"]
+[ext_resource type="Script" uid="uid://c8mr5en2v3bca" path="res://addons/shaker/data/Vector2/ShakerTypeRandom2D.gd" id="4_kr6uy"]
+[ext_resource type="Script" uid="uid://3uoslnr5oab7" path="res://addons/shaker/data/Single/BaseShakerType1D.gd" id="5_0s4f7"]
+[ext_resource type="Script" uid="uid://c8m78r1w6wcu5" path="res://addons/shaker/data/Vector2/ShakerPreset2D.gd" id="6_gnqbm"]
+
+[sub_resource type="Resource" id="Resource_8vvee"]
+script = ExtResource("4_kr6uy")
+seed = 0
+amplitude = Vector2(100, 100)
+offset = Vector2(0, 0)
+BlendingMode = 0
+fade_in = 0.0
+fade_out = 0.0
+start_percent = 0.0
+end_percent = 1.0
+_temp_graph = false
+bake_internal = 64
+metadata/_custom_type_script = "uid://c8mr5en2v3bca"
+
+[sub_resource type="Resource" id="Resource_e0ca8"]
+script = ExtResource("6_gnqbm")
+PositionShake = Array[ExtResource("3_fol7r")]([SubResource("Resource_8vvee")])
+RotationShake = Array[ExtResource("5_0s4f7")]([])
+ScaleShake = Array[ExtResource("3_fol7r")]([])
+bake_internal = 64
+__follow_timeline = false
+metadata/_custom_type_script = "uid://c8m78r1w6wcu5"
 
 [node name="CameraMovingController" type="Node2D"]
 script = ExtResource("1_trrk0")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2.65837e-05, 5.99623e-05)
 zoom = Vector2(0.7, 0.7)
+
+[node name="ShakerComponent2D" type="Node2D" parent="Camera2D"]
+script = ExtResource("2_fmf4n")
+duration = 0.25
+shakerPreset = SubResource("Resource_e0ca8")
+metadata/_custom_type_script = "uid://cgjrp217xxfik"
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
