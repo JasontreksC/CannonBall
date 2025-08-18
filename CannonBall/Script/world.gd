@@ -74,12 +74,11 @@ func gen_HDF(xr: XRange, type: int, target: int, hitDamage: int, lifetime: float
 	dfPool.add_child(hdf)
 	return hdf
 
-func gen_TDF(xr: XRange, type: int, target: int, tickDamage: int, tickInterval: float, lifeturn: int) -> TickDamageField:
+func gen_TDF(xr: XRange, target: int, tickDamage: int, tickInterval: float, lifeturn: int) -> TickDamageField:
 	var psTDF: PackedScene = load("res://Scene/tick_damage_field.tscn")
 	var tdf: TickDamageField = psTDF.instantiate()
 
 	tdf.xrange = xr
-	tdf.type = type
 	tdf.target = target
 	tdf.tickDamage = tickDamage
 	tdf.tickInterval = tickInterval

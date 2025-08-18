@@ -243,10 +243,8 @@ script = ExtResource("1_w8ob6")
 
 [node name="Smoke" type="GPUParticles2D" parent="."]
 material = SubResource("ShaderMaterial_14n6s")
-emitting = false
 amount = 100
 lifetime = 5.0
-one_shot = true
 explosiveness = 1.0
 interpolate = false
 visibility_rect = Rect2(-50000, -100, 100000, 200)
@@ -256,5 +254,10 @@ process_material = SubResource("ParticleProcessMaterial_70tkk")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_w8ob6")
+
+[node name="Line2D2" type="Line2D" parent="."]
+points = PackedVector2Array(-400, 0, 400, 0)
+width = 100.0
+default_color = Color(1, 0, 1, 0.690196)
 
 [connection signal="finished" from="Smoke" to="." method="_on_smoke_finished"]

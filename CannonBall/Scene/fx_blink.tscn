@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5jvtt7nlhdmg"]
+[gd_scene load_steps=7 format=3 uid="uid://c5jvtt7nlhdmg"]
 
 [sub_resource type="Gradient" id="Gradient_hnf0f"]
 offsets = PackedFloat32Array(0, 0.159341, 0.535714)
@@ -40,10 +40,26 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.25)
 }
 
+[sub_resource type="Animation" id="Animation_vxy51"]
+resource_name = "blink_stronger"
+length = 0.25
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(5, -0.125, 0, 0, 12.9781, 50, -0.0432185, -1.79094, 0.125, 0, 1, -0.00513668, 13.2529, 0.125, 0),
+"times": PackedFloat32Array(0, 0.0607272, 0.25)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vxy51"]
 _data = {
 &"RESET": SubResource("Animation_m651h"),
-&"blink": SubResource("Animation_hnf0f")
+&"blink": SubResource("Animation_hnf0f"),
+&"blink_stronger": SubResource("Animation_vxy51")
 }
 
 [node name="FxBlink" type="Node2D"]

@@ -1,10 +1,10 @@
 [gd_scene load_steps=22 format=3 uid="uid://iahjy3vehb1k"]
 
 [ext_resource type="Script" uid="uid://d1b6tfydwaxfi" path="res://Script/fx_flame.gd" id="1_a54sa"]
-[ext_resource type="Shader" uid="uid://br01u0n2nfl3t" path="res://Scene/glow.tres" id="1_hvq6x"]
 [ext_resource type="Script" uid="uid://d245udsl2w1c6" path="res://addons/shaker/src/shaker_component.gd" id="2_dhcw4"]
 [ext_resource type="Shader" uid="uid://s4mnyl4kthwp" path="res://Shader/round.tres" id="2_mwkhl"]
 [ext_resource type="Script" uid="uid://dos7skjy20jww" path="res://addons/shaker/data/ShakerProperty.gd" id="3_70t8q"]
+[ext_resource type="Shader" uid="uid://cnjd1i6rlfb73" path="res://Material/glow.tres" id="3_1806s"]
 [ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="4_1806s"]
 [ext_resource type="Script" uid="uid://psuvrsw8sxm" path="res://addons/shaker/data/Single/ShakerTypeRandom1D.gd" id="4_a54sa"]
 
@@ -53,9 +53,9 @@ color = Color(1, 0.278431, 0, 1)
 emission_curve = SubResource("CurveTexture_mwkhl")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hvq6x"]
-shader = ExtResource("1_hvq6x")
-shader_parameter/base_color = Color(1, 0.278431, 0, 1)
-shader_parameter/emission = 10.0
+shader = ExtResource("3_1806s")
+shader_parameter/base_color = Color(1, 0.227451, 0, 1)
+shader_parameter/emission = 20.0
 
 [sub_resource type="Resource" id="Resource_a54sa"]
 script = ExtResource("4_a54sa")

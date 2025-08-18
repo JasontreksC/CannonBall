@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://dc64ulpev07vq"]
 
 [ext_resource type="Script" uid="uid://bg7vk1q7gph4b" path="res://Script/fx_fire_field.gd" id="1_ju5y0"]
-[ext_resource type="Shader" uid="uid://dxbtld6bpcy4n" path="res://Shader/fire_field.tres" id="2_dfhjc"]
+[ext_resource type="Shader" uid="uid://bk7fkj144ch3r" path="res://Shader/fire_field.tres" id="2_dfhjc"]
 [ext_resource type="Texture2D" uid="uid://ciem8l1tgm04n" path="res://Asset/alpha_texture/T_Gradient_circle22.jpg" id="3_rwv0w"]
 [ext_resource type="Texture2D" uid="uid://dhs8xc24lyhor" path="res://Asset/alpha_texture/T_VFX_Noise_465.png" id="4_q4u50"]
 

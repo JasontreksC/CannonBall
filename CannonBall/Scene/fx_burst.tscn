@@ -1,7 +1,7 @@
 [gd_scene load_steps=41 format=3 uid="uid://eriwpbivkspp"]
 
 [ext_resource type="Script" uid="uid://clxvigsqvso6p" path="res://Script/fx_burst.gd" id="1_8uaop"]
-[ext_resource type="Shader" uid="uid://cnjd1i6rlfb73" path="res://Scene/glow.tres" id="2_8uaop"]
+[ext_resource type="Shader" uid="uid://cnjd1i6rlfb73" path="res://Material/glow.tres" id="2_8uaop"]
 [ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="2_nf4r3"]
 [ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="3_ddqip"]
 [ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="5_ddqip"]

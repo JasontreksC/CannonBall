@@ -2,15 +2,16 @@ extends Node2D
 class_name Shell
 
 enum DamageType {
-	RADIAL = 0, # 연못 피해절감
-	AREAL = 1      
+	ABSOLUTE = 0, # 독탄 (3), 연못에 탄착한 일반탄 화염탄 (1)
+	REDUCE_BY_POND = 1, # 연못 피해절감, 화염탄
+	REDUCE_BY_DISTANCE = 2 # 거리 비례 피해절감, 일반탄
 }
 
 
 var shellType: int = 0 # 일반탄 0, 화염탄 1, 독탄 2
 
 @export_category("Damage Field Property")
-@export var range: float
+@export var radius: float
 @export var hitDamage: int
 @export var tickDamage: int
 @export var lifetimeTurn: int
@@ -64,7 +65,7 @@ func land():
 		return
 	
 	var newXR: XRange = XRange.new()
-	newXR.set_from_center(global_position.x, range / 2)
+	newXR.set_from_center(global_position.x, radius)
 
 	# var df: DamageField = game.world.gen_damage_field(pos, shellType, 1 - launcher, range / 2, hitDamage, tickDamage, tickInterval, lifetimeTurn)
 
@@ -86,15 +87,17 @@ func land():
 
 	match shellType: 
 		0: ## 일반탄
-			genertated_hdf = game.world.gen_HDF(newXR, DamageType.RADIAL, 1 - launcher, hitDamage, 0.0)
-
 			if landedPond:
+				game.world.gen_HDF(newXR, DamageType.ABSOLUTE, 1 - launcher, 1, 0.0).activate()
+				
 				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				 	"dir": direction,
 					"mode" : 1
 				})
 			else:
+				game.world.gen_HDF(newXR, DamageType.REDUCE_BY_DISTANCE, 1 - launcher, hitDamage, 0.0).activate()
+				
 				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(5)) as PackedScene, "none", {
 					"global_position": Vector2(newXR.centerX, 0)
 				})
@@ -105,26 +108,20 @@ func land():
 					"s_max": 30,
 					"mode" : 0 
 				})
-			
 
 		1: ## 화염탄
-			genertated_hdf = game.world.gen_HDF(newXR, DamageType.RADIAL, 1 - launcher, hitDamage, 0.0)
-
 			if landedPond: # 연못 안에 들어옴
-				newXR.radius = 0
+				game.world.gen_HDF(newXR, DamageType.ABSOLUTE, 1 - launcher, 1, 0.0).activate()
+				
 				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				 	"dir": direction,
 					"mode" : 1
 				})
 			else:		   # 연못 밖
-				if overlappedPonds.size() > 0: # 연못과 겹침
-					for p in overlappedPonds: # 대미지 필드에서 연못과 겹치는 부분을 제거
-						newXR.substract(p.xrange)
+				# 힡 대미지 필드
+				game.world.gen_HDF(newXR, DamageType.REDUCE_BY_POND, 1 - launcher, hitDamage, 0.0).activate()
 
-				# 틱 대미지 필드 생성
-				genertated_tdf = game.world.gen_TDF(newXR, DamageType.AREAL, 1 - launcher, tickDamage, tickInterval, lifetimeTurn)
-				
 				# 화염 폭발
 				game.server_spawn_directly(load("res://Scene/fx_fire_exlposion.tscn"), "none", {
 					"global_position": Vector2(newXR.centerX, 0),
@@ -137,7 +134,16 @@ func land():
 					"mode" : 0 
 				})
 				
-				# 화염 필드 이펙트
+				# 틱 대미지 필드
+				newXR.set_from_center(newXR.centerX, newXR.radius / 2)
+
+				if overlappedPonds.size() > 0: # 연못과 겹침
+					for p in overlappedPonds: # 대미지 필드에서 연못과 겹치는 부분을 제거
+						newXR.substract(p.xrange)
+
+				game.world.gen_TDF(newXR, 1 - launcher, tickDamage, tickInterval, lifetimeTurn).activate()
+
+				# 화염 필드
 				var fxFireField = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(6)) as PackedScene, "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 					"width": newXR.radius * 2
@@ -159,19 +165,15 @@ func land():
 						b.start_burn()          # 덤불 점화 
 	
 		2: ## 독탄
-			if landedPond:
-				genertated_tdf = game.world.gen_TDF(landedPond.xrange, DamageType.AREAL, 1 - launcher, tickDamage, tickInterval, lifetimeTurn)
+			if landedPond: # 연못에 탄착
+						   # 틱 대미지 (연못 독성화)
+				game.world.gen_TDF(landedPond.xrange, 1 - launcher, tickDamage, tickInterval, lifetimeTurn).activate()
 				landedPond.rpc("set_poisoned")
-
-				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
-					"global_position": Vector2(newXR.centerX, 0),
-				 	"dir": direction,
-					"mode" : 1
-				})
 			else:
-				genertated_hdf = game.world.gen_HDF(newXR, DamageType.AREAL, 1 - launcher, hitDamage, lifetimeTurn)
+				# 힛 대미지
+				game.world.gen_HDF(newXR, DamageType.ABSOLUTE, 1 - launcher, hitDamage, 3).activate()
 				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(7)) as PackedScene, "none", {
-					"global_position": Vector2(newXR.centerX, 0),
+						"global_position": Vector2(newXR.centerX, 0),
 				})
 	
 	if genertated_hdf:
@@ -184,7 +186,7 @@ func land():
 			game.get_node(fx).rpc("lifetime_end")
 
 	## 카메라 흔들림
-	game.players[1 - launcher].rpc("shake_camera", global_position.x, 2000)
+	game.players[1 - launcher].rpc("shake_camera", global_position.x, 1000)
 	
 	game.rpc("delete_object", self.name)
 	game.rpc("transit_game_state", "Turn", 3)
@@ -222,8 +224,3 @@ func _physics_process(delta: float) -> void:
 	direction = global_position.direction_to(new_pos)
 	global_position = new_pos
 	#global_position = global_position.round()
-	
-	
-func _process(delta: float) -> void:
-	pass
-	

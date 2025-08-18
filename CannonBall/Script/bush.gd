@@ -40,9 +40,7 @@ func start_burn() -> void:
 	
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:
-	print("bush deleted!")
 	queue_free()
-	# world.game.delete_object(get_path())
 
 
 func _ready() -> void:

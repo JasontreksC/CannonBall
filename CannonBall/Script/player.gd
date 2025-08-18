@@ -17,7 +17,6 @@ var isAttack: bool = true
 var attackChance: bool = false
 var selectedShell: int = 0
 # var isWalking: bool = false
-var inPondID: int = 0
 
 @export var psCMC: PackedScene
 
@@ -25,6 +24,7 @@ var inPondID: int = 0
 @export var canMove: bool = false
 @export var lifeTime: float = 60;
 @export var hp: int = 20
+@export var inPondID: int = 0
 
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
@@ -39,11 +39,9 @@ var cmc: CameraMovingController = null
 var cannon: Cannon = null
 
 @rpc("any_peer", "call_local")
-func get_damage(damage: int, type: int):
+func get_damage(damage: int):
 	if not is_multiplayer_authority():
 		return
-	if inPondID and type == 0:
-		damage /= 2
 	
 	damage = min(damage, hp)
 	hp -= damage
@@ -66,8 +64,8 @@ func shake_camera(from_x: float, range: float) -> void:
 		
 	var distance: float = abs(from_x - cmc.camera.global_position.x)
 	var t: float = inverse_lerp(range, 0, distance)
-	var amp = lerp(0, 100, t)
-	cmc.shake(amp)
+	var amplitude = lerp(0, 100, clamp(t, 0, 1))
+	cmc.shake(amplitude)
 
 func overview_shell(shell: Shell) -> void:
 	if shell:

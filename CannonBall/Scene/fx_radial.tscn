@@ -34,6 +34,7 @@ amount = 50
 lifetime = 5.0
 explosiveness = 1.0
 randomness = 1.0
+visibility_rect = Rect2(-50000, -100, 100000, 200)
 trail_enabled = true
 trail_lifetime = 0.1
 process_material = ExtResource("2_3gvqb")

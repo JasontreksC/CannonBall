@@ -48,6 +48,7 @@ func set_zoom(zoom: float, dur: float) -> void:
 
 func shake(amp: float) -> void:
 	shaker.shakerPreset.PositionShake[0].amplitude = Vector2(amp, amp)
+	print(shaker.shakerPreset.PositionShake[0].amplitude)
 	shaker.play_shake()
 
 func _ready() -> void:
