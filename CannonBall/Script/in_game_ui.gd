@@ -18,15 +18,11 @@ var zoomFinished: bool = true
 @onready var lbP1Time: Label = $Dashboard/P1Time
 @onready var lbP2Time: Label = $Dashboard/P2Time
 
-## ShellDial
-@onready var shellDial: TextureRect = $ShellDial
-@onready var spShell0: Sprite2D = $ShellDial/PolygonButton_Top/SP_Shell0
-@onready var spShell1: Sprite2D = $ShellDial/PolygonButton_Mid/SP_Shell1
-@onready var spShell2: Sprite2D = $ShellDial/PolygonButton_Bot/SP_Shell2
-@onready var spShellOutline: Sprite2D = $ShellDial/SP_Outline
+## ShellSelector
+@onready var subuiShellSelector : SubUIShellSelector = $SubUI_ShellSelector
 
-## state
-@onready var stateText: Control = $State
+## DashBoard
+@onready var subuiDashBoard : SubUIDashBoard = $SubUIDashBoard
 
 var uiMgr: UIManager = null
 var game: Game = null
@@ -85,21 +81,6 @@ func remove_hp_points(player: int, count: int):
 			count -= 1
 		if count <= 0:
 			break
-			
-	## Shell Dial
-func set_shell_dial(num: int):
-	match num:
-		0:
-			spShellOutline.global_position = spShell0.global_position
-		1:
-			spShellOutline.global_position = spShell1.global_position
-		2:
-			spShellOutline.global_position = spShell2.global_position
-
-## state
-func set_state_text(text: String) -> void:
-	var label: Label =  stateText.get_child(0)
-	label.text = text
 	
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
@@ -107,10 +88,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if uiMgr.root.sceneMgr.currentSceneNum == 1:
 		svTelescope.world_2d = uiMgr.root.get_main_viewport_world()
-	
-	if not multiplayer.is_server():
-		shellDial.position.x += 1920
-		shellDial.scale.x *= -1
 	
 	for i in range(20):
 		var psHPCell: PackedScene = load("res://Scene/hp_cell.tscn")
@@ -124,6 +101,7 @@ func _ready() -> void:
 		p2HPCell.position.x =  -62 - 30 * i
 		p2HPCells.add_child(p2HPCell)
 	
+	
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
 		
@@ -131,34 +109,3 @@ func _process(delta: float) -> void:
 func set_player_life_time(p1time: float, p2time: float) -> void:
 	lbP1Time.text = "%.1f" % p1time
 	lbP2Time.text = "%.1f" % p2time
-
-
-func _on_polygon_button_top_pressed() -> void:
-	if not game:
-		return
-	if multiplayer.is_server():
-		game.players[0].selectedShell = 0
-	else:
-		game.players[1].selectedShell = 0
-	
-	set_shell_dial(0)
-
-func _on_polygon_button_mid_pressed() -> void:
-	if not game:
-		return
-	if multiplayer.is_server():
-		game.players[0].selectedShell = 1
-	else:
-		game.players[1].selectedShell = 1
-		
-	set_shell_dial(1)
-
-func _on_polygon_button_bot_pressed() -> void:
-	if not game:
-		return
-	if multiplayer.is_server():
-		game.players[0].selectedShell = 2
-	else:
-		game.players[1].selectedShell = 2
-		
-	set_shell_dial(2)

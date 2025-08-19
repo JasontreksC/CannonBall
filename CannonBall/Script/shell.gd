@@ -169,6 +169,12 @@ func land():
 						   # 틱 대미지 (연못 독성화)
 				game.world.gen_TDF(landedPond.xrange, 1 - launcher, tickDamage, tickInterval, lifetimeTurn).activate()
 				landedPond.rpc("set_poisoned")
+				
+				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+					"global_position": Vector2(newXR.centerX, 0),
+				 	"dir": direction,
+					"mode" : 1
+				})
 			else:
 				# 힛 대미지
 				game.world.gen_HDF(newXR, DamageType.ABSOLUTE, 1 - launcher, hitDamage, 3).activate()
@@ -219,8 +225,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		isFalling = true
 	
-	#global_position = p0 + Vector2(x, y)
 	var new_pos: Vector2 = p0 + Vector2(x, y)
 	direction = global_position.direction_to(new_pos)
 	global_position = new_pos
-	#global_position = global_position.round()

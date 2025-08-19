@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=3 uid="uid://q64lhk0stdly"]
+
+[ext_resource type="Script" uid="uid://nmmbgtant46v" path="res://Script/sub_ui_dash_board.gd" id="1_7shko"]
+
+[sub_resource type="Gradient" id="Gradient_71i6m"]
+offsets = PackedFloat32Array(0, 0.377528, 1)
+colors = PackedColorArray(0.219608, 0.219608, 0.219608, 0.352941, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7shko"]
+gradient = SubResource("Gradient_71i6m")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_71i6m"]
+font_size = 64
+
+[node name="SubUIDashBoard" type="TextureRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7shko")
+script = ExtResource("1_7shko")
+
+[node name="Label1" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -563.0
+offset_top = 29.505
+offset_right = 563.0
+offset_bottom = 210.505
+grow_horizontal = 2
+text = "상대를 플레이어를
+기다리는중..."
+label_settings = SubResource("LabelSettings_71i6m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -563.0
+offset_top = 29.505
+offset_right = 563.0
+offset_bottom = 210.505
+grow_horizontal = 2
+text = "상대를 플레이어를
+기다리는중..."
+label_settings = SubResource("LabelSettings_71i6m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar_Outter" type="Line2D" parent="."]
+position = Vector2(0, 5)
+points = PackedVector2Array(0, 0, 1920, 0)
+default_color = Color(0.141176, 0.141176, 0.141176, 0.439216)
+
+[node name="ProgressBar_Inner" type="Line2D" parent="ProgressBar_Outter"]
+points = PackedVector2Array(0, 0, 1920, 0)
+default_color = Color(0.753984, 0.753984, 0.753984, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

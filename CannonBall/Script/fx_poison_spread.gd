@@ -1,7 +1,10 @@
 extends Node2D
 
-@onready var particle: GPUParticles2D = $GPUParticles2D
+@onready var gpuPoisonSpread1: GPUParticles2D = $PoisonSpread1
+@onready var gpuPoisonSpread2: GPUParticles2D = $PoisonSpread2
+
 var game: Game = null
+var finished: int = 0
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
@@ -12,9 +15,21 @@ func _enter_tree() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	particle.one_shot = true
-	particle.emitting = true
+	gpuPoisonSpread1.one_shot = true
+	gpuPoisonSpread1.emitting = true
+	gpuPoisonSpread1.restart()
+	
+	gpuPoisonSpread2.one_shot = true
+	gpuPoisonSpread2.emitting = true
+	gpuPoisonSpread2.restart()
+	
+func _process(delta: float) -> void:
+	if finished == 2:
+		game.rpc("delete_object", self.name)
+		finished += 1
 
-
-func _on_gpu_particles_2d_finished() -> void:
-	game.rpc("delete_object", self.name)
+func _on_poison_spread_1_finished() -> void:
+	finished += 1
+	
+func _on_poison_spread_2_finished() -> void:
+	finished += 1
