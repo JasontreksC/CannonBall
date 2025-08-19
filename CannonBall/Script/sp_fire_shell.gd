@@ -14,3 +14,8 @@ func _process(delta: float) -> void:
 	self.material = self.material.duplicate()
 	self.material.set("shader_parameter/emission", emission)
 	fireTail.global_rotation = fireShell.direction.angle() - PI / 2
+
+
+@rpc("any_peer", "call_local")
+func lifetime_end() -> void:
+	pass

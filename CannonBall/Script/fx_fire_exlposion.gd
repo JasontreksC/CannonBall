@@ -11,6 +11,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	gpuFireExplo.emitting = true
 	gpuFireExplo.one_shot = true
+	gpuFireExplo.restart()
 
 func _on_fire_explo_finished() -> void:
 	game.rpc("delete_object", self.name)

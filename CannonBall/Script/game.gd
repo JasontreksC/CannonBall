@@ -8,7 +8,6 @@ var transmitQueue: Array[String]
 
 var peerID: int = 0
 var players: Array[Player]
-# var objects: Dictionary[String, Node2D]
 
 @onready var world: World = $World
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner

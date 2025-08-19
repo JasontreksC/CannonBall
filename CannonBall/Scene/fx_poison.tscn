@@ -1,0 +1,58 @@
+[gd_scene load_steps=11 format=3 uid="uid://c8evdvuky5slu"]
+
+[ext_resource type="Script" uid="uid://dwhvyc4h0tdqw" path="res://Script/fx_poison.gd" id="1_15mdp"]
+[ext_resource type="Texture2D" uid="uid://bla10hrxsd0it" path="res://Asset/particles/poison_particle.png" id="1_omc4w"]
+
+[sub_resource type="Curve" id="Curve_c8bs0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.50272, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_oolk7"]
+curve = SubResource("Curve_c8bs0")
+
+[sub_resource type="Curve" id="Curve_15mdp"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.266979, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_c8bs0"]
+curve = SubResource("Curve_15mdp")
+
+[sub_resource type="Curve" id="Curve_omc4w"]
+_limits = [10.0, 1000.0, 0.0, 1.0]
+_data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(0.257611, 10), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_15mdp"]
+curve = SubResource("Curve_omc4w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_omc4w"]
+particle_flag_disable_z = true
+spread = 0.0
+initial_velocity_min = 100.0
+initial_velocity_max = 1000.0
+velocity_limit_curve = SubResource("CurveTexture_15mdp")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_curve = SubResource("CurveTexture_c8bs0")
+alpha_curve = SubResource("CurveTexture_oolk7")
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_omc4w"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="FxPoison" type="Node2D"]
+script = ExtResource("1_15mdp")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 100
+texture = ExtResource("1_omc4w")
+lifetime = 5.0
+visibility_rect = Rect2(-100000, -100, 200000, 200)
+process_material = SubResource("ParticleProcessMaterial_omc4w")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_omc4w")

@@ -24,6 +24,8 @@ func _ready() -> void:
 	gpSmoke.one_shot = true
 	gpFlame.emitting = true
 	gpSmoke.emitting = true
+	gpFlame.restart()
+	gpSmoke.restart()
 	
 	var ampBlink: AnimationPlayer = fxBlink.get_child(1)
 	ampBlink.play("blink")

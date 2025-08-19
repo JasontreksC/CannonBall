@@ -65,7 +65,7 @@ properties/0/replication_mode = 1
 z_index = 100
 script = ExtResource("1_seuo7")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+[node name="PoisonSpread1" type="GPUParticles2D" parent="."]
 process_mode = 3
 amount = 100
 texture = ExtResource("1_mbulw")
@@ -77,7 +77,7 @@ collision_base_size = 0.0
 visibility_rect = Rect2(-50000, -100, 100000, 200)
 process_material = SubResource("ParticleProcessMaterial_ksd7w")
 
-[node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
+[node name="PoisonSpread2" type="GPUParticles2D" parent="."]
 process_mode = 3
 amount = 100
 texture = ExtResource("1_mbulw")
@@ -97,5 +97,5 @@ default_color = Color(1, 0, 1, 0.690196)
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_seuo7")
 
-[connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]
-[connection signal="finished" from="GPUParticles2D2" to="." method="_on_gpu_particles_2d_finished"]
+[connection signal="finished" from="PoisonSpread1" to="." method="_on_poison_spread_1_finished"]
+[connection signal="finished" from="PoisonSpread2" to="." method="_on_poison_spread_2_finished"]

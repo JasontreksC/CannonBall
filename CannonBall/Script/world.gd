@@ -57,7 +57,10 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 			})
 			shell.attatchedFx.append(fxSmoke.name)
 		2:
-			pass
+			var fxPoison: Node2D = game.server_spawn_directly(load("res://Scene/fx_poison.tscn"), "none", {
+				"attatch" : shell.name,
+			})
+			shell.attatchedFx.append(fxPoison.name)
 	
 	shell.rpc_id(multiplayer.get_remote_sender_id(), "on_spawned")
 
