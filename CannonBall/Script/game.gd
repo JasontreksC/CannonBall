@@ -150,7 +150,13 @@ func update_lifeturn():
 func quit_game():
 	root.sceneMgr.set_scene(2)
 	root.sceneMgr.currentScene.set("winner", winner)
-		
+
+func get_my_player() -> Player:
+	if has_node(str(peerID)):
+		return get_node(str(peerID))
+	else:
+		return null
+
 func _enter_tree() -> void:
 	root = get_parent().root
 	root.uiMgr.set_ui(1)
@@ -185,15 +191,13 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
-		var timeLeft: float = stateMachine.get_current_process_time()
-		ui.set_state_text("접속 성공! 게임 시작까지 %d 초 전" % ceil(timeLeft))
+		pass
 		
 	elif stateMachine.is_transit_process("Turn", "Shelling", delta):
 		pass
 		
 	elif stateMachine.is_transit_process("Shelling", "Turn", delta):
-		var timeLeft: float = stateMachine.get_current_process_time()
-		ui.set_state_text("공수전환까지 %d초 전" % ceil(timeLeft))
+		pass
 		
 	elif stateMachine.is_transit_process("Turn", "EndSession", delta):
 		pass
@@ -218,11 +222,8 @@ func _process(delta: float) -> void:
 					
 			"Shelling":
 				pass
-			#if multiplayer.is_server():
-					#update_lifetime_sec(delta)
 					
 			"EndSession":
-				print("엔드 세션")
 				pass
 	
 	if check_transmit(["p1_defeat"]):
@@ -238,20 +239,23 @@ func on_exit_WaitSession():
 	players[0].canMove = true
 	players[1].canMove = true
 
+	ui.subuiDashBoard.show_text("접속 성공!\n잠시 후 게임 시작", 3)
+
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
 	
 	if is_p1_turn():
-		ui.set_state_text("Player1 공격!")
+		ui.subuiDashBoard.show_text("Player1 공격", -1)
 	else:
-		ui.set_state_text("Player2 공격!")
+		ui.subuiDashBoard.show_text("Player2 공격", -1)
 		
 func on_exit_Turn():
 	turnCount += 1
 		
 func on_entry_Shelling():
-	pass
+	ui.subuiDashBoard.hide_text()
+
 func on_exit_Shelling():
 	if multiplayer.is_server():
 		update_lifeturn()
@@ -260,8 +264,10 @@ func on_exit_Shelling():
 	else:
 		players[1].overview_reset()
 
+	ui.subuiDashBoard.show_text("잠시후 공수전환", 3)
+
 func on_entry_EndSession():
-	ui.set_state_text("게임 종료!")
+	ui.subuiDashBoard.show_text("게임 종료!", 5)
 	
 	players[0].canMove = false
 	players[1].canMove = false

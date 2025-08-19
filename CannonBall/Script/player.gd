@@ -75,6 +75,27 @@ func overview_shell(shell: Shell) -> void:
 func overview_reset() -> void:
 	cmc.set_target(nCamTargetDefault)
 	cmc.set_zoom(0.7, 0.5)
+	
+func h_movement(mode: String, speed: float, delta: float):
+	if not canMove:
+		return
+	
+	var direction := Input.get_axis("left", "right")
+	if direction:
+		velocity = direction * speed
+	else:
+		velocity = move_toward(velocity, 0, 50)
+		
+	match mode:
+		"self":
+			# 단독 무브먼트
+			self.global_position.x += velocity * delta
+			if direction:
+				character.scale.x = direction
+		"cannon":
+			# 대포 무브먼트
+			cannon.global_position.x += velocity * delta
+			self.global_position.x = cannon.get_handle_x()
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -206,18 +227,6 @@ func _physics_process(delta: float) -> void:
 						telescopeZoomOption -= 1
 						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
 						game.ui.zoom_cam_telescope(telescopeZoomOption)				
-				
-
-
-				if Input.is_action_just_pressed("num1"):
-					print("일반탄 선택")
-					selectedShell = 0
-				elif Input.is_action_just_pressed("num2"):
-					print("화염탄 선택")
-					selectedShell = 1
-				elif Input.is_action_just_pressed("num3"):
-					print("독탄 선택")
-					selectedShell = 2
 
 	# 높이를 항상 바닥에 고정
 	if not inPondID:
@@ -230,29 +239,13 @@ func _physics_process(delta: float) -> void:
 		else:
 			isInCannon = false
 			
+
+func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("space"):
 		overview_reset()
-	
-func h_movement(mode: String, speed: float, delta: float):
-	if not canMove:
-		return
-	
-	var direction := Input.get_axis("left", "right")
-	if direction:
-		velocity = direction * speed
-	else:
-		velocity = move_toward(velocity, 0, 50)
-		
-	match mode:
-		"self":
-			# 단독 무브먼트
-			self.global_position.x += velocity * delta
-			if direction:
-				character.scale.x = direction
-		"cannon":
-			# 대포 무브먼트
-			cannon.global_position.x += velocity * delta
-			self.global_position.x = cannon.get_handle_x()
+	if Input.is_action_just_pressed("tab"):
+		selectedShell = (selectedShell + 1) % 3 
+
 
 # 전환 이벤트. 상태 전환이 발생했을 때 한번만 실행된다.
 func on_exit_Idle():
