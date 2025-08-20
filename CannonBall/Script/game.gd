@@ -130,8 +130,7 @@ func update_game_time(delta: float) -> void:
 			
 		if players[1].isAttack :
 			players[1].lifeTime -= delta
-		
-		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
+			players[1].rpc("set_lifetime", players[1].lifeTime)
 
 @rpc("any_peer", "call_local")
 func regist_lifeturn(key: String, turn: int):
@@ -214,7 +213,6 @@ func _process(delta: float) -> void:
 					
 			"Turn":
 				if multiplayer.is_server():
-					#update_lifetime_sec(delta)
 					update_game_time(delta)
 					
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
@@ -248,14 +246,22 @@ func on_entry_Turn():
 	
 	if is_p1_turn():
 		ui.subuiDashBoard.show_text("Player1 공격", -1)
+		ui.subuiDashBoard.focus_player_info(0)
 	else:
 		ui.subuiDashBoard.show_text("Player2 공격", -1)
+		ui.subuiDashBoard.focus_player_info(1)
 		
 func on_exit_Turn():
 	turnCount += 1
 		
 func on_entry_Shelling():
 	ui.subuiDashBoard.hide_text()
+
+	if is_p1_turn():
+		ui.subuiDashBoard.unfocus_player_info(1)
+	else:
+		ui.subuiDashBoard.unfocus_player_info(0)
+
 
 func on_exit_Shelling():
 	if multiplayer.is_server():

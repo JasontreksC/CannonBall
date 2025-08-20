@@ -57,6 +57,11 @@ func get_damage(damage: int):
 		else:
 			game.rpc("send_transmit", "p2_defeat")
 
+
+@rpc("any_peer", "call_remote")
+func set_lifetime(time: float) -> void:
+	self.lifeTime = time
+
 @rpc("any_peer", "call_local")
 func shake_camera(from_x: float, range: float) -> void:
 	if not is_multiplayer_authority():

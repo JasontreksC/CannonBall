@@ -14,10 +14,6 @@ var zoomFinished: bool = true
 @onready var p2HPCells: Node2D = $P2HP/HPBase/HPCells
 @onready var lbFps: Label = $fps
 
-# Time
-@onready var lbP1Time: Label = $Dashboard/P1Time
-@onready var lbP2Time: Label = $Dashboard/P2Time
-
 ## ShellSelector
 @onready var subuiShellSelector : SubUIShellSelector = $SubUI_ShellSelector
 
@@ -104,8 +100,3 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
-		
-@rpc("any_peer", "call_local")		
-func set_player_life_time(p1time: float, p2time: float) -> void:
-	lbP1Time.text = "%.1f" % p1time
-	lbP2Time.text = "%.1f" % p2time
