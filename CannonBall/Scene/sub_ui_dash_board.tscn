@@ -29,9 +29,8 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -563.0
-offset_top = 29.505
 offset_right = 563.0
-offset_bottom = 210.505
+offset_bottom = 181.0
 grow_horizontal = 2
 text = "상대를 플레이어를
 기다리는중..."
@@ -46,9 +45,8 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -563.0
-offset_top = 29.505
 offset_right = 563.0
-offset_bottom = 210.505
+offset_bottom = 181.0
 grow_horizontal = 2
 text = "상대를 플레이어를
 기다리는중..."
@@ -57,12 +55,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ProgressBar_Outter" type="Line2D" parent="."]
-position = Vector2(0, 5)
+position = Vector2(0, -10)
 points = PackedVector2Array(0, 0, 1920, 0)
-default_color = Color(0.141176, 0.141176, 0.141176, 0.439216)
+width = 20.0
+default_color = Color(0, 0, 0, 1)
 
 [node name="ProgressBar_Inner" type="Line2D" parent="ProgressBar_Outter"]
 points = PackedVector2Array(0, 0, 1920, 0)
+width = 20.0
 default_color = Color(0.753984, 0.753984, 0.753984, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

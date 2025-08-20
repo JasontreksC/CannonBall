@@ -240,6 +240,7 @@ func on_exit_WaitSession():
 	players[1].canMove = true
 
 	ui.subuiDashBoard.show_text("접속 성공!\n잠시 후 게임 시작", 3)
+	ui.subuiDashBoard.set_pb_time(3)
 
 func on_entry_Turn():
 	if multiplayer.is_server():
@@ -265,6 +266,7 @@ func on_exit_Shelling():
 		players[1].overview_reset()
 
 	ui.subuiDashBoard.show_text("잠시후 공수전환", 3)
+	ui.subuiDashBoard.set_pb_time(3)
 
 func on_entry_EndSession():
 	ui.subuiDashBoard.show_text("게임 종료!", 5)
