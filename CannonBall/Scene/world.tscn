@@ -845,22 +845,18 @@ target = 1
 
 [node name="DamageFields" type="Node2D" parent="."]
 
-[node name="P1LeftEnd" type="Node2D" parent="."]
-position = Vector2(-10000, 0)
-
-[node name="P1RightEnd" type="Node2D" parent="P1LeftEnd"]
-position = Vector2(9000, 0)
-
-[node name="Barricade" parent="P1LeftEnd/P1RightEnd" instance=ExtResource("11_6a5p4")]
-position = Vector2(200, 0)
+[node name="P1BarricadeL" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(-10200, 0)
 scale = Vector2(1.5, 1.5)
 
-[node name="P2LeftEnd" type="Node2D" parent="."]
-position = Vector2(1000, 0)
+[node name="P1BarricadeR" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(-800, 0)
+scale = Vector2(1.5, 1.5)
 
-[node name="P2RightEnd" type="Node2D" parent="P2LeftEnd"]
-position = Vector2(9000, 0)
+[node name="P2BarricadeL" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(800, 0)
+scale = Vector2(1.5, 1.5)
 
-[node name="Barricade2" parent="P2LeftEnd" instance=ExtResource("11_6a5p4")]
-position = Vector2(-200, 0)
+[node name="P2BarricadeR" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(10200, 0)
 scale = Vector2(1.5, 1.5)

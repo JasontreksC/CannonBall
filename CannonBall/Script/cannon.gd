@@ -145,6 +145,18 @@ func _physics_process(delta: float) -> void:
 	# 항상 바닥에 고정
 	if not inPondID:
 		self.global_position.y = 0
+
+
+func _process(delta: float) -> void:
+	if not is_multiplayer_authority():
+		return
+
+	if multiplayer.is_server():
+		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p1_left_end"] + 200, world.vertical_boundary["p1_right_end"])
+	else:
+		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p2_left_end"], world.vertical_boundary["p2_right_end"] - 200)
+
+
 func on_exit_Idle():
 	pass
 func on_entry_Idle():
