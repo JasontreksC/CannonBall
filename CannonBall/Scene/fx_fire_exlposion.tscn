@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://bhhrsex2ogmi0"]
 
 [ext_resource type="Script" uid="uid://djbbvp0e6nifg" path="res://Script/fx_fire_exlposion.gd" id="1_0bsif"]
-[ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Material/smoke_particle.tres" id="1_id0p0"]
+[ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Material/smoke_particle_1.tres" id="1_id0p0"]
 
 [sub_resource type="Curve" id="Curve_id0p0"]
 _data = [Vector2(0.629085, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -5.98869, 0.0, 0, 0]

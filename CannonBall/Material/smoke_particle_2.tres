@@ -1,7 +1,7 @@
-[gd_resource type="ShaderMaterial" load_steps=20 format=3 uid="uid://db8g0cp30dsja"]
+[gd_resource type="ShaderMaterial" load_steps=20 format=3 uid="uid://ixki4puppuw4"]
 
-[ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="1_kwqr2"]
-[ext_resource type="Texture2D" uid="uid://c6hgkkgiaeffq" path="res://Asset/alpha_texture/T_VFX_CloudNoise_Tiled.png" id="2_kwqr2"]
+[ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="1_23ufk"]
+[ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="2_x1vkx"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kou1b"]
 input_name = "color"
@@ -141,7 +141,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-575.459, 22.7524)
+graph_offset = Vector2(-352.027, -93.0217)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(2280, 340)
@@ -182,7 +182,7 @@ nodes/start_custom/0/position = Vector2(-220, 60)
 
 [resource]
 shader = SubResource("VisualShader_y3qc7")
-shader_parameter/scale = 0.7
-shader_parameter/offset = Vector2(1.11, -0.45)
-shader_parameter/smoke_pattern = ExtResource("2_kwqr2")
-shader_parameter/mask = ExtResource("1_kwqr2")
+shader_parameter/scale = 0.545
+shader_parameter/offset = Vector2(1.285, -0.45)
+shader_parameter/smoke_pattern = ExtResource("2_x1vkx")
+shader_parameter/mask = ExtResource("1_23ufk")
