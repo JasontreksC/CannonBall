@@ -97,6 +97,7 @@ process_material = SubResource("ParticleProcessMaterial_0bsif")
 replication_config = SubResource("SceneReplicationConfig_fyloc")
 
 [node name="Line2D2" type="Line2D" parent="."]
+visible = false
 points = PackedVector2Array(-600, 0, 600, 0)
 width = 100.0
 default_color = Color(1, 0, 1, 0.690196)

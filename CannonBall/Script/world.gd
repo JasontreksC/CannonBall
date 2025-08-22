@@ -13,6 +13,11 @@ class_name World
 @onready var nP2Bushes: Node2D = $BenefitFields/P2Bushes
 @onready var dfPool: Node2D = $DamageFields
 
+@onready var p1LeftEnd: Node2D = $P1LeftEnd
+@onready var p1RightEnd: Node2D = $P1LeftEnd/P1RighttEnd
+@onready var p2LeftEnd: Node2D = $P2LeftEnd
+@onready var p2RightEnd: Node2D = $P2LeftEnd/P2RighttEnd
+
 var game: Game = null
 
 func get_spawn_spot(tag: String) -> Vector2:

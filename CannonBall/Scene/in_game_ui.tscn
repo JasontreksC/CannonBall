@@ -13,7 +13,7 @@
 shader = ExtResource("3_oqxxn")
 shader_parameter/telescope_texture = ExtResource("4_7hrlq")
 shader_parameter/radius = 0.45
-shader_parameter/strength = 0.5
+shader_parameter/strength = 0.6
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_oqxxn"]
 viewport_path = NodePath("Telescope/SubViewport")

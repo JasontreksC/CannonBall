@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cb2d8j7se8qb8"]
+[gd_scene load_steps=14 format=3 uid="uid://cb2d8j7se8qb8"]
 
 [ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/world.gd" id="1_dlwip"]
 [ext_resource type="PackedScene" uid="uid://derjshwc5fbbg" path="res://Scene/bush.tscn" id="3_ejll3"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bgsoryatiix8w" path="res://Asset/environment/grass2.png" id="7_6a5p4"]
 [ext_resource type="Texture2D" uid="uid://dd8bkvcsptvxo" path="res://Asset/environment/grass1.png" id="8_nka0b"]
 [ext_resource type="Texture2D" uid="uid://dc5cauu8ttx3k" path="res://Asset/environment/tree.png" id="9_0gfnl"]
+[ext_resource type="PackedScene" uid="uid://bsp1fup76njb3" path="res://Scene/barricade.tscn" id="11_6a5p4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kufhj"]
 shader = ExtResource("6_y56vo")
@@ -90,7 +91,7 @@ region_rect = Rect2(0, -0.5, 1000, 100)
 
 [node name="Ground_1000_8" type="Sprite2D" parent="Ground"]
 texture_repeat = 2
-position = Vector2(-9400, 0)
+position = Vector2(-9408, 0)
 scale = Vector2(2, 2)
 texture = ExtResource("5_pcvp0")
 centered = false
@@ -126,12 +127,30 @@ region_rect = Rect2(0, -0.5, 300, 100)
 
 [node name="Undeground" type="Sprite2D" parent="Ground"]
 texture_repeat = 2
-position = Vector2(-10000, 200)
+position = Vector2(-12000, 200)
 scale = Vector2(2, 2)
 texture = ExtResource("3_y56vo")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 10000, 1000)
+region_rect = Rect2(0, 0, 12000, 1000)
+
+[node name="Ground_1000_9" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-12000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_10" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(10000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
 
 [node name="Background" parent="." instance=ExtResource("5_h7cfj")]
 
@@ -449,7 +468,7 @@ region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
 [node name="Grass29" type="Sprite2D" parent="Grasses"]
 texture_repeat = 1
 material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(2707, 0)
+position = Vector2(1881, 0)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("7_6a5p4")
 centered = false
@@ -460,7 +479,7 @@ region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
 [node name="Grass30" type="Sprite2D" parent="Grasses"]
 texture_repeat = 1
 material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(2624.44, 0)
+position = Vector2(1798.44, 0)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("8_nka0b")
 centered = false
@@ -471,40 +490,7 @@ region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
 [node name="Grass31" type="Sprite2D" parent="Grasses"]
 texture_repeat = 1
 material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(2771.71, 0)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("8_nka0b")
-centered = false
-offset = Vector2(-200, -298.95)
-region_enabled = true
-region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
-
-[node name="Grass32" type="Sprite2D" parent="Grasses"]
-texture_repeat = 1
-material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(2203, 0)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("7_6a5p4")
-centered = false
-offset = Vector2(-200, -298.95)
-region_enabled = true
-region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
-
-[node name="Grass33" type="Sprite2D" parent="Grasses"]
-texture_repeat = 1
-material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(2120.44, 0)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("7_6a5p4")
-centered = false
-offset = Vector2(-200, -298.95)
-region_enabled = true
-region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
-
-[node name="Grass34" type="Sprite2D" parent="Grasses"]
-texture_repeat = 1
-material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(2267.71, 0)
+position = Vector2(1945.71, 0)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("8_nka0b")
 centered = false
@@ -515,7 +501,7 @@ region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
 [node name="Grass35" type="Sprite2D" parent="Grasses"]
 texture_repeat = 1
 material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(3220, 0)
+position = Vector2(3328, 0)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("7_6a5p4")
 centered = false
@@ -526,7 +512,7 @@ region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
 [node name="Grass36" type="Sprite2D" parent="Grasses"]
 texture_repeat = 1
 material = SubResource("ShaderMaterial_kufhj")
-position = Vector2(3137.44, 0)
+position = Vector2(3245.44, 0)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("8_nka0b")
 centered = false
@@ -764,7 +750,7 @@ region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
 z_index = -6
 texture_repeat = 1
 material = SubResource("ShaderMaterial_a6mvv")
-position = Vector2(3199, -245.472)
+position = Vector2(3226, -245.472)
 scale = Vector2(1.4858, 1.4858)
 texture = ExtResource("9_0gfnl")
 region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
@@ -854,7 +840,27 @@ position = Vector2(3985, 0)
 target = 1
 
 [node name="Bush3" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
-position = Vector2(4849, 0)
+position = Vector2(5953, 0)
 target = 1
 
 [node name="DamageFields" type="Node2D" parent="."]
+
+[node name="P1LeftEnd" type="Node2D" parent="."]
+position = Vector2(-10000, 0)
+
+[node name="P1RightEnd" type="Node2D" parent="P1LeftEnd"]
+position = Vector2(9000, 0)
+
+[node name="Barricade" parent="P1LeftEnd/P1RightEnd" instance=ExtResource("11_6a5p4")]
+position = Vector2(200, 0)
+scale = Vector2(1.5, 1.5)
+
+[node name="P2LeftEnd" type="Node2D" parent="."]
+position = Vector2(1000, 0)
+
+[node name="P2RightEnd" type="Node2D" parent="P2LeftEnd"]
+position = Vector2(9000, 0)
+
+[node name="Barricade2" parent="P2LeftEnd" instance=ExtResource("11_6a5p4")]
+position = Vector2(-200, 0)
+scale = Vector2(1.5, 1.5)

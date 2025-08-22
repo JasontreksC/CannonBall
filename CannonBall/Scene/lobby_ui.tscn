@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
-[ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/lobby_image.png" id="2_8l7yk"]
+[ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
 [ext_resource type="FontFile" uid="uid://vwi73m8qn7ne" path="res://Asset/font_en/MedievalSharp-Bold.ttf" id="3_s6cm0"]
 [ext_resource type="Theme" uid="uid://c7n68kmajdde2" path="res://Material/lobby_button.tres" id="4_1xitx"]
 [ext_resource type="Texture2D" uid="uid://bkliw5os8x64i" path="res://Asset/ui/ysu_logo.png" id="5_thp15"]
@@ -11,11 +11,11 @@
 font = ExtResource("3_s6cm0")
 font_size = 200
 font_color = Color(0.862745, 0.54902, 0, 1)
-outline_size = 33
+outline_size = 48
 outline_color = Color(0, 0, 0, 1)
-shadow_size = 129
+shadow_size = 74
 shadow_color = Color(0, 0, 0, 0.317647)
-shadow_offset = Vector2(0, 31.765)
+shadow_offset = Vector2(0, 15.41)
 
 [node name="LobbyUI" type="Control"]
 layout_mode = 3
@@ -163,6 +163,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_thp15")
 
 [node name="GodotLogo" type="TextureRect" parent="LobbyImage"]
+layout_mode = 0
 offset_left = 372.0
 offset_top = 142.0
 offset_right = 2324.0

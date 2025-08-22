@@ -97,10 +97,21 @@ func h_movement(mode: String, speed: float, delta: float):
 			self.global_position.x += velocity * delta
 			if direction:
 				character.scale.x = direction
+			
+			if multiplayer.is_server():
+				self.global_position.x = clamp(self.global_position.x, world.p1LeftEnd.global_position.x, world.p1RightEnd.global_position.x)
+			else:
+				self.global_position.x = clamp(self.global_position.x, world.p2LeftEnd.global_position.x, world.p2RightEnd.global_position.x)
+
 		"cannon":
 			# 대포 무브먼트
 			cannon.global_position.x += velocity * delta
 			self.global_position.x = cannon.get_handle_x()
+
+			if multiplayer.is_server():
+				cannon.global_position.x = clamp(self.global_position.x, world.p1LeftEnd.global_position.x, world.p1RightEnd.global_position.x)
+			else:
+				cannon.global_position.x = clamp(self.global_position.x, world.p2LeftEnd.global_position.x, world.p2RightEnd.global_position.x)
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -243,7 +254,6 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-			
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("space"):

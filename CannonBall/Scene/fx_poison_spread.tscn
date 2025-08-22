@@ -90,6 +90,7 @@ visibility_rect = Rect2(-50000, -100, 100000, 200)
 process_material = SubResource("ParticleProcessMaterial_tifpi")
 
 [node name="Line2D" type="Line2D" parent="."]
+visible = false
 points = PackedVector2Array(-800, 0, 800, 0)
 width = 100.0
 default_color = Color(1, 0, 1, 0.690196)

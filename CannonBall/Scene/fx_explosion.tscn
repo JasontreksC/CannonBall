@@ -70,6 +70,7 @@ process_material = SubResource("ParticleProcessMaterial_70tkk")
 replication_config = SubResource("SceneReplicationConfig_w8ob6")
 
 [node name="Line2D2" type="Line2D" parent="."]
+visible = false
 points = PackedVector2Array(-400, 0, 400, 0)
 width = 100.0
 default_color = Color(1, 0, 1, 0.690196)
