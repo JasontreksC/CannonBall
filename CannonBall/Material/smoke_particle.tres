@@ -1,5 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=20 format=3 uid="uid://db8g0cp30dsja"]
 
+[ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="1_kwqr2"]
 [ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="1_x7nha"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kou1b"]
@@ -178,12 +179,9 @@ nodes/collide/2/node = SubResource("VisualShaderNodeInput_kou1b")
 nodes/collide/2/position = Vector2(-271.505, 174.555)
 nodes/start_custom/0/position = Vector2(-220, 60)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wtnip"]
-load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
-
 [resource]
 shader = SubResource("VisualShader_y3qc7")
 shader_parameter/scale = 0.375
 shader_parameter/offset = Vector2(1.11, -0.45)
 shader_parameter/smoke_pattern = ExtResource("1_x7nha")
-shader_parameter/mask = SubResource("CompressedTexture2D_wtnip")
+shader_parameter/mask = ExtResource("1_kwqr2")
