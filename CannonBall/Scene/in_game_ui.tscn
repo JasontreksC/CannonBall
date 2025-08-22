@@ -117,8 +117,9 @@ skew = 0.274885
 
 [node name="SubUI_ShellSelector" parent="." instance=ExtResource("18_bucyv")]
 layout_mode = 0
-offset_top = 750.0
-offset_bottom = 1070.0
+offset_top = 840.0
+offset_bottom = 1160.0
+scale = Vector2(0.75, 0.75)
 
 [node name="SubUIDashBoard" parent="." instance=ExtResource("12_i3syv")]
 layout_mode = 1

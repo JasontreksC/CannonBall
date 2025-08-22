@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ghh2b5ym2jgt"
-path="res://.godot/imported/ui_shell_dial.png-dfc23fe224ec47020d7bfdacf14c4092.ctex"
+uid="uid://bkliw5os8x64i"
+path="res://.godot/imported/ysu_logo.png-a0b4b6e20d2c36815bf674c084507d41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/ui/ui_shell_dial.png"
-dest_files=["res://.godot/imported/ui_shell_dial.png-dfc23fe224ec47020d7bfdacf14c4092.ctex"]
+source_file="res://Asset/ui/ysu_logo.png"
+dest_files=["res://.godot/imported/ysu_logo.png-a0b4b6e20d2c36815bf674c084507d41.ctex"]
 
 [params]
 

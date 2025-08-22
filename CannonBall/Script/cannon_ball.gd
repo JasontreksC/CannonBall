@@ -74,8 +74,8 @@ func _ready() -> void:
 	func(status: int, new_lobby_id: int):
 		if status == 1:
 			if uiMgr.get_current_ui(0).tInviteSteamID.text:
-				Steam.sendP2PPacket(uiMgr.get_current_ui(0).get_invite_steam_id(), var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
-				print("invite sended!: ", uiMgr.get_current_ui(0).get_invite_steam_id())
+				Steam.sendP2PPacket(uiMgr.get_current_ui_as_lobby().invite_steam_id, var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+				print("invite sended!: ", uiMgr.get_current_ui_as_lobby().invite_steam_id)
 			
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
@@ -92,8 +92,11 @@ func _ready() -> void:
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
-				sceneMgr.set_scene(1)
-				connect_steam_socket(id)
+				if id == uiMgr.get_current_ui_as_lobby().host_stram_id:
+					sceneMgr.set_scene(1)
+					connect_steam_socket(id)
+				else:
+					print("오류: 초대를 전송한 호스트의 SteamID와 로비 오너의 SteamID가 일치하지 않음.")
 		else:
 		# Get the failure reason
 			var FAIL_REASON: String
