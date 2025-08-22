@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://70v1h8mp57e" path="res://Script/fx_explosion.gd" id="1_w8ob6"]
 [ext_resource type="Texture2D" uid="uid://c6hgkkgiaeffq" path="res://Asset/alpha_texture/T_VFX_CloudNoise_Tiled.png" id="2_70tkk"]
+[ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="2_kou1b"]
 [ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="3_kou1b"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kou1b"]
@@ -142,6 +143,7 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(-575.459, 22.7524)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(2280, 340)
@@ -180,15 +182,12 @@ nodes/collide/2/node = SubResource("VisualShaderNodeInput_kou1b")
 nodes/collide/2/position = Vector2(-271.505, 174.555)
 nodes/start_custom/0/position = Vector2(-220, 60)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wtnip"]
-load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_14n6s"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2m66g"]
 shader = SubResource("VisualShader_y3qc7")
-shader_parameter/scale = 0.799
+shader_parameter/scale = 0.7
 shader_parameter/offset = Vector2(1.11, -0.45)
 shader_parameter/smoke_pattern = ExtResource("2_70tkk")
-shader_parameter/mask = SubResource("CompressedTexture2D_wtnip")
+shader_parameter/mask = ExtResource("2_kou1b")
 
 [sub_resource type="Curve" id="Curve_t264x"]
 _data = [Vector2(0.637255, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -242,7 +241,7 @@ z_index = 100
 script = ExtResource("1_w8ob6")
 
 [node name="Smoke" type="GPUParticles2D" parent="."]
-material = SubResource("ShaderMaterial_14n6s")
+material = SubResource("ShaderMaterial_2m66g")
 amount = 100
 lifetime = 5.0
 explosiveness = 1.0
