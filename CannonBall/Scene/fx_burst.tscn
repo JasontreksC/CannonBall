@@ -1,7 +1,7 @@
-[gd_scene load_steps=41 format=3 uid="uid://eriwpbivkspp"]
+[gd_scene load_steps=40 format=3 uid="uid://eriwpbivkspp"]
 
 [ext_resource type="Script" uid="uid://clxvigsqvso6p" path="res://Script/fx_burst.gd" id="1_8uaop"]
-[ext_resource type="Shader" uid="uid://cnjd1i6rlfb73" path="res://Material/glow.tres" id="2_8uaop"]
+[ext_resource type="Shader" uid="uid://bs2rfvng6i2n2" path="res://Material/glow.tres" id="2_8uaop"]
 [ext_resource type="Texture2D" uid="uid://tvlu3mj1voc5" path="res://Asset/alpha_texture/T_VFX_MarbleNoise_tiled.png" id="2_nf4r3"]
 [ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="3_ddqip"]
 [ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="5_ddqip"]
@@ -183,16 +183,13 @@ nodes/collide/2/node = SubResource("VisualShaderNodeInput_42fnj")
 nodes/collide/2/position = Vector2(-271.505, 174.555)
 nodes/start_custom/0/position = Vector2(-220, 60)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jn8pb"]
-load_path = "res://.godot/imported/T_VFX_Glow_1.PNG-4a6f3dfeaa8cf5d3719eaa02d391b5f7.ctex"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t08o5"]
 shader = SubResource("VisualShader_kis2e")
 shader_parameter/smoke_color = Color(0.0696651, 0.0685323, 0.0766598, 1)
 shader_parameter/scale = 0.638
 shader_parameter/offset = Vector2(1.11, -0.45)
 shader_parameter/smoke_pattern = ExtResource("2_nf4r3")
-shader_parameter/mask = SubResource("CompressedTexture2D_jn8pb")
+shader_parameter/mask = ExtResource("3_ddqip")
 
 [sub_resource type="Curve" id="Curve_ddqip"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.130573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
