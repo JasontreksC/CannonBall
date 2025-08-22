@@ -13,7 +13,7 @@ var lobby: Lobby = null
 var my_steam_id: int
 var invite_steam_id: int
 var lobby_id: int
-var host_stram_id: int
+var host_steam_id: int
 
 var my_steam_name: String 
 var invite_steam_name: String

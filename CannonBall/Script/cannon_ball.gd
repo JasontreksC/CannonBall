@@ -73,7 +73,7 @@ func _ready() -> void:
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
-			if uiMgr.get_current_ui(0).tInviteSteamID.text:
+			if uiMgr.get_current_ui_as_lobby().invite_steam_id:
 				Steam.sendP2PPacket(uiMgr.get_current_ui_as_lobby().invite_steam_id, var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
 				print("invite sended!: ", uiMgr.get_current_ui_as_lobby().invite_steam_id)
 			
@@ -92,7 +92,7 @@ func _ready() -> void:
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
-				if id == uiMgr.get_current_ui_as_lobby().host_stram_id:
+				if id == uiMgr.get_current_ui_as_lobby().host_steam_id:
 					sceneMgr.set_scene(1)
 					connect_steam_socket(id)
 				else:
