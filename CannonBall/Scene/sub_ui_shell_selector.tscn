@@ -135,16 +135,16 @@ script = ExtResource("2_qy1sg")
 [node name="SP_Shell0" type="Sprite2D" parent="."]
 z_index = 3
 position = Vector2(64, 64)
-scale = Vector2(0.147151, 0.147151)
+scale = Vector2(0.18, 0.18)
 texture = ExtResource("2_adb0l")
 
 [node name="Lb1" type="Label" parent="SP_Shell0"]
 z_index = 2
 offset_left = 450.0
-offset_top = -180.0
+offset_top = -141.111
 offset_right = 867.0
-offset_bottom = -2.0
-scale = Vector2(2, 2)
+offset_bottom = 36.8888
+scale = Vector2(1.5, 1.5)
 text = "일반 탄"
 label_settings = SubResource("LabelSettings_lau7m")
 
@@ -165,16 +165,16 @@ metadata/_custom_type_script = "uid://h0n7884yqnt2"
 z_index = 3
 material = SubResource("ShaderMaterial_5etg6")
 position = Vector2(64, 160)
-scale = Vector2(0.147151, 0.147151)
+scale = Vector2(0.18, 0.18)
 texture = ExtResource("2_adb0l")
 
 [node name="Lb2" type="Label" parent="SP_Shell1"]
 z_index = 2
 offset_left = 450.0
-offset_top = -180.0
+offset_top = -141.111
 offset_right = 867.0
-offset_bottom = -2.0
-scale = Vector2(2, 2)
+offset_bottom = 36.8888
+scale = Vector2(1.5, 1.5)
 text = "화염 탄"
 label_settings = SubResource("LabelSettings_lau7m")
 
@@ -194,16 +194,16 @@ metadata/_custom_type_script = "uid://h0n7884yqnt2"
 [node name="SP_Shell2" type="Sprite2D" parent="."]
 z_index = 3
 position = Vector2(64, 256)
-scale = Vector2(0.147151, 0.147151)
+scale = Vector2(0.18, 0.18)
 texture = ExtResource("5_f3c7e")
 
 [node name="Lb3" type="Label" parent="SP_Shell2"]
 z_index = 2
 offset_left = 450.0
-offset_top = -163.098
+offset_top = -124.209
 offset_right = 739.0
-offset_bottom = 14.9022
-scale = Vector2(2, 2)
+offset_bottom = 53.791
+scale = Vector2(1.5, 1.5)
 text = "독 탄"
 label_settings = SubResource("LabelSettings_lau7m")
 

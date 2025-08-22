@@ -59,7 +59,12 @@ func refresh_firend_list():
 		ui.vbcFirendList.add_child(btInvalidFriend)
 
 func _on_pressed_fb(fb: Button):
-	ui.set_invite_steam_id(validFriends[fb.text])
+	ui.invite_steam_id = validFriends[fb.text]
+	ui.invite_steam_name = Steam.getFriendPersonaName(ui.invite_steam_id)
+	ui.scFriendList.visible = false
+
+	ui.btInvite.text = ui.invite_steam_name
+	ui.btHost.disabled = false
 
 func recieve_invite():
 	var packetSize = Steam.getAvailableP2PPacketSize()
@@ -70,8 +75,12 @@ func recieve_invite():
 			var remote_steam_id = packet["remote_steam_id"]
 			var invited_lobby_id = bytes_to_var(packet["data"])
 			
-			ui.set_host_steam_id(remote_steam_id)
-			ui.set_invited_lobby_id(invited_lobby_id)
+			ui.host_steam_id = remote_steam_id
+			ui.lobby_id = invited_lobby_id
+
+			ui.btJoin.text = "초대 수락: " + Steam.getFriendPersonaName(ui.host_steam_id)
+			ui.btJoin.disabled = false
+
 			print("invited from: ", invited_lobby_id)
 
 

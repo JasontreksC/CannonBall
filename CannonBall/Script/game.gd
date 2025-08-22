@@ -9,6 +9,9 @@ var transmitQueue: Array[String]
 var peerID: int = 0
 var players: Array[Player]
 
+@export var defeat_condition_die: bool = true
+@export var defeat_condition_timeout: bool = true
+
 @onready var world: World = $World
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
 
@@ -130,8 +133,7 @@ func update_game_time(delta: float) -> void:
 			
 		if players[1].isAttack :
 			players[1].lifeTime -= delta
-		
-		ui.rpc("set_player_life_time",players[0].lifeTime, players[1].lifeTime)	
+			players[1].rpc("set_lifetime", players[1].lifeTime)
 
 @rpc("any_peer", "call_local")
 func regist_lifeturn(key: String, turn: int):
@@ -148,6 +150,11 @@ func update_lifeturn():
 				lifetimePool.erase(key)
 
 func quit_game():
+	var objs: Array[Node] = get_children()
+	for o in objs:
+		rpc("delete_object", str(o.get_path()))
+
+	await get_tree().create_timer(0.5).timeout
 	root.sceneMgr.set_scene(2)
 	root.sceneMgr.currentScene.set("winner", winner)
 
@@ -214,7 +221,6 @@ func _process(delta: float) -> void:
 					
 			"Turn":
 				if multiplayer.is_server():
-					#update_lifetime_sec(delta)
 					update_game_time(delta)
 					
 					if check_transmit(["p1_fired"]) or check_transmit(["p2_fired"]):
@@ -227,11 +233,11 @@ func _process(delta: float) -> void:
 				pass
 	
 	if check_transmit(["p1_defeat"]):
-		stateMachine.execute_transit("EndSession")
 		winner = 1
-	elif check_transmit(["p2_defeat"]):
 		stateMachine.execute_transit("EndSession")
+	elif check_transmit(["p2_defeat"]):
 		winner = 0
+		stateMachine.execute_transit("EndSession")
 		
 func on_exit_WaitSession():
 	ui.generate_hp_points(0, 20)
@@ -240,6 +246,7 @@ func on_exit_WaitSession():
 	players[1].canMove = true
 
 	ui.subuiDashBoard.show_text("접속 성공!\n잠시 후 게임 시작", 3)
+	ui.subuiDashBoard.set_pb_time(3)
 
 func on_entry_Turn():
 	if multiplayer.is_server():
@@ -247,14 +254,22 @@ func on_entry_Turn():
 	
 	if is_p1_turn():
 		ui.subuiDashBoard.show_text("Player1 공격", -1)
+		ui.subuiDashBoard.focus_player_info(0)
 	else:
 		ui.subuiDashBoard.show_text("Player2 공격", -1)
+		ui.subuiDashBoard.focus_player_info(1)
 		
 func on_exit_Turn():
 	turnCount += 1
 		
 func on_entry_Shelling():
 	ui.subuiDashBoard.hide_text()
+
+	if is_p1_turn():
+		ui.subuiDashBoard.unfocus_player_info(1)
+	else:
+		ui.subuiDashBoard.unfocus_player_info(0)
+
 
 func on_exit_Shelling():
 	if multiplayer.is_server():
@@ -264,10 +279,13 @@ func on_exit_Shelling():
 	else:
 		players[1].overview_reset()
 
-	ui.subuiDashBoard.show_text("잠시후 공수전환", 3)
+	if winner == -1:
+		ui.subuiDashBoard.show_text("잠시후 공수전환", 3)
+		ui.subuiDashBoard.set_pb_time(3)
 
 func on_entry_EndSession():
 	ui.subuiDashBoard.show_text("게임 종료!", 5)
+	ui.subuiDashBoard.set_pb_time(5)
 	
 	players[0].canMove = false
 	players[1].canMove = false
@@ -280,5 +298,3 @@ func on_entry_EndSession():
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
 		players.append(node as Player)
-	# elif is_instance_valid(node.get_instance_id()):
-	# 	add_object(node)

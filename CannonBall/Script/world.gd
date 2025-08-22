@@ -5,6 +5,14 @@ class_name World
 # 탄착 이벤트 - 피격 범위를 생성 및 유지함. 이펙트를 발생시킴
 # 시간 시스템 - 서버에서 시간을 재면서 게임 시간 누적 -> ui 표시
 # 턴제 시스템 - 플레이어가 공격을 할때마다 턴 전환, 플레이어에게 공격인지 수비인지 전달함
+
+@export var vertical_boundary: Dictionary = {
+	"p1_left_end": -10000,
+	"p1_right_end": -1000,
+	"p2_left_end": 1000,
+	"p2_right_end": 10000
+}
+
 @onready var nP1SpawnSpot: Node2D = $P1SpawnSpot
 @onready var nP2SpawnSpot: Node2D = $P2SpawnSpot
 @onready var nP1Ponds: Node2D = $BenefitFields/P1Ponds

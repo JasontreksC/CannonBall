@@ -27,21 +27,7 @@ void fragment() {
 			COLOR = outter_color;
 		}
 	}
-	//else if()
-		//float inner_y_start = 0.5 - 0.5 * inner_ratio;
-		//float inner_y_end = 0.5 + 0.5 * inner_ratio;
-		//float lerped = clamp((UV.y - inner_y_start) / (inner_y_end - inner_y_start), 0, 1.0);
-		//float inner_dist = lerped / 2.0;
-		//if ((UV.x < 0.5 - dist) || (UV.x > 0.5 + dist)){
-			//COLOR = vec4(1, 0, 0, 1);
-	//}
 	else {
 		COLOR = vec4(0, 0, 0, 0);
 	}
-	// Called for every pixel the material is visible on.
 }
-
-//void light() {
-//	// Called for every pixel for every light affecting the CanvasItem.
-//	// Uncomment to replace the default light processing function with this one.
-//}

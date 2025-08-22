@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpcpewqwd7cnn"
-path="res://.godot/imported/DEF.png-5c79c587b1e9939f22fa28cc574444a3.ctex"
+uid="uid://bkliw5os8x64i"
+path="res://.godot/imported/ysu_logo.png-a0b4b6e20d2c36815bf674c084507d41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/prototype_object/DEF.png"
-dest_files=["res://.godot/imported/DEF.png-5c79c587b1e9939f22fa28cc574444a3.ctex"]
+source_file="res://Asset/ui/ysu_logo.png"
+dest_files=["res://.godot/imported/ysu_logo.png-a0b4b6e20d2c36815bf674c084507d41.ctex"]
 
 [params]
 

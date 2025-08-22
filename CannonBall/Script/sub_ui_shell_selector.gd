@@ -15,7 +15,7 @@ func select(num: int) -> void:
 		expanded = true
 
 	var tween: Tween = create_tween()
-	tween.tween_property(selector, "position", Vector2(16,y_props[num]), 0.1).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(selector, "position", Vector2(16,y_props[num]), 0.1).set_trans(Tween.TRANS_EXPO)
 	timer.start(1)
 
 	inGameUI.game.get_my_player().selectedShell = num

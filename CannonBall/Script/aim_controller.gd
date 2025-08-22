@@ -40,6 +40,15 @@ func aim(dir: float, speed: float, delta: float) -> float:
 	currentAimRange += dir * speed * delta
 	currentAimRange = clamp(currentAimRange, minAimRange, maxAimRange)	
 	
+	if is_equal_approx(currentAimRange, minAimRange):
+		cannon.game.ui.lbAimMessage_Range.text = "최소 사거리입니다."
+	elif is_equal_approx(currentAimRange, maxAimRange):
+		cannon.game.ui.lbAimMessage_Range.text = "최대 사거리입니다."
+	else:
+		cannon.game.ui.lbAimMessage_Range.text = ""
+
+
+
 	if multiplayer.is_server():
 		return breech.global_position.x + currentAimRange
 	else:

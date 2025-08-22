@@ -9,13 +9,15 @@ class_name Player
 var walkSpeed: float = 500.0
 var cannonSpeed: float = 300.0
 var velocity: float = 0
-
 var telescopeZoomOption: int = 1
-var isInCannon: bool = false
+
 var stateMachine: StateMachine = StateMachine.new()
+
+var isInCannon: bool = false
 var isAttack: bool = true
 var attackChance: bool = false
 var selectedShell: int = 0
+var gameFinished: bool = false
 # var isWalking: bool = false
 
 @export var psCMC: PackedScene
@@ -51,11 +53,16 @@ func get_damage(damage: int):
 	else:
 		game.ui.rpc("remove_hp_points", 1, damage)
 	
-	if hp == 0:
+	if hp == 0 and game.defeat_condition_die:
 		if multiplayer.is_server():
 			game.rpc("send_transmit", "p1_defeat")
 		else:
 			game.rpc("send_transmit", "p2_defeat")
+
+
+@rpc("any_peer", "call_remote")
+func set_lifetime(time: float) -> void:
+	self.lifeTime = time
 
 @rpc("any_peer", "call_local")
 func shake_camera(from_x: float, range: float) -> void:
@@ -238,14 +245,30 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
-			
 
 func _process(delta: float) -> void:
+	if not is_multiplayer_authority():
+		return
+
 	if Input.is_action_just_pressed("space"):
 		overview_reset()
 	if Input.is_action_just_pressed("tab"):
 		selectedShell = (selectedShell + 1) % 3 
 
+	if multiplayer.is_server():
+		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p1_left_end"], world.vertical_boundary["p1_right_end"])
+	else:
+		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p2_left_end"], world.vertical_boundary["p2_right_end"])
+
+	if lifeTime < 0 and game.defeat_condition_timeout and not gameFinished:
+		lifeTime = 0
+		if multiplayer.is_server():
+			game.ui.subuiDashBoard.p1TimeLeftRing.modulate = Color(1, 0, 0, 1)
+			game.rpc("send_transmit", "p1_defeat")
+		else:
+			game.ui.subuiDashBoard.p2TimeLeftRing.modulate = Color(1, 0, 0, 1)
+			game.rpc("send_transmit", "p2_defeat")
+		gameFinished = true
 
 # 전환 이벤트. 상태 전환이 발생했을 때 한번만 실행된다.
 func on_exit_Idle():
