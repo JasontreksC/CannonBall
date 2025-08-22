@@ -25,17 +25,13 @@ func set_scene(num: int) -> void:
 	
 	if currentScene:
 		currentScene.queue_free()
-		#remove_child(currentScene)
 		currentScene = null
 	match num:
 		0:
-			#currentScene = lobbyScene
 			currentScene = psLobbyScene.instantiate()
 		1:
-			#currentScene = gameScene
 			currentScene = psGameScene.instantiate()
 		2:
-			#currentScene = resultScene
 			currentScene = psResultScene.instantiate()
 	
 	call_deferred("add_child", currentScene)
