@@ -57,7 +57,7 @@ func get_main_viewport_world() -> World2D:
 func _ready() -> void:
 	uiMgr.set_ui(0)
 	sceneMgr.set_scene(0)
-	
+
 	if Steam.steamInitEx(480):
 		mySteamID = Steam.getSteamID()
 		print("Steam 초기화 성공")

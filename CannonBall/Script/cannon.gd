@@ -12,6 +12,7 @@ var curVelocity: float = 0
 var inPondID: int = 0
 var reverseBlast: float = 0
 var aimSpeedOptions: Array[float] = [2000, 1000, 500]
+var inBushID: int = 0
 
 const FRONT_WHEEL_RADIUS: float = 72.0
 const BACK_WHEEL_RADIUS: float = 42.0

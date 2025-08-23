@@ -30,10 +30,24 @@ var zoomFinished: bool = true
 ## DashBoard
 @onready var subuiDashBoard : SubUIDashBoard = $SubUIDashBoard
 
+## Interaction
+@export var psSubUIInteraction: PackedScene
+var interaction_stack: Array[NinePatchRect]
+var interaction_state: Dictionary[String, bool] = {
+	"b_pond" : false,
+	"b_bush" : false,
+	"t_fire" : false,
+	"t_pond" : false
+}
+@onready var interactions: Control = $Interactions
+
 var uiMgr: UIManager = null
 var game: Game = null
 
 ## Telescope
+func set_aim_boundary() -> void:
+	aim_boundary_left_end = game.world.vertical_boundary["p2_left_end"] - 200 if multiplayer.is_server() else game.world.vertical_boundary["p1_left_end"]
+	aim_boundary_right_end = game.world.vertical_boundary["p2_right_end"] if multiplayer.is_server() else game.world.vertical_boundary["p1_right_end"] + 200
 
 func on_observe() -> void:
 	if not multiplayer.is_server():
@@ -96,13 +110,27 @@ func remove_hp_points(player: int, count: int):
 			count -= 1
 		if count <= 0:
 			break
-	
-func set_aim_boundary() -> void:
-	aim_boundary_left_end = game.world.vertical_boundary["p2_left_end"] - 200 if multiplayer.is_server() else game.world.vertical_boundary["p1_left_end"]
-	aim_boundary_right_end = game.world.vertical_boundary["p2_right_end"] if multiplayer.is_server() else game.world.vertical_boundary["p1_right_end"] + 200
 
-	print(aim_boundary_left_end)
-	print(aim_boundary_right_end)
+## Interaction
+func set_interaction(type: String, onoff: bool) -> void:
+	if interaction_state.has(type):
+		if interaction_state[type] == onoff:
+			return
+		interaction_state[type] = onoff
+	
+	var nodes: Array[Node] = interactions.get_children()
+	for n in nodes:
+		n.free()
+	
+	var count: int = 0
+	for i in interaction_state.keys():
+		if interaction_state[i]:
+			var new_interaction: NinePatchRect = psSubUIInteraction.instantiate()
+			new_interaction.set("interaction", i)
+			interactions.add_child(new_interaction)
+			new_interaction.scale *= 0.75
+			new_interaction.position = Vector2(-96, -96 - 96 * count)
+			count += 1
 
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager

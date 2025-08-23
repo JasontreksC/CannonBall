@@ -14,6 +14,8 @@ var resultScene: Result = null
 var currentScene: Node2D = null
 var currentSceneNum: int = -1
 
+var gameResult: int = -1
+
 # 0 로비 1 게임 2 결과
 func set_scene(num: int) -> void:
 	if not [0, 1, 2].has(num):
@@ -31,16 +33,8 @@ func set_scene(num: int) -> void:
 			currentScene = psLobbyScene.instantiate()
 		1:
 			currentScene = psGameScene.instantiate()
+			gameResult = -1
 		2:
 			currentScene = psResultScene.instantiate()
 	
 	call_deferred("add_child", currentScene)
-
-func _ready() -> void:
-	pass
-	#lobbyScene = psLobbyScene.instantiate()
-	#gameScene = psGameScene.instantiate()
-	#resultScene = psResultScene.instantiate()
-
-func _process(delta: float) -> void:
-	pass
