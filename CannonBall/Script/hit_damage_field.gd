@@ -16,6 +16,9 @@ var target_player: Player = null
 @onready var timer: Timer = $Timer
 
 func activate():
+	if target_player == null:
+		return
+
 	if lifetime <= 0:
 		var final_damage: int = range_test_final_damage()
 		if final_damage:
@@ -54,6 +57,9 @@ func _process(delta: float) -> void:
 	if timer.is_stopped():
 		return
 	
+	if target_player == null:
+		return
+
 	var final_damage: int = range_test_final_damage()
 	if final_damage:
 		target_player.rpc("get_damage", final_damage)
