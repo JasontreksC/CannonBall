@@ -155,8 +155,8 @@ func quit_game():
 		for o in objs:
 			o.free()
 	else:
-		get_my_player().cannon.free()
-		get_my_player().free()
+		get_my_player().cannon.process_mode = Node.PROCESS_MODE_DISABLED
+		get_my_player().process_mode = Node.PROCESS_MODE_DISABLED
 		
 
 	if multiplayer.is_server():
