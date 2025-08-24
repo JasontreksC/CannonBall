@@ -307,15 +307,15 @@ func on_entry_EndSession():
 	transmitQueue.clear()
 	world.process_mode = Node.PROCESS_MODE_DISABLED
 	
-	var ms_player: MultiplayerSynchronizer = get_my_player().get_node("MultiplayerSynchronizer")
-	var properties: Array[NodePath] = ms_player.replication_config.get_properties()
-	for p in properties:
-		ms_player.replication_config.property_set_replication_mode(p, SceneReplicationConfig.REPLICATION_MODE_NEVER)
-	
-	var ms_cannon: MultiplayerSynchronizer = get_my_player().cannon.get_node("MultiplayerSynchronizer")
-	properties = ms_cannon.replication_config.get_properties()
-	for p in properties:
-		ms_cannon.replication_config.property_set_replication_mode(p, SceneReplicationConfig.REPLICATION_MODE_NEVER)
+	#var ms_player: MultiplayerSynchronizer = get_my_player().get_node("MultiplayerSynchronizer")
+	#var properties: Array[NodePath] = ms_player.replication_config.get_properties()
+	#for p in properties:
+		#ms_player.replication_config.property_set_replication_mode(p, SceneReplicationConfig.REPLICATION_MODE_NEVER)
+	#
+	#var ms_cannon: MultiplayerSynchronizer = get_my_player().cannon.get_node("MultiplayerSynchronizer")
+	#properties = ms_cannon.replication_config.get_properties()
+	#for p in properties:
+		#ms_cannon.replication_config.property_set_replication_mode(p, SceneReplicationConfig.REPLICATION_MODE_NEVER)
 	
 	get_tree().create_timer(5).timeout.connect(quit_game)
 
