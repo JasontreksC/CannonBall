@@ -40,7 +40,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if world.game.stateMachine.current_state_name() == "WaitSession" or world.game.stateMachine.current_state_name() == "EndSession" :
 		return
-	if world == null || world.game == null || world.players[target] == null:
+	if world == null || world.game == null || world.game.players[target] == null:
 		return
 	
 	# 연못 진입/출입 판정
