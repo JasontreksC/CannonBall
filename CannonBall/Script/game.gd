@@ -172,7 +172,7 @@ func quit_game():
 			1:
 				root.sceneMgr.gameResult = 1
 	
-	#await get_tree().create_timer(0.25).timeout
+	await get_tree().create_timer(0.25).timeout
 	root.sceneMgr.call_deferred("set_scene", 2)
 
 func get_my_player() -> Player:
@@ -309,6 +309,7 @@ func on_entry_EndSession():
 	
 	lifetimePool.clear()
 	transmitQueue.clear()
+	world.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	get_tree().create_timer(5).timeout.connect(quit_game)
 
