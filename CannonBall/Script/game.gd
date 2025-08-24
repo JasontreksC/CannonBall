@@ -150,13 +150,26 @@ func update_lifeturn():
 				lifetimePool.erase(key)
 
 func quit_game():
-	var objs: Array[Node] = get_children()
-	for o in objs:
-		rpc("delete_object", str(o.get_path()))
+	if multiplayer.is_server():
+		var objs: Array[Node] = get_children()
+		for o in objs:
+			o.free()
 
-	await get_tree().create_timer(0.5).timeout
-	root.sceneMgr.set_scene(2)
-	root.sceneMgr.currentScene.set("winner", winner)
+	if multiplayer.is_server():
+		match winner:
+			0:
+				root.sceneMgr.gameResult = 1
+			1:
+				root.sceneMgr.gameResult = 0
+	else:
+		match winner:
+			0:
+				root.sceneMgr.gameResult = 0
+			1:
+				root.sceneMgr.gameResult = 1
+	
+	await get_tree().create_timer(0.25).timeout
+	root.sceneMgr.call_deferred("set_scene", 2)
 
 func get_my_player() -> Player:
 	if has_node(str(peerID)):

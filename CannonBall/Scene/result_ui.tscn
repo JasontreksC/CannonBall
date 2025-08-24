@@ -16,7 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_kkocs")
 
-[node name="Winner" type="Label" parent="."]
+[node name="Result" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -26,27 +26,17 @@ offset_top = 300.0
 offset_right = 408.0
 offset_bottom = 478.0
 grow_horizontal = 2
-text = "Player 1 승리!"
+text = "승패"
 label_settings = SubResource("LabelSettings_jtamo")
+horizontal_alignment = 1
 
 [node name="BT_Quit" type="Button" parent="."]
 layout_mode = 0
-offset_left = 613.0
-offset_top = 553.0
-offset_right = 722.0
-offset_bottom = 584.0
+offset_left = 849.0
+offset_top = 592.0
+offset_right = 958.0
+offset_bottom = 623.0
 scale = Vector2(2, 2)
 text = "로비로 나가기"
 
-[node name="BT_Retry" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1013.0
-offset_top = 553.0
-offset_right = 1122.0
-offset_bottom = 584.0
-scale = Vector2(2, 2)
-text = "다시하기
-"
-
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
-[connection signal="pressed" from="BT_Retry" to="." method="_on_bt_retry_pressed"]

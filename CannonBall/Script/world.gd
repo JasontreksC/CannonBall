@@ -101,39 +101,13 @@ func gen_TDF(xr: XRange, target: int, tickDamage: int, tickInterval: float, life
 func _ready() -> void:
 	game = get_parent() as Game
 
-func _physics_process(delta: float) -> void:
-	if game.stateMachine.current_state_name() == "WaitSession" or game.stateMachine.current_state_name() == "EndSession":
-		return
+# func _physics_process(delta: float) -> void:
+# 	if game.stateMachine.current_state_name() == "WaitSession" or game.stateMachine.current_state_name() == "EndSession":
+# 		return
 
-	var ponds: Array[Node]
-	var bushes: Array[Node]
-
-	if multiplayer.is_server():	
-		ponds = nP1Ponds.get_children()
-		bushes = nP1Bushes.get_children()
-	else:
-		ponds = nP2Ponds.get_children()
-		bushes = nP2Bushes.get_children()
-	
-	# 연못 검사: 플레이어
-	for p: Pond in ponds:
-		if p.xrange.in_range(game.players[p.target].global_position.x):
-			game.players[p.target].inPondID = p.pondID
-			break
-		else:
-			game.players[p.target].inPondID = 0
-	
-	# 연못 검사: 대포
-	for p: Pond in ponds:
-		if p.xrange.in_range(game.players[p.target].cannon.global_position.x):
-			game.players[p.target].cannon.inPondID = p.pondID
-			break
-		else:
-			game.players[p.target].cannon.inPondID = 0
-
-func _process(delta: float) -> void:
-	if not multiplayer.is_server():
-		return
+# func _process(delta: float) -> void:
+# 	if not multiplayer.is_server():
+# 		return
 
 func on_turn_count():
 	if not multiplayer.is_server():

@@ -80,7 +80,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 2
 
 [node name="FxFireExlposion" type="Node2D"]
-z_index = 100
+z_index = 110
 script = ExtResource("1_0bsif")
 
 [node name="FireExplo" type="GPUParticles2D" parent="."]

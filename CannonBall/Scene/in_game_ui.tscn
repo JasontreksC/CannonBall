@@ -1,11 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=15 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_cell.tscn" id="2_dviy5"]
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope.gdshader" id="3_oqxxn"]
 [ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 [ext_resource type="Texture2D" uid="uid://eyiexi4hnjxy" path="res://Asset/ui/telescope.png" id="4_7hrlq"]
-[ext_resource type="Shader" uid="uid://bvrlkrmaw1jxg" path="res://Shader/just_color.tres" id="6_o5tdw"]
+[ext_resource type="Shader" uid="uid://bjqwwneksm261" path="res://Shader/just_color.tres" id="6_o5tdw"]
+[ext_resource type="PackedScene" uid="uid://cl5oes5bechlx" path="res://Scene/sub_ui_interaction.tscn" id="9_wckav"]
 [ext_resource type="PackedScene" uid="uid://q64lhk0stdly" path="res://Scene/sub_ui_dash_board.tscn" id="12_i3syv"]
 [ext_resource type="PackedScene" uid="uid://0hqg3crg2ec0" path="res://Scene/sub_ui_shell_selector.tscn" id="18_bucyv"]
 
@@ -39,6 +40,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3xi00")
 hpPointSprite = ExtResource("2_dviy5")
+psSubUIInteraction = ExtResource("9_wckav")
 metadata/_edit_lock_ = true
 
 [node name="fps" type="Label" parent="."]
@@ -172,3 +174,13 @@ offset_right = 960.0
 offset_bottom = 1080.0
 grow_vertical = 1
 mouse_filter = 2
+
+[node name="Interactions" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
