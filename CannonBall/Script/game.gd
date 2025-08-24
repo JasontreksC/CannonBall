@@ -300,14 +300,9 @@ func on_entry_EndSession():
 	ui.subuiDashBoard.show_text("게임 종료!", 5)
 	ui.subuiDashBoard.set_pb_time(5)
 	
-	players[0].canMove = false
-	players[1].canMove = false
-	players[0].set_multiplayer_authority(-1)
-	players[1].set_multiplayer_authority(-1)
-	players[0].cannon.set_multiplayer_authority(-1)
-	players[1].cannon.set_multiplayer_authority(-1)
-	
-	
+	get_my_player().canMove = false
+	get_my_player().set_multiplayer_authority(-1)
+	get_my_player().cannon.set_multiplayer_authority(-1)
 	
 	lifetimePool.clear()
 	transmitQueue.clear()
