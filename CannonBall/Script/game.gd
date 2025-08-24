@@ -154,6 +154,10 @@ func quit_game():
 		var objs: Array[Node] = get_children()
 		for o in objs:
 			o.free()
+	else:
+		get_my_player().cannon.free()
+		get_my_player().free()
+		
 
 	if multiplayer.is_server():
 		match winner:
@@ -168,7 +172,7 @@ func quit_game():
 			1:
 				root.sceneMgr.gameResult = 1
 	
-	await get_tree().create_timer(0.25).timeout
+	#await get_tree().create_timer(0.25).timeout
 	root.sceneMgr.call_deferred("set_scene", 2)
 
 func get_my_player() -> Player:
