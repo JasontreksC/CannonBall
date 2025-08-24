@@ -16,7 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_kkocs")
 
-[node name="Winner" type="Label" parent="."]
+[node name="Result" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -26,8 +26,9 @@ offset_top = 300.0
 offset_right = 408.0
 offset_bottom = 478.0
 grow_horizontal = 2
-text = "Player 1 승리!"
+text = "승패"
 label_settings = SubResource("LabelSettings_jtamo")
+horizontal_alignment = 1
 
 [node name="BT_Quit" type="Button" parent="."]
 layout_mode = 0

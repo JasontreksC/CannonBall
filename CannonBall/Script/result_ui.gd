@@ -1,7 +1,7 @@
 extends Control
 class_name ResultUI
 
-@onready var lbWinner: Label = $Winner
+@onready var lbResult: Label = $Result
 var uiMgr: UIManager = null
 
 func _enter_tree() -> void:
@@ -25,3 +25,4 @@ func _on_bt_quit_pressed() -> void:
 
 func _on_bt_retry_pressed() -> void:
 	uiMgr.root.sceneMgr.set_scene(1)
+	uiMgr.root.rpc("_add_player", multiplayer.get_unique_id())

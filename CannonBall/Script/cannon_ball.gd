@@ -17,7 +17,11 @@ var mySteamID: int = 0
 
 @export var player_scene: PackedScene
 
+@rpc("any_peer", "call_local")
 func _add_player(id=1):
+	if not multiplayer.is_server():
+		return
+		
 	var player: Player = player_scene.instantiate()
 	player.name = str(id)
 	var gameScene: Game = sceneMgr.currentScene as Game
