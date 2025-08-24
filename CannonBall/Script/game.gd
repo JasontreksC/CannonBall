@@ -302,6 +302,12 @@ func on_entry_EndSession():
 	
 	players[0].canMove = false
 	players[1].canMove = false
+	players[0].set_multiplayer_authority(-1)
+	players[1].set_multiplayer_authority(-1)
+	players[0].cannon.set_multiplayer_authority(-1)
+	players[1].cannon.set_multiplayer_authority(-1)
+	
+	
 	
 	lifetimePool.clear()
 	transmitQueue.clear()
