@@ -79,7 +79,7 @@ material = ExtResource("2_75blf")
 scale = Vector2(0.882775, 0.856913)
 amount = 50
 lifetime = 3.0
-visibility_rect = Rect2(-100000, -100, 200000, 200)
+visibility_rect = Rect2(-100000, -100000, 200000, 200000)
 process_material = SubResource("ParticleProcessMaterial_42fnj")
 
 [node name="Particle2" type="GPUParticles2D" parent="."]
@@ -88,7 +88,7 @@ texture_repeat = 2
 material = ExtResource("3_75blf")
 amount = 50
 lifetime = 3.0
-visibility_rect = Rect2(-100000, -100, 200000, 200)
+visibility_rect = Rect2(-100000, -100000, 200000, 200000)
 process_material = SubResource("ParticleProcessMaterial_42fnj")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
