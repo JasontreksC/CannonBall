@@ -17,15 +17,15 @@ func _process(delta: float) -> void:
 
 
 func _on_bt_quit_pressed() -> void:
-	if uiMgr.root.steamLobbyID:
-		var members_num: int = Steam.getNumLobbyMembers(uiMgr.root.steamLobbyID)
+	if uiMgr.root.steam_lobby_id:
+		var members_num: int = Steam.getNumLobbyMembers(uiMgr.root.steam_lobby_id)
 		for i in range(members_num):
-			var member_steam_id = Steam.getLobbyMemberByIndex(uiMgr.root.steamLobbyID, i)
+			var member_steam_id = Steam.getLobbyMemberByIndex(uiMgr.root.steam_lobby_id, i)
 			if member_steam_id != uiMgr.root.mySteamID:
 				Steam.closeP2PSessionWithUser(member_steam_id)
 				
-		Steam.leaveLobby(uiMgr.root.steamLobbyID)
-		uiMgr.root.steamLobbyID = 0
+		Steam.leaveLobby(uiMgr.root.steam_lobby_id)
+		uiMgr.root.steam_lobby_id = 0
 
 	uiMgr.root.peer.close()
 	multiplayer.multiplayer_peer = null
