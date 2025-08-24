@@ -59,11 +59,10 @@ func refresh_firend_list():
 		ui.vbcFirendList.add_child(btInvalidFriend)
 
 func _on_pressed_fb(fb: Button):
-	ui.invite_steam_id = validFriends[fb.text]
-	ui.invite_steam_name = Steam.getFriendPersonaName(ui.invite_steam_id)
+	root.invite_steam_id = validFriends[fb.text]
+	root.invite_steam_name =  Steam.getFriendPersonaName(validFriends[fb.text])
 	ui.scFriendList.visible = false
-
-	ui.btInvite.text = ui.invite_steam_name
+	ui.btInvite.text = root.invite_steam_name
 	ui.btHost.disabled = false
 
 func recieve_invite():
@@ -75,10 +74,10 @@ func recieve_invite():
 			var remote_steam_id = packet["remote_steam_id"]
 			var invited_lobby_id = bytes_to_var(packet["data"])
 			
-			ui.host_steam_id = remote_steam_id
-			ui.lobby_id = invited_lobby_id
+			root.host_steam_id = remote_steam_id
+			root.steam_lobby_id = invited_lobby_id
 
-			ui.btJoin.text = "초대 수락: " + Steam.getFriendPersonaName(ui.host_steam_id)
+			ui.btJoin.text = "초대 수락: " + Steam.getFriendPersonaName(root.host_steam_id)
 			ui.btJoin.disabled = false
 
 			print("invited from: ", invited_lobby_id)
@@ -94,5 +93,5 @@ func _ready() -> void:
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not hosting and root.mySteamID:
+	if not hosting and root.my_steam_id:
 		recieve_invite()

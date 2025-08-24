@@ -10,26 +10,22 @@ class_name LobbyUI
 var uiMgr: UIManager = null
 var lobby: Lobby = null
 
-var my_steam_id: int
-var invite_steam_id: int
-var lobby_id: int
-var host_steam_id: int
-
-var my_steam_name: String 
-var invite_steam_name: String
-
 func _on_bt_host_pressed() -> void:
 	lobby.host_lobby()
 
 func _on_bt_join_pressed() -> void:
-	lobby.join_lobby(lobby_id)
+	lobby.join_lobby(uiMgr.root.steam_lobby_id)
 	
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
 	lobby = uiMgr.root.sceneMgr.currentScene as Lobby
 
 func _ready() -> void:
-	pass
+	if uiMgr.root.invite_steam_id:
+		uiMgr.root.invite_steam_name =  Steam.getFriendPersonaName(uiMgr.root.invite_steam_id)
+		scFriendList.visible = false
+		btInvite.text = uiMgr.root.invite_steam_name
+		btHost.disabled = false
 
 func _process(delta: float) -> void:
 	pass

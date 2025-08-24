@@ -167,7 +167,8 @@ func quit_game():
 				root.sceneMgr.gameResult = 0
 			1:
 				root.sceneMgr.gameResult = 1
-
+	
+	await get_tree().create_timer(0.25).timeout
 	root.sceneMgr.call_deferred("set_scene", 2)
 
 func get_my_player() -> Player:

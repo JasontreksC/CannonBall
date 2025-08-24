@@ -12,8 +12,14 @@ class_name CannonBall
 # UI, 게임 씬 참조 저장
 
 # 멀티 플레이 관련 리소스
+var my_steam_id: int
+var invite_steam_id: int
+var host_steam_id: int
+var steam_lobby_id: int = 0
+var my_steam_name: String 
+var invite_steam_name: String
+
 var peer: MultiplayerPeer = null
-var mySteamID: int = 0
 
 @export var player_scene: PackedScene
 
@@ -21,7 +27,7 @@ var mySteamID: int = 0
 func _add_player(id=1):
 	if not multiplayer.is_server():
 		return
-		
+
 	var player: Player = player_scene.instantiate()
 	player.name = str(id)
 	var gameScene: Game = sceneMgr.currentScene as Game
@@ -63,9 +69,9 @@ func _ready() -> void:
 	sceneMgr.set_scene(0)
 
 	if Steam.steamInitEx(480):
-		mySteamID = Steam.getSteamID()
+		my_steam_id = Steam.getSteamID()
 		print("Steam 초기화 성공")
-		print("내 Steam ID: ", mySteamID)
+		print("내 Steam ID: ", my_steam_id)
 		
 		Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
 		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
@@ -77,9 +83,9 @@ func _ready() -> void:
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
-			if uiMgr.get_current_ui_as_lobby().invite_steam_id:
-				Steam.sendP2PPacket(uiMgr.get_current_ui_as_lobby().invite_steam_id, var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
-				print("invite sended!: ", uiMgr.get_current_ui_as_lobby().invite_steam_id)
+			if invite_steam_id:
+				Steam.sendP2PPacket(invite_steam_id, var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+				print("invite sended!: ", invite_steam_id)
 			
 			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
 				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
@@ -87,6 +93,7 @@ func _ready() -> void:
 			sceneMgr.set_scene(1)
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
+			steam_lobby_id = new_lobby_id
 		else:
 			print("Error on create lobby!")
 	)
@@ -96,9 +103,10 @@ func _ready() -> void:
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
-				if id == uiMgr.get_current_ui_as_lobby().host_steam_id:
+				if id == host_steam_id:
 					sceneMgr.set_scene(1)
 					connect_steam_socket(id)
+					steam_lobby_id = new_lobby_id
 				else:
 					print("오류: 초대를 전송한 호스트의 SteamID와 로비 오너의 SteamID가 일치하지 않음.")
 		else:
