@@ -54,6 +54,8 @@ func _physics_process(_delta: float) -> void:
 		return
 	if world.game.stateMachine.current_state_name() == "WaitSession" or world.game.stateMachine.current_state_name() == "EndSession":
 		return
+	if world == null || world.game == null || world.game.players[target] == null:
+		return
 
 	# 덤불 진입/출입 판정
 	if xrange.overlap_test(world.game.players[target]) or xrange.overlap_test(world.game.players[target].cannon):

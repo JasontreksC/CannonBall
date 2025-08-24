@@ -43,7 +43,7 @@ texture = ExtResource("1_omc4w")
 lifetime = 5.0
 fixed_fps = 60
 interpolate = false
-visibility_rect = Rect2(-100000, -100, 200000, 200)
+visibility_rect = Rect2(-100000, -100000, 200000, 200000)
 process_material = SubResource("ParticleProcessMaterial_omc4w")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

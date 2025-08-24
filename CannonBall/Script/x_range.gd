@@ -39,6 +39,9 @@ func _init(_id: String="range") -> void:
 	id = _id + str(Time.get_ticks_usec())
 
 func overlap_test(target: Node2D) -> bool:
+	if target == null:
+		return false
+
 	if not target.has_meta(id) and in_range(target.global_position.x):
 		target.set_meta(id, 1)
 		if on_entered.has_connections():

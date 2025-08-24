@@ -24,5 +24,8 @@ func _ready() -> void:
 	target_player = world.game.players[target]
 	
 func _on_timer_timeout() -> void:
+	if target_player == null:
+		return
+		
 	if xrange.in_range(target_player.global_position.x):
 		world.game.players[target].rpc("get_damage", tickDamage)

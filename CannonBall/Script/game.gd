@@ -300,12 +300,14 @@ func on_entry_EndSession():
 	ui.subuiDashBoard.show_text("게임 종료!", 5)
 	ui.subuiDashBoard.set_pb_time(5)
 	
-	players[0].canMove = false
-	players[1].canMove = false
+	get_my_player().canMove = false
+	get_my_player().set_multiplayer_authority(-1)
+	get_my_player().cannon.set_multiplayer_authority(-1)
 	
 	lifetimePool.clear()
 	transmitQueue.clear()
-	
+	world.process_mode = Node.PROCESS_MODE_DISABLED
+
 	get_tree().create_timer(5).timeout.connect(quit_game)
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
