@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=16 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_cell.tscn" id="2_dviy5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://eyiexi4hnjxy" path="res://Asset/ui/telescope.png" id="4_7hrlq"]
 [ext_resource type="Shader" uid="uid://bjqwwneksm261" path="res://Shader/just_color.tres" id="6_o5tdw"]
 [ext_resource type="PackedScene" uid="uid://cl5oes5bechlx" path="res://Scene/sub_ui_interaction.tscn" id="9_wckav"]
+[ext_resource type="PackedScene" uid="uid://bjbce2h7u05ck" path="res://Scene/sub_ui_disconnected.tscn" id="10_pmkfs"]
 [ext_resource type="PackedScene" uid="uid://q64lhk0stdly" path="res://Scene/sub_ui_dash_board.tscn" id="12_i3syv"]
 [ext_resource type="PackedScene" uid="uid://0hqg3crg2ec0" path="res://Scene/sub_ui_shell_selector.tscn" id="18_bucyv"]
 
@@ -186,3 +187,16 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.6, 0.6)
+
+[node name="SubUIDisconnected" parent="." instance=ExtResource("10_pmkfs")]
+visible = false
+z_index = 10
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
+color = Color(0, 0, 0, 0.435294)

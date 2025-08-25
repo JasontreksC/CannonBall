@@ -177,13 +177,27 @@ func get_my_player() -> Player:
 	else:
 		return null
 
+func disconnected(id=1) -> void:
+	if id != peerID:
+		print("%d과의 접속이 끊어짐!" % id)
+	
+	ui.subuiDisconnected.visible = true
+	get_my_player().canMove = false
+	get_my_player().set_multiplayer_authority(-1)
+	get_my_player().cannon.set_multiplayer_authority(-1)
+	get_tree().paused = true
+
+	await get_tree().create_timer(3).timeout
+	root.back_to_lobby()
+
 func _enter_tree() -> void:
 	root = get_parent().root
 	root.uiMgr.set_ui(1)
 
 func _ready() -> void:
 	peerID = multiplayer.get_unique_id()
-	print(peerID)
+	if not multiplayer.peer_disconnected.is_connected(disconnected):
+		multiplayer.peer_disconnected.connect(disconnected)
 	
 	ui = root.uiMgr.get_current_ui_as_in_game()
 	if ui:

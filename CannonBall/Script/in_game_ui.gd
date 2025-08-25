@@ -42,6 +42,10 @@ var interaction_state: Dictionary[String, bool] = {
 }
 @onready var interactions: Control = $Interactions
 
+# Disconnect
+@onready var subuiDisconnected: ColorRect = $SubUIDisconnected
+
+
 var uiMgr: UIManager = null
 var game: Game = null
 
@@ -153,4 +157,3 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
-	print(mouse_on_button)

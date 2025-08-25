@@ -201,8 +201,7 @@ func _physics_process(delta: float) -> void:
 				# 입력 시 상태 전환
 				if isInCannon:
 					stateMachine.transit_by_input("handle", "HandleCannon")
-					if isAttack:
-						stateMachine.transit_by_input("aim", "ReadyFire")
+					stateMachine.transit_by_input("aim", "ReadyFire")
 				
 				h_movement("self", walkSpeed, delta)
 				amt.set("parameters/BT_Idle/Blend2/blend_amount", clamp(abs(velocity), 0, 1))
@@ -213,8 +212,7 @@ func _physics_process(delta: float) -> void:
 					position.x = cannon.get_handle_x()
 
 				stateMachine.transit_by_input("handle", "Idle")
-				if isAttack:
-					stateMachine.transit_by_input("aim", "ReadyFire")
+				stateMachine.transit_by_input("aim", "ReadyFire")
 			
 				h_movement("cannon", cannonSpeed, delta)
 				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
