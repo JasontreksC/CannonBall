@@ -35,10 +35,7 @@ var sprite: Sprite2D = null
 
 @rpc("any_peer", "call_local")
 func on_spawned() -> void:
-	if multiplayer.is_server():
-		game.players[0].overview_shell(self)
-	else:
-		game.players[1].overview_shell(self)
+	pass
 
 func search_landed_pond(ponds: Array[Node]) -> Pond:
 	for p: Pond in ponds:

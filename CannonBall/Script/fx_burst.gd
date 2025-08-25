@@ -30,10 +30,5 @@ func _ready() -> void:
 	var ampBlink: AnimationPlayer = fxBlink.get_child(1)
 	ampBlink.play("blink")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _on_gp_smoke_finished() -> void:
 	game.rpc("delete_object", self.name)

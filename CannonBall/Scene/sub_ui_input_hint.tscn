@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://cq6k67g1svn0o"]
+
+[ext_resource type="PackedScene" uid="uid://bsk3jx7wrw05n" path="res://Scene/rounded_pannel.tscn" id="1_wwr6c"]
+[ext_resource type="Script" uid="uid://dqv3pt7i0thhm" path="res://Script/sub_ui_input_hint.gd" id="2_g25jy"]
+[ext_resource type="Texture2D" uid="uid://bqtu1ssc4jqur" path="res://Asset/ui/mouse_left.png" id="3_u0eeh"]
+[ext_resource type="Texture2D" uid="uid://b8emamxpn0re4" path="res://Asset/ui/mouse_wheel.png" id="4_llqh5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wwr6c"]
+font_size = 52
+
+[sub_resource type="LabelSettings" id="LabelSettings_g25jy"]
+font_size = 52
+outline_size = 24
+outline_color = Color(0.188235, 0.188235, 0.188235, 0.290196)
+
+[node name="SubUI_InputHint" instance=ExtResource("1_wwr6c")]
+self_modulate = Color(0.188235, 0.188235, 0.188235, 0.290196)
+offset_right = 128.0
+offset_bottom = 128.0
+script = ExtResource("2_g25jy")
+
+[node name="Key" type="Label" parent="." index="0"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 26.0
+offset_right = 119.0
+offset_bottom = 98.0
+text = "Key"
+label_settings = SubResource("LabelSettings_wwr6c")
+
+[node name="Explain" type="Label" parent="." index="1"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 37.0
+offset_top = 29.0
+offset_right = 219.0
+offset_bottom = 101.0
+grow_horizontal = 0
+text = "Explain"
+label_settings = SubResource("LabelSettings_g25jy")
+
+[node name="MouseL" type="TextureRect" parent="." index="2"]
+visible = false
+layout_mode = 0
+offset_left = 40.0
+offset_top = 19.0
+offset_right = 92.0
+offset_bottom = 100.0
+texture = ExtResource("3_u0eeh")
+
+[node name="MouseW" type="TextureRect" parent="." index="3"]
+visible = false
+layout_mode = 0
+offset_left = 40.0
+offset_top = 19.0
+offset_right = 92.0
+offset_bottom = 100.0
+texture = ExtResource("4_llqh5")

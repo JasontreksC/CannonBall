@@ -45,6 +45,14 @@ var interaction_state: Dictionary[String, bool] = {
 # Disconnect
 @onready var subuiDisconnected: ColorRect = $SubUIDisconnected
 
+#Hint
+@onready var subuiHint_Move: SubUIInputHint = $SubUI_InputHint_Move
+@onready var subuiHint_Handdle: SubUIInputHint = $SubUI_InputHint_Handdle
+@onready var subuiHint_Aim: SubUIInputHint = $SubUI_InputHint_Aim
+
+@onready var subuiHint_Attack: SubUIInputHint = $Telescope/SubUI_InputHint_Attack
+@onready var subuiHint_Zoom: SubUIInputHint = $Telescope/SubUI_InputHint_Zoom
+@onready var subuiHint_NoAim: SubUIInputHint = $Telescope/SubUI_InputHint_NoAim
 
 var uiMgr: UIManager = null
 var game: Game = null
@@ -136,6 +144,18 @@ func set_interaction(type: String, onoff: bool) -> void:
 			new_interaction.position = Vector2(-128, -128 - 128 * count)
 			count += 1
 
+#Hint
+func set_hints(num: int) -> void:
+	match num:
+		0:
+			subuiHint_Move.visible = true
+			subuiHint_Handdle.visible = true
+			subuiHint_Aim.visible = true
+		1:
+			subuiHint_Move.visible = false
+			subuiHint_Handdle.visible = false
+			subuiHint_Aim.visible = false
+
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
 
@@ -154,6 +174,15 @@ func _ready() -> void:
 		var p2HPCell: HPCell = p1HPCell.duplicate()
 		p2HPCell.position.x =  -62 - 30 * i
 		p2HPCells.add_child(p2HPCell)
+	
+	subuiHint_Move.set_key_hint("[A][D]", "이동")
+	subuiHint_Handdle.set_key_hint("[E]", "대포 잡기")
+	subuiHint_Aim.set_key_hint("[F]", "대포 조준")
+	subuiHint_Attack.set_mouse_hint(0, "공격")
+	subuiHint_Zoom.set_mouse_hint(1, "확대/축소")
+	subuiHint_NoAim.set_key_hint("[F]", "조준 해제")
+
+	set_hints(0)
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())

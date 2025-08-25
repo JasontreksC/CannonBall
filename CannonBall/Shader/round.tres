@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=4 format=3 uid="uid://s4mnyl4kthwp"]
+[gd_resource type="VisualShader" load_steps=4 format=3 uid="uid://dj1yeisxlutqe"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_s3xg2"]
 expanded_output_ports = [0]

@@ -73,15 +73,6 @@ func shake_camera(from_x: float, range: float) -> void:
 	var t: float = inverse_lerp(range, 0, distance)
 	var amplitude = lerp(0, 100, clamp(t, 0, 1))
 	cmc.shake(amplitude)
-
-func overview_shell(shell: Shell) -> void:
-	if shell:
-		cmc.set_target(shell)
-		cmc.set_zoom(0.4, 1)
-
-func overview_reset() -> void:
-	cmc.set_target(nCamTargetDefault)
-	cmc.set_zoom(0.7, 0.5)
 	
 func h_movement(mode: String, speed: float, delta: float):
 	if not canMove:
@@ -218,9 +209,12 @@ func _physics_process(delta: float) -> void:
 				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
 				
 			"ReadyFire":
-				if stateMachine.transit_by_input("aim", "back"):
-					overview_reset()
-				
+				if Input.is_action_just_pressed("aim"):
+					if isInCannon:
+						stateMachine.transit_back()
+					else:
+						stateMachine.execute_transit("Idle")
+					
 				# 만원경으로 조준
 				if game.ui.zoomFinished:
 					if Input.is_action_just_pressed("wheel_up"):
@@ -248,8 +242,6 @@ func _process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
 
-	if Input.is_action_just_pressed("space"):
-		overview_reset()
 	if Input.is_action_just_pressed("tab"):
 		selectedShell = (selectedShell + 1) % 3 
 
@@ -294,10 +286,11 @@ func on_entry_HandleCannon():
 
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
-	#cmc.set_target(nCamTargetDefault, 0.7)
+	cmc.set_target(nCamTargetDefault)
 	
 	game.ui.off_observe()
 	cannon.stateMachine.execute_transit("Idle")
+	game.ui.set_hints(0)
 	
 func on_entry_ReadyFire():
 	if multiplayer.is_server():
@@ -311,3 +304,4 @@ func on_entry_ReadyFire():
 	# 카메라 위치를 이동시킴
 	cmc.set_target(nCamTargetAim)
 	game.ui.on_observe()
+	game.ui.set_hints(1)

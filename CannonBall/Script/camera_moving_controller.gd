@@ -28,6 +28,7 @@ var prevZoom : Vector2
 var offset : Vector2
 var progress : float
 var zoommig: bool = false
+# var targeting_player: bool = true
 
 func set_target(node: Node2D) -> void:
 	targetNode = node

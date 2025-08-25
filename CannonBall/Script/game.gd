@@ -222,6 +222,7 @@ func _ready() -> void:
 	stateMachine.regist_state_event("EndSession", "entry", on_entry_EndSession)
 	
 	stateMachine.init_current_state("WaitSession")
+	
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
@@ -297,14 +298,10 @@ func on_entry_Shelling():
 	else:
 		ui.subuiDashBoard.unfocus_player_info(0)
 
-
 func on_exit_Shelling():
 	if multiplayer.is_server():
 		update_lifeturn()
 		world.on_turn_count()
-		players[0].overview_reset()
-	else:
-		players[1].overview_reset()
 
 	if winner == -1:
 		ui.subuiDashBoard.show_text("잠시후 공수전환", 3)

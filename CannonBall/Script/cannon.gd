@@ -87,20 +87,14 @@ func _ready() -> void:
 	
 	stateMachine.regist_state("Idle")
 	stateMachine.regist_state("Aim")
-	stateMachine.regist_state("Fire")
-	
 	
 	stateMachine.regist_transit("Idle", "Aim", 0)
 	stateMachine.regist_transit("Aim", "Idle", 0)
-	stateMachine.regist_transit("Aim", "Fire", 0)
-	stateMachine.regist_transit("Fire", "Idle", 0)
 	
 	stateMachine.regist_state_event("Idle", "exit", on_exit_Idle)
 	stateMachine.regist_state_event("Idle", "entry", on_entry_Idle)
 	stateMachine.regist_state_event("Aim", "exit", on_exit_Aim)
 	stateMachine.regist_state_event("Aim", "entry", on_entry_Aim)
-	stateMachine.regist_state_event("Fire", "exit", on_exit_Fire)
-	stateMachine.regist_state_event("Fire", "entry", on_entry_Fire)
 	
 	stateMachine.init_current_state("Idle")
 
@@ -113,11 +107,6 @@ func _physics_process(delta: float) -> void:
 		pass
 	elif stateMachine.is_transit_process("Aim", "Idle", delta):
 		pass
-	elif stateMachine.is_transit_process("Aim", "Fire", delta):
-		pass
-	elif stateMachine.is_transit_process("Fire", "Idle", delta):
-		pass
-		
 	else:
 		match stateMachine.current_state_name():
 			"Idle":
@@ -130,12 +119,18 @@ func _physics_process(delta: float) -> void:
 				game.ui.aim_to_cam_telescope(aimed_x)
 					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
-				if player.isAttack and player.attackChance and not game.ui.mouse_on_button:
-					stateMachine.transit_by_input("clickL", "Fire")
-					
-			"Fire":
-				stateMachine.execute_transit("Idle")
-				player.attackChance = false
+				game.ui.subuiHint_Attack.set_possibility(player.attackChance)
+
+				if Input.is_action_just_pressed("clickL"):
+					if player.isAttack and player.attackChance and not game.ui.mouse_on_button:
+						amp.play("fire")
+						player.attackChance = false
+						
+						if multiplayer.is_server():
+							game.rpc("send_transmit", "p1_fired")
+						else:
+							game.rpc("send_transmit", "p2_fired")
+				
 	if reverseBlast > 0:
 		global_position.x -= heading * reverseBlast * delta
 		reverseBlast = move_toward(reverseBlast, 0, 100 * delta)
@@ -166,24 +161,15 @@ func on_exit_Aim():
 	pass
 func on_entry_Aim():
 	pass
-func on_exit_Fire():
-	player.stateMachine.execute_transit("Idle")
-	if multiplayer.is_server():
-		game.rpc("send_transmit", "p1_fired")
-	else:
-		game.rpc("send_transmit", "p2_fired")
-		
-func on_entry_Fire():
-	amp.play("fire")
-
-	var burstDir: Vector2 = nBreech.global_position.direction_to(nMuzzle.global_position).normalized()
-	game.rpc("server_spawn_request", "res://Scene/fx_burst.tscn", "none", {
-		"global_position" : nMuzzle.global_position,
-		"direction" : burstDir})
-
+	
 func on_fire():
 	var launcher: int = 0
 	if not multiplayer.is_server():
 		launcher = 1
 	world.rpc("start_shelling", player.selectedShell, shellPathes[player.selectedShell], ac.get_breech_pos(), ac.V0, ac.get_aimed_theta(), launcher)
 	reverseBlast += 200
+
+	var burstDir: Vector2 = nBreech.global_position.direction_to(nMuzzle.global_position).normalized()
+	game.rpc("server_spawn_request", "res://Scene/fx_burst.tscn", "none", {
+		"global_position" : nMuzzle.global_position,
+		"direction" : burstDir})
