@@ -11,6 +11,7 @@ var aim_boundary_left_end: float = 0
 var aim_boundary_right_end: float = 0
 var telescopeZoomOptions: Array[float] = [0.3, 0.6, 1.0]
 var zoomFinished: bool = true
+var mouse_on_button: bool = false
 
 @onready var crTelescope: TextureRect = $Telescope
 @onready var svTelescope: SubViewport = $Telescope/SubViewport
@@ -74,7 +75,7 @@ func zoom_cam_telescope(option: int) -> void:
 	zoomFinished = false
 	var tween: Tween = create_tween()
 	tween.tween_property(camTelescope, "zoom", Vector2(telescopeZoomOptions[option], telescopeZoomOptions[option]), 0.5)
-	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_EXPO)
 	tween.finished.connect(func(): zoomFinished = true)
 ## HP
 
@@ -128,8 +129,7 @@ func set_interaction(type: String, onoff: bool) -> void:
 			var new_interaction: NinePatchRect = psSubUIInteraction.instantiate()
 			new_interaction.set("interaction", i)
 			interactions.add_child(new_interaction)
-			new_interaction.scale *= 0.75
-			new_interaction.position = Vector2(-96, -96 - 96 * count)
+			new_interaction.position = Vector2(-128, -128 - 128 * count)
 			count += 1
 
 func _enter_tree() -> void:
@@ -153,3 +153,4 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
+	print(mouse_on_button)

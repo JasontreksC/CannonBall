@@ -4,16 +4,17 @@ class_name SubUIDashBoard extends TextureRect
 @onready var label2: Label = $GameStateLabels/Label2
 @onready var pbOutter: Line2D = $ProgressBar_Outter
 @onready var pbInner: Line2D = $ProgressBar_Outter/ProgressBar_Inner
-@onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var timer: Timer = $Timer
 
 @onready var p1Info: Control = $P1Info
 @onready var p1TimeLeftRing: TextureRect = $P1Info/TimeLeftRing
 @onready var p1TimeLeft: Label = $P1Info/TimeLeftRing/TimeLeft
+@onready var p1AttackSign: TextureRect = $P1Info/AttackSign
 
 @onready var p2Info: Control = $P2Info
 @onready var p2TimeLeftRing: TextureRect = $P2Info/TimeLeftRing
 @onready var p2TimeLeft: Label = $P2Info/TimeLeftRing/TimeLeft
+@onready var p2AttackSign: TextureRect = $P2Info/AttackSign
 
 
 var usable_label: int = 1
@@ -23,19 +24,24 @@ var ui: InGameUI = null
 # var activated_label: int = 0
 
 func focus_player_info(num: int) -> void:
+	var tween: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_EXPO)
 	match num:
 		0:
-			create_tween().tween_property(p1Info, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_EXPO)
+			tween.tween_property(p1Info, "scale", Vector2.ONE, 0.5)
+			tween.tween_property(p1AttackSign, "modulate", Color.WHITE, 0.5)
 		1:
-			create_tween().tween_property(p2Info, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_EXPO)
+			tween.tween_property(p2Info, "scale", Vector2.ONE, 0.5)
+			tween.tween_property(p2AttackSign, "modulate", Color.WHITE, 0.5)
 
 func unfocus_player_info(num: int) -> void:
+	var tween: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_EXPO)
 	match num:
 		0:
-			create_tween().tween_property(p1Info, "scale", Vector2(0.6, 0.6), 0.5).set_trans(Tween.TRANS_EXPO)
+			tween.tween_property(p1Info, "scale", Vector2(0.6, 0.6), 0.5)
+			tween.tween_property(p1AttackSign, "modulate", Color.TRANSPARENT, 0.5)
 		1:
-			create_tween().tween_property(p2Info, "scale", Vector2(0.6, 0.6), 0.5).set_trans(Tween.TRANS_EXPO)
-
+			tween.tween_property(p2Info, "scale", Vector2(0.6, 0.6), 0.5)
+			tween.tween_property(p2AttackSign, "modulate", Color.TRANSPARENT, 0.5)
 
 @rpc("any_peer", "call_local")
 func show_text(text: String, duration: float) -> void:

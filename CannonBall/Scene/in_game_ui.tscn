@@ -162,6 +162,7 @@ layout_mode = 0
 offset_top = 840.0
 offset_bottom = 1160.0
 scale = Vector2(0.75, 0.75)
+mouse_filter = 1
 
 [node name="SubUIDashBoard" parent="." instance=ExtResource("12_i3syv")]
 layout_mode = 1
@@ -184,3 +185,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.6, 0.6)

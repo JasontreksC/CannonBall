@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://0hqg3crg2ec0"]
+[gd_scene load_steps=10 format=3 uid="uid://0hqg3crg2ec0"]
 
 [ext_resource type="Texture2D" uid="uid://b8imyqqffd7xe" path="res://Asset/ui/ui_no_outline.png" id="1_1y7jf"]
 [ext_resource type="Texture2D" uid="uid://c3pybtbta3oar" path="res://Asset/shell/normal_shell.png" id="2_adb0l"]
@@ -17,107 +17,6 @@ shader = ExtResource("3_qy1sg")
 shader_parameter/Texture2DParameter = ExtResource("4_cinhi")
 shader_parameter/ColorParameter = Color(1, 0.35, 0, 1)
 shader_parameter/emission = 3.0
-
-[sub_resource type="Animation" id="Animation_cinhi"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:size:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(128, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:size:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(320, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Selector:size:x")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(128, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Selector:size:y")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(128, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_qy1sg"]
-resource_name = "expand"
-length = 0.5
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:size:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(128, -0.25, 0, 0.133333, 225.489, 300, -0.166667, 45.8007, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:size:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(320, -0.25, 0, 0.25, 0, 320, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Selector:size:x")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(128, -0.25, 0, 0.166667, 348.869, 360, -0.1, 44.3788, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Selector:size:y")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(128, -0.25, 0, 0.25, 0, 128, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_cinhi"]
-_data = {
-&"RESET": SubResource("Animation_cinhi"),
-&"expand": SubResource("Animation_qy1sg")
-}
 
 [node name="SubUI_ShellSelector" type="NinePatchRect"]
 texture_filter = 4
@@ -158,6 +57,7 @@ offset_top = -477.0
 offset_right = 1400.0
 offset_bottom = 60.0
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("4_f3c7e")
 metadata/_custom_type_script = "uid://h0n7884yqnt2"
 
@@ -188,6 +88,7 @@ offset_top = -477.0
 offset_right = 1400.0
 offset_bottom = 60.0
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("4_f3c7e")
 metadata/_custom_type_script = "uid://h0n7884yqnt2"
 
@@ -217,6 +118,7 @@ offset_top = -477.0
 offset_right = 1400.0
 offset_bottom = 60.0
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("4_f3c7e")
 metadata/_custom_type_script = "uid://h0n7884yqnt2"
 
@@ -234,11 +136,6 @@ patch_margin_left = 64
 patch_margin_top = 64
 patch_margin_right = 64
 patch_margin_bottom = 64
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_cinhi")
-}
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
