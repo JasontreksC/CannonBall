@@ -103,7 +103,7 @@ replication_config = SubResource("SceneReplicationConfig_seuo7")
 stream = ExtResource("3_8bnix")
 volume_db = 5.0
 autoplay = true
-max_distance = 20000.0
+max_distance = 15000.0
 
 [connection signal="finished" from="PoisonSpread1" to="." method="_on_poison_spread_1_finished"]
 [connection signal="finished" from="PoisonSpread2" to="." method="_on_poison_spread_2_finished"]

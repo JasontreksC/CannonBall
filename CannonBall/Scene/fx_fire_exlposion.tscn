@@ -107,7 +107,6 @@ default_color = Color(1, 0, 1, 0.690196)
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_fe2rv")
 autoplay = true
-max_distance = 20000.0
-attenuation = 2.46229
+max_distance = 15000.0
 
 [connection signal="finished" from="FireExplo" to="." method="_on_fire_explo_finished"]
