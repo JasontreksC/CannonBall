@@ -23,7 +23,7 @@ var gameTime: float = 0
 var winner: int = -1
 var activatedShell: String
 
-var lifetimes: Array[int] = [60, 60]
+var lifetimes: Array[float] = [60, 60]
 
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
@@ -129,17 +129,19 @@ func check_transmit(transmit: Array[String]) -> bool:
 	return result
 
 func update_game_time(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
+
 	lifetimes[0] -= delta
 	lifetimes[1] -= delta
 
-
-	if multiplayer.is_server():
-		if players[0].isAttack :
-			players[0].lifeTime -= delta
-			
-		if players[1].isAttack :
-			players[1].lifeTime -= delta
-			players[1].rpc("set_lifetime", players[1].lifeTime)
+@rpc("any_peer", "call_local")
+func request_lifetime_update() -> void:
+	var id: int = multiplayer.get_remote_sender_id()
+	if id == 1:
+		players[0].rpc("set_lifetime", lifetimes[0])
+	else:
+		players[1].rpc("set_lifetime", lifetimes[1])
 
 @rpc("any_peer", "call_local")
 func regist_lifeturn(key: String, turn: int):

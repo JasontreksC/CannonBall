@@ -67,6 +67,8 @@ func get_damage(damage: int):
 
 @rpc("any_peer", "call_remote")
 func set_lifetime(time: float) -> void:
+	if not is_multiplayer_authority():
+		return
 	self.lifeTime = time
 
 @rpc("any_peer", "call_local")
@@ -253,9 +255,9 @@ func _process(delta: float) -> void:
 	else:
 		game.ui.subuiDashBoard.p2_time_left = lifeTime
 
-
 	if not is_multiplayer_authority():
 		return
+	game.rpc("request_lifetime_update")
 
 	if Input.is_action_just_pressed("tab"):
 		selectedShell = (selectedShell + 1) % 3 
