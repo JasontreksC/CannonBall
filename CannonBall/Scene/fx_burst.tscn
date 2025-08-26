@@ -144,6 +144,7 @@ replication_config = SubResource("SceneReplicationConfig_nf4r3")
 [node name="ASP_Burst" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_71gf4")
 autoplay = true
-max_distance = 15000.0
+max_distance = 20000.0
+attenuation = 5.46416
 
 [connection signal="finished" from="GP_Smoke" to="." method="_on_gp_smoke_finished"]
