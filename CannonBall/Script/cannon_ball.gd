@@ -51,7 +51,8 @@ func create_local_socket():
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(135)
 	multiplayer.set_multiplayer_peer(peer)
-	multiplayer.peer_connected.connect(_add_player)
+	if not multiplayer.peer_connected.is_connected(_add_player):
+		multiplayer.peer_connected.connect(_add_player)
 	_add_player()
 
 func connect_local_socket():
@@ -63,6 +64,8 @@ func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
 
 func back_to_lobby() -> void:
+	get_tree().paused = false
+
 	if steam_lobby_id:
 		var members_num: int = Steam.getNumLobbyMembers(steam_lobby_id)
 		for i in range(members_num):

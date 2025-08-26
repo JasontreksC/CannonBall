@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://co2yk1rkb2o2j"]
+[gd_scene load_steps=13 format=3 uid="uid://co2yk1rkb2o2j"]
 
 [ext_resource type="Script" uid="uid://70v1h8mp57e" path="res://Script/fx_explosion.gd" id="1_w8ob6"]
 [ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Material/smoke_particle_1.tres" id="2_70tkk"]
 [ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="3_kou1b"]
+[ext_resource type="AudioStream" uid="uid://coafgy5nv53cy" path="res://Asset/sound/sfx_normal_land.wav" id="4_kou1b"]
 
 [sub_resource type="Curve" id="Curve_t264x"]
 _data = [Vector2(0.637255, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -74,5 +75,10 @@ visible = false
 points = PackedVector2Array(-400, 0, 400, 0)
 width = 100.0
 default_color = Color(1, 0, 1, 0.690196)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_kou1b")
+volume_db = 5.0
+autoplay = true
 
 [connection signal="finished" from="Smoke" to="." method="_on_smoke_finished"]

@@ -1,21 +1,29 @@
-[gd_scene load_steps=8 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=11 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
 [ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
-[ext_resource type="FontFile" uid="uid://vwi73m8qn7ne" path="res://Asset/font_en/MedievalSharp-Bold.ttf" id="3_s6cm0"]
+[ext_resource type="LabelSettings" uid="uid://7aydicaa1ulm" path="res://Material/title.tres" id="2_thp15"]
 [ext_resource type="Theme" uid="uid://c7n68kmajdde2" path="res://Material/lobby_button.tres" id="4_1xitx"]
 [ext_resource type="Texture2D" uid="uid://bkliw5os8x64i" path="res://Asset/ui/ysu_logo.png" id="5_thp15"]
 [ext_resource type="Texture2D" uid="uid://cbwhdufxtn6ju" path="res://Asset/ui/godot_logo.png" id="6_thp15"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_hlk56"]
-font = ExtResource("3_s6cm0")
-font_size = 200
-font_color = Color(0.862745, 0.54902, 0, 1)
-outline_size = 48
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 74
-shadow_color = Color(0, 0, 0, 0.317647)
-shadow_offset = Vector2(0, 15.41)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thp15"]
+bg_color = Color(1, 1, 1, 0.580392)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="Theme" id="Theme_1mlcq"]
+Panel/styles/panel = SubResource("StyleBoxFlat_thp15")
+
+[sub_resource type="LabelSettings" id="LabelSettings_thp15"]
+font_size = 48
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1mlcq"]
+font_size = 32
+font_color = Color(0, 0, 0, 1)
 
 [node name="LobbyUI" type="Control"]
 layout_mode = 3
@@ -25,63 +33,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hlk56")
-
-[node name="BT_Invite" type="Button" parent="."]
-z_index = 1
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 31.0
-offset_top = 60.0
-offset_right = 481.0
-offset_bottom = 120.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.04695, 1.04695)
-theme = ExtResource("4_1xitx")
-text = "Steam 친구 초대
-"
-
-[node name="BT_Host" type="Button" parent="."]
-z_index = 1
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 539.0
-offset_top = 59.9999
-offset_right = 639.0
-offset_bottom = 120.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.04695, 1.04695)
-theme = ExtResource("4_1xitx")
-disabled = true
-text = "호스트"
-
-[node name="BT_Join" type="Button" parent="."]
-z_index = 1
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 31.0
-offset_top = 159.0
-offset_right = 617.0
-offset_bottom = 219.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.04695, 1.04695)
-theme = ExtResource("4_1xitx")
-disabled = true
-text = "초대 수락"
 
 [node name="Title" type="Label" parent="."]
 z_index = 1
@@ -96,54 +47,7 @@ offset_bottom = 342.0
 grow_horizontal = 2
 scale = Vector2(0.647605, 0.647605)
 text = "Cannon Ball"
-label_settings = SubResource("LabelSettings_hlk56")
-
-[node name="SCC_FriendList" type="ScrollContainer" parent="."]
-visible = false
-z_index = 1
-custom_minimum_size = Vector2(350, 400)
-layout_mode = 0
-offset_left = 638.0
-offset_top = 423.0
-offset_right = 988.0
-offset_bottom = 823.0
-horizontal_scroll_mode = 0
-
-[node name="VBC_FirendList" type="VBoxContainer" parent="SCC_FriendList"]
-custom_minimum_size = Vector2(350, 400)
-layout_mode = 2
-
-[node name="BT_LocalHost" type="Button" parent="."]
-z_index = 1
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -765.0
-offset_top = -232.0
-offset_right = -483.0
-offset_bottom = -82.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Local Host"
-
-[node name="BT_LocalJoin" type="Button" parent="."]
-z_index = 1
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -404.0
-offset_top = -226.0
-offset_right = -122.0
-offset_bottom = -76.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Local Join"
+label_settings = ExtResource("2_thp15")
 
 [node name="LobbyImage" type="TextureRect" parent="."]
 layout_mode = 0
@@ -171,8 +75,227 @@ offset_bottom = 810.0
 scale = Vector2(0.125, 0.125)
 texture = ExtResource("6_thp15")
 
+[node name="SCC_FriendList" type="ScrollContainer" parent="."]
+visible = false
+z_index = 1
+custom_minimum_size = Vector2(350, 400)
+layout_mode = 0
+offset_left = 638.0
+offset_top = 423.0
+offset_right = 988.0
+offset_bottom = 823.0
+horizontal_scroll_mode = 0
+
+[node name="VBC_FirendList" type="VBoxContainer" parent="SCC_FriendList"]
+custom_minimum_size = Vector2(350, 400)
+layout_mode = 2
+
+[node name="BT_Invite" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 31.0
+offset_top = -60.0
+offset_right = 481.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "Steam 친구 초대
+"
+
+[node name="BT_Host" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 539.0
+offset_top = -60.0001
+offset_right = 639.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+disabled = true
+text = "호스트"
+
+[node name="BT_Join" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 31.0
+offset_top = 15.0001
+offset_right = 617.0
+offset_bottom = 75.0001
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+disabled = true
+text = "초대 수락"
+
+[node name="BT_LocalHost" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -929.0
+offset_top = -449.0
+offset_right = -639.0
+offset_bottom = -389.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("4_1xitx")
+text = "로컬 게임 생성"
+
+[node name="BT_LocalJoin" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -619.0
+offset_top = -449.0
+offset_right = -314.0
+offset_bottom = -389.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("4_1xitx")
+text = "로컬 게임 참가"
+
+[node name="BT_Quit" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 31.0
+offset_top = 163.0
+offset_right = 617.0
+offset_bottom = 223.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "게임 종료
+"
+
+[node name="BT_Credit" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 31.0
+offset_top = 239.0
+offset_right = 617.0
+offset_bottom = 299.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "크레딧"
+
+[node name="Creddit" type="Panel" parent="."]
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -480.0
+offset_top = 300.0
+offset_right = 480.0
+offset_bottom = 753.0
+grow_horizontal = 2
+theme = SubResource("Theme_1mlcq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Creddit"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label1" type="Label" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+text = "팀장"
+label_settings = SubResource("LabelSettings_thp15")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+text = "우재성"
+label_settings = SubResource("LabelSettings_1mlcq")
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+text = "기획 및 프로그래밍"
+label_settings = SubResource("LabelSettings_thp15")
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+text = "김시호, 손윤재"
+label_settings = SubResource("LabelSettings_1mlcq")
+horizontal_alignment = 1
+
+[node name="Label5" type="Label" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+text = "그래픽 및 애니메이션"
+label_settings = SubResource("LabelSettings_thp15")
+horizontal_alignment = 1
+
+[node name="Label6" type="Label" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+text = "홍창범, 박지언"
+label_settings = SubResource("LabelSettings_1mlcq")
+horizontal_alignment = 1
+
+[node name="BT_CloseCredit" type="Button" parent="Creddit"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -60.0001
+offset_right = 50.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "닫기"
+
 [connection signal="pressed" from="BT_Invite" to="." method="_on_bt_invite_pressed"]
 [connection signal="pressed" from="BT_Host" to="." method="_on_bt_host_pressed"]
 [connection signal="pressed" from="BT_Join" to="." method="_on_bt_join_pressed"]
 [connection signal="pressed" from="BT_LocalHost" to="." method="_on_bt_local_host_pressed"]
 [connection signal="pressed" from="BT_LocalJoin" to="." method="_on_bt_local_join_pressed"]
+[connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
+[connection signal="pressed" from="BT_Credit" to="." method="_on_bt_credit_pressed"]
+[connection signal="pressed" from="Creddit/BT_CloseCredit" to="." method="_on_bt_close_credit_pressed"]

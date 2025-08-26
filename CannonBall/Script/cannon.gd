@@ -30,6 +30,9 @@ const SPEED: float = 300
 @onready var nBreech: Node2D = $Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Breech
 @onready var nMuzzle: Node2D = $Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Muzzle
 
+## ASP
+@onready var aspBurst: AudioStreamPlayer2D = $ASP_Burst
+@onready var aspWheel: AudioStreamPlayer2D = $ASP_Wheel
 
 var game: Game = null
 var world: World = null
@@ -138,6 +141,11 @@ func _physics_process(delta: float) -> void:
 	update_cur_velocity(delta)
 	if abs(curVelocity) > 0:
 		rotate_wheel(delta)
+		if not aspWheel.playing:
+			aspWheel.play()
+	else:
+		aspWheel.stop()
+			
 	# 항상 바닥에 고정
 	if not inPondID:
 		self.global_position.y = 0
@@ -173,3 +181,5 @@ func on_fire():
 	game.rpc("server_spawn_request", "res://Scene/fx_burst.tscn", "none", {
 		"global_position" : nMuzzle.global_position,
 		"direction" : burstDir})
+	
+	aspBurst.play()

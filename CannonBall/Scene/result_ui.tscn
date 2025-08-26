@@ -1,11 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbolva68m23ov"]
 
 [ext_resource type="Script" uid="uid://do6md44cj1tvx" path="res://Script/result_ui.gd" id="1_kkocs"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_jtamo"]
-font_size = 128
-outline_size = 48
-outline_color = Color(0, 0, 0, 1)
+[ext_resource type="LabelSettings" uid="uid://7aydicaa1ulm" path="res://Material/title.tres" id="2_5imoc"]
 
 [node name="ResultUI" type="Control"]
 layout_mode = 3
@@ -26,8 +22,8 @@ offset_top = 300.0
 offset_right = 408.0
 offset_bottom = 478.0
 grow_horizontal = 2
-text = "승패"
-label_settings = SubResource("LabelSettings_jtamo")
+text = "Victory"
+label_settings = ExtResource("2_5imoc")
 horizontal_alignment = 1
 
 [node name="BT_Quit" type="Button" parent="."]

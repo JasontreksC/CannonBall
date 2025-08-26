@@ -7,6 +7,8 @@ class_name LobbyUI
 @onready var btHost: Button = $BT_Host
 @onready var btJoin: Button = $BT_Join
 
+@onready var credit: Panel = $Creddit
+
 var uiMgr: UIManager = null
 var lobby: Lobby = null
 
@@ -43,3 +45,12 @@ func _on_bt_local_join_pressed() -> void:
 
 func _on_bt_invite_pressed() -> void:
 	scFriendList.visible = not scFriendList.visible
+
+func _on_bt_quit_pressed() -> void:
+	get_tree().quit(0)
+
+func _on_bt_credit_pressed() -> void:
+	credit.visible = true
+
+func _on_bt_close_credit_pressed() -> void:
+	credit.visible = false

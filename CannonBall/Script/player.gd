@@ -35,6 +35,7 @@ var gameFinished: bool = false
 @onready var character: Node2D = $CannonReaper
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var amt: AnimationTree = $AnimationTree
+@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -163,6 +164,7 @@ func _ready() -> void:
 	cmc.set_target(nCamTargetDefault)
 	cmc.camera.make_current()
 	
+	
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -237,6 +239,12 @@ func _physics_process(delta: float) -> void:
 			isInCannon = true
 		else:
 			isInCannon = false
+	
+	if abs(velocity) > 0:
+		if not audio.playing:
+			audio.play()
+	else:
+		audio.stop()
 
 func _process(delta: float) -> void:
 	if not is_multiplayer_authority():

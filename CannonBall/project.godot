@@ -28,6 +28,7 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/per_pixel_transparency/allowed=true
+window/vsync/vsync_mode=0
 
 [editor_plugins]
 
@@ -108,7 +109,7 @@ exit={
 
 [physics]
 
-common/physics_ticks_per_second=120
+common/physics_ticks_per_second=144
 common/physics_jitter_fix=0.0
 common/physics_interpolation=true
 

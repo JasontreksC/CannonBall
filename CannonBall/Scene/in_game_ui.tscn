@@ -5,7 +5,7 @@
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope.gdshader" id="3_oqxxn"]
 [ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 [ext_resource type="Texture2D" uid="uid://eyiexi4hnjxy" path="res://Asset/ui/telescope.png" id="4_7hrlq"]
-[ext_resource type="Shader" uid="uid://bjqwwneksm261" path="res://Shader/just_color.tres" id="6_o5tdw"]
+[ext_resource type="Shader" uid="uid://ldy6pqjtct3d" path="res://Shader/just_color.tres" id="6_o5tdw"]
 [ext_resource type="PackedScene" uid="uid://cl5oes5bechlx" path="res://Scene/sub_ui_interaction.tscn" id="9_wckav"]
 [ext_resource type="PackedScene" uid="uid://bjbce2h7u05ck" path="res://Scene/sub_ui_disconnected.tscn" id="10_pmkfs"]
 [ext_resource type="PackedScene" uid="uid://dsr67dbx3vr6k" path="res://Scene/sub_ui_exit_button.tscn" id="11_qyub3"]

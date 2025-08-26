@@ -19,6 +19,6 @@ func _process(delta: float) -> void:
 	if ui and ui.lbResult.text == "승패":
 		match sceneMgr.gameResult:
 			0:
-				ui.lbResult.text = "패배!"
+				ui.lbResult.text = "Defeat"
 			1:
-				ui.lbResult.text = "승리!"
+				ui.lbResult.text = "Vectory"

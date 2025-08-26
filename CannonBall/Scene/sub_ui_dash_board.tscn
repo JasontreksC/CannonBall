@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://q64lhk0stdly"]
 
 [ext_resource type="Script" uid="uid://nmmbgtant46v" path="res://Script/sub_ui_dash_board.gd" id="1_7shko"]
-[ext_resource type="Shader" uid="uid://8sns6im73x10" path="res://Shader/rounded_progress.gdshader" id="2_acvr4"]
+[ext_resource type="Shader" uid="uid://6qhmm2dqmbv8" path="res://Shader/rounded_progress.gdshader" id="2_acvr4"]
 
 [sub_resource type="Gradient" id="Gradient_71i6m"]
 offsets = PackedFloat32Array(0.00396825, 0.102857, 0.188571, 1)
@@ -199,6 +199,7 @@ label_settings = SubResource("LabelSettings_acvr4")
 [node name="AttackSign" type="TextureRect" parent="P2Info"]
 modulate = Color(1, 1, 1, 0)
 z_index = -1
+layout_mode = 0
 offset_left = 40.0
 offset_top = 100.0
 offset_right = 604.0

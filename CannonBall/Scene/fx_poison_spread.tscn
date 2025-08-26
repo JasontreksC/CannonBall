@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dadbuw6oeorgg"]
+[gd_scene load_steps=13 format=3 uid="uid://dadbuw6oeorgg"]
 
 [ext_resource type="Texture2D" uid="uid://bla10hrxsd0it" path="res://Asset/particles/poison_particle.png" id="1_mbulw"]
 [ext_resource type="Script" uid="uid://d0qkkbrflo823" path="res://Script/fx_poison_spread.gd" id="1_seuo7"]
+[ext_resource type="AudioStream" uid="uid://uqlevlwk2fxa" path="res://Asset/sound/sfx_poison_land.wav" id="3_8bnix"]
 
 [sub_resource type="Curve" id="Curve_mbulw"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -97,6 +98,11 @@ default_color = Color(1, 0, 1, 0.690196)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_seuo7")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_8bnix")
+volume_db = 5.0
+autoplay = true
 
 [connection signal="finished" from="PoisonSpread1" to="." method="_on_poison_spread_1_finished"]
 [connection signal="finished" from="PoisonSpread2" to="." method="_on_poison_spread_2_finished"]

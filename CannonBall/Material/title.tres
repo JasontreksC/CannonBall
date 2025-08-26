@@ -1,0 +1,13 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://7aydicaa1ulm"]
+
+[ext_resource type="FontFile" uid="uid://vwi73m8qn7ne" path="res://Asset/font_en/MedievalSharp-Bold.ttf" id="1_3tmmo"]
+
+[resource]
+font = ExtResource("1_3tmmo")
+font_size = 200
+font_color = Color(0.862745, 0.54902, 0, 1)
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 74
+shadow_color = Color(0, 0, 0, 0.317647)
+shadow_offset = Vector2(0, 15.41)
