@@ -46,6 +46,6 @@ replication_config = SubResource("SceneReplicationConfig_3gvqb")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_7s5xq")
 max_distance = 20000.0
-attenuation = 2.82843
+attenuation = 2.46229
 
 [connection signal="finished" from="Radial" to="." method="_on_radial_finished"]
