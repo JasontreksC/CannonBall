@@ -145,5 +145,6 @@ replication_config = SubResource("SceneReplicationConfig_nf4r3")
 stream = ExtResource("6_71gf4")
 autoplay = true
 max_distance = 15000.0
+attenuation = 2.0
 
 [connection signal="finished" from="GP_Smoke" to="." method="_on_gp_smoke_finished"]
