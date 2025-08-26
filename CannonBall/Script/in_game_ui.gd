@@ -11,6 +11,7 @@ var aim_boundary_left_end: float = 0
 var aim_boundary_right_end: float = 0
 var telescopeZoomOptions: Array[float] = [0.3, 0.6, 1.0]
 var zoomFinished: bool = true
+var mouse_on_button: bool = false
 
 @onready var crTelescope: TextureRect = $Telescope
 @onready var svTelescope: SubViewport = $Telescope/SubViewport
@@ -40,6 +41,18 @@ var interaction_state: Dictionary[String, bool] = {
 	"t_pond" : false
 }
 @onready var interactions: Control = $Interactions
+
+# Disconnect
+@onready var subuiDisconnected: ColorRect = $SubUIDisconnected
+
+#Hint
+@onready var subuiHint_Move: SubUIInputHint = $SubUI_InputHint_Move
+@onready var subuiHint_Handdle: SubUIInputHint = $SubUI_InputHint_Handdle
+@onready var subuiHint_Aim: SubUIInputHint = $SubUI_InputHint_Aim
+
+@onready var subuiHint_Attack: SubUIInputHint = $Telescope/SubUI_InputHint_Attack
+@onready var subuiHint_Zoom: SubUIInputHint = $Telescope/SubUI_InputHint_Zoom
+@onready var subuiHint_NoAim: SubUIInputHint = $Telescope/SubUI_InputHint_NoAim
 
 var uiMgr: UIManager = null
 var game: Game = null
@@ -74,7 +87,7 @@ func zoom_cam_telescope(option: int) -> void:
 	zoomFinished = false
 	var tween: Tween = create_tween()
 	tween.tween_property(camTelescope, "zoom", Vector2(telescopeZoomOptions[option], telescopeZoomOptions[option]), 0.5)
-	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_EXPO)
 	tween.finished.connect(func(): zoomFinished = true)
 ## HP
 
@@ -128,9 +141,20 @@ func set_interaction(type: String, onoff: bool) -> void:
 			var new_interaction: NinePatchRect = psSubUIInteraction.instantiate()
 			new_interaction.set("interaction", i)
 			interactions.add_child(new_interaction)
-			new_interaction.scale *= 0.75
-			new_interaction.position = Vector2(-96, -96 - 96 * count)
+			new_interaction.position = Vector2(-128, -128 - 128 * count)
 			count += 1
+
+#Hint
+func set_hints(num: int) -> void:
+	match num:
+		0:
+			subuiHint_Move.visible = true
+			subuiHint_Handdle.visible = true
+			subuiHint_Aim.visible = true
+		1:
+			subuiHint_Move.visible = false
+			subuiHint_Handdle.visible = false
+			subuiHint_Aim.visible = false
 
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
@@ -150,6 +174,15 @@ func _ready() -> void:
 		var p2HPCell: HPCell = p1HPCell.duplicate()
 		p2HPCell.position.x =  -62 - 30 * i
 		p2HPCells.add_child(p2HPCell)
+	
+	subuiHint_Move.set_key_hint("[A][D]", "이동")
+	subuiHint_Handdle.set_key_hint("[E]", "대포 잡기")
+	subuiHint_Aim.set_key_hint("[F]", "대포 조준")
+	subuiHint_Attack.set_mouse_hint(0, "공격")
+	subuiHint_Zoom.set_mouse_hint(1, "확대/축소")
+	subuiHint_NoAim.set_key_hint("[F]", "조준 해제")
+
+	set_hints(0)
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())

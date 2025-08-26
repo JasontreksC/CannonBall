@@ -33,7 +33,6 @@ func _add_player(id=1):
 	var gameScene: Game = sceneMgr.currentScene as Game
 	gameScene.call_deferred("add_child", player)
 	gameScene.players.append(player)
-	#peer.peer_disconnected.connect(lost_peer)
 
 func create_steam_socket():	
 	peer = SteamMultiplayerPeer.new()
@@ -52,7 +51,8 @@ func create_local_socket():
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(135)
 	multiplayer.set_multiplayer_peer(peer)
-	multiplayer.peer_connected.connect(_add_player)
+	if not multiplayer.peer_connected.is_connected(_add_player):
+		multiplayer.peer_connected.connect(_add_player)
 	_add_player()
 
 func connect_local_socket():
@@ -62,6 +62,24 @@ func connect_local_socket():
 
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
+
+func back_to_lobby() -> void:
+	get_tree().paused = false
+
+	if steam_lobby_id:
+		var members_num: int = Steam.getNumLobbyMembers(steam_lobby_id)
+		for i in range(members_num):
+			var member_steam_id = Steam.getLobbyMemberByIndex(steam_lobby_id, i)
+			if member_steam_id != steam_lobby_id:
+				Steam.closeP2PSessionWithUser(member_steam_id)
+				
+		Steam.leaveLobby(steam_lobby_id)
+		steam_lobby_id = 0
+
+	peer.close()
+	multiplayer.multiplayer_peer = null
+	uiMgr.set_ui(0)
+	sceneMgr.set_scene(0)
 
 
 func _ready() -> void:
@@ -145,6 +163,3 @@ func _on_p2p_session_request(remote_id: int):
 
 func _on_p2p_session_connect_fail(remote_id: int, error: int):
 	print("P2P 세션 연결 실패:", remote_id, "오류 코드:", error)
-	
-func lost_peer() -> void:
-	print("lost peer!")

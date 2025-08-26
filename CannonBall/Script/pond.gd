@@ -12,6 +12,7 @@ class_name Pond
 var isPoisoned: bool = false
 var xrange: XRange = XRange.new("pond")
 var world: World = null
+var target_player: Player = null
 
 @rpc("any_peer", "call_local")
 func set_poisoned() -> void:
@@ -26,7 +27,7 @@ func lifetime_end() -> void:
 
 func _enter_tree() -> void:
 	world = get_parent().get_parent().get_parent() as World
-
+	
 func _ready() -> void:
 	spWater.material = spWater.material.duplicate()
 	xrange.set_from_center(global_position.x, pondRadius)
@@ -34,31 +35,25 @@ func _ready() -> void:
 	xrange.on_exited.connect(on_exited_pond)
 
 func _physics_process(delta: float) -> void:
-	if multiplayer.is_server() and target == 1:
+	if not is_instance_valid(target_player):
 		return
-	elif not multiplayer.is_server() and target == 0:
-		return
-	if world.game.stateMachine.current_state_name() == "WaitSession" or world.game.stateMachine.current_state_name() == "EndSession" :
-		return
-	if world == null || world.game == null || world.game.players[target] == null:
-		return
-	
+		
 	# 연못 진입/출입 판정
-	xrange.overlap_test(world.game.players[target])
-	xrange.overlap_test(world.game.players[target].cannon)
+	xrange.overlap_test(target_player)
+	xrange.overlap_test(target_player.cannon)
 	
 	# 연못 내에서 y값 조정
-	if world.game.players[target].inPondID == self.pondID:
-		var distance: float = abs(world.game.players[target].global_position.x - self.global_position.x)
+	if target_player.inPondID == self.pondID:
+		var distance: float = abs(target_player.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
 		var yInPond: float = lerp(0.0, pondDepth, t)
-		world.game.players[target].global_position.y = yInPond
+		target_player.global_position.y = yInPond
 
-	if world.game.players[target].cannon.inPondID == self.pondID:
-		var distance: float = abs(world.game.players[target].cannon.global_position.x - self.global_position.x)
+	if target_player.cannon.inPondID == self.pondID:
+		var distance: float = abs(target_player.cannon.global_position.x - self.global_position.x)
 		var t: float = inverse_lerp(pondRadius, 0, distance)
 		var yInPond: float = lerp(0.0, pondDepth, t)
-		world.game.players[target].cannon.global_position.y = yInPond
+		target_player.cannon.global_position.y = yInPond
 
 func on_entered_pond(node: Node2D) -> void:
 	if node is Player:
@@ -66,6 +61,8 @@ func on_entered_pond(node: Node2D) -> void:
 		world.game.ui.set_interaction("b_pond", true)
 		if isPoisoned:
 			world.game.ui.set_interaction("t_pond", true)
+
+		node.aspStep.stream = node.asPondStep
 
 	if node is Cannon:
 		node.inPondID = self.pondID
@@ -76,5 +73,8 @@ func on_exited_pond(node: Node2D) -> void:
 		world.game.ui.set_interaction("b_pond", false)
 		if isPoisoned:
 			world.game.ui.set_interaction("t_pond", false)
+		
+		node.aspStep.stream = node.asGroundStep
+
 	if node is Cannon:
 		node.inPondID = 0

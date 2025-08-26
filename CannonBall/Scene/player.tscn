@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://ind02kvqyd3c"]
+[gd_scene load_steps=32 format=3 uid="uid://ind02kvqyd3c"]
 
 [ext_resource type="Script" uid="uid://38lyw030h1aq" path="res://Script/player.gd" id="1_ui7ge"]
 [ext_resource type="PackedScene" uid="uid://dv453ijcwqcn6" path="res://Scene/camera_moving_controller.tscn" id="2_o1tno"]
@@ -8,7 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://42537q6ptefg" path="res://Asset/character/Right arm.png" id="7_2dof7"]
 [ext_resource type="Texture2D" uid="uid://by8an5ia7datj" path="res://Asset/character/Left leg.png" id="8_4ao7i"]
 [ext_resource type="Texture2D" uid="uid://bwcrqyrwoafhb" path="res://Asset/character/Right leg.png" id="9_1sypm"]
-[ext_resource type="Shader" uid="uid://s4mnyl4kthwp" path="res://Shader/round.tres" id="9_ij4jb"]
+[ext_resource type="Shader" uid="uid://dj1yeisxlutqe" path="res://Shader/round.tres" id="9_ij4jb"]
+[ext_resource type="AudioStream" uid="uid://ch46mj4sy55eg" path="res://Asset/sound/sfx_step_ground.wav" id="10_c68nv"]
+[ext_resource type="AudioStream" uid="uid://bulvgjvxh4isk" path="res://Asset/sound/sfx_step_pond.wav" id="11_c31lq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c68nv"]
 shader = ExtResource("9_ij4jb")
@@ -697,6 +699,8 @@ graph_offset = Vector2(-192, 41)
 [node name="Player" type="Node2D"]
 script = ExtResource("1_ui7ge")
 psCMC = ExtResource("2_o1tno")
+asGroundStep = ExtResource("10_c68nv")
+asPondStep = ExtResource("11_c31lq")
 
 [node name="CameraTarget_Default" type="Node2D" parent="."]
 position = Vector2(0, 300)
@@ -809,3 +813,7 @@ parameters/conditions/is_state_hc = false
 parameters/conditions/is_state_idle = false
 parameters/BT_HC/Blend2/blend_amount = 0
 parameters/BT_Idle/Blend2/blend_amount = 0.0
+
+[node name="ASP_Step" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_c68nv")
+volume_db = -30.0

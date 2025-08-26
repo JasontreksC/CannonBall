@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsr67dbx3vr6k"]
+
+[ext_resource type="PackedScene" uid="uid://bsk3jx7wrw05n" path="res://Scene/rounded_pannel.tscn" id="1_ygeor"]
+[ext_resource type="Script" uid="uid://bvltbc5kme3s4" path="res://Script/sub_ui_exit_button.gd" id="2_bf2l0"]
+[ext_resource type="Texture2D" uid="uid://py6krdkmbpgp" path="res://Asset/ui/exit_logo-01.png" id="2_cwf7l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bf2l0"]
+font_size = 48
+
+[node name="SubUIExitButton" instance=ExtResource("1_ygeor")]
+clip_contents = true
+offset_right = 128.0
+offset_bottom = 128.0
+mouse_filter = 1
+script = ExtResource("2_bf2l0")
+
+[node name="TextureRect" type="TextureRect" parent="." index="0"]
+modulate = Color(1, 0, 0.35, 1)
+layout_mode = 1
+offset_left = 3.0
+offset_right = 132.0
+offset_bottom = 128.0
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("2_cwf7l")
+
+[node name="Label" type="Label" parent="TextureRect" index="0"]
+layout_mode = 0
+offset_left = 124.0
+offset_top = 30.25
+offset_right = 686.0
+offset_bottom = 98.25
+text = "정말 게임을 나갈까요?"
+label_settings = SubResource("LabelSettings_bf2l0")
+horizontal_alignment = 1
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

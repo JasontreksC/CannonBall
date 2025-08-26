@@ -1,14 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://q64lhk0stdly"]
+[gd_scene load_steps=12 format=3 uid="uid://q64lhk0stdly"]
 
 [ext_resource type="Script" uid="uid://nmmbgtant46v" path="res://Script/sub_ui_dash_board.gd" id="1_7shko"]
-[ext_resource type="Shader" uid="uid://8sns6im73x10" path="res://Shader/rounded_progress.gdshader" id="2_acvr4"]
+[ext_resource type="Shader" uid="uid://6qhmm2dqmbv8" path="res://Shader/rounded_progress.gdshader" id="2_acvr4"]
 
 [sub_resource type="Gradient" id="Gradient_71i6m"]
-offsets = PackedFloat32Array(0.00396825, 0.377528, 1)
-colors = PackedColorArray(0, 0, 0, 0.568627, 0, 0, 0, 0, 0, 0, 0, 0)
+offsets = PackedFloat32Array(0.00396825, 0.102857, 0.188571, 1)
+colors = PackedColorArray(0, 0, 0, 0.568627, 0, 0, 0, 0.404835, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_7shko"]
 gradient = SubResource("Gradient_71i6m")
+fill_from = Vector2(0.0042735, 0.0512821)
 fill_to = Vector2(0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_71i6m"]
@@ -25,6 +26,13 @@ shader_parameter/progress = 0.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_acvr4"]
 font_size = 60
+
+[sub_resource type="Gradient" id="Gradient_acvr4"]
+offsets = PackedFloat32Array(0, 0.0685714, 0.362857, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.917647, 0, 0, 0.784314, 0.917647, 0, 0, 0.784314, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mgcee"]
+gradient = SubResource("Gradient_acvr4")
 
 [node name="SubUIDashBoard" type="TextureRect"]
 anchors_preset = 15
@@ -45,8 +53,6 @@ default_color = Color(0, 0, 0, 1)
 points = PackedVector2Array(0, 0, 1920, 0)
 width = 20.0
 default_color = Color(0.753984, 0.753984, 0.753984, 1)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
@@ -91,6 +97,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="P1Info" type="Control" parent="."]
+z_index = 10
 anchors_preset = 0
 offset_left = 40.0
 offset_top = 123.0
@@ -131,7 +138,18 @@ scale = Vector2(0.5, 0.5)
 text = "60.0"
 label_settings = SubResource("LabelSettings_acvr4")
 
+[node name="AttackSign" type="TextureRect" parent="P1Info"]
+modulate = Color(1, 1, 1, 0)
+z_index = -1
+layout_mode = 0
+offset_left = -40.0
+offset_top = -10.0
+offset_right = 524.0
+offset_bottom = 100.0
+texture = SubResource("GradientTexture1D_mgcee")
+
 [node name="P2Info" type="Control" parent="."]
+z_index = 10
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -177,5 +195,16 @@ grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 text = "60.0"
 label_settings = SubResource("LabelSettings_acvr4")
+
+[node name="AttackSign" type="TextureRect" parent="P2Info"]
+modulate = Color(1, 1, 1, 0)
+z_index = -1
+layout_mode = 0
+offset_left = 40.0
+offset_top = 100.0
+offset_right = 604.0
+offset_bottom = 210.0
+rotation = 3.14159
+texture = SubResource("GradientTexture1D_mgcee")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

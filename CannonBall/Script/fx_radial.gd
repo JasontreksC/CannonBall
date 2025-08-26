@@ -8,6 +8,7 @@ extends Node2D
 @export var mode: int = 0 # 0. 일반, 화염   1. 물 
 
 @onready var gpuRadial: GPUParticles2D = $Radial
+@onready var audio: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var game: Game = null
 
@@ -25,7 +26,8 @@ func _ready() -> void:
 			ppm = load("res://Material/ppm_fx_radial_water.tres")
 			gpuRadial.trail_enabled = true
 			gpuRadial.trail_lifetime = 0.1
-	
+			audio.play()
+			
 	if ppm == null:
 		return
 	

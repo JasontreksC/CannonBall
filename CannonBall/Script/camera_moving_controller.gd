@@ -4,6 +4,7 @@ class_name CameraMovingController
 @onready var camera: Camera2D = $Camera2D
 @onready var timer: Timer = $Timer
 @onready var shaker: ShakerComponent2D = $Camera2D/ShakerComponent2D
+#@onready var audioListener: AudioListener2D = $AudioListener2D
 
 var MAX_SPEED: float = 5000
 var MIN_SPEED: float = 10
@@ -28,6 +29,7 @@ var prevZoom : Vector2
 var offset : Vector2
 var progress : float
 var zoommig: bool = false
+# var targeting_player: bool = true
 
 func set_target(node: Node2D) -> void:
 	targetNode = node

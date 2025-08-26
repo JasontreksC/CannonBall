@@ -25,6 +25,7 @@ shader_parameter/sway_strength = 1.0
 shader_parameter/sway_speed = 2.0
 
 [node name="World" type="Node2D"]
+process_mode = 4
 script = ExtResource("1_dlwip")
 
 [node name="P1SpawnSpot" type="Node2D" parent="."]

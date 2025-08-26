@@ -7,12 +7,12 @@ class_name Bush
 @export var psFxSmoke: PackedScene
 
 @onready var spBush: Sprite2D = $SP_Bush
-@onready var world: World = $"../../.."
-
 @onready var nBurnSpots: Node2D = $BurnFxSpots
 
 var xrange: XRange = XRange.new("bush")
 var isBurning: bool = false
+var world: World = null
+var target_player: Player = null
 
 func start_burn() -> void:
 	if not multiplayer.is_server():
@@ -42,23 +42,20 @@ func lifetime_end() -> void:
 	queue_free()
 
 
+func _enter_tree() -> void:
+	world = get_parent().get_parent().get_parent() as World
+
 func _ready() -> void:
 	xrange.set_from_center(global_position.x, bushRadius)
 	xrange.on_entered.connect(on_entered_bush)
 	xrange.on_exited.connect(on_exited_bush)
 
 func _physics_process(_delta: float) -> void:
-	if multiplayer.is_server() and target == 1:
-		return
-	elif not multiplayer.is_server() and target == 0:
-		return
-	if world.game.stateMachine.current_state_name() == "WaitSession" or world.game.stateMachine.current_state_name() == "EndSession":
-		return
-	if world == null || world.game == null || world.game.players[target] == null:
-		return
-
 	# 덤불 진입/출입 판정
-	if xrange.overlap_test(world.game.players[target]) or xrange.overlap_test(world.game.players[target].cannon):
+	if not is_instance_valid(target_player):
+		return
+		
+	if xrange.overlap_test(target_player) or xrange.overlap_test(target_player.cannon):
 		self.modulate.a = 0.5
 	else:
 		self.modulate.a = 1.0

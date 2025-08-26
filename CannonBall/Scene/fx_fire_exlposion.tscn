@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://bhhrsex2ogmi0"]
+[gd_scene load_steps=18 format=3 uid="uid://bhhrsex2ogmi0"]
 
 [ext_resource type="Script" uid="uid://djbbvp0e6nifg" path="res://Script/fx_fire_exlposion.gd" id="1_0bsif"]
 [ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Material/smoke_particle_1.tres" id="1_id0p0"]
+[ext_resource type="AudioStream" uid="uid://dbd3m7agrusm5" path="res://Asset/sound/sfx_fire_land.wav" id="3_fe2rv"]
 
 [sub_resource type="Curve" id="Curve_id0p0"]
 _data = [Vector2(0.629085, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -5.98869, 0.0, 0, 0]
@@ -67,6 +68,7 @@ velocity_limit_curve = SubResource("CurveTexture_g3fjn")
 gravity = Vector3(0, 0, 0)
 radial_accel_min = -100.0
 radial_accel_max = 100.0
+attractor_interaction_enabled = false
 scale_min = 200.0
 scale_max = 300.0
 scale_curve = SubResource("CurveTexture_22mmi")
@@ -101,5 +103,12 @@ visible = false
 points = PackedVector2Array(-600, 0, 600, 0)
 width = 100.0
 default_color = Color(1, 0, 1, 0.690196)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_fe2rv")
+volume_db = -10.0
+autoplay = true
+max_distance = 20000.0
+attenuation = 2.0
 
 [connection signal="finished" from="FireExplo" to="." method="_on_fire_explo_finished"]

@@ -23,6 +23,8 @@ var gameTime: float = 0
 var winner: int = -1
 var activatedShell: String
 
+var lifetimes: Array[float] = [60, 60]
+
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
@@ -127,13 +129,27 @@ func check_transmit(transmit: Array[String]) -> bool:
 	return result
 
 func update_game_time(delta: float) -> void:
-	if multiplayer.is_server():
-		if players[0].isAttack :
-			players[0].lifeTime -= delta
-			
-		if players[1].isAttack :
-			players[1].lifeTime -= delta
-			players[1].rpc("set_lifetime", players[1].lifeTime)
+	if not multiplayer.is_server():
+		return
+
+	if is_p1_turn():
+		lifetimes[0] -= delta
+	else:
+		lifetimes[1] -= delta
+
+@rpc("any_peer", "call_local")
+func request_lifetime_update() -> void:
+	if not multiplayer.is_server():
+		return
+		
+	var id: int = multiplayer.get_remote_sender_id()
+
+	if id == 1:
+		players[0].rpc_id(id, "set_lifetime", lifetimes[0])
+	else:
+		players[1].rpc_id(id, "set_lifetime", lifetimes[1])
+
+
 
 @rpc("any_peer", "call_local")
 func regist_lifeturn(key: String, turn: int):
@@ -169,6 +185,7 @@ func quit_game():
 				root.sceneMgr.gameResult = 1
 	
 	await get_tree().create_timer(0.25).timeout
+	root.uiMgr.call_deferred("set_ui", 2)
 	root.sceneMgr.call_deferred("set_scene", 2)
 
 func get_my_player() -> Player:
@@ -177,13 +194,27 @@ func get_my_player() -> Player:
 	else:
 		return null
 
+func disconnected(id=1) -> void:
+	if id != peerID:
+		print("%d과의 접속이 끊어짐!" % id)
+	
+	ui.subuiDisconnected.visible = true
+	get_my_player().canMove = false
+	get_my_player().set_multiplayer_authority(-1)
+	get_my_player().cannon.set_multiplayer_authority(-1)
+	get_tree().paused = true
+
+	await get_tree().create_timer(3).timeout
+	root.back_to_lobby()
+
 func _enter_tree() -> void:
 	root = get_parent().root
 	root.uiMgr.set_ui(1)
 
 func _ready() -> void:
 	peerID = multiplayer.get_unique_id()
-	print(peerID)
+	if not multiplayer.peer_disconnected.is_connected(disconnected):
+		multiplayer.peer_disconnected.connect(disconnected)
 	
 	ui = root.uiMgr.get_current_ui_as_in_game()
 	if ui:
@@ -208,6 +239,7 @@ func _ready() -> void:
 	stateMachine.regist_state_event("EndSession", "entry", on_entry_EndSession)
 	
 	stateMachine.init_current_state("WaitSession")
+	
 func _process(delta: float) -> void:
 			
 	if stateMachine.is_transit_process("WaitSession", "Turn", delta):
@@ -261,6 +293,9 @@ func on_exit_WaitSession():
 	ui.subuiDashBoard.show_text("접속 성공!\n잠시 후 게임 시작", 3)
 	ui.subuiDashBoard.set_pb_time(3)
 
+	world.process_mode = Node.PROCESS_MODE_INHERIT
+	world.process_start()
+
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")
@@ -283,14 +318,10 @@ func on_entry_Shelling():
 	else:
 		ui.subuiDashBoard.unfocus_player_info(0)
 
-
 func on_exit_Shelling():
 	if multiplayer.is_server():
 		update_lifeturn()
 		world.on_turn_count()
-		players[0].overview_reset()
-	else:
-		players[1].overview_reset()
 
 	if winner == -1:
 		ui.subuiDashBoard.show_text("잠시후 공수전환", 3)

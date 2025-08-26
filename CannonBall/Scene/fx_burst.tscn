@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://eriwpbivkspp"]
+[gd_scene load_steps=23 format=3 uid="uid://eriwpbivkspp"]
 
 [ext_resource type="Script" uid="uid://clxvigsqvso6p" path="res://Script/fx_burst.gd" id="1_8uaop"]
-[ext_resource type="Shader" uid="uid://bs2rfvng6i2n2" path="res://Material/glow.tres" id="2_8uaop"]
+[ext_resource type="Shader" uid="uid://blce0ecuv5oon" path="res://Material/glow.tres" id="2_8uaop"]
 [ext_resource type="Material" uid="uid://ixki4puppuw4" path="res://Material/smoke_particle_2.tres" id="2_ddqip"]
 [ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="3_ddqip"]
 [ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="5_ddqip"]
+[ext_resource type="AudioStream" uid="uid://c6ufhaak3q18t" path="res://Asset/sound/sfx_burst.wav" id="6_71gf4"]
 
 [sub_resource type="Curve" id="Curve_ddqip"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.130573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -52,6 +53,7 @@ orbit_velocity_min = -0.5
 orbit_velocity_max = 0.5
 velocity_limit_curve = SubResource("CurveTexture_ddqip")
 gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
 scale_min = 100.0
 scale_max = 150.0
 scale_curve = SubResource("CurveTexture_8uaop")
@@ -112,11 +114,10 @@ script = ExtResource("1_8uaop")
 z_index = -1
 texture_repeat = 2
 material = ExtResource("2_ddqip")
-emitting = false
-amount = 100
+amount = 50
 lifetime = 5.0
-one_shot = true
 explosiveness = 1.0
+fixed_fps = 60
 interpolate = false
 visibility_rect = Rect2(-100000, -100, 200000, 200)
 process_material = SubResource("ParticleProcessMaterial_nf4r3")
@@ -139,5 +140,11 @@ process_material = SubResource("ParticleProcessMaterial_71gf4")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_nf4r3")
+
+[node name="ASP_Burst" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_71gf4")
+autoplay = true
+max_distance = 20000.0
+attenuation = 2.0
 
 [connection signal="finished" from="GP_Smoke" to="." method="_on_gp_smoke_finished"]

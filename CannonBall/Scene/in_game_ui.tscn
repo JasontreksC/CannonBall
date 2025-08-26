@@ -1,13 +1,16 @@
-[gd_scene load_steps=15 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=19 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
 [ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_cell.tscn" id="2_dviy5"]
 [ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope.gdshader" id="3_oqxxn"]
 [ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
 [ext_resource type="Texture2D" uid="uid://eyiexi4hnjxy" path="res://Asset/ui/telescope.png" id="4_7hrlq"]
-[ext_resource type="Shader" uid="uid://bjqwwneksm261" path="res://Shader/just_color.tres" id="6_o5tdw"]
+[ext_resource type="Shader" uid="uid://ldy6pqjtct3d" path="res://Shader/just_color.tres" id="6_o5tdw"]
 [ext_resource type="PackedScene" uid="uid://cl5oes5bechlx" path="res://Scene/sub_ui_interaction.tscn" id="9_wckav"]
+[ext_resource type="PackedScene" uid="uid://bjbce2h7u05ck" path="res://Scene/sub_ui_disconnected.tscn" id="10_pmkfs"]
+[ext_resource type="PackedScene" uid="uid://dsr67dbx3vr6k" path="res://Scene/sub_ui_exit_button.tscn" id="11_qyub3"]
 [ext_resource type="PackedScene" uid="uid://q64lhk0stdly" path="res://Scene/sub_ui_dash_board.tscn" id="12_i3syv"]
+[ext_resource type="PackedScene" uid="uid://cq6k67g1svn0o" path="res://Scene/sub_ui_input_hint.tscn" id="12_u4wab"]
 [ext_resource type="PackedScene" uid="uid://0hqg3crg2ec0" path="res://Scene/sub_ui_shell_selector.tscn" id="18_bucyv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7hrlq"]
@@ -30,6 +33,11 @@ shader = ExtResource("6_o5tdw")
 shader_parameter/Color = Color(0.786172, 3.15256e-06, 5.77569e-07, 1)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_brp0j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i3syv"]
+font_size = 32
+outline_size = 24
+outline_color = Color(0.188235, 0.188235, 0.188235, 0.290196)
 
 [node name="InGameUI" type="Control"]
 layout_mode = 3
@@ -115,6 +123,30 @@ text = "최대 사거리입니다."
 label_settings = SubResource("LabelSettings_brp0j")
 horizontal_alignment = 1
 
+[node name="SubUI_InputHint_Attack" parent="Telescope" instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 756.0
+offset_right = 416.0
+offset_bottom = 884.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_Zoom" parent="Telescope" instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 824.0
+offset_right = 416.0
+offset_bottom = 952.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_NoAim" parent="Telescope" instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 635.0
+offset_top = 756.0
+offset_right = 763.0
+offset_bottom = 884.0
+scale = Vector2(0.5, 0.5)
+
 [node name="P1HP" type="Control" parent="."]
 z_index = 1
 anchors_preset = 0
@@ -162,6 +194,7 @@ layout_mode = 0
 offset_top = 840.0
 offset_bottom = 1160.0
 scale = Vector2(0.75, 0.75)
+mouse_filter = 1
 
 [node name="SubUIDashBoard" parent="." instance=ExtResource("12_i3syv")]
 layout_mode = 1
@@ -174,6 +207,7 @@ offset_right = 960.0
 offset_bottom = 1080.0
 grow_vertical = 1
 mouse_filter = 2
+metadata/_edit_lock_ = true
 
 [node name="Interactions" type="Control" parent="."]
 layout_mode = 1
@@ -184,3 +218,65 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.6, 0.6)
+
+[node name="SubUIDisconnected" parent="." instance=ExtResource("10_pmkfs")]
+visible = false
+z_index = 10
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
+color = Color(0, 0, 0, 0.435294)
+
+[node name="SubUIExitButton" parent="." instance=ExtResource("11_qyub3")]
+layout_mode = 0
+offset_top = 692.64
+offset_bottom = 820.64
+scale = Vector2(0.75, 0.75)
+
+[node name="SubUI_InputHint_Move" parent="." instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 1000.0
+offset_right = 743.0
+offset_bottom = 1128.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_Handdle" parent="." instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 857.0
+offset_top = 1000.0
+offset_right = 985.0
+offset_bottom = 1128.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_Aim" parent="." instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 1154.0
+offset_top = 1000.0
+offset_right = 1282.0
+offset_bottom = 1128.0
+scale = Vector2(0.5, 0.5)
+
+[node name="Hint_Esc" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 643.0
+offset_right = 82.0
+offset_bottom = 688.0
+text = "[Esc]"
+label_settings = SubResource("LabelSettings_i3syv")
+
+[node name="Hint_Tab" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 791.9
+offset_right = 82.0
+offset_bottom = 836.9
+text = "[Tab]"
+label_settings = SubResource("LabelSettings_i3syv")

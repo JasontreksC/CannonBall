@@ -28,6 +28,9 @@ var gameFinished: bool = false
 @export var hp: int = 20
 @export var inPondID: int = 0
 
+@export var asGroundStep: AudioStream
+@export var asPondStep: AudioStream
+
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
 @onready var world: World = $"../World"
@@ -35,6 +38,8 @@ var gameFinished: bool = false
 @onready var character: Node2D = $CannonReaper
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var amt: AnimationTree = $AnimationTree
+@onready var aspStep: AudioStreamPlayer = $ASP_Step
+
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -60,8 +65,10 @@ func get_damage(damage: int):
 			game.rpc("send_transmit", "p2_defeat")
 
 
-@rpc("any_peer", "call_remote")
+@rpc("any_peer", "call_local")
 func set_lifetime(time: float) -> void:
+	if not is_multiplayer_authority():
+		return
 	self.lifeTime = time
 
 @rpc("any_peer", "call_local")
@@ -73,15 +80,6 @@ func shake_camera(from_x: float, range: float) -> void:
 	var t: float = inverse_lerp(range, 0, distance)
 	var amplitude = lerp(0, 100, clamp(t, 0, 1))
 	cmc.shake(amplitude)
-
-func overview_shell(shell: Shell) -> void:
-	if shell:
-		cmc.set_target(shell)
-		cmc.set_zoom(0.4, 1)
-
-func overview_reset() -> void:
-	cmc.set_target(nCamTargetDefault)
-	cmc.set_zoom(0.7, 0.5)
 	
 func h_movement(mode: String, speed: float, delta: float):
 	if not canMove:
@@ -114,9 +112,6 @@ func _ready() -> void:
 	# 이 함수의 내용을 무시하고 리턴하는 것이다. 즉 입력의 중복 등을 방지한다.
 	if not is_multiplayer_authority():
 		return
-	
-	if not multiplayer.is_server():
-		game.rpc("send_transmit", "client_connected")
 	
 	game = get_parent() as Game
 	game.ui = game.root.uiMgr.get_current_ui_as_in_game()
@@ -172,6 +167,7 @@ func _ready() -> void:
 	cmc.set_target(nCamTargetDefault)
 	cmc.camera.make_current()
 	
+	
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -201,8 +197,7 @@ func _physics_process(delta: float) -> void:
 				# 입력 시 상태 전환
 				if isInCannon:
 					stateMachine.transit_by_input("handle", "HandleCannon")
-					if isAttack:
-						stateMachine.transit_by_input("aim", "ReadyFire")
+					stateMachine.transit_by_input("aim", "ReadyFire")
 				
 				h_movement("self", walkSpeed, delta)
 				amt.set("parameters/BT_Idle/Blend2/blend_amount", clamp(abs(velocity), 0, 1))
@@ -213,16 +208,18 @@ func _physics_process(delta: float) -> void:
 					position.x = cannon.get_handle_x()
 
 				stateMachine.transit_by_input("handle", "Idle")
-				if isAttack:
-					stateMachine.transit_by_input("aim", "ReadyFire")
+				stateMachine.transit_by_input("aim", "ReadyFire")
 			
 				h_movement("cannon", cannonSpeed, delta)
 				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
 				
 			"ReadyFire":
-				if stateMachine.transit_by_input("aim", "back"):
-					overview_reset()
-				
+				if Input.is_action_just_pressed("aim"):
+					if isInCannon:
+						stateMachine.transit_back()
+					else:
+						stateMachine.execute_transit("Idle")
+					
 				# 만원경으로 조준
 				if game.ui.zoomFinished:
 					if Input.is_action_just_pressed("wheel_up"):
@@ -238,20 +235,32 @@ func _physics_process(delta: float) -> void:
 	# 높이를 항상 바닥에 고정
 	if not inPondID:
 		self.global_position.y = 0
-
+		
 	if cannon:
 		#대포의 상호작용구역 안에 들어왔음을 감지
 		if abs(cannon.global_position.x - self.global_position.x) < 150:
 			isInCannon = true
 		else:
 			isInCannon = false
+	
+	if abs(velocity) > 0:
+		if not aspStep.playing:
+			aspStep.play()
+	else:
+		aspStep.stop()
 
 func _process(delta: float) -> void:
+	if self.name == "1":
+		game.ui.subuiDashBoard.p1_time_left = lifeTime
+	else:
+		game.ui.subuiDashBoard.p2_time_left = lifeTime
+
 	if not is_multiplayer_authority():
 		return
+	
+	if isAttack:
+		game.rpc("request_lifetime_update")
 
-	if Input.is_action_just_pressed("space"):
-		overview_reset()
 	if Input.is_action_just_pressed("tab"):
 		selectedShell = (selectedShell + 1) % 3 
 
@@ -296,10 +305,11 @@ func on_entry_HandleCannon():
 
 func on_exit_ReadyFire():
 	# 카메라 위치를 원래대로 되돌림
-	#cmc.set_target(nCamTargetDefault, 0.7)
+	cmc.set_target(nCamTargetDefault)
 	
 	game.ui.off_observe()
 	cannon.stateMachine.execute_transit("Idle")
+	game.ui.set_hints(0)
 	
 func on_entry_ReadyFire():
 	if multiplayer.is_server():
@@ -313,3 +323,4 @@ func on_entry_ReadyFire():
 	# 카메라 위치를 이동시킴
 	cmc.set_target(nCamTargetAim)
 	game.ui.on_observe()
+	game.ui.set_hints(1)
