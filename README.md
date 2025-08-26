@@ -7,13 +7,13 @@
 ![alt text](screenshot/1.png)
 ![alt text](screenshot/2.png)
 
-게임 소개: 대포와 세 종류의 탄환을 이용하여 전투를 벌이는 2D 턴제 슈팅 게임
-팀 소개: 연성대학교 컴퓨터 소프트웨어과 '본때' 동아리 소속 5인
-팀 구성: 팀장 1, 프로그래밍 2, 그래픽 및 UI 2
-개발 환경: Windows11, [Godot Engine 4.4.1](https://godotengine.org)
-개발 언어: GDScript, glsl3.0(쉐이더)
-버전 관리: Github
-기타 사용 툴: Adobe Illustrator(에셋 제작)
+- **게임 소개:** 대포와 세 종류의 탄환을 이용하여 전투를 벌이는 2D 턴제 슈팅 게임
+- **팀 소개:** 연성대학교 컴퓨터 소프트웨어과 '본때' 동아리 소속 5인
+- **팀 구성:** 팀장 1, 프로그래밍 2, 그래픽 및 UI 2
+- **개발 환경:** Windows11, [Godot Engine 4.4.1](https://godotengine.org)
+- **개발 언어:** GDScript, glsl3.0(쉐이더)
+- **버전 관리:** Github
+- **기타 사용 툴:** Adobe Illustrator(에셋 제작)
 
 ****
 
