@@ -132,16 +132,15 @@ func update_game_time(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
 
-	lifetimes[0] -= delta
-	lifetimes[1] -= delta
+	if is_p1_turn():
+		lifetimes[0] -= delta
+	else:
+		lifetimes[1] -= delta
 
 @rpc("any_peer", "call_local")
-func request_lifetime_update() -> void:
-	var id: int = multiplayer.get_remote_sender_id()
-	if id == 1:
-		players[0].rpc("set_lifetime", lifetimes[0])
-	else:
-		players[1].rpc("set_lifetime", lifetimes[1])
+func request_lifetime_update(player_num: int = 0) -> void:
+	players[player_num].rpc("set_lifetime", lifetimes[player_num])
+
 
 @rpc("any_peer", "call_local")
 func regist_lifeturn(key: String, turn: int):
