@@ -247,6 +247,12 @@ func _physics_process(delta: float) -> void:
 		audio.stop()
 
 func _process(delta: float) -> void:
+	if self.name == "1":
+		game.ui.subuiDashBoard.p1_time_left = lifeTime
+	else:
+		game.ui.subuiDashBoard.p2_time_left = lifeTime
+
+
 	if not is_multiplayer_authority():
 		return
 

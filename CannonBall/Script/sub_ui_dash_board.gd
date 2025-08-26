@@ -21,6 +21,10 @@ var usable_label: int = 1
 var pb_x: float = 1920
 var time_left_progress: float = 0
 var ui: InGameUI = null
+
+var p1_time_left: float = 60
+var p2_time_left: float = 60
+
 # var activated_label: int = 0
 
 func focus_player_info(num: int) -> void:
@@ -104,16 +108,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pbInner.points[1].x = pb_x
-
-	if not is_instance_valid(ui.game):
-		return
-	if not is_instance_valid(ui) or not is_instance_valid(ui.game):
-		return
-	if ui.game.stateMachine.current_state_name() == "WaitSession" or ui.game.stateMachine.current_state_name() == "EndSession":
-		return
-
-	var p1_time_left = ui.game.players[0].lifeTime
-	var p2_time_left = ui.game.players[1].lifeTime
 
 	p1TimeLeftRing.material.set("shader_parameter/progress", 1 - p1_time_left / 60.0)
 	p1TimeLeft.text = "%.1f" % p1_time_left
