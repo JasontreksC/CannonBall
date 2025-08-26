@@ -276,6 +276,9 @@ func on_exit_WaitSession():
 	ui.subuiDashBoard.show_text("접속 성공!\n잠시 후 게임 시작", 3)
 	ui.subuiDashBoard.set_pb_time(3)
 
+	world.process_mode = Node.PROCESS_MODE_INHERIT
+	world.process_start()
+
 func on_entry_Turn():
 	if multiplayer.is_server():
 		rpc("change_turn")

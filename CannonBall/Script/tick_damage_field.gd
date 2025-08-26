@@ -28,4 +28,4 @@ func _on_timer_timeout() -> void:
 		return
 		
 	if xrange.in_range(target_player.global_position.x):
-		world.game.players[target].rpc("get_damage", tickDamage)
+		target_player.rpc("get_damage", tickDamage)

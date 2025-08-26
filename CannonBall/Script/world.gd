@@ -113,3 +113,19 @@ func on_turn_count():
 				df.queue_free()
 			else:
 				df.set("lifeturn", lt - 1)
+
+func process_start():
+	var ponds: Array[Node]
+	var bushes: Array[Node]
+
+	if multiplayer.is_server():
+		ponds = nP1Ponds.get_children()
+		bushes = nP1Bushes.get_children()
+	else:
+		ponds= nP2Ponds.get_children()
+		bushes = nP2Bushes.get_children()
+	
+	for p: Pond in ponds:
+		p.target_player = game.get_my_player()
+	for b: Bush in bushes:
+		b.target_player = game.get_my_player()
