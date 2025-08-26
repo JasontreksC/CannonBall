@@ -101,6 +101,9 @@ func _ready() -> void:
 	
 	stateMachine.init_current_state("Idle")
 
+	if not multiplayer.is_server():
+		game.rpc("send_transmit", "client_connected")
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -149,7 +152,6 @@ func _physics_process(delta: float) -> void:
 	# 항상 바닥에 고정
 	if not inPondID:
 		self.global_position.y = 0
-
 
 func _process(delta: float) -> void:
 	if not is_multiplayer_authority():
