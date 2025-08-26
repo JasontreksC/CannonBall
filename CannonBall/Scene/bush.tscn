@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://derjshwc5fbbg"]
+
+[ext_resource type="Script" uid="uid://byctjxbu1163s" path="res://Script/bush.gd" id="1_yqe78"]
+[ext_resource type="PackedScene" uid="uid://iahjy3vehb1k" path="res://Scene/fx_flame.tscn" id="2_kljv2"]
+[ext_resource type="Texture2D" uid="uid://cbduxfwourgyr" path="res://Asset/environment/bush1.png" id="2_rcqkf"]
+[ext_resource type="PackedScene" uid="uid://etrvlgkdjfwx" path="res://Scene/fx_smoke.tscn" id="3_vrcp8"]
+
+[node name="Bush" type="Node2D"]
+z_index = 10
+script = ExtResource("1_yqe78")
+psFxFlame = ExtResource("2_kljv2")
+psFxSmoke = ExtResource("3_vrcp8")
+
+[node name="SP_Bush" type="Sprite2D" parent="."]
+position = Vector2(0, -300)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_rcqkf")
+region_enabled = true
+region_rect = Rect2(0, 1, 420, 400)
+
+[node name="BurnFxSpots" type="Node2D" parent="."]
+
+[node name="Node2D" type="Node2D" parent="BurnFxSpots"]
+position = Vector2(-188, -86)
+
+[node name="Node2D2" type="Node2D" parent="BurnFxSpots"]
+position = Vector2(-28, -191)
+
+[node name="Node2D3" type="Node2D" parent="BurnFxSpots"]
+position = Vector2(204, -62)

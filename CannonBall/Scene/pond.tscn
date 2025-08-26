@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://o5ao2jcmdg41"]
+
+[ext_resource type="Script" uid="uid://c4jubbdwfrrsf" path="res://Script/pond.gd" id="1_ph7nl"]
+[ext_resource type="Texture2D" uid="uid://1jvtcjhg0gkq" path="res://Asset/environment/pond.png" id="4_185b3"]
+[ext_resource type="Shader" uid="uid://ds0mwffha5i1j" path="res://Shader/pond.gdshader" id="4_oo7iw"]
+[ext_resource type="Material" uid="uid://d251ap52oq173" path="res://Material/pond.tres" id="5_185b3"]
+[ext_resource type="Texture2D" uid="uid://dq3h3ggl0j0ge" path="res://Asset/environment/ground.png" id="5_rqb6c"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oo7iw"]
+shader = ExtResource("4_oo7iw")
+shader_parameter/ground_tex = ExtResource("5_rqb6c")
+shader_parameter/dir = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rqb6c"]
+shader = ExtResource("4_oo7iw")
+shader_parameter/ground_tex = ExtResource("5_rqb6c")
+shader_parameter/dir = -1
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_rqb6c"]
+texture_filter = 5
+
+[node name="Pond" type="Node2D"]
+script = ExtResource("1_ph7nl")
+pondRadius = 300.0
+
+[node name="SP_PondL" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 4
+texture_repeat = 1
+material = SubResource("ShaderMaterial_oo7iw")
+texture = ExtResource("4_185b3")
+offset = Vector2(-150, 50)
+region_enabled = true
+region_rect = Rect2(0, 0, 300, 100)
+metadata/_edit_lock_ = true
+
+[node name="SP_PondR" type="Sprite2D" parent="."]
+z_index = 1
+texture_repeat = 1
+material = SubResource("ShaderMaterial_rqb6c")
+texture = ExtResource("4_185b3")
+centered = false
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 300, 100)
+metadata/_edit_lock_ = true
+
+[node name="SP_Water" type="Sprite2D" parent="."]
+texture_filter = 4
+material = ExtResource("5_185b3")
+position = Vector2(0, 50)
+texture = SubResource("CanvasTexture_rqb6c")
+region_enabled = true
+region_rect = Rect2(0, 0, 600, 100)

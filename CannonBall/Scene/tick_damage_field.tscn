@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1x78ek1dv2se"]
+
+[ext_resource type="Script" uid="uid://defyrpydn0tjj" path="res://Script/tick_damage_field.gd" id="1_nm01i"]
+
+[node name="TickDamageField" type="Node2D"]
+script = ExtResource("1_nm01i")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,177 @@
+[gd_scene load_steps=18 format=3 uid="uid://dc64ulpev07vq"]
+
+[ext_resource type="Script" uid="uid://bg7vk1q7gph4b" path="res://Script/fx_fire_field.gd" id="1_ju5y0"]
+[ext_resource type="Shader" uid="uid://bk7fkj144ch3r" path="res://Shader/fire_field.tres" id="2_dfhjc"]
+[ext_resource type="Texture2D" uid="uid://ciem8l1tgm04n" path="res://Asset/alpha_texture/T_Gradient_circle22.jpg" id="3_rwv0w"]
+[ext_resource type="Texture2D" uid="uid://dhs8xc24lyhor" path="res://Asset/alpha_texture/T_VFX_Noise_465.png" id="4_q4u50"]
+[ext_resource type="AudioStream" uid="uid://c5xbwkwmvmmao" path="res://Asset/sound/sfx_fire.wav" id="5_q4u50"]
+
+[sub_resource type="Gradient" id="Gradient_cyldd"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eoyux"]
+gradient = SubResource("Gradient_cyldd")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_kp85i"]
+offsets = PackedFloat32Array(0, 0.455814, 0.553488, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.924, 0, 0.124, 1, 1, 0.5, 0.1, 1, 5, 0.9, 0.5, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_55nal"]
+gradient = SubResource("Gradient_kp85i")
+
+[sub_resource type="Gradient" id="Gradient_1bjgf"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k8jac"]
+gradient = SubResource("Gradient_1bjgf")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7b53x"]
+shader = ExtResource("2_dfhjc")
+shader_parameter/Scale = Vector2(2, 1)
+shader_parameter/Speed = Vector2(0, 1)
+shader_parameter/Texture_Main = ExtResource("4_q4u50")
+shader_parameter/Texture_Add = SubResource("GradientTexture2D_k8jac")
+shader_parameter/w_per_h = 0.1
+shader_parameter/Texture_3 = ExtResource("3_rwv0w")
+shader_parameter/Texture_4 = SubResource("GradientTexture2D_eoyux")
+shader_parameter/Texture_5 = SubResource("GradientTexture1D_55nal")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_nj271"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n0jfg"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:width")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[sub_resource type="Animation" id="Animation_q4u50"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SP_Fire:material:shader_parameter/Texture_4:fill_from:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SP_Fire:material:shader_parameter/Texture_4:fill_from:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SP_Fire:material:shader_parameter/Texture_Add:fill_from:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SP_Fire:material:shader_parameter/Texture_Add:fill_from:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_rwv0w"]
+resource_name = "ignition"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SP_Fire:material:shader_parameter/Texture_4:fill_from:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SP_Fire:material:shader_parameter/Texture_4:fill_from:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SP_Fire:material:shader_parameter/Texture_Add:fill_from:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SP_Fire:material:shader_parameter/Texture_Add:fill_from:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q4u50"]
+_data = {
+&"RESET": SubResource("Animation_q4u50"),
+&"ignition": SubResource("Animation_rwv0w")
+}
+
+[node name="FxFireField" type="Node2D"]
+z_index = 100
+script = ExtResource("1_ju5y0")
+
+[node name="SP_Fire" type="Sprite2D" parent="."]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_7b53x")
+scale = Vector2(600, 300)
+texture = SubResource("CanvasTexture_nj271")
+offset = Vector2(0, -0.38)
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_n0jfg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_q4u50")
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_q4u50")
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

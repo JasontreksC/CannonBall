@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://d4lfxkcy1m8to"]
+
+[ext_resource type="Script" uid="uid://dvuy40tq35ywa" path="res://Script/fx_radial.gd" id="1_hrwv1"]
+[ext_resource type="Material" uid="uid://dc1qxngusy81o" path="res://Material/ppm_fx_radial_water.tres" id="2_3gvqb"]
+[ext_resource type="AudioStream" uid="uid://bso0nblh3aguy" path="res://Asset/sound/sfx_land_in_pond.wav" id="3_7s5xq"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3gvqb"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:dir")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:v_min")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:v_max")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath(".:s_min")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath(".:s_max")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath(".:mode")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+
+[node name="FxRadial" type="Node2D"]
+script = ExtResource("1_hrwv1")
+
+[node name="Radial" type="GPUParticles2D" parent="."]
+amount = 50
+lifetime = 5.0
+explosiveness = 1.0
+randomness = 1.0
+visibility_rect = Rect2(-50000, -100, 100000, 200)
+trail_enabled = true
+trail_lifetime = 0.1
+process_material = ExtResource("2_3gvqb")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_3gvqb")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_7s5xq")
+volume_db = -15.0
+max_distance = 15000.0
+
+[connection signal="finished" from="Radial" to="." method="_on_radial_finished"]

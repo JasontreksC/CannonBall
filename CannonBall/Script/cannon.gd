@@ -4,23 +4,37 @@
 extends Node2D
 class_name Cannon
 
-# 이동시 바퀴 회전 처리를 위한 속성을 가진다.
-var prevPosX: float = 0
-const WHEEL_RADIUS: float = 260.0
-const SPEED: float = 100
-
 var stateMachine: StateMachine = StateMachine.new()
 
+var heading: int = 0
+var prevPosX: float = 0
+var curVelocity: float = 0
+var inPondID: int = 0
+var reverseBlast: float = 0
+var aimSpeedOptions: Array[float] = [2000, 1000, 500]
+var inBushID: int = 0
+
+const FRONT_WHEEL_RADIUS: float = 72.0
+const BACK_WHEEL_RADIUS: float = 42.0
+const SPEED: float = 300
+
+@export var shellPathes: Array[String]
+
 # 대포의 각종 파트에 대한 뼈대, 애니메이션 플레이어, 에임 컨트롤러
-@onready var rcWheel: RayCast2D = $Body/RayCast2D_Wheel
-@onready var nHandle: Node2D = $Body/Sprite_carriage/Handle
-@onready var bWheel: Bone2D = $Skeleton/wheel
-@onready var bBarrel: Bone2D = $Skeleton/carriage/barrel
-@onready var amp: AnimationPlayer = $AnimationPlayer
+@onready var nHandle: Node2D = $Handle
+@onready var bFrontWheel: Bone2D = $Skeleton2D/BnCarriage/BnFrontWheel
+@onready var bBackWheel: Bone2D = $Skeleton2D/BnCarriage/BnBackWheel
+@onready var bBarrel: Bone2D = $Skeleton2D/BnCarriage/BnBarrel
 @onready var ac: AimController = $AimController
-@onready var field: Field = $"../Field"
+@onready var amp: AnimationPlayer = $AnimationPlayer
+@onready var nBreech: Node2D = $Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Breech
+@onready var nMuzzle: Node2D = $Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Muzzle
+
+## ASP
+@onready var aspWheel: AudioStreamPlayer2D = $ASP_Wheel
 
 var game: Game = null
+var world: World = null
 var player: Player = null
 
 @rpc("any_peer", "call_local")
@@ -29,31 +43,33 @@ func on_spawned() -> void:
 		player = game.players[0]
 	else:
 		player = game.players[1]
-		
 	player.cannon = self
 
 # 손잡이, 즉 플레이어가 대포 조종시 위치하게 될 부분의 x좌표를 반환한다.
 func get_handle_x() -> float:
 	return nHandle.global_position.x
 
-func get_cur_velocity(delta: float) -> float:
+func update_cur_velocity(delta: float):
 	var moved = global_position.x - prevPosX
 	var velocity = moved / delta
 	prevPosX = global_position.x
-	return velocity
+	curVelocity = velocity
 
 func rotate_wheel(delta: float):
 	# 각속도(degree) = 선속도 / 반지름
 	# degree -> radian
-	var omega = get_cur_velocity(delta) / WHEEL_RADIUS
-	
+	var omegaF = curVelocity / FRONT_WHEEL_RADIUS
+	var omegaB = curVelocity / BACK_WHEEL_RADIUS
 	if not multiplayer.is_server():
-		omega *= -1
+		omegaF *= -1
+		omegaB *= -1
 	
-	bWheel.rotate(deg_to_rad(omega))
+	bFrontWheel.rotate(deg_to_rad(omegaF))
+	bBackWheel.rotate(deg_to_rad(omegaB))
 
 func _enter_tree() -> void:
 	game = get_parent() as Game
+	world = game.world
 	set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
@@ -61,117 +77,108 @@ func _ready() -> void:
 		return
 	
 	if multiplayer.is_server():
-		global_position = field.get_spawn_spot("p1")
-		scale.x = 0.3
+		global_position = world.get_spawn_spot("p1")
+		scale.x = 1
+		heading = 1
 	else:
-		global_position = field.get_spawn_spot("p2")
-		scale.x = -0.3
+		global_position = world.get_spawn_spot("p2")
+		scale.x = -1
+		heading = -1
 		
 	prevPosX = global_position.x
 	
-	stateMachine.register_state("Idle")
-	stateMachine.register_state("Move")
-	stateMachine.register_state("Aim")
-	stateMachine.register_state("Fire")
+	stateMachine.regist_state("Idle")
+	stateMachine.regist_state("Aim")
 	
-	stateMachine.register_transit("Idle", "Move", 0)
-	stateMachine.register_transit("Move", "Idle", 0)
+	stateMachine.regist_transit("Idle", "Aim", 0)
+	stateMachine.regist_transit("Aim", "Idle", 0)
 	
-	stateMachine.register_transit("Idle", "Aim", 0)
-	stateMachine.register_transit("Aim", "Idle", 0)
-
-	stateMachine.register_transit("Move", "Aim", 0)
-	stateMachine.register_transit("Aim", "Move", 0)
-	
-	stateMachine.register_transit("Aim", "Fire", 0)
-	stateMachine.register_transit("Fire", "Idle", 0)
-	stateMachine.register_transit("Fire", "Aim", 0) # 임시
-	
-	stateMachine.register_state_event("Idle", "exit", on_exit_Idle)
-	stateMachine.register_state_event("Idle", "entry", on_entry_Idle)
-	stateMachine.register_state_event("Move", "exit", on_exit_Move)
-	stateMachine.register_state_event("Move", "entry", on_entry_Move)
-	stateMachine.register_state_event("Aim", "exit", on_exit_Aim)
-	stateMachine.register_state_event("Aim", "entry", on_entry_Aim)
-	stateMachine.register_state_event("Fire", "exit", on_exit_Fire)
-	stateMachine.register_state_event("Fire", "entry", on_entry_Fire)
+	stateMachine.regist_state_event("Idle", "exit", on_exit_Idle)
+	stateMachine.regist_state_event("Idle", "entry", on_entry_Idle)
+	stateMachine.regist_state_event("Aim", "exit", on_exit_Aim)
+	stateMachine.regist_state_event("Aim", "entry", on_entry_Aim)
 	
 	stateMachine.init_current_state("Idle")
+
+	if not multiplayer.is_server():
+		game.rpc("send_transmit", "client_connected")
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
 		
-	if stateMachine.is_transit_process("Idle", "Move", delta):
-		pass
-	elif stateMachine.is_transit_process("Move", "Idle", delta):
-		pass
-		
-	elif stateMachine.is_transit_process("Idle", "Aim", delta):
+
+	if stateMachine.is_transit_process("Idle", "Aim", delta):
 		pass
 	elif stateMachine.is_transit_process("Aim", "Idle", delta):
 		pass
-		
-	elif stateMachine.is_transit_process("Move", "Aim", delta):
-		pass
-	elif stateMachine.is_transit_process("Aim", "Move", delta):
-		pass
-		
-	elif stateMachine.is_transit_process("Aim", "Fire", delta):
-		pass
-	elif stateMachine.is_transit_process("Fire", "Idle", delta):
-		pass
-		
 	else:
 		match stateMachine.current_state_name():
 			"Idle":
 				pass
-			"Move":
-				# 대포 무브먼트
-				var direction = Input.get_axis("left", "right")
-				var velocity = direction * SPEED * delta
-				position.x += velocity
-				# 실시간 이동속도로 바퀴 회전	
-				rotate_wheel(delta)
 				
 			"Aim":
 				var dir = Input.get_axis("left", "right")
-				var aimed_x = ac.aim(dir, 500, delta)
-				
+				var aimed_x = ac.aim(dir, aimSpeedOptions[player.telescopeZoomOption], delta)
+
 				game.ui.aim_to_cam_telescope(aimed_x)
 					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
-				stateMachine.transit_by_input("clickL", "Fire")
-				
-			"Fire":
-				stateMachine.transit("Aim")
+				game.ui.subuiHint_Attack.set_possibility(player.attackChance)
 
+				if Input.is_action_just_pressed("clickL"):
+					if player.isAttack and player.attackChance and not game.ui.mouse_on_button:
+						amp.play("fire")
+						player.attackChance = false
+						
+						if multiplayer.is_server():
+							game.rpc("send_transmit", "p1_fired")
+						else:
+							game.rpc("send_transmit", "p2_fired")
+				
+	if reverseBlast > 0:
+		global_position.x -= heading * reverseBlast * delta
+		reverseBlast = move_toward(reverseBlast, 0, 100 * delta)
+	
+	update_cur_velocity(delta)
+	if abs(curVelocity) > 0:
+		rotate_wheel(delta)
+		if not aspWheel.playing:
+			aspWheel.play()
+	else:
+		aspWheel.stop()
+			
 	# 항상 바닥에 고정
-	var collisionPoint: Vector2 = rcWheel.get_collision_point()
-	if rcWheel.get_collider():
-		if rcWheel.get_collider().name == "Field":
-			position.y = collisionPoint.y
+	if not inPondID:
+		self.global_position.y = 0
+
+func _process(delta: float) -> void:
+	if not is_multiplayer_authority():
+		return
+
+	if multiplayer.is_server():
+		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p1_left_end"] + 200, world.vertical_boundary["p1_right_end"])
+	else:
+		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p2_left_end"], world.vertical_boundary["p2_right_end"] - 200)
+
 
 func on_exit_Idle():
 	pass
 func on_entry_Idle():
 	pass
-	
-## 대포 손잡이를 잡거나 놓을 때 애니메이션 재생
-func on_exit_Move():
-	amp.play("out_handling")
-	
-func on_entry_Move():
-	amp.play("in_handling")
-	
 func on_exit_Aim():
 	pass
 func on_entry_Aim():
 	pass
-func on_exit_Fire():
-	pass 
-func on_entry_Fire():
-	var launcher: int = 1
+	
+func on_fire():
+	var launcher: int = 0
 	if not multiplayer.is_server():
-		launcher = 2
-	field.rpc("start_shelling", ac.get_breech_pos(), ac.get_aimed_theta(), ac.V0, launcher)
+		launcher = 1
+	world.rpc("start_shelling", player.selectedShell, shellPathes[player.selectedShell], ac.get_breech_pos(), ac.V0, ac.get_aimed_theta(), launcher)
+	reverseBlast += 200
+
+	var burstDir: Vector2 = nBreech.global_position.direction_to(nMuzzle.global_position).normalized()
+	game.rpc("server_spawn_request", "res://Scene/fx_burst.tscn", "none", {
+		"global_position" : nMuzzle.global_position,
+		"direction" : burstDir})

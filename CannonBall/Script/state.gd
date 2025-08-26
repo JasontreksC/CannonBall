@@ -5,13 +5,13 @@ var name: String
 signal entry_event
 signal exit_event
 
-func register_entry(event: Callable) -> bool:
+func regist_entry(event: Callable) -> bool:
 	if is_connected("entry_event", event):
 		return false
 	connect("entry_event", event)
 	return true
 	
-func register_exit(event: Callable) -> bool:
+func regist_exit(event: Callable) -> bool:
 	if is_connected("entry_event", event):
 		return false
 	connect("exit_event", event)

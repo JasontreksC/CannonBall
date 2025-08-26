@@ -1,15 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://ry7mm6mgg6iy"]
+[gd_scene load_steps=4 format=3 uid="uid://ry7mm6mgg6iy"]
 
 [ext_resource type="Script" uid="uid://c8jogita80pnd" path="res://Script/game.gd" id="1_gevu4"]
-[ext_resource type="PackedScene" uid="uid://cb2d8j7se8qb8" path="res://Scene/field.tscn" id="2_gevu4"]
+[ext_resource type="PackedScene" uid="uid://cb2d8j7se8qb8" path="res://Scene/world.tscn" id="2_gevu4"]
+[ext_resource type="Environment" uid="uid://be1kyrmdopxiw" path="res://Shader/world_scape.tres" id="3_4jv7b"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_gevu4")
 
-[node name="Field" parent="." instance=ExtResource("2_gevu4")]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("3_4jv7b")
+
+[node name="World" parent="." instance=ExtResource("2_gevu4")]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://csssoqjjrrj67", "uid://bp8yuq71ym25a", "uid://co2yk1rkb2o2j")
+_spawnable_scenes = PackedStringArray("uid://ind02kvqyd3c", "uid://bwrx2pgx1ludf", "uid://dysx527hnqw2v", "uid://byegb5y77y21a", "uid://dk8wqlremdrpq", "uid://co2yk1rkb2o2j", "uid://dc64ulpev07vq", "uid://dadbuw6oeorgg", "uid://iahjy3vehb1k", "uid://etrvlgkdjfwx", "uid://eriwpbivkspp", "uid://bhhrsex2ogmi0", "uid://d4lfxkcy1m8to", "uid://c8evdvuky5slu")
 spawn_path = NodePath("..")
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

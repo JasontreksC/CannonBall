@@ -1,0 +1,109 @@
+[gd_scene load_steps=13 format=3 uid="uid://dadbuw6oeorgg"]
+
+[ext_resource type="Texture2D" uid="uid://bla10hrxsd0it" path="res://Asset/particles/poison_particle.png" id="1_mbulw"]
+[ext_resource type="Script" uid="uid://d0qkkbrflo823" path="res://Script/fx_poison_spread.gd" id="1_seuo7"]
+[ext_resource type="AudioStream" uid="uid://uqlevlwk2fxa" path="res://Asset/sound/sfx_poison_land.wav" id="3_8bnix"]
+
+[sub_resource type="Curve" id="Curve_mbulw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_seuo7"]
+curve = SubResource("Curve_mbulw")
+
+[sub_resource type="Curve" id="Curve_seuo7"]
+_data = [Vector2(0, 0), 0.0, 2.99371, 0, 0, Vector2(0.25082, 1), 0.0163642, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_btab0"]
+curve = SubResource("Curve_seuo7")
+
+[sub_resource type="Curve" id="Curve_btab0"]
+_limits = [25.0, 3000.0, 0.0, 1.0]
+_data = [Vector2(0, 3000), 0.0, 0.0, 0, 0, Vector2(0.0770492, 25), -4786.99, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_dkwtk"]
+curve = SubResource("Curve_btab0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ksd7w"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+spread = 0.0
+initial_velocity_min = 100.0
+initial_velocity_max = 3000.0
+orbit_velocity_min = 9.49949e-08
+orbit_velocity_max = 1.0
+velocity_limit_curve = SubResource("CurveTexture_dkwtk")
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_btab0")
+alpha_curve = SubResource("CurveTexture_seuo7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tifpi"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 100.0
+initial_velocity_max = 3000.0
+orbit_velocity_min = -1.0
+orbit_velocity_max = 9.49949e-08
+velocity_limit_curve = SubResource("CurveTexture_dkwtk")
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_btab0")
+alpha_curve = SubResource("CurveTexture_seuo7")
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_seuo7"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="FxPoisonSpread" type="Node2D"]
+z_index = 100
+script = ExtResource("1_seuo7")
+
+[node name="PoisonSpread1" type="GPUParticles2D" parent="."]
+process_mode = 3
+amount = 100
+texture = ExtResource("1_mbulw")
+lifetime = 8.0
+explosiveness = 0.99
+fixed_fps = 60
+interpolate = false
+collision_base_size = 0.0
+visibility_rect = Rect2(-50000, -100, 100000, 200)
+process_material = SubResource("ParticleProcessMaterial_ksd7w")
+
+[node name="PoisonSpread2" type="GPUParticles2D" parent="."]
+process_mode = 3
+amount = 100
+texture = ExtResource("1_mbulw")
+lifetime = 8.0
+explosiveness = 0.99
+fixed_fps = 60
+interpolate = false
+collision_base_size = 0.0
+visibility_rect = Rect2(-50000, -100, 100000, 200)
+process_material = SubResource("ParticleProcessMaterial_tifpi")
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(-800, 0, 800, 0)
+width = 100.0
+default_color = Color(1, 0, 1, 0.690196)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_seuo7")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_8bnix")
+autoplay = true
+max_distance = 20000.0
+attenuation = 2.0
+
+[connection signal="finished" from="PoisonSpread1" to="." method="_on_poison_spread_1_finished"]
+[connection signal="finished" from="PoisonSpread2" to="." method="_on_poison_spread_2_finished"]

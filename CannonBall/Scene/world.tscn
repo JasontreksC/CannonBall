@@ -1,0 +1,863 @@
+[gd_scene load_steps=14 format=3 uid="uid://cb2d8j7se8qb8"]
+
+[ext_resource type="Script" uid="uid://byeb2onprcahd" path="res://Script/world.gd" id="1_dlwip"]
+[ext_resource type="PackedScene" uid="uid://derjshwc5fbbg" path="res://Scene/bush.tscn" id="3_ejll3"]
+[ext_resource type="Texture2D" uid="uid://bjjf0xixu1wuj" path="res://Asset/environment/underground.png" id="3_y56vo"]
+[ext_resource type="PackedScene" uid="uid://o5ao2jcmdg41" path="res://Scene/pond.tscn" id="4_scul4"]
+[ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="5_h7cfj"]
+[ext_resource type="Texture2D" uid="uid://dq3h3ggl0j0ge" path="res://Asset/environment/ground.png" id="5_pcvp0"]
+[ext_resource type="Shader" uid="uid://68rcw6q151yq" path="res://Shader/wobble_by_wind.gdshader" id="6_y56vo"]
+[ext_resource type="Texture2D" uid="uid://bgsoryatiix8w" path="res://Asset/environment/grass2.png" id="7_6a5p4"]
+[ext_resource type="Texture2D" uid="uid://dd8bkvcsptvxo" path="res://Asset/environment/grass1.png" id="8_nka0b"]
+[ext_resource type="Texture2D" uid="uid://dc5cauu8ttx3k" path="res://Asset/environment/tree.png" id="9_0gfnl"]
+[ext_resource type="PackedScene" uid="uid://bsp1fup76njb3" path="res://Scene/barricade.tscn" id="11_6a5p4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kufhj"]
+shader = ExtResource("6_y56vo")
+shader_parameter/waves = 1.5
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 3.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a6mvv"]
+shader = ExtResource("6_y56vo")
+shader_parameter/waves = 0.75
+shader_parameter/sway_strength = 1.0
+shader_parameter/sway_speed = 2.0
+
+[node name="World" type="Node2D"]
+process_mode = 4
+script = ExtResource("1_dlwip")
+
+[node name="P1SpawnSpot" type="Node2D" parent="."]
+position = Vector2(-5500, 0)
+
+[node name="P2SpawnSpot" type="Node2D" parent="."]
+position = Vector2(5500, 0)
+
+[node name="Ground" type="Node2D" parent="."]
+z_index = 40
+
+[node name="Ground_1000_1" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-2000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_500_1" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-3000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 500, 100)
+
+[node name="Ground_1000_2" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-6200, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_3" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_5" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(3200, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_7" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(8000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_8" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-9408, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_300_1" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-10000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 300, 100)
+
+[node name="Ground_500_2" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(5200, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 500, 100)
+
+[node name="Ground_300_2" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(7400, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 300, 100)
+
+[node name="Undeground" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-12000, 200)
+scale = Vector2(2, 2)
+texture = ExtResource("3_y56vo")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 12000, 1000)
+
+[node name="Ground_1000_9" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(-12000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Ground_1000_10" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(10000, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("5_pcvp0")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, -0.5, 1000, 100)
+
+[node name="Background" parent="." instance=ExtResource("5_h7cfj")]
+
+[node name="Grasses" type="Node2D" parent="."]
+z_index = 30
+
+[node name="Grass1" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-1358, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass2" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-1440.56, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass3" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-1293.29, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass4" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-1862, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass5" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-1944.56, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass6" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-1797.29, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass7" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-845, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass8" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-927.565, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass9" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-2829, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass10" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-2911.56, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass11" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-2764.29, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass12" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-5109, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass13" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-5191.56, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass14" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-5044.29, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass15" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-2316, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass16" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-2398.56, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass17" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-4353.56, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass18" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-4814.28, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass19" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-5438, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass20" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-5520.56, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass21" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(4178, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass22" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(4095.44, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass23" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(4242.71, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass24" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(3674, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass25" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(3591.44, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass26" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(3738.71, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass27" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(4691, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass28" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(4608.44, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass29" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(1881, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass30" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(1798.44, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass31" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(1945.71, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass35" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(3328, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass36" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(3245.44, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass37" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(1182.44, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass38" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(721.715, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass39" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(1674, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass40" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(1591.44, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass41" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-7452.44, 0.685005)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass42" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-7535, 0.685005)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass43" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-7810, 5)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass44" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-8275.44, 1.68501)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass45" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-8430, 1.68501)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass46" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(-8633, 6)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass47" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(8796.56, -4.31499)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass48" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(8642, -4.31499)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass49" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(8439, 7.62939e-06)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass50" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(7621.56, 2.68501)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_6a5p4")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass51" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(7467, 2.68501)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass52" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(6141, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Grass53" type="Sprite2D" parent="Grasses"]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_kufhj")
+position = Vector2(6027, 0)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_nka0b")
+centered = false
+offset = Vector2(-200, -298.95)
+region_enabled = true
+region_rect = Rect2(48.264, 87.912, 410.736, 303.952)
+
+[node name="Trees" type="Node2D" parent="."]
+z_index = -100
+
+[node name="Tree1" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(-1491.5, -245.472)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Tree2" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(-2800, -245.472)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Tree4" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(-4491.5, -245.472)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Tree5" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(4507.5, -245.472)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Tree6" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(3226, -245.472)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Tree8" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(1507.5, -245.472)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Tree7" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(-7967, -252)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="Tree9" type="Sprite2D" parent="Trees"]
+z_index = -6
+texture_repeat = 1
+material = SubResource("ShaderMaterial_a6mvv")
+position = Vector2(8299, -230)
+scale = Vector2(1.4858, 1.4858)
+texture = ExtResource("9_0gfnl")
+region_rect = Rect2(-83.292, -81.8188, 482.908, 469.277)
+
+[node name="BenefitFields" type="Node2D" parent="."]
+
+[node name="P1Ponds" type="Node2D" parent="BenefitFields"]
+
+[node name="Pond1" parent="BenefitFields/P1Ponds" instance=ExtResource("4_scul4")]
+z_index = 60
+position = Vector2(-3600, 0)
+scale = Vector2(2, 2)
+pondRadius = 500.0
+pondID = 1
+
+[node name="Pond2" parent="BenefitFields/P1Ponds" instance=ExtResource("4_scul4")]
+z_index = 60
+position = Vector2(-6800, 0)
+scale = Vector2(2, 2)
+pondRadius = 500.0
+pondID = 2
+
+[node name="P1Bushes" type="Node2D" parent="BenefitFields"]
+
+[node name="Bush1" parent="BenefitFields/P1Bushes" instance=ExtResource("3_ejll3")]
+position = Vector2(-2588, 0)
+
+[node name="Bush2" parent="BenefitFields/P1Bushes" instance=ExtResource("3_ejll3")]
+position = Vector2(-4819, 0)
+
+[node name="Bush3" parent="BenefitFields/P1Bushes" instance=ExtResource("3_ejll3")]
+position = Vector2(-8774, 0)
+
+[node name="P2Ponds" type="Node2D" parent="BenefitFields"]
+
+[node name="Pond1" parent="BenefitFields/P2Ponds" instance=ExtResource("4_scul4")]
+z_index = 60
+position = Vector2(2600, 0)
+scale = Vector2(2, 2)
+target = 1
+pondRadius = 500.0
+pondID = 1
+
+[node name="Pond2" parent="BenefitFields/P2Ponds" instance=ExtResource("4_scul4")]
+z_index = 60
+position = Vector2(6800, 0)
+scale = Vector2(2, 2)
+target = 1
+pondRadius = 500.0
+pondID = 2
+
+[node name="P2Bushes" type="Node2D" parent="BenefitFields"]
+
+[node name="Bush1" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
+position = Vector2(1682, 0)
+target = 1
+
+[node name="Bush2" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
+position = Vector2(3985, 0)
+target = 1
+
+[node name="Bush3" parent="BenefitFields/P2Bushes" instance=ExtResource("3_ejll3")]
+position = Vector2(5953, 0)
+target = 1
+
+[node name="DamageFields" type="Node2D" parent="."]
+
+[node name="P1BarricadeL" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(-10200, 0)
+scale = Vector2(1.5, 1.5)
+
+[node name="P1BarricadeR" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(-800, 0)
+scale = Vector2(1.5, 1.5)
+
+[node name="P2BarricadeL" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(800, 0)
+scale = Vector2(1.5, 1.5)
+
+[node name="P2BarricadeR" parent="." instance=ExtResource("11_6a5p4")]
+position = Vector2(10200, 0)
+scale = Vector2(1.5, 1.5)

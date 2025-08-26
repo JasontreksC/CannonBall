@@ -1,0 +1,114 @@
+[gd_scene load_steps=18 format=3 uid="uid://bhhrsex2ogmi0"]
+
+[ext_resource type="Script" uid="uid://djbbvp0e6nifg" path="res://Script/fx_fire_exlposion.gd" id="1_0bsif"]
+[ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Material/smoke_particle_1.tres" id="1_id0p0"]
+[ext_resource type="AudioStream" uid="uid://dbd3m7agrusm5" path="res://Asset/sound/sfx_fire_land.wav" id="3_fe2rv"]
+
+[sub_resource type="Curve" id="Curve_id0p0"]
+_data = [Vector2(0.629085, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -5.98869, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_0bsif"]
+curve = SubResource("Curve_id0p0")
+
+[sub_resource type="Gradient" id="Gradient_fe2rv"]
+offsets = PackedFloat32Array(0, 0.194539, 0.390785)
+colors = PackedColorArray(1, 0.8208, 0.745104, 1, 1, 0.337255, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_g3fjn"]
+gradient = SubResource("Gradient_fe2rv")
+
+[sub_resource type="Curve" id="Curve_0bsif"]
+_limits = [5.0, 20.0, 0.0, 1.0]
+_data = [Vector2(0, 20), 0.0, 0.0, 0, 0, Vector2(1, 5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fe2rv"]
+curve = SubResource("Curve_0bsif")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cwa6f"]
+noise_type = 3
+seed = -1090
+frequency = 0.0326
+offset = Vector3(861.45, 0, 0)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_id0p0"]
+as_normal_map = true
+noise = SubResource("FastNoiseLite_cwa6f")
+
+[sub_resource type="Curve" id="Curve_g3fjn"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0311475, 1.3586), 3.54005, 3.54005, 0, 0, Vector2(1, 3), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_22mmi"]
+curve = SubResource("Curve_g3fjn")
+
+[sub_resource type="Curve" id="Curve_fe2rv"]
+_limits = [10.0, 50.0, 0.0, 1.0]
+_data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(1, 10), -120.582, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_g3fjn"]
+curve = SubResource("Curve_fe2rv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0bsif"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-1250, -400, 0)
+emission_shape_scale = Vector3(2500, 500, 1)
+emission_shape = 4
+emission_point_texture = SubResource("NoiseTexture2D_id0p0")
+emission_point_count = 105
+angle_min = -142.6
+angle_max = 161.6
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 50.0
+velocity_limit_curve = SubResource("CurveTexture_g3fjn")
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -100.0
+radial_accel_max = 100.0
+attractor_interaction_enabled = false
+scale_min = 200.0
+scale_max = 300.0
+scale_curve = SubResource("CurveTexture_22mmi")
+color_ramp = SubResource("GradientTexture1D_g3fjn")
+alpha_curve = SubResource("CurveTexture_0bsif")
+emission_curve = SubResource("CurveTexture_fe2rv")
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fyloc"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="FxFireExlposion" type="Node2D"]
+z_index = 110
+script = ExtResource("1_0bsif")
+
+[node name="FireExplo" type="GPUParticles2D" parent="."]
+material = ExtResource("1_id0p0")
+amount = 100
+lifetime = 3.0
+explosiveness = 0.95
+fixed_fps = 60
+interpolate = false
+visibility_rect = Rect2(-50000, -100, 100000, 200)
+process_material = SubResource("ParticleProcessMaterial_0bsif")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_fyloc")
+
+[node name="Line2D2" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(-600, 0, 600, 0)
+width = 100.0
+default_color = Color(1, 0, 1, 0.690196)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_fe2rv")
+volume_db = -10.0
+autoplay = true
+max_distance = 20000.0
+attenuation = 2.0
+
+[connection signal="finished" from="FireExplo" to="." method="_on_fire_explo_finished"]

@@ -1,0 +1,128 @@
+[gd_scene load_steps=12 format=3 uid="uid://sgea7shhc0td"]
+
+[ext_resource type="Texture2D" uid="uid://dju88xecifnk" path="res://Asset/environment/cloud1.png" id="1_3w1m4"]
+[ext_resource type="Script" uid="uid://cpt6lbwwsshv5" path="res://Script/background.gd" id="1_d8sss"]
+[ext_resource type="Texture2D" uid="uid://b5urabnkenfyq" path="res://Asset/environment/cloud2.png" id="2_2tbj5"]
+[ext_resource type="Texture2D" uid="uid://dn1dpehsrd447" path="res://Asset/environment/cloud3.png" id="3_g008t"]
+[ext_resource type="Texture2D" uid="uid://dl1cmr713hs1w" path="res://Asset/environment/cloud4.png" id="4_0k6rt"]
+[ext_resource type="Texture2D" uid="uid://bei60xit8yhey" path="res://Asset/environment/cloud5.png" id="5_d8sss"]
+[ext_resource type="Texture2D" uid="uid://ct2bc2at3ju0p" path="res://Asset/environment/mountain1.png" id="7_n2uqb"]
+[ext_resource type="Texture2D" uid="uid://dmbd685g5h534" path="res://Asset/environment/mountain2.png" id="8_8fa28"]
+[ext_resource type="Texture2D" uid="uid://bp56cqot7jg41" path="res://Asset/environment/mountain3.png" id="9_3q56t"]
+
+[sub_resource type="Gradient" id="Gradient_kfqfy"]
+offsets = PackedFloat32Array(0, 0.583673)
+colors = PackedColorArray(0.00890361, 0.219013, 0.924864, 1, 0.466667, 0.607843, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_86rd8"]
+gradient = SubResource("Gradient_kfqfy")
+width = 1920
+height = 1080
+fill_from = Vector2(1, 0)
+fill_to = Vector2(1, 0.935043)
+
+[node name="Background" type="ParallaxBackground"]
+layer = -128
+scroll_ignore_camera_zoom = true
+script = ExtResource("1_d8sss")
+horizonColor = Color(0.466667, 0.607843, 1, 1)
+skyColor = Color(0.00784314, 0.219608, 0.92549, 1)
+
+[node name="Sky" type="Sprite2D" parent="."]
+z_index = -4096
+texture = SubResource("GradientTexture2D_86rd8")
+offset = Vector2(960, 540)
+
+[node name="PL_Mountains" type="ParallaxLayer" parent="."]
+z_index = -100
+texture_repeat = 2
+position = Vector2(946, 302)
+motion_scale = Vector2(0.01, 0.01)
+motion_offset = Vector2(0, -200)
+motion_mirroring = Vector2(2929.35, 0)
+
+[node name="Mountain1" type="Sprite2D" parent="PL_Mountains"]
+modulate = Color(0.211105, 0.507542, 0.549533, 1)
+texture_repeat = 1
+position = Vector2(-382, 652)
+scale = Vector2(2.33, 6.602)
+texture = ExtResource("7_n2uqb")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="Mountain3" type="Sprite2D" parent="PL_Mountains"]
+modulate = Color(0.209, 0.55, 0.544317, 1)
+texture_repeat = 2
+position = Vector2(762, 615)
+scale = Vector2(2.33, 6.602)
+texture = ExtResource("9_3q56t")
+region_enabled = true
+region_rect = Rect2(0, 78.59, 629.763, 144.47)
+
+[node name="Mountain2" type="Sprite2D" parent="PL_Mountains"]
+modulate = Color(0.166629, 0.42051, 0.456347, 1)
+texture_repeat = 2
+position = Vector2(66, 640)
+scale = Vector2(2.33, 6.602)
+texture = ExtResource("8_8fa28")
+region_enabled = true
+region_rect = Rect2(0, 68.09, 622.82, 150)
+
+[node name="Mountain4" type="Sprite2D" parent="PL_Mountains"]
+modulate = Color(0.1596, 0.42, 0.22036, 1)
+texture_repeat = 2
+position = Vector2(1686, 625)
+scale = Vector2(2.33, 6.602)
+texture = ExtResource("8_8fa28")
+region_enabled = true
+region_rect = Rect2(0, 68.09, 622.82, 150)
+
+[node name="PL_Clouds1" type="ParallaxLayer" parent="."]
+z_index = -90
+texture_repeat = 2
+position = Vector2(946, 302)
+motion_scale = Vector2(0.15, 0.15)
+motion_offset = Vector2(0, -300)
+motion_mirroring = Vector2(2500, 0)
+
+[node name="Cloud1" type="Sprite2D" parent="PL_Clouds1"]
+texture_repeat = 2
+position = Vector2(7, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_3w1m4")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="Cloud2" type="Sprite2D" parent="PL_Clouds1"]
+texture_repeat = 2
+position = Vector2(-380, 86)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_2tbj5")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="Cloud3" type="Sprite2D" parent="PL_Clouds1"]
+texture_repeat = 2
+position = Vector2(638, 67)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_g008t")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="PL_Clouds2" type="ParallaxLayer" parent="."]
+z_index = -80
+texture_repeat = 2
+position = Vector2(946, 302)
+motion_scale = Vector2(0.3, 0.3)
+motion_offset = Vector2(0, -400)
+motion_mirroring = Vector2(3000, 0)
+
+[node name="Cloud4" type="Sprite2D" parent="PL_Clouds2"]
+texture_repeat = 2
+position = Vector2(-639, 165)
+scale = Vector2(1.01, 1.01)
+texture = ExtResource("4_0k6rt")
+region_rect = Rect2(0, 0, 1920, 1080)
+
+[node name="Cloud5" type="Sprite2D" parent="PL_Clouds2"]
+texture_repeat = 2
+position = Vector2(379, 175)
+scale = Vector2(1.025, 1.025)
+texture = ExtResource("5_d8sss")
+region_rect = Rect2(0, 0, 1920, 1080)

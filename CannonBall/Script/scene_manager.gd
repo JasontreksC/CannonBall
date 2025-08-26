@@ -3,17 +3,26 @@ class_name SceneManager
 
 @onready var root: CannonBall = $"../../.."
 
-var psLobbyScene: PackedScene
-var psGameScene: PackedScene
+@export var psLobbyScene: PackedScene
+@export var psGameScene: PackedScene
+@export var psResultScene: PackedScene
+
+var gameScene: Game = null
+var lobbyScene: Lobby = null
+var resultScene: Result = null
 
 var currentScene: Node2D = null
-var currentSceneNum: int = 0
+var currentSceneNum: int = -1
+
+var gameResult: int = -1
 
 # 0 로비 1 게임 2 결과
 func set_scene(num: int) -> void:
-	if num != 0 and num != 1 and num != 2:
+	if not [0, 1, 2].has(num):
 		return
-		
+	
+	if currentSceneNum == num:
+		return
 	currentSceneNum = num
 	
 	if currentScene:
@@ -24,12 +33,8 @@ func set_scene(num: int) -> void:
 			currentScene = psLobbyScene.instantiate()
 		1:
 			currentScene = psGameScene.instantiate()
+			gameResult = -1
+		2:
+			currentScene = psResultScene.instantiate()
 	
 	call_deferred("add_child", currentScene)
-
-func _init() -> void:
-	psLobbyScene = load("res://Scene/lobby.tscn")
-	psGameScene = load("res://Scene/game.tscn")
-
-func _ready() -> void:
-	set_scene(0)

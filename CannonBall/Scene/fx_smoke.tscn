@@ -1,0 +1,101 @@
+[gd_scene load_steps=12 format=3 uid="uid://etrvlgkdjfwx"]
+
+[ext_resource type="Script" uid="uid://coa4vt12sw08l" path="res://Script/fx_smoke.gd" id="1_kqn7g"]
+[ext_resource type="Material" uid="uid://db8g0cp30dsja" path="res://Material/smoke_particle_1.tres" id="2_75blf"]
+[ext_resource type="Material" uid="uid://ixki4puppuw4" path="res://Material/smoke_particle_2.tres" id="3_75blf"]
+
+[sub_resource type="Curve" id="Curve_kqn7g"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.130573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_75blf"]
+curve = SubResource("Curve_kqn7g")
+
+[sub_resource type="Curve" id="Curve_jn8pb"]
+_limits = [-360.0, 360.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_em28c"]
+curve = SubResource("Curve_jn8pb")
+
+[sub_resource type="Curve" id="Curve_75blf"]
+_limits = [1.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rmaqo"]
+curve = SubResource("Curve_75blf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_42fnj"]
+lifetime_randomness = 0.7
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(50, 50, 0)
+angle_min = -180.0
+angle_max = 180.0
+angle_curve = SubResource("CurveTexture_em28c")
+inherit_velocity_ratio = 0.01
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, -100, 0)
+attractor_interaction_enabled = false
+scale_min = 100.0
+scale_max = 200.0
+scale_curve = SubResource("CurveTexture_rmaqo")
+color = Color(0.154876, 0.154876, 0.154876, 1)
+alpha_curve = SubResource("CurveTexture_75blf")
+turbulence_noise_scale = 2.985
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_42fnj"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:smokeAmount")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:smokeLifetime")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:spawnBox")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath(".:upAccell")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath(".:attatch")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath(".:smokeScaleFactor")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+
+[node name="FxSmoke" type="Node2D"]
+z_index = 50
+script = ExtResource("1_kqn7g")
+
+[node name="Particle1" type="GPUParticles2D" parent="."]
+texture_repeat = 2
+material = ExtResource("2_75blf")
+scale = Vector2(0.882775, 0.856913)
+amount = 50
+lifetime = 3.0
+fixed_fps = 60
+interpolate = false
+visibility_rect = Rect2(-100000, -100000, 200000, 200000)
+process_material = SubResource("ParticleProcessMaterial_42fnj")
+
+[node name="Particle2" type="GPUParticles2D" parent="."]
+z_index = -1
+texture_repeat = 2
+material = ExtResource("3_75blf")
+amount = 50
+lifetime = 3.0
+fixed_fps = 60
+interpolate = false
+visibility_rect = Rect2(-100000, -100000, 200000, 200000)
+process_material = SubResource("ParticleProcessMaterial_42fnj")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_42fnj")

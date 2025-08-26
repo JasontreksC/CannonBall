@@ -10,15 +10,15 @@ class_name AimController
 @export var maxAimAngle : float = -45
 
 # 대포의 초기 속도. 이 속도를 sin/cos 함수로 x축 방향, y축 방향으로 분해한다.
-@export var V0 : float = 2000
+@export var V0 : float = 2500
 
 # breech는 포신의 가장 안쪽, 즉 포탄의 운동이 시작되는 위치이며
 # muzzel은 포구, 즉 포탄이 포신 밖으로 나오는 출구이다.
 # 이 노드들을 참조하는 이유는 위치 때문이다.
 @onready var cannon: Cannon = $".."
-@onready var breech: Node2D = $"../Body/Sprite_barrel/Breech"
-@onready var muzzel: Node2D = $"../Body/Sprite_barrel/Muzzel"
-@onready var field: Field = $"../../Field"
+@onready var breech: Node2D = $"../Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Breech"
+@onready var muzzel: Node2D = $"../Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Muzzle"
+@onready var world: World = $"../../World"
 
 # 포물선 운동 공식에 의해, 최소 사거리와 최대 사거리가 정해진다. 이것은 V0가 변하지 않는 이상 고정 값이다.
 # 다만 최근 조준한 위치까지의 사거리를 기억한다. 이것이 있어야 포신의 회전각이 나온다. 
@@ -40,6 +40,15 @@ func aim(dir: float, speed: float, delta: float) -> float:
 	currentAimRange += dir * speed * delta
 	currentAimRange = clamp(currentAimRange, minAimRange, maxAimRange)	
 	
+	if is_equal_approx(currentAimRange, minAimRange):
+		cannon.game.ui.lbAimMessage_Range.text = "최소 사거리입니다."
+	elif is_equal_approx(currentAimRange, maxAimRange):
+		cannon.game.ui.lbAimMessage_Range.text = "최대 사거리입니다."
+	else:
+		cannon.game.ui.lbAimMessage_Range.text = ""
+
+
+
 	if multiplayer.is_server():
 		return breech.global_position.x + currentAimRange
 	else:

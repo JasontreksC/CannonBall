@@ -1,0 +1,150 @@
+[gd_scene load_steps=23 format=3 uid="uid://eriwpbivkspp"]
+
+[ext_resource type="Script" uid="uid://clxvigsqvso6p" path="res://Script/fx_burst.gd" id="1_8uaop"]
+[ext_resource type="Shader" uid="uid://blce0ecuv5oon" path="res://Material/glow.tres" id="2_8uaop"]
+[ext_resource type="Material" uid="uid://ixki4puppuw4" path="res://Material/smoke_particle_2.tres" id="2_ddqip"]
+[ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="3_ddqip"]
+[ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="5_ddqip"]
+[ext_resource type="AudioStream" uid="uid://c6ufhaak3q18t" path="res://Asset/sound/sfx_burst.wav" id="6_71gf4"]
+
+[sub_resource type="Curve" id="Curve_ddqip"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.130573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_jn8pb"]
+curve = SubResource("Curve_ddqip")
+
+[sub_resource type="Curve" id="Curve_71gf4"]
+_limits = [-360.0, 360.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_75blf"]
+curve = SubResource("Curve_71gf4")
+
+[sub_resource type="Curve" id="Curve_nf4r3"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 9.80931, 0, 0, Vector2(0.99999, 5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8uaop"]
+curve = SubResource("Curve_nf4r3")
+
+[sub_resource type="Curve" id="Curve_yd0c4"]
+_limits = [0.0, 2000.0, 0.0, 1.0]
+_data = [Vector2(0, 2000), 0.0, -20902.7, 0, 0, Vector2(0.177673, 65.6841), -148.931, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ddqip"]
+curve = SubResource("Curve_yd0c4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nf4r3"]
+lifetime_randomness = 0.7
+particle_flag_disable_z = true
+angle_min = -180.0
+angle_max = 180.0
+angle_curve = SubResource("CurveTexture_75blf")
+spread = 5.0
+initial_velocity_min = 300.0
+initial_velocity_max = 2000.0
+angular_velocity_min = -60.0
+angular_velocity_max = 60.0
+orbit_velocity_min = -0.5
+orbit_velocity_max = 0.5
+velocity_limit_curve = SubResource("CurveTexture_ddqip")
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 100.0
+scale_max = 150.0
+scale_curve = SubResource("CurveTexture_8uaop")
+color = Color(0.10748, 0.10748, 0.10748, 1)
+alpha_curve = SubResource("CurveTexture_jn8pb")
+turbulence_noise_scale = 2.985
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_71gf4"]
+shader = ExtResource("2_8uaop")
+shader_parameter/base_color = Color(1, 0.313726, 0, 1)
+shader_parameter/emission = 20.0
+
+[sub_resource type="Curve" id="Curve_0r7xi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.210692, 0.337722), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_iolab"]
+curve = SubResource("Curve_0r7xi")
+
+[sub_resource type="Curve" id="Curve_8uaop"]
+_limits = [0.0, 1500.0, 0.0, 1.0]
+_data = [Vector2(0, 1500), 0.0, 0.0, 0, 0, Vector2(1, 0), -3588.78, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_nf4r3"]
+curve = SubResource("Curve_8uaop")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_71gf4"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+angle_min = -180.0
+angle_max = 180.0
+angle_curve = SubResource("CurveTexture_75blf")
+spread = 30.0
+initial_velocity_min = 300.0
+initial_velocity_max = 1500.0
+velocity_limit_curve = SubResource("CurveTexture_nf4r3")
+gravity = Vector3(0, 980, 0)
+scale_min = 0.03
+scale_max = 0.05
+scale_curve = SubResource("CurveTexture_iolab")
+alpha_curve = SubResource("CurveTexture_jn8pb")
+turbulence_noise_scale = 2.985
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_nf4r3"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:direction")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="FxBurst" type="Node2D"]
+z_index = 80
+script = ExtResource("1_8uaop")
+
+[node name="GP_Smoke" type="GPUParticles2D" parent="."]
+z_index = -1
+texture_repeat = 2
+material = ExtResource("2_ddqip")
+amount = 50
+lifetime = 5.0
+explosiveness = 1.0
+fixed_fps = 60
+interpolate = false
+visibility_rect = Rect2(-100000, -100, 200000, 200)
+process_material = SubResource("ParticleProcessMaterial_nf4r3")
+
+[node name="GP_Flame" type="GPUParticles2D" parent="."]
+z_index = -1
+texture_repeat = 2
+material = SubResource("ShaderMaterial_71gf4")
+emitting = false
+amount = 30
+texture = ExtResource("3_ddqip")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+interpolate = false
+visibility_rect = Rect2(-100000, -100, 200000, 200)
+process_material = SubResource("ParticleProcessMaterial_71gf4")
+
+[node name="FxBlink" parent="." instance=ExtResource("5_ddqip")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_nf4r3")
+
+[node name="ASP_Burst" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_71gf4")
+autoplay = true
+max_distance = 20000.0
+attenuation = 2.0
+
+[connection signal="finished" from="GP_Smoke" to="." method="_on_gp_smoke_finished"]

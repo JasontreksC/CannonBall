@@ -1,79 +1,77 @@
 extends Node2D
 class_name CameraMovingController
 
-@onready var camera := $Camera2D
+@onready var camera: Camera2D = $Camera2D
+@onready var timer: Timer = $Timer
+@onready var shaker: ShakerComponent2D = $Camera2D/ShakerComponent2D
+#@onready var audioListener: AudioListener2D = $AudioListener2D
 
-@export var MAX_SPEED = 500
-@export var MIN_SPEED_FOLLOW = 100
-@export var moveCurve : Curve
-@export var zoomCurve : Curve
+var MAX_SPEED: float = 5000
+var MIN_SPEED: float = 10
+
+var ACCELLER: float = 1000
+var DECELLER: float = 2000
+var DECELL_DISTANCE: float = 100
+var Y_OFFSET: float = 300
+
+var direction: int = 0
+var speed: float = 0
+var velocity: float = 0
+var distance: float = 0
+
+
 
 var targetNode: Node2D = null
 var targetZoom : Vector2
-var totalDistance : float
-var prevPos : Vector2
+var totalDistX : float = 0
 var prevZoom : Vector2
 
-var durationTime = 0
-var elapsedTime = 0
+var offset : Vector2
 var progress : float
+var zoommig: bool = false
+# var targeting_player: bool = true
 
-func set_target_node(target_node: Node2D, duration: float) -> void:
-	if targetNode:
-		if targetNode.name == "temp":
-			targetNode.free()
-			
-	targetNode = target_node
-	totalDistance = global_position.distance_to(targetNode.global_position)
+func set_target(node: Node2D) -> void:
+	targetNode = node
+	if targetNode.global_position.x > self.global_position.x:
+		direction = 1
+	else:
+		direction = -1
 	
-	prevPos = global_position
-	durationTime = duration
-	elapsedTime = 0
+	#prevZoom = camera.zoom
+	#targetZoom = Vector2(zoom, zoom)
+
+	totalDistX = abs(self.global_position.x - targetNode.global_position.x)
+	distance = totalDistX
 	progress = 0
 	
-func set_target_pos(target_pos: Vector2, duration: float) -> void:
-	if targetNode:
-		if targetNode.name == "temp":
-			targetNode.free()
-	targetNode = Node2D.new()
-	get_node("/root").add_child(targetNode)
-	targetNode.name = "temp"
-	targetNode.global_position = target_pos
-	totalDistance = global_position.distance_to(target_pos)
-	
-	prevPos = global_position
-	durationTime = duration
-	elapsedTime = 0
-	progress = 0
+func set_zoom(zoom: float, dur: float) -> void:
+	create_tween().tween_property(camera, "zoom", Vector2(zoom, zoom), dur).set_ease(Tween.EASE_IN_OUT)
 
-func set_target_zoom(target_zoom: Vector2) -> void:
-	prevZoom = camera.zoom
-	targetZoom = target_zoom
+func shake(amp: float) -> void:
+	shaker.shakerPreset.PositionShake[0].amplitude = Vector2(amp, amp)
+	print(shaker.shakerPreset.PositionShake[0].amplitude)
+	shaker.play_shake()
 
-func process_follow(delta: float) -> void:
-	if targetNode == null:
-		return
-	if is_equal_approx(progress, 1):
-		global_position = targetNode.global_position
-		return
-	elapsedTime = min(elapsedTime + delta, durationTime)
-	progress = elapsedTime / durationTime
-	var lerp_value = moveCurve.sample(progress)
-	global_position = prevPos.lerp(targetNode.global_position, lerp_value)
-
-func process_zoom() -> void:
-	if is_equal_approx(progress, 1):
-		camera.zoom = targetZoom
-		return
-	var lerp_value = moveCurve.sample(progress)
-	camera.zoom = prevZoom.lerp(targetZoom, lerp_value)
-	
 func _ready() -> void:
 	prevZoom = camera.zoom
 	targetZoom = prevZoom
 	progress = 1
-	totalDistance = 0
-	
+
 func _process(delta: float) -> void:
-	process_follow(delta)
-	process_zoom()
+	if targetNode:
+		var displacement = targetNode.global_position.x - self.global_position.x
+		if displacement > 0:
+			direction = 1
+		else:
+			direction = -1
+		distance = abs(displacement)
+		speed = clamp(distance * 2, MIN_SPEED, MAX_SPEED)
+		self.global_position.x = move_toward(self.global_position.x, targetNode.global_position.x, speed * delta)	
+	
+	else:
+		speed = move_toward(speed, 0, delta * DECELLER)
+		self.global_position.x += direction * speed * delta
+
+	self.global_position.y = Y_OFFSET
+	camera.position.y = -540 / camera.zoom.y

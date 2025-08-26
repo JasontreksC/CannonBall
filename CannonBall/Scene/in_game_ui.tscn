@@ -1,19 +1,43 @@
-[gd_scene load_steps=5 format=3 uid="uid://dk04etcfa0wra"]
+[gd_scene load_steps=19 format=3 uid="uid://dk04etcfa0wra"]
 
 [ext_resource type="Script" uid="uid://ixe6f0c8mtv7" path="res://Script/in_game_ui.gd" id="1_3xi00"]
-[ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope_hole.gdshader" id="2_wpxio"]
+[ext_resource type="PackedScene" uid="uid://fbrxb1i2vog1" path="res://Scene/hp_cell.tscn" id="2_dviy5"]
+[ext_resource type="Shader" uid="uid://wjo8ajiaduq4" path="res://Shader/telescope.gdshader" id="3_oqxxn"]
+[ext_resource type="PackedScene" uid="uid://sgea7shhc0td" path="res://Scene/background.tscn" id="3_quy4v"]
+[ext_resource type="Texture2D" uid="uid://eyiexi4hnjxy" path="res://Asset/ui/telescope.png" id="4_7hrlq"]
+[ext_resource type="Shader" uid="uid://ldy6pqjtct3d" path="res://Shader/just_color.tres" id="6_o5tdw"]
+[ext_resource type="PackedScene" uid="uid://cl5oes5bechlx" path="res://Scene/sub_ui_interaction.tscn" id="9_wckav"]
+[ext_resource type="PackedScene" uid="uid://bjbce2h7u05ck" path="res://Scene/sub_ui_disconnected.tscn" id="10_pmkfs"]
+[ext_resource type="PackedScene" uid="uid://dsr67dbx3vr6k" path="res://Scene/sub_ui_exit_button.tscn" id="11_qyub3"]
+[ext_resource type="PackedScene" uid="uid://q64lhk0stdly" path="res://Scene/sub_ui_dash_board.tscn" id="12_i3syv"]
+[ext_resource type="PackedScene" uid="uid://cq6k67g1svn0o" path="res://Scene/sub_ui_input_hint.tscn" id="12_u4wab"]
+[ext_resource type="PackedScene" uid="uid://0hqg3crg2ec0" path="res://Scene/sub_ui_shell_selector.tscn" id="18_bucyv"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5rh"]
-shader = ExtResource("2_wpxio")
-shader_parameter/hole_center = Vector2(0.5, 0.5)
-shader_parameter/hole_radius = 0.4
-shader_parameter/thickness = 0.005
-shader_parameter/cross_color = Vector4(0, 0, 0, 1)
-shader_parameter/bg_color = Color(0, 0, 0, 1)
-shader_parameter/transparency_color = Color(0, 0, 0, 0)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7hrlq"]
+shader = ExtResource("3_oqxxn")
+shader_parameter/telescope_texture = ExtResource("4_7hrlq")
+shader_parameter/radius = 0.45
+shader_parameter/strength = 0.6
 
-[sub_resource type="LabelSettings" id="LabelSettings_3xi00"]
-font_size = 64
+[sub_resource type="ViewportTexture" id="ViewportTexture_oqxxn"]
+viewport_path = NodePath("Telescope/SubViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_brp0j"]
+font_size = 32
+font_color = Color(0.898039, 0, 0, 1)
+outline_size = 12
+outline_color = Color(0.262932, 0.262932, 0.262932, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dviy5"]
+shader = ExtResource("6_o5tdw")
+shader_parameter/Color = Color(0.786172, 3.15256e-06, 5.77569e-07, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_brp0j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i3syv"]
+font_size = 32
+outline_size = 24
+outline_color = Color(0.188235, 0.188235, 0.188235, 0.290196)
 
 [node name="InGameUI" type="Control"]
 layout_mode = 3
@@ -23,10 +47,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3xi00")
+hpPointSprite = ExtResource("2_dviy5")
+psSubUIInteraction = ExtResource("9_wckav")
+metadata/_edit_lock_ = true
 
-[node name="Telescope" type="ColorRect" parent="."]
+[node name="fps" type="Label" parent="."]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 146.0
+offset_right = 49.0
+offset_bottom = 169.0
+text = "0"
+
+[node name="Telescope" type="TextureRect" parent="."]
 visible = false
-material = SubResource("ShaderMaterial_ms5rh")
+material = SubResource("ShaderMaterial_7hrlq")
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -34,27 +69,214 @@ anchor_right = 1.0
 offset_left = -1080.0
 offset_bottom = 1080.0
 grow_horizontal = 0
-mouse_filter = 1
-color = Color(0, 0, 0, 1)
+texture = SubResource("ViewportTexture_oqxxn")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Telescope"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 1080.0
-offset_bottom = 1080.0
-
-[node name="SubViewport" type="SubViewport" parent="Telescope/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="Telescope"]
 handle_input_locally = false
+msaa_2d = 1
+use_hdr_2d = true
+texture_mipmap_bias = -2.0
+canvas_item_default_texture_filter = 2
 size = Vector2i(1080, 1080)
-render_target_update_mode = 0
+render_target_update_mode = 3
 
-[node name="Camera2D" type="Camera2D" parent="Telescope/SubViewportContainer/SubViewport"]
+[node name="Camera2D" type="Camera2D" parent="Telescope/SubViewport"]
 
-[node name="GameTime" type="Label" parent="."]
+[node name="Background" parent="Telescope/SubViewport" instance=ExtResource("3_quy4v")]
+
+[node name="Sprite2D" type="Sprite2D" parent="Telescope"]
+position = Vector2(540, 540)
+scale = Vector2(2, 2)
+texture = ExtResource("4_7hrlq")
+
+[node name="AimMessage_Boundary" type="Label" parent="Telescope"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -283.0
+offset_top = -320.0
+offset_right = 283.0
+offset_bottom = -252.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "적의 진영을 벗어났습니다."
+label_settings = SubResource("LabelSettings_brp0j")
+horizontal_alignment = 1
+
+[node name="AimMessage_Range" type="Label" parent="Telescope"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -283.0
+offset_top = -273.835
+offset_right = 283.0
+offset_bottom = -205.835
+grow_horizontal = 2
+grow_vertical = 2
+text = "최대 사거리입니다."
+label_settings = SubResource("LabelSettings_brp0j")
+horizontal_alignment = 1
+
+[node name="SubUI_InputHint_Attack" parent="Telescope" instance=ExtResource("12_u4wab")]
 layout_mode = 0
-offset_left = 11.0
-offset_top = 4.0
-offset_right = 175.0
-offset_bottom = 92.0
-text = "00:00"
-label_settings = SubResource("LabelSettings_3xi00")
+offset_left = 288.0
+offset_top = 756.0
+offset_right = 416.0
+offset_bottom = 884.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_Zoom" parent="Telescope" instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 824.0
+offset_right = 416.0
+offset_bottom = 952.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_NoAim" parent="Telescope" instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 635.0
+offset_top = 756.0
+offset_right = 763.0
+offset_bottom = 884.0
+scale = Vector2(0.5, 0.5)
+
+[node name="P1HP" type="Control" parent="."]
+z_index = 1
+anchors_preset = 0
+offset_top = 34.0
+offset_bottom = 34.0
+mouse_filter = 2
+
+[node name="HPBase" type="Sprite2D" parent="P1HP"]
+material = SubResource("ShaderMaterial_dviy5")
+position = Vector2(31, 40)
+scale = Vector2(88.115, 55.5)
+skew = 0.464258
+texture = SubResource("CanvasTexture_brp0j")
+
+[node name="HPCells" type="Node2D" parent="P1HP/HPBase"]
+scale = Vector2(0.0113488, 0.020937)
+skew = -0.274886
+
+[node name="P2HP" type="Control" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1920.0
+offset_top = 34.0
+offset_right = -1920.0
+offset_bottom = 34.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="HPBase" type="Sprite2D" parent="P2HP"]
+material = SubResource("ShaderMaterial_dviy5")
+position = Vector2(1889, 40)
+scale = Vector2(88.115, 55.5)
+skew = -0.464258
+texture = SubResource("CanvasTexture_brp0j")
+
+[node name="HPCells" type="Node2D" parent="P2HP/HPBase"]
+scale = Vector2(0.0113488, 0.020937)
+skew = 0.274885
+
+[node name="SubUI_ShellSelector" parent="." instance=ExtResource("18_bucyv")]
+layout_mode = 0
+offset_top = 840.0
+offset_bottom = 1160.0
+scale = Vector2(0.75, 0.75)
+mouse_filter = 1
+
+[node name="SubUIDashBoard" parent="." instance=ExtResource("12_i3syv")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_left = -960.0
+offset_right = 960.0
+offset_bottom = 1080.0
+grow_vertical = 1
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Interactions" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.6, 0.6)
+
+[node name="SubUIDisconnected" parent="." instance=ExtResource("10_pmkfs")]
+visible = false
+z_index = 10
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
+color = Color(0, 0, 0, 0.435294)
+
+[node name="SubUIExitButton" parent="." instance=ExtResource("11_qyub3")]
+layout_mode = 0
+offset_top = 692.64
+offset_bottom = 820.64
+scale = Vector2(0.75, 0.75)
+
+[node name="SubUI_InputHint_Move" parent="." instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 1000.0
+offset_right = 743.0
+offset_bottom = 1128.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_Handdle" parent="." instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 857.0
+offset_top = 1000.0
+offset_right = 985.0
+offset_bottom = 1128.0
+scale = Vector2(0.5, 0.5)
+
+[node name="SubUI_InputHint_Aim" parent="." instance=ExtResource("12_u4wab")]
+layout_mode = 0
+offset_left = 1154.0
+offset_top = 1000.0
+offset_right = 1282.0
+offset_bottom = 1128.0
+scale = Vector2(0.5, 0.5)
+
+[node name="Hint_Esc" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 643.0
+offset_right = 82.0
+offset_bottom = 688.0
+text = "[Esc]"
+label_settings = SubResource("LabelSettings_i3syv")
+
+[node name="Hint_Tab" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 791.9
+offset_right = 82.0
+offset_bottom = 836.9
+text = "[Tab]"
+label_settings = SubResource("LabelSettings_i3syv")

@@ -1,0 +1,143 @@
+[gd_scene load_steps=15 format=3 uid="uid://fbrxb1i2vog1"]
+
+[ext_resource type="Script" uid="uid://5cu3t6d3corr" path="res://Script/hp_cell.gd" id="1_lw3pi"]
+[ext_resource type="Shader" uid="uid://x522m5huajb0" path="res://Shader/hp_point.gdshader" id="1_xcfp7"]
+[ext_resource type="Script" uid="uid://cgjrp217xxfik" path="res://addons/shaker/src/Vector2/shaker_component2D.gd" id="2_qai04"]
+[ext_resource type="Script" uid="uid://bps6bqb3l581x" path="res://addons/shaker/data/Vector2/BaseShakerType2D.gd" id="3_lw3pi"]
+[ext_resource type="Script" uid="uid://c8mr5en2v3bca" path="res://addons/shaker/data/Vector2/ShakerTypeRandom2D.gd" id="3_qai04"]
+[ext_resource type="Script" uid="uid://3uoslnr5oab7" path="res://addons/shaker/data/Single/BaseShakerType1D.gd" id="5_3o8ne"]
+[ext_resource type="Script" uid="uid://c8m78r1w6wcu5" path="res://addons/shaker/data/Vector2/ShakerPreset2D.gd" id="6_rqdxe"]
+
+[sub_resource type="Resource" id="Resource_lw3pi"]
+script = ExtResource("3_qai04")
+seed = 0
+amplitude = Vector2(1, 1)
+offset = Vector2(0, 0)
+BlendingMode = 0
+fade_in = 0.0
+fade_out = 0.0
+start_percent = 0.0
+end_percent = 1.0
+_temp_graph = false
+bake_internal = 64
+metadata/_custom_type_script = "uid://c8mr5en2v3bca"
+
+[sub_resource type="Resource" id="Resource_4v07l"]
+script = ExtResource("6_rqdxe")
+PositionShake = Array[ExtResource("3_lw3pi")]([SubResource("Resource_lw3pi")])
+RotationShake = Array[ExtResource("5_3o8ne")]([])
+ScaleShake = Array[ExtResource("3_lw3pi")]([])
+bake_internal = 16
+__follow_timeline = false
+metadata/_custom_type_script = "uid://c8m78r1w6wcu5"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2e65n"]
+shader = ExtResource("1_xcfp7")
+shader_parameter/inner_color = Color(1, 0, 0, 1)
+shader_parameter/outter_color = Color(0.270588, 0, 0, 1)
+shader_parameter/inner_ratio = 0.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_haa8g"]
+texture_filter = 4
+
+[sub_resource type="Animation" id="Animation_4v07l"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/inner_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(50, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(50, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_lw3pi"]
+resource_name = "generate"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/inner_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.4, 0.0650879, 1, -0.0333333, -0.517873, 0.25, 0, 1, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(50, 0, 0, 0, 0, 50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(50, 0, 0, 0, 0, 50, -0.25, 0, 0.166667, 18.5446, 50, -0.1, 32.9983, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4v07l"]
+_data = {
+&"RESET": SubResource("Animation_4v07l"),
+&"generate": SubResource("Animation_lw3pi")
+}
+
+[node name="HPCell" type="Node2D"]
+script = ExtResource("1_lw3pi")
+
+[node name="ShakerComponent2D" type="Node2D" parent="."]
+script = ExtResource("2_qai04")
+intensity = 12.0
+duration = 1.0
+shake_speed = 5.0
+shakerPreset = SubResource("Resource_4v07l")
+metadata/_custom_type_script = "uid://cgjrp217xxfik"
+
+[node name="Sprite2D" type="Sprite2D" parent="ShakerComponent2D"]
+material = SubResource("ShaderMaterial_2e65n")
+scale = Vector2(50, 50)
+texture = SubResource("CanvasTexture_haa8g")
+region_rect = Rect2(-50, 0, 100, 100)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../ShakerComponent2D/Sprite2D")
+libraries = {
+&"": SubResource("AnimationLibrary_4v07l")
+}
+speed_scale = 1.5
