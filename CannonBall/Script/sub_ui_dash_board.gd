@@ -105,6 +105,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pbInner.points[1].x = pb_x
 
+	if not is_instance_valid(ui.game):
+		return
+	if not is_instance_valid(ui) or not is_instance_valid(ui.game):
+		return
 	if ui.game.stateMachine.current_state_name() == "WaitSession" or ui.game.stateMachine.current_state_name() == "EndSession":
 		return
 

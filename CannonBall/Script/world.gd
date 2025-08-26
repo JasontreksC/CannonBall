@@ -101,14 +101,6 @@ func gen_TDF(xr: XRange, target: int, tickDamage: int, tickInterval: float, life
 func _ready() -> void:
 	game = get_parent() as Game
 
-# func _physics_process(delta: float) -> void:
-# 	if game.stateMachine.current_state_name() == "WaitSession" or game.stateMachine.current_state_name() == "EndSession":
-# 		return
-
-# func _process(delta: float) -> void:
-# 	if not multiplayer.is_server():
-# 		return
-
 func on_turn_count():
 	if not multiplayer.is_server():
 		return

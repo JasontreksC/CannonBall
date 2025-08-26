@@ -38,9 +38,9 @@ func _physics_process(delta: float) -> void:
 		return
 	elif not multiplayer.is_server() and target == 0:
 		return
-	if world.game.stateMachine.current_state_name() == "WaitSession" or world.game.stateMachine.current_state_name() == "EndSession" :
+	if not is_instance_valid(world) or not is_instance_valid(world.game) or not is_instance_valid( world.game.players[target]):
 		return
-	if world == null || world.game == null || world.game.players[target] == null:
+	if world.game.stateMachine.current_state_name() == "WaitSession" or world.game.stateMachine.current_state_name() == "EndSession" :
 		return
 	
 	# 연못 진입/출입 판정
