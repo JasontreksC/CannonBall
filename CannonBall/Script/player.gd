@@ -28,6 +28,9 @@ var gameFinished: bool = false
 @export var hp: int = 20
 @export var inPondID: int = 0
 
+@export var asGroundStep: AudioStream
+@export var asPondStep: AudioStream
+
 @onready var nCamTargetDefault: Node2D = $CameraTarget_Default
 @onready var nCamTargetAim: Node2D = $CameraTarget_Default/CameraTarget_Aim
 @onready var world: World = $"../World"
@@ -35,7 +38,8 @@ var gameFinished: bool = false
 @onready var character: Node2D = $CannonReaper
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var amt: AnimationTree = $AnimationTree
-@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
+@onready var asp: AudioStreamPlayer = $ASP_GroundWalk
+
 
 var game: Game = null
 var cmc: CameraMovingController = null
@@ -229,7 +233,7 @@ func _physics_process(delta: float) -> void:
 	# 높이를 항상 바닥에 고정
 	if not inPondID:
 		self.global_position.y = 0
-
+		
 	if cannon:
 		#대포의 상호작용구역 안에 들어왔음을 감지
 		if abs(cannon.global_position.x - self.global_position.x) < 150:
@@ -238,10 +242,10 @@ func _physics_process(delta: float) -> void:
 			isInCannon = false
 	
 	if abs(velocity) > 0:
-		if not audio.playing:
-			audio.play()
+		if not asp.playing:
+			asp.play()
 	else:
-		audio.stop()
+		asp.stop()
 
 func _process(delta: float) -> void:
 	if self.name == "1":

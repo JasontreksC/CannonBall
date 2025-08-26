@@ -62,6 +62,8 @@ func on_entered_pond(node: Node2D) -> void:
 		if isPoisoned:
 			world.game.ui.set_interaction("t_pond", true)
 
+		node.asp.stream = node.asPondStep
+
 	if node is Cannon:
 		node.inPondID = self.pondID
 
@@ -71,5 +73,8 @@ func on_exited_pond(node: Node2D) -> void:
 		world.game.ui.set_interaction("b_pond", false)
 		if isPoisoned:
 			world.game.ui.set_interaction("t_pond", false)
+		
+		node.asp.stream = node.asGroundStep
+
 	if node is Cannon:
 		node.inPondID = 0
