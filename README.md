@@ -1,7 +1,7 @@
 # CannonBall
 ##  목차
 - [개요](#개요)
-
+- [테스트 방법](#테스트-방법)
 ****
 ## 개요
 ![alt text](screenshot/1.png)
