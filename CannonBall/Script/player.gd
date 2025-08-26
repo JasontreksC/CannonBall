@@ -257,16 +257,17 @@ func _process(delta: float) -> void:
 
 	if not is_multiplayer_authority():
 		return
+	
+	if isAttack:
+		game.rpc("request_lifetime_update")
 
 	if Input.is_action_just_pressed("tab"):
 		selectedShell = (selectedShell + 1) % 3 
 
 	if multiplayer.is_server():
 		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p1_left_end"], world.vertical_boundary["p1_right_end"])
-		game.rpc("request_lifetime_update", 0)
 	else:
 		self.global_position.x = clamp(self.global_position.x, world.vertical_boundary["p2_left_end"], world.vertical_boundary["p2_right_end"])
-		game.rpc("request_lifetime_update", 1)
 
 	if lifeTime < 0 and game.defeat_condition_timeout and not gameFinished:
 		lifeTime = 0

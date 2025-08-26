@@ -138,9 +138,17 @@ func update_game_time(delta: float) -> void:
 		lifetimes[1] -= delta
 
 @rpc("any_peer", "call_local")
-func request_lifetime_update(player_num: int = 0) -> void:
+func request_lifetime_update() -> void:
+	if not multiplayer.is_server():
+		return
+		
 	var id: int = multiplayer.get_remote_sender_id()
-	players[player_num].rpc_id(id, "set_lifetime", lifetimes[player_num])
+
+	if id == 1:
+		players[0].rpc_id(id, "set_lifetime", lifetimes[0])
+	else:
+		players[1].rpc_id(id, "set_lifetime", lifetimes[1])
+
 
 
 @rpc("any_peer", "call_local")
