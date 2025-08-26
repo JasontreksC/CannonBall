@@ -80,5 +80,6 @@ default_color = Color(1, 0, 1, 0.690196)
 stream = ExtResource("4_kou1b")
 volume_db = 5.0
 autoplay = true
+max_distance = 20000.0
 
 [connection signal="finished" from="Smoke" to="." method="_on_smoke_finished"]

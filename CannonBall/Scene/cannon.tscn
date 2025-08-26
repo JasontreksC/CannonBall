@@ -219,6 +219,7 @@ libraries = {
 
 [node name="ASP_Burst" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_k6bjk")
+max_distance = 20000.0
 
 [node name="ASP_Wheel" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_havv0")
