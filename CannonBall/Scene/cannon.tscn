@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bwrx2pgx1ludf"]
+[gd_scene load_steps=12 format=3 uid="uid://bwrx2pgx1ludf"]
 
 [ext_resource type="Script" uid="uid://bxp15wk4e1qvo" path="res://Script/cannon.gd" id="1_y1q7a"]
 [ext_resource type="Texture2D" uid="uid://c5hbha8afn08k" path="res://Asset/cannon/chamber.png" id="2_wyplu"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://b37jj8skmoy1q" path="res://Asset/cannon/wheel.png" id="4_havv0"]
 [ext_resource type="Texture2D" uid="uid://da0c6u6pcv1sq" path="res://Asset/cannon/carriage.png" id="5_tpwpf"]
 [ext_resource type="Script" uid="uid://cv3xkhosm3n3o" path="res://Script/aim_controller.gd" id="5_y1q7a"]
-[ext_resource type="AudioStream" uid="uid://c6ufhaak3q18t" path="res://Asset/sound/sfx_burst.wav" id="7_k6bjk"]
 [ext_resource type="AudioStream" uid="uid://6q4w4pyj1i4n" path="res://Asset/sound/sfx_wheel.wav" id="8_havv0"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tscwj"]
@@ -216,10 +215,6 @@ replication_config = SubResource("SceneReplicationConfig_tscwj")
 libraries = {
 &"": SubResource("AnimationLibrary_havv0")
 }
-
-[node name="ASP_Burst" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("7_k6bjk")
-max_distance = 20000.0
 
 [node name="ASP_Wheel" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_havv0")

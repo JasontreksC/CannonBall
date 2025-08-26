@@ -31,7 +31,6 @@ const SPEED: float = 300
 @onready var nMuzzle: Node2D = $Skeleton2D/BnCarriage/BnBarrel/SpBarrel/Muzzle
 
 ## ASP
-@onready var aspBurst: AudioStreamPlayer2D = $ASP_Burst
 @onready var aspWheel: AudioStreamPlayer2D = $ASP_Wheel
 
 var game: Game = null
@@ -183,5 +182,3 @@ func on_fire():
 	game.rpc("server_spawn_request", "res://Scene/fx_burst.tscn", "none", {
 		"global_position" : nMuzzle.global_position,
 		"direction" : burstDir})
-	
-	aspBurst.play()

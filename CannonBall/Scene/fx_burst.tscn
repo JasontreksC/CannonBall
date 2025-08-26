@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://eriwpbivkspp"]
+[gd_scene load_steps=23 format=3 uid="uid://eriwpbivkspp"]
 
 [ext_resource type="Script" uid="uid://clxvigsqvso6p" path="res://Script/fx_burst.gd" id="1_8uaop"]
 [ext_resource type="Shader" uid="uid://blce0ecuv5oon" path="res://Material/glow.tres" id="2_8uaop"]
 [ext_resource type="Material" uid="uid://ixki4puppuw4" path="res://Material/smoke_particle_2.tres" id="2_ddqip"]
 [ext_resource type="Texture2D" uid="uid://be13xv6813a3y" path="res://Asset/alpha_texture/T_VFX_Glow_1.PNG" id="3_ddqip"]
 [ext_resource type="PackedScene" uid="uid://c5jvtt7nlhdmg" path="res://Scene/fx_blink.tscn" id="5_ddqip"]
+[ext_resource type="AudioStream" uid="uid://c6ufhaak3q18t" path="res://Asset/sound/sfx_burst.wav" id="6_71gf4"]
 
 [sub_resource type="Curve" id="Curve_ddqip"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.130573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -139,5 +140,10 @@ process_material = SubResource("ParticleProcessMaterial_71gf4")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_nf4r3")
+
+[node name="ASP_Burst" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_71gf4")
+autoplay = true
+max_distance = 15000.0
 
 [connection signal="finished" from="GP_Smoke" to="." method="_on_gp_smoke_finished"]
