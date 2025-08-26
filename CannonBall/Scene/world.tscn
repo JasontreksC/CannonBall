@@ -818,16 +818,16 @@ position = Vector2(-8774, 0)
 z_index = 60
 position = Vector2(2600, 0)
 scale = Vector2(2, 2)
-pondRadius = 500.0
 target = 1
+pondRadius = 500.0
 pondID = 1
 
 [node name="Pond2" parent="BenefitFields/P2Ponds" instance=ExtResource("4_scul4")]
 z_index = 60
 position = Vector2(6800, 0)
 scale = Vector2(2, 2)
-pondRadius = 500.0
 target = 1
+pondRadius = 500.0
 pondID = 2
 
 [node name="P2Bushes" type="Node2D" parent="BenefitFields"]

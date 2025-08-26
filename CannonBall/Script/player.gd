@@ -38,7 +38,7 @@ var gameFinished: bool = false
 @onready var character: Node2D = $CannonReaper
 @onready var amp: AnimationPlayer = $AnimationPlayer
 @onready var amt: AnimationTree = $AnimationTree
-@onready var asp: AudioStreamPlayer = $ASP_GroundWalk
+@onready var aspStep: AudioStreamPlayer = $ASP_Step
 
 
 var game: Game = null
@@ -242,10 +242,10 @@ func _physics_process(delta: float) -> void:
 			isInCannon = false
 	
 	if abs(velocity) > 0:
-		if not asp.playing:
-			asp.play()
+		if not aspStep.playing:
+			aspStep.play()
 	else:
-		asp.stop()
+		aspStep.stop()
 
 func _process(delta: float) -> void:
 	if self.name == "1":
