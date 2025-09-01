@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=6 format=3 uid="uid://blce0ecuv5oon"]
+[gd_resource type="VisualShader" load_steps=6 format=3 uid="uid://w7smpjmeolei"]
 
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_3xhfl"]
 parameter_name = "emission"

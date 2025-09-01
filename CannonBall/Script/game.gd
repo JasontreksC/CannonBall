@@ -99,12 +99,10 @@ func is_p1_turn() -> bool:
 @rpc("any_peer", "call_local")
 func change_turn() -> void:
 	if is_p1_turn():
-		print("p1attack")
 		players[0].isAttack = true
 		players[0].attackChance = true
 		players[1].isAttack = false
 	else: 
-		print("p2attack")
 		players[1].isAttack = true
 		players[1].attackChance = true
 		players[0].isAttack = false

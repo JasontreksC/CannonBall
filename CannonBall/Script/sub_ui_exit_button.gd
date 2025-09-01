@@ -47,6 +47,7 @@ func _on_pressed() -> void:
 		
 	elif input_count == 2:
 		get_tree().paused = true
-		ui.game.get_my_player().set_multiplayer_authority(-1)
-		ui.game.get_my_player().cannon.set_multiplayer_authority(-1)
+		if get_multiplayer_authority() != 1:
+			ui.game.get_my_player().set_multiplayer_authority(-1)
+			ui.game.get_my_player().cannon.set_multiplayer_authority(-1)
 		ui.game.root.back_to_lobby()

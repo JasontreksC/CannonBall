@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=12 format=3 uid="uid://c5if6upun7et5"]
+[gd_resource type="VisualShader" load_steps=12 format=3 uid="uid://dd6nq0lui574p"]
 
 [sub_resource type="VisualShaderNodeIf" id="VisualShaderNodeIf_ocjxx"]
 default_input_values = [0, 0.0, 1, 0.5, 2, 0.0, 3, Vector3(1, 1, 1), 4, Vector3(0, 0, 0), 5, Vector3(0, 0, 0)]

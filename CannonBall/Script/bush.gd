@@ -31,6 +31,7 @@ func start_burn() -> void:
 		world.game.regist_lifeturn(fxf.get_path(), 4)
 		
 		var fxs = world.game.server_spawn_directly(psFxSmoke, "none", {
+			"smokeAmount": 20,
 			"global_position": s.global_position
 		})
 		world.game.regist_lifeturn(fxs.get_path(), 4)
