@@ -2,6 +2,7 @@
 ##  목차
 - [개요](#개요)
 - [테스트 방법](#테스트-방법)
+- [시퀀스 다이어그램](#시퀀스-다이어그램)
 ****
 ## 개요
 ![alt text](screenshot/1.png)
@@ -89,3 +90,59 @@
 - - 나가기(버튼)
 - - 쉘 셀렉터(버튼)
 - - 상호작용(버튼)
+
+****
+
+## 시퀀스 다이어그램
+#### 프로세스 시작
+```mermaid
+sequenceDiagram
+    Scene Root ->> Scene Manager: 현재 씬을 로비 씬으로 설정
+
+    create participant Lobby Scene
+    Scene Manager ->> Lobby Scene: 로비 씬 생성
+    Lobby Scene ->> Scene Manager: 인스턴스 등록
+
+    Scene Root ->> UI Manager: 현재 UI를 로비 UI로 설정
+
+    create participant Lobby UI
+    UI Manager ->> Lobby UI: 로비 UI 생성
+    Lobby UI ->> UI Manager: 인스턴스 등록
+
+    Scene Root ->> Scene Root: 스팀 초기화 및 콜백 함수 등록
+
+    loop Steam.run_callbacks
+    Scene Root ->> Scene Root: 스팀 비동기 업데이트
+    end
+```
+#### 세션 시작
+```mermaid
+sequenceDiagram
+    Server ->> Server: 호스트
+    Server -->>+ Steam Server: 로비 생성
+    Steam Server -->>- Server: 로비 번호 발급
+    Server -->>+ Steam Server: Steam 친구 초대
+    Steam Server -->>- Client: 로비 번호 패킷 전송
+    loop Steam Update
+    Client ->> Client: 패킷 업데이트
+    end
+    Client -->>+ Steam Server: 로비 참가
+    Steam Server -->>- Server: 피어 연결
+
+    Server ->> Server: 게임 시작
+```
+#### 게임 시작
+```mermaid
+sequenceDiagram
+    Server ->> Scene Manager: 게임 씬으로 씬 전환 요청
+    Scene Manager ->> Server: 게임 씬 설정
+    Server ->> Server: 플레이어 생성 (Player 1)
+    Client -->> Server: 피어 연결
+    Client ->> Scene Manager: 게임 씬으로 씬 전환 요청
+    Scene Manager ->> Client: 게임 씬 설정
+    Server ->> Server: 플레이어 생성 (Player 2)
+    Server -->> Client: Player 2 권한 부여
+    Client ->> Client: Player 2 권한 취득
+    Client -->> Server: 게임 시작 요청
+    Server ->> Server: 게임 시작
+```
