@@ -280,3 +280,12 @@ offset_right = 82.0
 offset_bottom = 836.9
 text = "[Tab]"
 label_settings = SubResource("LabelSettings_i3syv")
+
+[node name="Hint_Q" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1851.0
+offset_top = 866.0
+offset_right = 1897.0
+offset_bottom = 911.0
+text = "[Q]"
+label_settings = SubResource("LabelSettings_i3syv")

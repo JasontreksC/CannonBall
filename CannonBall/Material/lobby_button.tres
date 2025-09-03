@@ -1,6 +1,9 @@
-[gd_resource type="Theme" format=3 uid="uid://c7n68kmajdde2"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c7n68kmajdde2"]
+
+[ext_resource type="FontFile" uid="uid://ts2osqrp1j3y" path="res://Asset/font_kr/KBO Dia Gothic_medium.ttf" id="1_npx7t"]
 
 [resource]
+default_font = ExtResource("1_npx7t")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/constants/outline_size = 9
 Button/font_sizes/font_size = 24

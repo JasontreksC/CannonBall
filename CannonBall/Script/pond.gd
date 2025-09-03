@@ -17,7 +17,7 @@ var target_player: Player = null
 @rpc("any_peer", "call_local")
 func set_poisoned() -> void:
 	create_tween().tween_property($SP_Water.material, "shader_parameter/poisoned", 1, 1)
-	world.game.regist_lifeturn(self.get_path(), 4)
+	world.game.regist_lifeturn(self.get_path(), 6)
 	isPoisoned = true
 
 @rpc("any_peer", "call_local")

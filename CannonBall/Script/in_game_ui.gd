@@ -54,6 +54,8 @@ var interaction_state: Dictionary[String, bool] = {
 @onready var subuiHint_Zoom: SubUIInputHint = $Telescope/SubUI_InputHint_Zoom
 @onready var subuiHint_NoAim: SubUIInputHint = $Telescope/SubUI_InputHint_NoAim
 
+@onready var lbHint_Q: Label = $Hint_Q
+
 var uiMgr: UIManager = null
 var game: Game = null
 
@@ -143,7 +145,6 @@ func set_interaction(type: String, onoff: bool) -> void:
 			interactions.add_child(new_interaction)
 			new_interaction.position = Vector2(-128, -128 - 128 * count)
 			count += 1
-
 #Hint
 func set_hints(num: int) -> void:
 	match num:
@@ -186,3 +187,12 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
+	if interactions.get_child_count() > 0:
+		lbHint_Q.visible = true
+		if Input.is_action_just_pressed("q"):
+			for n: Node in interactions.get_children():
+				n.emit_signal("pressed")
+	else:
+		lbHint_Q.visible = false
+	
+		

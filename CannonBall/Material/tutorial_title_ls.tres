@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://cexyqykw0smnf"]
+
+[ext_resource type="FontFile" uid="uid://bhy7f6s7l8udk" path="res://Asset/font_kr/KBO Dia Gothic_bold.ttf" id="1_u81iw"]
+
+[resource]
+font = ExtResource("1_u81iw")
+font_size = 96
+font_color = Color(0.172833, 0.172833, 0.172833, 1)
+outline_color = Color(0, 0, 0, 1)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=16 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
 [ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
@@ -6,6 +6,10 @@
 [ext_resource type="Theme" uid="uid://c7n68kmajdde2" path="res://Material/lobby_button.tres" id="4_1xitx"]
 [ext_resource type="Texture2D" uid="uid://bkliw5os8x64i" path="res://Asset/ui/ysu_logo.png" id="5_thp15"]
 [ext_resource type="Texture2D" uid="uid://cbwhdufxtn6ju" path="res://Asset/ui/godot_logo.png" id="6_thp15"]
+[ext_resource type="LabelSettings" uid="uid://cexyqykw0smnf" path="res://Material/tutorial_title_ls.tres" id="7_1mlcq"]
+[ext_resource type="LabelSettings" uid="uid://drnw4sdbefimv" path="res://Material/tutorial_text_ls.tres" id="8_mhnqm"]
+[ext_resource type="Texture2D" uid="uid://bqtu1ssc4jqur" path="res://Asset/ui/mouse_left.png" id="9_mhnqm"]
+[ext_resource type="Texture2D" uid="uid://b8emamxpn0re4" path="res://Asset/ui/mouse_wheel.png" id="10_d1dh0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thp15"]
 bg_color = Color(1, 1, 1, 0.580392)
@@ -25,6 +29,9 @@ font_color = Color(0, 0, 0, 1)
 font_size = 32
 font_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_rb062"]
+font_size = 96
+
 [node name="LobbyUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -33,6 +40,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hlk56")
+metadata/_edit_lock_ = true
 
 [node name="Title" type="Label" parent="."]
 z_index = 1
@@ -56,6 +64,7 @@ offset_right = 1920.0
 offset_bottom = 1180.0
 mouse_filter = 2
 texture = ExtResource("2_8l7yk")
+metadata/_edit_lock_ = true
 
 [node name="YSULogo" type="TextureRect" parent="LobbyImage"]
 layout_mode = 0
@@ -216,6 +225,24 @@ scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 text = "크레딧"
 
+[node name="BT_Tutorial" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 31.0
+offset_top = 314.0
+offset_right = 617.0
+offset_bottom = 374.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "튜토리얼"
+
 [node name="Creddit" type="Panel" parent="."]
 visible = false
 z_index = 2
@@ -291,6 +318,677 @@ scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 text = "닫기"
 
+[node name="Tutorial" type="Panel" parent="."]
+z_index = 2
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -890.0
+offset_top = 35.0
+offset_right = 921.0
+offset_bottom = 1034.0
+grow_horizontal = 2
+theme = SubResource("Theme_1mlcq")
+metadata/_edit_lock_ = true
+
+[node name="BT_CloseTutorial" type="Button" parent="Tutorial"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 749.5
+offset_top = -956.0
+offset_right = 849.5
+offset_bottom = -856.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "닫기"
+
+[node name="BT_Prev" type="Button" parent="Tutorial"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -332.5
+offset_top = -956.0
+offset_right = -232.5
+offset_bottom = -856.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "< 이전"
+
+[node name="BT_Next" type="Button" parent="Tutorial"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 227.5
+offset_top = -956.0
+offset_right = 327.5
+offset_bottom = -856.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "다음 >"
+
+[node name="T1_KeySetting" type="Control" parent="Tutorial"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 182.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubTitle_Control" type="Label" parent="Tutorial/T1_KeySetting"]
+layout_mode = 0
+offset_left = 345.0
+offset_top = 27.0
+offset_right = 744.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "이동/조작"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="SubTitle_Menu" type="Label" parent="Tutorial/T1_KeySetting"]
+layout_mode = 0
+offset_left = 1209.0
+offset_top = 27.0
+offset_right = 1608.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "메뉴"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="SubTitle_Aim" type="Label" parent="Tutorial/T1_KeySetting"]
+layout_mode = 0
+offset_left = 345.0
+offset_top = 467.0
+offset_right = 744.0
+offset_bottom = 578.0
+scale = Vector2(0.63497, 0.63497)
+text = "조준"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="AD_Movement" type="Control" parent="Tutorial/T1_KeySetting"]
+anchors_preset = 0
+offset_top = 102.0
+offset_right = 839.0
+offset_bottom = 270.0
+
+[node name="Key_A" type="Panel" parent="Tutorial/T1_KeySetting/AD_Movement"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 98.0
+offset_top = 9.0
+offset_right = 244.0
+offset_bottom = 149.0
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/AD_Movement/Key_A"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -66.0
+offset_right = 31.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "A"
+label_settings = SubResource("LabelSettings_rb062")
+
+[node name="Key_D" type="Panel" parent="Tutorial/T1_KeySetting/AD_Movement"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 258.0
+offset_top = 9.0
+offset_right = 404.0
+offset_bottom = 149.0
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/AD_Movement/Key_D"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -66.0
+offset_right = 31.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "D"
+label_settings = SubResource("LabelSettings_rb062")
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/AD_Movement"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 26.0
+offset_right = 759.0
+offset_bottom = 127.0
+text = "좌우 이동"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EF_Cannon" type="Control" parent="Tutorial/T1_KeySetting"]
+anchors_preset = 0
+offset_top = 270.0
+offset_right = 839.0
+offset_bottom = 438.0
+
+[node name="Key_E" type="Panel" parent="Tutorial/T1_KeySetting/EF_Cannon"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 98.0
+offset_top = 9.0
+offset_right = 244.0
+offset_bottom = 149.0
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/EF_Cannon/Key_E"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -66.0
+offset_right = 31.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "E"
+label_settings = SubResource("LabelSettings_rb062")
+
+[node name="Key_F" type="Panel" parent="Tutorial/T1_KeySetting/EF_Cannon"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 258.0
+offset_top = 9.0
+offset_right = 404.0
+offset_bottom = 149.0
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/EF_Cannon/Key_F"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -66.0
+offset_right = 31.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "F"
+label_settings = SubResource("LabelSettings_rb062")
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/EF_Cannon"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 26.0
+offset_right = 842.0
+offset_bottom = 127.0
+text = "대포 끌기 | 대포 조준"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mouse_Telescope" type="Control" parent="Tutorial/T1_KeySetting"]
+anchors_preset = 0
+offset_top = 550.0
+offset_right = 839.0
+offset_bottom = 718.0
+
+[node name="Key_LClick" type="Panel" parent="Tutorial/T1_KeySetting/Mouse_Telescope"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 98.0
+offset_top = 9.0
+offset_right = 244.0
+offset_bottom = 149.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Tutorial/T1_KeySetting/Mouse_Telescope/Key_LClick"]
+position = Vector2(73, 70)
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("9_mhnqm")
+
+[node name="Key_Wheel" type="Panel" parent="Tutorial/T1_KeySetting/Mouse_Telescope"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 258.0
+offset_top = 9.0
+offset_right = 404.0
+offset_bottom = 149.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Tutorial/T1_KeySetting/Mouse_Telescope/Key_Wheel"]
+position = Vector2(73, 70)
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("10_d1dh0")
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Mouse_Telescope"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 26.0
+offset_right = 842.0
+offset_bottom = 127.0
+text = "대포 발사 | 조준 줌"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tab_Shell" type="Control" parent="Tutorial/T1_KeySetting"]
+anchors_preset = 0
+offset_left = 968.0
+offset_top = 102.0
+offset_right = 1807.0
+offset_bottom = 270.0
+
+[node name="Key_Tab" type="Panel" parent="Tutorial/T1_KeySetting/Tab_Shell"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 98.0
+offset_top = 9.0
+offset_right = 315.0
+offset_bottom = 149.0
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Tab_Shell/Key_Tab"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -66.0
+offset_right = 31.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Tab"
+label_settings = SubResource("LabelSettings_rb062")
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Tab_Shell"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 26.0
+offset_right = 759.0
+offset_bottom = 127.0
+text = "탄환 선택"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Esc_Quit" type="Control" parent="Tutorial/T1_KeySetting"]
+anchors_preset = 0
+offset_left = 968.0
+offset_top = 270.0
+offset_right = 1807.0
+offset_bottom = 438.0
+
+[node name="Key_Esc" type="Panel" parent="Tutorial/T1_KeySetting/Esc_Quit"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 98.0
+offset_top = 9.0
+offset_right = 315.0
+offset_bottom = 149.0
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Esc_Quit/Key_Esc"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -66.0
+offset_right = 31.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Esc"
+label_settings = SubResource("LabelSettings_rb062")
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Esc_Quit"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 26.0
+offset_right = 759.0
+offset_bottom = 127.0
+text = "게임에서 나가기"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Q_Detail" type="Control" parent="Tutorial/T1_KeySetting"]
+anchors_preset = 0
+offset_left = 968.0
+offset_top = 438.0
+offset_right = 1807.0
+offset_bottom = 606.0
+
+[node name="Key_Q" type="Panel" parent="Tutorial/T1_KeySetting/Q_Detail"]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = 137.0
+offset_top = 9.0
+offset_right = 283.0
+offset_bottom = 149.0
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Q_Detail/Key_Q"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -66.0
+offset_right = 31.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Q"
+label_settings = SubResource("LabelSettings_rb062")
+
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Q_Detail"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 26.0
+offset_right = 759.0
+offset_bottom = 127.0
+text = "상호작용 보기"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T2_Rules" type="Control" parent="Tutorial"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 182.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubTitle_Turns" type="Label" parent="Tutorial/T2_Rules"]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 27.0
+offset_right = 873.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "턴제 진행방식"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="SubTitle_Wins" type="Label" parent="Tutorial/T2_Rules"]
+layout_mode = 0
+offset_left = 1238.0
+offset_top = 27.0
+offset_right = 1637.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "승패 조건"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="ExplainTurns" type="Label" parent="Tutorial/T2_Rules"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 520.0
+offset_right = 1029.0
+offset_bottom = 673.0
+scale = Vector2(0.9, 0.888)
+text = "각 플레이어가 번갈아가며 공격을 수행합니다.
+공격 턴을 진행하는 플레이어는 
+대포를 발사하기 전까지 수명 시간이 줄어듭니다."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="ExplainWins" type="Label" parent="Tutorial/T2_Rules"]
+offset_left = 959.0
+offset_top = 520.0
+offset_right = 1898.0
+offset_bottom = 673.0
+scale = Vector2(0.9, 0.9)
+text = "체력 또는 수명 시간이 먼저 
+0에 도달한 플레이어가 패배합니다.
+상대 플레이어는 승리합니다."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="T3_Shell" type="Control" parent="Tutorial"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 182.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubTitle_NormalShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 27.0
+offset_right = 681.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "일반탄"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="SubTitle_FireShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 718.0
+offset_top = 27.0
+offset_right = 1117.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "화염탄"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="SubTitle_PoisonShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 1334.0
+offset_top = 27.0
+offset_right = 1733.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "독탄"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="Explain_NormalShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 201.0
+offset_top = 449.94
+offset_right = 402.0
+offset_bottom = 602.94
+scale = Vector2(0.9, 0.888)
+text = "피해: 높음
+
+범위: 좁음"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="Explain_FireShell" type="Label" parent="Tutorial/T3_Shell"]
+offset_left = 1175.0
+offset_top = 449.94
+offset_right = 1830.0
+offset_bottom = 706.94
+scale = Vector2(0.9, 0.9)
+text = "피해: 낮음
+
+범위: 넓음
+
+피해 범위가 3초 동안 유지됩니다."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="Explain_PosionShell" type="Label" parent="Tutorial/T3_Shell"]
+offset_left = 636.0
+offset_top = 449.94
+offset_right = 1108.0
+offset_bottom = 758.94
+scale = Vector2(0.9, 0.9)
+text = "피해: 중간
+
+범위: 중간
+
+4턴 동안 유지되는
+화염 필드를 생성합니다."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="T4_Field" type="Control" parent="Tutorial"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 182.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="SubTitle_Bush_Hide" type="Label" parent="Tutorial/T4_Field"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 26.0
+offset_right = 752.0
+offset_bottom = 137.0
+scale = Vector2(0.63497, 0.63497)
+text = "수풀"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="Explain_Bush_Hide" type="Label" parent="Tutorial/T4_Field"]
+layout_mode = 0
+offset_left = 55.0001
+offset_top = 348.0
+offset_right = 614.0
+offset_bottom = 397.0
+scale = Vector2(0.9, 0.888)
+text = "플레이어와 대포를 가립니다."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="Explain_Bush_Burn" type="Label" parent="Tutorial/T4_Field"]
+layout_mode = 0
+offset_left = 55.0001
+offset_top = 714.0
+offset_right = 614.0
+offset_bottom = 815.0
+scale = Vector2(0.9, 0.888)
+text = "화염탄에 맞은 수풀은
+4턴 후 소멸합니다."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="SubTitle_Pond_Reduce" type="Label" parent="Tutorial/T4_Field"]
+layout_mode = 0
+offset_left = 1014.0
+offset_top = 27.0
+offset_right = 1645.0
+offset_bottom = 138.0
+scale = Vector2(0.63497, 0.63497)
+text = "연못"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="Explain_FireShell" type="Label" parent="Tutorial/T4_Field"]
+offset_left = 599.0
+offset_top = 346.0
+offset_right = 1929.0
+offset_bottom = 447.0
+scale = Vector2(0.9, 0.9)
+text = "연못 안에 떨어진 일반탄, 화염탄은 1의 피해만 입힙니다.
+연못 안 플레이어가 연못 밖 화염탄에 맞으면 절반의 피해만 입습니다."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="Explain_FireShell2" type="Label" parent="Tutorial/T4_Field"]
+offset_left = 767.0
+offset_top = 716.0
+offset_right = 1846.0
+offset_bottom = 817.0
+scale = Vector2(0.9, 0.9)
+text = "연못 안에 떨어진 독탄은 연못을 6턴 동안 오염시킵니다.
+오염된 연못은 매 2초당 1의 피해를 입힙니다. "
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+
+[node name="TutorialTitle" type="Label" parent="Tutorial"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -369.0
+offset_top = 72.0
+offset_right = 369.0
+offset_bottom = 183.0
+grow_horizontal = 2
+text = "조작법"
+label_settings = ExtResource("7_1mlcq")
+horizontal_alignment = 1
+
+[node name="Chapter1" type="ColorRect" parent="Tutorial"]
+layout_mode = 0
+offset_left = 764.0
+offset_top = 24.0
+offset_right = 804.0
+offset_bottom = 64.0
+color = Color(0.485703, 0.485704, 0.485703, 1)
+
+[node name="Chapter2" type="ColorRect" parent="Tutorial/Chapter1"]
+layout_mode = 0
+offset_left = 80.0
+offset_right = 120.0
+offset_bottom = 40.0
+color = Color(0.485703, 0.485704, 0.485703, 1)
+
+[node name="Chapter3" type="ColorRect" parent="Tutorial/Chapter1/Chapter2"]
+layout_mode = 0
+offset_left = 80.0
+offset_right = 120.0
+offset_bottom = 40.0
+color = Color(0.485703, 0.485704, 0.485703, 1)
+
+[node name="Chapter4" type="ColorRect" parent="Tutorial/Chapter1/Chapter2/Chapter3"]
+layout_mode = 0
+offset_left = 80.0
+offset_right = 120.0
+offset_bottom = 40.0
+color = Color(0.485703, 0.485704, 0.485703, 1)
+
 [connection signal="pressed" from="BT_Invite" to="." method="_on_bt_invite_pressed"]
 [connection signal="pressed" from="BT_Host" to="." method="_on_bt_host_pressed"]
 [connection signal="pressed" from="BT_Join" to="." method="_on_bt_join_pressed"]
@@ -298,4 +996,8 @@ text = "닫기"
 [connection signal="pressed" from="BT_LocalJoin" to="." method="_on_bt_local_join_pressed"]
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
 [connection signal="pressed" from="BT_Credit" to="." method="_on_bt_credit_pressed"]
+[connection signal="pressed" from="BT_Tutorial" to="." method="_on_bt_tutorial_pressed"]
 [connection signal="pressed" from="Creddit/BT_CloseCredit" to="." method="_on_bt_close_credit_pressed"]
+[connection signal="pressed" from="Tutorial/BT_CloseTutorial" to="." method="_on_bt_close_tutorial_pressed"]
+[connection signal="pressed" from="Tutorial/BT_Prev" to="." method="_on_bt_prev_pressed"]
+[connection signal="pressed" from="Tutorial/BT_Next" to="." method="_on_bt_next_pressed"]
