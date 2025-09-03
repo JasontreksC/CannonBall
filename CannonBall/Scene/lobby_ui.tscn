@@ -694,6 +694,7 @@ offset_bottom = 606.0
 
 [node name="Key_Q" type="Panel" parent="Tutorial/T1_KeySetting/Q_Detail"]
 self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
 offset_left = 137.0
 offset_top = 9.0
 offset_right = 283.0
@@ -772,6 +773,7 @@ label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
 [node name="ExplainWins" type="Label" parent="Tutorial/T2_Rules"]
+layout_mode = 0
 offset_left = 959.0
 offset_top = 520.0
 offset_right = 1898.0
@@ -840,6 +842,7 @@ label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
 [node name="Explain_FireShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
 offset_left = 1175.0
 offset_top = 449.94
 offset_right = 1830.0
@@ -854,6 +857,7 @@ label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
 [node name="Explain_PosionShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
 offset_left = 636.0
 offset_top = 449.94
 offset_right = 1108.0
@@ -925,6 +929,7 @@ label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
 [node name="Explain_FireShell" type="Label" parent="Tutorial/T4_Field"]
+layout_mode = 0
 offset_left = 599.0
 offset_top = 346.0
 offset_right = 1929.0
@@ -936,6 +941,7 @@ label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
 [node name="Explain_FireShell2" type="Label" parent="Tutorial/T4_Field"]
+layout_mode = 0
 offset_left = 767.0
 offset_top = 716.0
 offset_right = 1846.0
