@@ -329,6 +329,7 @@ theme = ExtResource("4_1xitx")
 text = "닫기"
 
 [node name="Tutorial" type="Panel" parent="."]
+visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 5
@@ -1020,6 +1021,7 @@ label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
 [node name="VSP_Tutorial_6" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+layout_mode = 0
 offset_left = 90.0004
 offset_top = 101.0
 offset_right = 1370.0
@@ -1029,6 +1031,7 @@ stream = ExtResource("16_nlkqv")
 loop = true
 
 [node name="VSP_Tutorial_7" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+layout_mode = 0
 offset_left = 90.0004
 offset_top = 453.0
 offset_right = 1370.0
@@ -1038,6 +1041,7 @@ stream = ExtResource("17_0qu6b")
 loop = true
 
 [node name="VSP_Tutorial_8" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+layout_mode = 0
 offset_left = 762.0
 offset_top = 101.0
 offset_right = 2042.0
@@ -1047,6 +1051,7 @@ stream = ExtResource("18_hox77")
 loop = true
 
 [node name="VSP_Tutorial_9" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+layout_mode = 0
 offset_left = 1234.0
 offset_top = 101.0
 offset_right = 2514.0
@@ -1056,6 +1061,7 @@ stream = ExtResource("19_elr6o")
 loop = true
 
 [node name="VSP_Tutorial_10" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+layout_mode = 0
 offset_left = 1018.0
 offset_top = 453.0
 offset_right = 2298.0
