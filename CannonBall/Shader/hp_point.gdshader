@@ -11,7 +11,7 @@ void vertex() {
 void fragment() {
 	float dist = UV.y / 2.0;
 	if ((UV.x > 0.5 - dist) && (UV.x < 0.5 + dist)){
-		
+
 		float inner_y_start = 0.5 - 0.5 * inner_ratio;
 		float inner_y_end = 0.5 + 0.5 * inner_ratio;
 		float t = (UV.y - inner_y_start) / (inner_y_end - inner_y_start);

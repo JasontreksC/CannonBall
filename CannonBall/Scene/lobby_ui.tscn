@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=26 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
 [ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
@@ -10,6 +10,16 @@
 [ext_resource type="LabelSettings" uid="uid://drnw4sdbefimv" path="res://Material/tutorial_text_ls.tres" id="8_mhnqm"]
 [ext_resource type="Texture2D" uid="uid://bqtu1ssc4jqur" path="res://Asset/ui/mouse_left.png" id="9_mhnqm"]
 [ext_resource type="Texture2D" uid="uid://b8emamxpn0re4" path="res://Asset/ui/mouse_wheel.png" id="10_d1dh0"]
+[ext_resource type="VideoStream" uid="uid://bwuywfyvnad05" path="res://Asset/video/tutorial_video_1.ogv" id="11_d1dh0"]
+[ext_resource type="VideoStream" uid="uid://4e5n07v3mk3v" path="res://Asset/video/tutorial_video_2.ogv" id="12_x63ab"]
+[ext_resource type="VideoStream" uid="uid://cla6f7v2ucbu8" path="res://Asset/video/tutorial_video_3.ogv" id="13_7pqmm"]
+[ext_resource type="VideoStream" uid="uid://d354ks1xu31m6" path="res://Asset/video/tutorial_video_4.ogv" id="14_pylrs"]
+[ext_resource type="VideoStream" uid="uid://xmqkcqr21nr4" path="res://Asset/video/tutorial_video_5.ogv" id="15_cecl8"]
+[ext_resource type="VideoStream" uid="uid://dtxv4jregmfl" path="res://Asset/video/tutorial_video_6.ogv" id="16_nlkqv"]
+[ext_resource type="VideoStream" uid="uid://dqmu4sa6wa1wp" path="res://Asset/video/tutorial_video_7.ogv" id="17_0qu6b"]
+[ext_resource type="VideoStream" uid="uid://tp47kcjibtuq" path="res://Asset/video/tutorial_video_8.ogv" id="18_hox77"]
+[ext_resource type="VideoStream" uid="uid://qgv6o2sawnqu" path="res://Asset/video/tutorial_video_9.ogv" id="19_elr6o"]
+[ext_resource type="VideoStream" uid="uid://b6cvj7hxfbqea" path="res://Asset/video/tutorial_video_10.ogv" id="20_7go6n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thp15"]
 bg_color = Color(1, 1, 1, 0.580392)
@@ -387,6 +397,7 @@ theme = ExtResource("4_1xitx")
 text = "다음 >"
 
 [node name="T1_KeySetting" type="Control" parent="Tutorial"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -728,7 +739,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="T2_Rules" type="Control" parent="Tutorial"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -785,6 +795,36 @@ text = "체력 또는 수명 시간이 먼저
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
+[node name="VSP_Tutorial_1" type="VideoStreamPlayer" parent="Tutorial/T2_Rules"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -733.5
+offset_top = 112.0
+offset_right = 1186.5
+offset_bottom = 1192.0
+grow_horizontal = 2
+scale = Vector2(0.355, 0.355)
+stream = ExtResource("11_d1dh0")
+volume_db = -80.0
+loop = true
+
+[node name="VSP_Tutorial_2" type="VideoStreamPlayer" parent="Tutorial/T2_Rules"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 122.5
+offset_top = 112.0
+offset_right = 1402.5
+offset_bottom = 832.0
+grow_horizontal = 2
+scale = Vector2(0.53, 0.53)
+stream = ExtResource("12_x63ab")
+volume_db = -80.0
+loop = true
+
 [node name="T3_Shell" type="Control" parent="Tutorial"]
 visible = false
 layout_mode = 1
@@ -797,9 +837,9 @@ grow_vertical = 2
 
 [node name="SubTitle_NormalShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
-offset_left = 117.0
+offset_left = 109.0
 offset_top = 27.0
-offset_right = 681.0
+offset_right = 673.0
 offset_bottom = 138.0
 scale = Vector2(0.63497, 0.63497)
 text = "일반탄"
@@ -808,9 +848,9 @@ horizontal_alignment = 1
 
 [node name="SubTitle_FireShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
-offset_left = 718.0
+offset_left = 734.0
 offset_top = 27.0
-offset_right = 1117.0
+offset_right = 1133.0
 offset_bottom = 138.0
 scale = Vector2(0.63497, 0.63497)
 text = "화염탄"
@@ -830,13 +870,12 @@ horizontal_alignment = 1
 
 [node name="Explain_NormalShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
-offset_left = 201.0
-offset_top = 449.94
-offset_right = 402.0
-offset_bottom = 602.94
+offset_left = 193.0
+offset_top = 570.0
+offset_right = 394.0
+offset_bottom = 671.0
 scale = Vector2(0.9, 0.888)
 text = "피해: 높음
-
 범위: 좁음"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
@@ -844,12 +883,11 @@ horizontal_alignment = 1
 [node name="Explain_FireShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
 offset_left = 1175.0
-offset_top = 449.94
+offset_top = 570.0
 offset_right = 1830.0
-offset_bottom = 706.94
+offset_bottom = 775.0
 scale = Vector2(0.9, 0.9)
 text = "피해: 낮음
-
 범위: 넓음
 
 피해 범위가 3초 동안 유지됩니다."
@@ -858,19 +896,48 @@ horizontal_alignment = 1
 
 [node name="Explain_PosionShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
-offset_left = 636.0
-offset_top = 449.94
-offset_right = 1108.0
-offset_bottom = 758.94
+offset_left = 652.0
+offset_top = 570.0
+offset_right = 1124.0
+offset_bottom = 827.0
 scale = Vector2(0.9, 0.9)
 text = "피해: 중간
-
 범위: 중간
 
 4턴 동안 유지되는
 화염 필드를 생성합니다."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
+
+[node name="VSP_Tutorial_3" type="VideoStreamPlayer" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 147.0
+offset_right = 1296.0
+offset_bottom = 867.0
+scale = Vector2(0.43, 0.43)
+stream = ExtResource("13_7pqmm")
+loop = true
+
+[node name="VSP_Tutorial_4" type="VideoStreamPlayer" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 592.0
+offset_top = 147.0
+offset_right = 1872.0
+offset_bottom = 867.0
+scale = Vector2(0.43, 0.43)
+stream = ExtResource("14_pylrs")
+loop = true
+
+[node name="VSP_Tutorial_5" type="VideoStreamPlayer" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 1192.0
+offset_top = 147.0
+offset_right = 2472.0
+offset_bottom = 867.0
+scale = Vector2(0.43, 0.43)
+stream = ExtResource("15_cecl8")
+loop = true
 
 [node name="T4_Field" type="Control" parent="Tutorial"]
 visible = false
@@ -897,9 +964,9 @@ horizontal_alignment = 1
 [node name="Explain_Bush_Hide" type="Label" parent="Tutorial/T4_Field"]
 layout_mode = 0
 offset_left = 55.0001
-offset_top = 348.0
+offset_top = 358.0
 offset_right = 614.0
-offset_bottom = 397.0
+offset_bottom = 407.0
 scale = Vector2(0.9, 0.888)
 text = "플레이어와 대포를 가립니다."
 label_settings = ExtResource("8_mhnqm")
@@ -931,9 +998,9 @@ horizontal_alignment = 1
 [node name="Explain_FireShell" type="Label" parent="Tutorial/T4_Field"]
 layout_mode = 0
 offset_left = 599.0
-offset_top = 346.0
+offset_top = 356.0
 offset_right = 1929.0
-offset_bottom = 447.0
+offset_bottom = 457.0
 scale = Vector2(0.9, 0.9)
 text = "연못 안에 떨어진 일반탄, 화염탄은 1의 피해만 입힙니다.
 연못 안 플레이어가 연못 밖 화염탄에 맞으면 절반의 피해만 입습니다."
@@ -951,6 +1018,51 @@ text = "연못 안에 떨어진 독탄은 연못을 6턴 동안 오염시킵니�
 오염된 연못은 매 2초당 1의 피해를 입힙니다. "
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
+
+[node name="VSP_Tutorial_6" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+offset_left = 90.0004
+offset_top = 101.0
+offset_right = 1370.0
+offset_bottom = 821.0
+scale = Vector2(0.335, 0.335)
+stream = ExtResource("16_nlkqv")
+loop = true
+
+[node name="VSP_Tutorial_7" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+offset_left = 90.0004
+offset_top = 453.0
+offset_right = 1370.0
+offset_bottom = 1173.0
+scale = Vector2(0.335, 0.335)
+stream = ExtResource("17_0qu6b")
+loop = true
+
+[node name="VSP_Tutorial_8" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+offset_left = 762.0
+offset_top = 101.0
+offset_right = 2042.0
+offset_bottom = 821.0
+scale = Vector2(0.335, 0.335)
+stream = ExtResource("18_hox77")
+loop = true
+
+[node name="VSP_Tutorial_9" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+offset_left = 1234.0
+offset_top = 101.0
+offset_right = 2514.0
+offset_bottom = 821.0
+scale = Vector2(0.335, 0.335)
+stream = ExtResource("19_elr6o")
+loop = true
+
+[node name="VSP_Tutorial_10" type="VideoStreamPlayer" parent="Tutorial/T4_Field"]
+offset_left = 1018.0
+offset_top = 453.0
+offset_right = 2298.0
+offset_bottom = 1173.0
+scale = Vector2(0.335, 0.335)
+stream = ExtResource("20_7go6n")
+loop = true
 
 [node name="TutorialTitle" type="Label" parent="Tutorial"]
 layout_mode = 1

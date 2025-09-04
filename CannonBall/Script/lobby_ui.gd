@@ -19,6 +19,7 @@ class_name LobbyUI
 @onready var bt_prev: Button = $Tutorial/BT_Prev
 @onready var bt_next: Button = $Tutorial/BT_Next
 @onready var chapter1: ColorRect = $Tutorial/Chapter1
+@onready var tutorial_videos: Array[VideoStreamPlayer] = [$Tutorial/T2_Rules/VSP_Tutorial_1, $Tutorial/T2_Rules/VSP_Tutorial_2, $Tutorial/T3_Shell/VSP_Tutorial_3, $Tutorial/T3_Shell/VSP_Tutorial_4, $Tutorial/T3_Shell/VSP_Tutorial_5, $Tutorial/T4_Field/VSP_Tutorial_6, $Tutorial/T4_Field/VSP_Tutorial_7, $Tutorial/T4_Field/VSP_Tutorial_8, $Tutorial/T4_Field/VSP_Tutorial_9, $Tutorial/T4_Field/VSP_Tutorial_10]
 
 var tutorial_page: int = 0
 var tutorial_titles = ["조작법", "게임 규칙", "탄환", "필드"]
@@ -43,6 +44,9 @@ func _ready() -> void:
 		scFriendList.visible = false
 		btInvite.text = uiMgr.root.invite_steam_name
 		btHost.disabled = false
+
+	for i in range(0, 10, 1):
+		tutorial_videos[i].volume = 0
 
 	set_tutorial_page(tutorial_page)
 
@@ -118,3 +122,15 @@ func set_tutorial_page(page: int) -> void:
 			chapter = chapter.get_child(0) as ColorRect
 	
 	tutorial_title.text = tutorial_titles[page]
+
+	for i in range(0, 10, 1):
+		tutorial_videos[i].stop()
+
+	var video_nums: Array[int] = []
+	match tutorial_page:
+		1: video_nums = [0, 1]
+		2: video_nums = [2, 3, 4]
+		3: video_nums = [5, 6, 7, 8, 9]
+	
+	for i in video_nums:
+		tutorial_videos[i].play()
