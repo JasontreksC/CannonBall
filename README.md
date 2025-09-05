@@ -19,10 +19,13 @@
 ****
 
 ## 테스트 방법
+[빌드 파일 다운로드 링크](https://yeonsungackr-my.sharepoint.com/:f:/g/personal/2025100160_yeonsung_ac_kr/EjppXM4w2KRGjbOKm_1qis4BKhCPvfQFaiWq5WWTqFUA6w?e=JRBa07)
+
+
 ![alt text](image.png)
 #### 스팀 멀티플레이 테스트
 1. 스팀 클리아이언트 실행 및 로그인
-2. **CannonBall/CannonBallExe/CannonBall.exe** 실행
+2. **CannonBallBuild/CannonBall.exe** 실행
 3. 호스트: 'Steam 친구 초대' 버튼 클릭 -> 함께 테스트하는 사람 스팀 친구 선택 -> '호스트' 버튼 클릭(게임이 로드되고 초대가 전송됨)
 4. 참가자: 초대를 받으면 '초대 수락' 버튼 활성화 -> 클릭
 #### 한 대의 컴퓨터에서 테스트
