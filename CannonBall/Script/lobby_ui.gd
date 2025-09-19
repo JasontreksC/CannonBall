@@ -53,10 +53,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func _on_bt_refresh_pressed() -> void:
-	lobby.refresh_firend_list()
-
-
 func _on_bt_local_host_pressed() -> void:
 	lobby.local_host()
 
@@ -65,6 +61,7 @@ func _on_bt_local_join_pressed() -> void:
 	lobby.local_join()
 
 func _on_bt_invite_pressed() -> void:
+	lobby.refresh_firend_list()
 	scFriendList.visible = not scFriendList.visible
 
 func _on_bt_quit_pressed() -> void:
