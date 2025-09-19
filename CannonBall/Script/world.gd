@@ -23,6 +23,8 @@ class_name World
 
 var game: Game = null
 
+var shell_keys = ["normal_shell", "fire_shell", "poison_shell"]
+
 func get_spawn_spot(tag: String) -> Vector2:
 	match tag:
 		"p1":
@@ -33,11 +35,11 @@ func get_spawn_spot(tag: String) -> Vector2:
 			return Vector2.ZERO
 
 @rpc("any_peer", "call_local")
-func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, theta0: float, launcher: int) -> void:
+func start_shelling(shellType: int, shell_key: String, p0: Vector2, v0: float, theta0: float, launcher: int) -> void:
 	if not multiplayer.is_server():
 		return
 	
-	var shell: Shell = game.server_spawn_directly(load(shellPath), "none", {
+	var shell: Shell = game.server_spawn_directly(shell_keys[shellType], "none", {
 		"shellType": shellType,
 		"p0": p0,
 		"v0": v0,
@@ -45,36 +47,26 @@ func start_shelling(shellType: int, shellPath: String, p0: Vector2, v0: float, t
 		"launcher": launcher
 	})
 
-	match shellType:
-		0:
-			var fxSmoke: Node2D = game.server_spawn_directly(load("res://Scene/fx_smoke.tscn"), "none", {
-				"attatch" : shell.name,
-				"smokeAmount" : 200,
-				"smokeLifetime" : 5.0,
-				"upAccell" : 0,
-				"smokeScaleFactor" : 2
-			})
-			shell.attatchedFx.append(fxSmoke.name)
-		1:
-			var fxSmoke: Node2D = game.server_spawn_directly(load("res://Scene/fx_smoke.tscn"), "none", {
-				"attatch" : shell.name,
-				"smokeAmount" : 200,
-				"smokeLifetime" : 5.0,
-				"upAccell" : 0,
-				"smokeScaleFactor" : 2
-			})
-			shell.attatchedFx.append(fxSmoke.name)
-		2:
-			var fxPoison: Node2D = game.server_spawn_directly(load("res://Scene/fx_poison.tscn"), "none", {
-				"attatch" : shell.name,
-			})
-			shell.attatchedFx.append(fxPoison.name)
-	
+	if shellType in [0, 1]:
+		var fxSmoke: Node2D = game.server_spawn_directly("fx_smoke", "none", {
+			"attatch" : shell.name,
+			"smokeAmount" : 200,
+			"smokeLifetime" : 5.0,
+			"upAccell" : 0,
+			"smokeScaleFactor" : 2
+		})
+		shell.attatchedFx.append(fxSmoke.name)
+
+	elif shellType == 2:
+		var fxPoison: Node2D = game.server_spawn_directly("fx_poison", "none", {
+			"attatch" : shell.name,
+		})
+		shell.attatchedFx.append(fxPoison.name)
+
 	shell.rpc_id(multiplayer.get_remote_sender_id(), "on_spawned")
 
 func gen_HDF(xr: XRange, type: int, target: int, hitDamage: int, lifetime: float) -> HitDamageField:
-	var psHDF: PackedScene = load("res://Scene/hit_damage_field.tscn")
-	var hdf: HitDamageField = psHDF.instantiate()
+	var hdf: HitDamageField = game.resource_table.get_instantiated("hit_damage_field")
 
 	hdf.xrange = xr
 	hdf.type = type
@@ -86,8 +78,7 @@ func gen_HDF(xr: XRange, type: int, target: int, hitDamage: int, lifetime: float
 	return hdf
 
 func gen_TDF(xr: XRange, target: int, tickDamage: int, tickInterval: float, lifeturn: int) -> TickDamageField:
-	var psTDF: PackedScene = load("res://Scene/tick_damage_field.tscn")
-	var tdf: TickDamageField = psTDF.instantiate()
+	var tdf: TickDamageField = game.resource_table.get_instantiated("tick_damage_field")
 
 	tdf.xrange = xr
 	tdf.target = target

@@ -179,6 +179,6 @@ func on_fire():
 	reverseBlast += 200
 
 	var burstDir: Vector2 = nBreech.global_position.direction_to(nMuzzle.global_position).normalized()
-	game.rpc("server_spawn_request", "res://Scene/fx_burst.tscn", "none", {
+	game.rpc("server_spawn_request", "fx_burst", "none", {
 		"global_position" : nMuzzle.global_position,
 		"direction" : burstDir})

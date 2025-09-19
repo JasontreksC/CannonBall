@@ -87,7 +87,7 @@ func land():
 			if landedPond:
 				game.world.gen_HDF(newXR, DamageType.ABSOLUTE, 1 - launcher, 1, 0.0).activate()
 				
-				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+				game.server_spawn_directly("fx_radial", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				 	"dir": direction,
 					"mode" : 1
@@ -95,10 +95,10 @@ func land():
 			else:
 				game.world.gen_HDF(newXR, DamageType.REDUCE_BY_DISTANCE, 1 - launcher, hitDamage, 0.0).activate()
 				
-				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(5)) as PackedScene, "none", {
+				game.server_spawn_directly("fx_explosion", "none", {
 					"global_position": Vector2(newXR.centerX, 0)
 				})
-				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+				game.server_spawn_directly("fx_radial", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				 	"dir": direction,
 					"s_min": 15,
@@ -110,7 +110,7 @@ func land():
 			if landedPond: # 연못 안에 들어옴
 				game.world.gen_HDF(newXR, DamageType.ABSOLUTE, 1 - launcher, 1, 0.0).activate()
 				
-				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+				game.server_spawn_directly("fx_radial", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				 	"dir": direction,
 					"mode" : 1
@@ -120,10 +120,10 @@ func land():
 				game.world.gen_HDF(newXR, DamageType.REDUCE_BY_POND, 1 - launcher, hitDamage, 0.0).activate()
 
 				# 화염 폭발
-				game.server_spawn_directly(load("res://Scene/fx_fire_exlposion.tscn"), "none", {
+				game.server_spawn_directly("fx_fire_exlposion", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				})				
-				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+				game.server_spawn_directly("fx_radial", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				 	"dir": direction,
 					"s_min": 15,
@@ -141,14 +141,14 @@ func land():
 				game.world.gen_TDF(newXR, 1 - launcher, tickDamage, tickInterval, lifetimeTurn).activate()
 
 				# 화염 필드
-				var fxFireField = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(6)) as PackedScene, "none", {
+				var fxFireField = game.server_spawn_directly("fx_fire_field", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 					"width": newXR.radius * 2
 				})
 				game.regist_lifeturn(fxFireField.name, lifetimeTurn)
 
 				# 연기 이펙트
-				var fxSmoke = game.server_spawn_directly(load(game.spawner.get_spawnable_scene(9)) as PackedScene, "none", {
+				var fxSmoke = game.server_spawn_directly("fx_smoke", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 					"smokeAmount": 100,
 					"smokeLifetime": 5,
@@ -167,7 +167,7 @@ func land():
 				game.world.gen_TDF(landedPond.xrange, 1 - launcher, tickDamage, tickInterval, lifetimeTurn).activate()
 				landedPond.rpc("set_poisoned")
 				
-				game.server_spawn_directly(load("res://Scene/fx_radial.tscn"), "none", {
+				game.server_spawn_directly("fx_radial", "none", {
 					"global_position": Vector2(newXR.centerX, 0),
 				 	"dir": direction,
 					"mode" : 1
@@ -175,7 +175,7 @@ func land():
 			else:
 				# 힛 대미지
 				game.world.gen_HDF(newXR, DamageType.ABSOLUTE, 1 - launcher, hitDamage, 3).activate()
-				game.server_spawn_directly(load(game.spawner.get_spawnable_scene(7)) as PackedScene, "none", {
+				game.server_spawn_directly("fx_poison_spread", "none", {
 						"global_position": Vector2(newXR.centerX, 0),
 				})
 	

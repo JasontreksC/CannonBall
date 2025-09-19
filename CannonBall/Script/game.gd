@@ -14,6 +14,7 @@ var players: Array[Player]
 
 @onready var world: World = $World
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
+@onready var resource_table: ResourceTable = $ResourceTable
 
 var G: float = 980
 var turnCount: int = 0
@@ -28,7 +29,7 @@ var lifetimes: Array[float] = [60, 60]
 ## 오브젝트 풀링
 ## 서버에게 스폰을 요청함. 서버가 스폰하면 자동으로 클라에서도 스폰
 @rpc("any_peer", "call_local")
-func server_spawn_request(path: String, object_name: String, props: Dictionary={}) -> void: 
+func server_spawn_request(key: String, object_name: String, props: Dictionary={}) -> void: 
 	if not multiplayer.is_server():
 		return
 
@@ -39,15 +40,13 @@ func server_spawn_request(path: String, object_name: String, props: Dictionary={
 	var count: int = spawner.get_spawnable_scene_count()
 	for i in range(count):
 		var spawnable_path: String = spawner.get_spawnable_scene(i)
-		if path == spawnable_path:
+		if resource_table.get_scene_path(key) == spawnable_path:
 			spawnable = true
 	if not spawnable:
 		print("스폰할려는 오브젝트 씬이 MuliplaySpawner에 등록되어 있지 않음!")
 		return
 
-	var ps: PackedScene = load(path)
-	var inst: Node2D = ps.instantiate()
-
+	var inst: Node2D = resource_table.get_instantiated(key)
 	inst.name = object_name
 	
 	for k in props.keys():
@@ -59,7 +58,7 @@ func server_spawn_request(path: String, object_name: String, props: Dictionary={
 	inst.rpc_id(senderID, "on_spawned")
 
 ## 서버가 직접 스폰함. 클라에게도 스폰됨.
-func server_spawn_directly(ps: PackedScene, object_name: String, props: Dictionary[StringName, Variant]={}) -> Node2D:
+func server_spawn_directly(key: String, object_name: String, props: Dictionary[StringName, Variant]={}) -> Node2D:
 	if not multiplayer.is_server():
 		return
 	
@@ -67,13 +66,13 @@ func server_spawn_directly(ps: PackedScene, object_name: String, props: Dictiona
 	var count: int = spawner.get_spawnable_scene_count()
 	for i in range(count):
 		var spawnable_path: String = spawner.get_spawnable_scene(i)
-		if ps.resource_path == spawnable_path:
+		if resource_table.get_scene_path(key) == spawnable_path:
 			spawnable = true
 	if not spawnable:
 		print("스폰할려는 오브젝트 씬이 MuliplaySpawner에 등록되어 있지 않음!")
 		return
 	
-	var inst: Node2D = ps.instantiate()
+	var inst: Node2D = resource_table.get_instantiated(key)
 	inst.name = object_name + str(Time.get_ticks_usec())
 	
 	for k in props.keys():
