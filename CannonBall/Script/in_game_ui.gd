@@ -13,7 +13,7 @@ var telescopeZoomOptions: Array[float] = [0.3, 0.6, 1.0]
 var zoomFinished: bool = true
 var mouse_on_button: bool = false
 
-@onready var crTelescope: TextureRect = $Telescope
+@onready var trTelescope: TextureRect = $Telescope
 @onready var svTelescope: SubViewport = $Telescope/SubViewport
 @onready var camTelescope: Camera2D = $Telescope/SubViewport/Camera2D
 @onready var lbAimMessage_Boundary: Label = $Telescope/AimMessage_Boundary
@@ -46,14 +46,7 @@ var interaction_state: Dictionary[String, bool] = {
 @onready var subuiDisconnected: ColorRect = $SubUIDisconnected
 
 #Hint
-@onready var subuiHint_Move: SubUIInputHint = $SubUI_InputHint_Move
-@onready var subuiHint_Handdle: SubUIInputHint = $SubUI_InputHint_Handdle
-@onready var subuiHint_Aim: SubUIInputHint = $SubUI_InputHint_Aim
-
-@onready var subuiHint_Attack: SubUIInputHint = $Telescope/SubUI_InputHint_Attack
-@onready var subuiHint_Zoom: SubUIInputHint = $Telescope/SubUI_InputHint_Zoom
-@onready var subuiHint_NoAim: SubUIInputHint = $Telescope/SubUI_InputHint_NoAim
-
+@onready var subuiHints: Control = $SubUI_Hints
 @onready var lbHint_Q: Label = $Hint_Q
 
 var uiMgr: UIManager = null
@@ -66,15 +59,15 @@ func set_aim_boundary() -> void:
 
 func on_observe() -> void:
 	if not multiplayer.is_server():
-		crTelescope.position.x = 0
+		trTelescope.position.x = 0
 		
-	crTelescope.visible = true
+	trTelescope.visible = true
 
 	if not aim_boundary_left_end:
 		set_aim_boundary()
 
 func off_observe() -> void:
-	crTelescope.visible = false
+	trTelescope.visible = false
 
 func aim_to_cam_telescope(aimed_x: float) -> void:
 	camTelescope.global_position = Vector2(aimed_x, -100)
@@ -88,7 +81,7 @@ func aim_to_cam_telescope(aimed_x: float) -> void:
 func zoom_cam_telescope(option: int) -> void:
 	zoomFinished = false
 	var tween: Tween = create_tween()
-	tween.tween_property(camTelescope, "zoom", Vector2(telescopeZoomOptions[option], telescopeZoomOptions[option]), 0.5)
+	tween.tween_property(camTelescope, "zoom", Vector2(telescopeZoomOptions[option], telescopeZoomOptions[option]), 0.25)
 	tween.set_trans(Tween.TRANS_EXPO)
 	tween.finished.connect(func(): zoomFinished = true)
 ## HP
@@ -146,16 +139,11 @@ func set_interaction(type: String, onoff: bool) -> void:
 			new_interaction.position = Vector2(-128, -128 - 128 * count)
 			count += 1
 #Hint
-func set_hints(num: int) -> void:
-	match num:
-		0:
-			subuiHint_Move.visible = true
-			subuiHint_Handdle.visible = true
-			subuiHint_Aim.visible = true
-		1:
-			subuiHint_Move.visible = false
-			subuiHint_Handdle.visible = false
-			subuiHint_Aim.visible = false
+func get_hint(hint: String) -> SubUIInputHint:
+	if subuiHints.has_node(hint):
+		return subuiHints.get_node(hint) as SubUIInputHint
+	else:
+		return null
 
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
@@ -176,14 +164,8 @@ func _ready() -> void:
 		p2HPCell.position.x =  -62 - 30 * i
 		p2HPCells.add_child(p2HPCell)
 	
-	subuiHint_Move.set_key_hint("[A][D]", "이동")
-	subuiHint_Handdle.set_key_hint("[E]", "대포 잡기")
-	subuiHint_Aim.set_key_hint("[F]", "대포 조준")
-	subuiHint_Attack.set_mouse_hint(0, "공격")
-	subuiHint_Zoom.set_mouse_hint(1, "확대/축소")
-	subuiHint_NoAim.set_key_hint("[F]", "조준 해제")
-
-	set_hints(0)
+	# for h in ready_hints:
+	# 	subuiHints.add_child(h)
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
@@ -195,4 +177,14 @@ func _process(delta: float) -> void:
 	else:
 		lbHint_Q.visible = false
 	
+	if game.get_my_player() and game.get_my_player().stateMachine.current_state_name() == "ReadyFire":
+		var telescope_center_x: float = trTelescope.get_rect().get_center().x
+		get_hint("AD_aimmove").show_absolute(Vector2(telescope_center_x, 650))
+		get_hint("1_zoom").show_absolute(Vector2(telescope_center_x, 720))
+		get_hint("0_fire").show_absolute(Vector2(telescope_center_x, 790))
+	else:
+		game.ui.get_hint("AD_aimmove").hide_hint()
+		game.ui.get_hint("1_zoom").hide_hint()
+		game.ui.get_hint("0_fire").hide_hint()
+
 		

@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bjbce2h7u05ck" path="res://Scene/sub_ui_disconnected.tscn" id="10_pmkfs"]
 [ext_resource type="PackedScene" uid="uid://dsr67dbx3vr6k" path="res://Scene/sub_ui_exit_button.tscn" id="11_qyub3"]
 [ext_resource type="PackedScene" uid="uid://q64lhk0stdly" path="res://Scene/sub_ui_dash_board.tscn" id="12_i3syv"]
-[ext_resource type="PackedScene" uid="uid://cq6k67g1svn0o" path="res://Scene/sub_ui_input_hint.tscn" id="12_u4wab"]
+[ext_resource type="PackedScene" uid="uid://b7he36n8uaffp" path="res://Scene/sub_ui_input_hint.tscn" id="12_u4wab"]
 [ext_resource type="PackedScene" uid="uid://0hqg3crg2ec0" path="res://Scene/sub_ui_shell_selector.tscn" id="18_bucyv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7hrlq"]
@@ -81,6 +81,7 @@ size = Vector2i(1080, 1080)
 render_target_update_mode = 3
 
 [node name="Camera2D" type="Camera2D" parent="Telescope/SubViewport"]
+zoom = Vector2(0.3, 0.3)
 
 [node name="Background" parent="Telescope/SubViewport" instance=ExtResource("3_quy4v")]
 
@@ -122,30 +123,6 @@ grow_vertical = 2
 text = "최대 사거리입니다."
 label_settings = SubResource("LabelSettings_brp0j")
 horizontal_alignment = 1
-
-[node name="SubUI_InputHint_Attack" parent="Telescope" instance=ExtResource("12_u4wab")]
-layout_mode = 0
-offset_left = 288.0
-offset_top = 756.0
-offset_right = 416.0
-offset_bottom = 884.0
-scale = Vector2(0.5, 0.5)
-
-[node name="SubUI_InputHint_Zoom" parent="Telescope" instance=ExtResource("12_u4wab")]
-layout_mode = 0
-offset_left = 288.0
-offset_top = 824.0
-offset_right = 416.0
-offset_bottom = 952.0
-scale = Vector2(0.5, 0.5)
-
-[node name="SubUI_InputHint_NoAim" parent="Telescope" instance=ExtResource("12_u4wab")]
-layout_mode = 0
-offset_left = 635.0
-offset_top = 756.0
-offset_right = 763.0
-offset_bottom = 884.0
-scale = Vector2(0.5, 0.5)
 
 [node name="P1HP" type="Control" parent="."]
 z_index = 1
@@ -239,37 +216,13 @@ offset_top = 692.64
 offset_bottom = 820.64
 scale = Vector2(0.75, 0.75)
 
-[node name="SubUI_InputHint_Move" parent="." instance=ExtResource("12_u4wab")]
-layout_mode = 0
-offset_left = 551.0
-offset_top = 1000.0
-offset_right = 743.0
-offset_bottom = 1128.0
-scale = Vector2(0.5, 0.5)
-
-[node name="SubUI_InputHint_Handdle" parent="." instance=ExtResource("12_u4wab")]
-layout_mode = 0
-offset_left = 857.0
-offset_top = 1000.0
-offset_right = 985.0
-offset_bottom = 1128.0
-scale = Vector2(0.5, 0.5)
-
-[node name="SubUI_InputHint_Aim" parent="." instance=ExtResource("12_u4wab")]
-layout_mode = 0
-offset_left = 1154.0
-offset_top = 1000.0
-offset_right = 1282.0
-offset_bottom = 1128.0
-scale = Vector2(0.5, 0.5)
-
 [node name="Hint_Esc" type="Label" parent="."]
 layout_mode = 0
 offset_left = 12.0
 offset_top = 643.0
 offset_right = 82.0
 offset_bottom = 688.0
-text = "[Esc]"
+text = "[Esc]: 나가기"
 label_settings = SubResource("LabelSettings_i3syv")
 
 [node name="Hint_Tab" type="Label" parent="."]
@@ -278,14 +231,82 @@ offset_left = 12.0
 offset_top = 791.9
 offset_right = 82.0
 offset_bottom = 836.9
-text = "[Tab]"
+text = "[Tab]: 탄 선택"
 label_settings = SubResource("LabelSettings_i3syv")
 
 [node name="Hint_Q" type="Label" parent="."]
 layout_mode = 0
-offset_left = 1851.0
-offset_top = 866.0
-offset_right = 1897.0
-offset_bottom = 911.0
-text = "[Q]"
+offset_left = 1682.0
+offset_top = 842.0
+offset_right = 1913.0
+offset_bottom = 887.0
+text = "[Q]: 자세히 보기"
 label_settings = SubResource("LabelSettings_i3syv")
+
+[node name="SubUI_Hints" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="AD_move" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 55.0
+offset_top = 1219.0
+offset_right = 55.0
+offset_bottom = 1219.0
+key = "A  D   "
+pannel_length = Vector2(220, 450)
+
+[node name="E_hold" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 55.0
+offset_top = 1306.0
+offset_right = 55.0
+offset_bottom = 1306.0
+key = "E"
+explain = "대포 끌기"
+pannel_length = Vector2(128, 350)
+
+[node name="F_aim" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 58.0
+offset_top = 1402.0
+offset_right = 58.0
+offset_bottom = 1402.0
+key = "F"
+explain = "대포 조준"
+pannel_length = Vector2(128, 350)
+
+[node name="AD_aimmove" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 302.0
+offset_top = 1218.0
+offset_right = 302.0
+offset_bottom = 1218.0
+key = "A  D   "
+explain = "조준 이동"
+pannel_length = Vector2(220, 450)
+
+[node name="1_zoom" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 320.0
+offset_top = 1306.0
+offset_right = 320.0
+offset_bottom = 1306.0
+mouse1 = true
+explain = "확대/축소"
+pannel_length = Vector2(128, 350)
+
+[node name="0_fire" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 318.0
+offset_top = 1401.0
+offset_right = 318.0
+offset_bottom = 1401.0
+mouse0 = true
+explain = "대포 발사"
+pannel_length = Vector2(128, 350)

@@ -1,39 +1,74 @@
-class_name SubUIInputHint extends NinePatchRect
+class_name SubUIInputHint extends Control
 
-@onready var key: Label = $Key
-@onready var explain: Label = $Explain
-@onready var mouseL: TextureRect = $MouseL
-@onready var mouseW: TextureRect = $MouseW
+@onready var npr: NinePatchRect = $NinePatchRect
+@onready var hbox: HBoxContainer = $NinePatchRect/HBoxContainer
+@onready var trMouses: Array[TextureRect] = [
+	$NinePatchRect/HBoxContainer/MouseL,
+	$NinePatchRect/HBoxContainer/MouseW
+]
+@onready var lbKey: Label = $NinePatchRect/HBoxContainer/Key
+@onready var lbExplain: Label = $NinePatchRect/HBoxContainer/Explain
 
-var input_possible: bool = true
+@export var mouse0: bool
+@export var mouse1: bool
+@export var key: String
+@export var explain: String
+@export var pannel_length: Vector2
 
-func set_key_hint(key_name: String, hint_explain: String) -> void:
-	mouseL.visible = false
-	mouseW.visible = false
-	key.text = key_name
-	explain.text = hint_explain
+var attatch_target: Node2D = null
+var attatch_offset: Vector2 = Vector2.ZERO
+
+var is_tween_playing: bool = false
+
+func show_attatch(target: Node2D, offset: Vector2 = Vector2.ZERO):
+	attatch_target = target
+	attatch_offset = offset
+	visible = true
+
+func show_absolute(screen_pos: Vector2):
+	global_position = screen_pos
+	visible = true
+
+func hide_hint():
+	if is_tween_playing:
+		return
+	if not visible:
+		return
 	
-func set_mouse_hint(mouse_num: int, hint_explain: String) -> void:
-	key.visible = false
-	match mouse_num:
-		0:
-			mouseL.visible = true
-		1:
-			mouseW.visible = true
-	explain.text = hint_explain
+	var tween: Tween = create_tween().set_parallel().set_trans(Tween.TRANS_SPRING)
+	tween.tween_property(npr, "size:x", pannel_length.x, 0.5)
+	tween.tween_property(npr, "position:x", pannel_length.x / -2, 0.5)
+	is_tween_playing = true
+	tween.finished.connect(func():
+		visible = false	
+		is_tween_playing = false
+	)
 
-func set_possibility(possible: bool) -> void:
-	if possible:
-		key.self_modulate.a = 0.5
-		explain.self_modulate.a = 0.5
-		mouseL.self_modulate.a = 0.5
-		mouseW.self_modulate.a = 0.5
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	self.scale = Vector2(0.5, 0.5)
+	npr.position.x = pannel_length.x / -2
+	npr.size.x = pannel_length.x
 
+	trMouses[0].visible = mouse0
+	trMouses[1].visible = mouse1
+	if key.is_empty():
+		lbKey.visible = false
+	else:
+		lbKey.text = key
+	lbExplain.text = explain
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if attatch_target:
+		var screen_pos = attatch_target.get_screen_transform().get_origin()
+		self.global_position = screen_pos + attatch_offset
+
+func _on_visibility_changed() -> void:
+	if self.visible == true:
+		if is_tween_playing:
+			return
+
+		var tween: Tween = create_tween().set_parallel().set_trans(Tween.TRANS_SPRING)
+		tween.tween_property(npr, "size:x", pannel_length.y, 0.5)
+		tween.tween_property(npr, "position:x", pannel_length.y / -2, 0.5)
+		is_tween_playing = true
+		tween.finished.connect(func(): is_tween_playing = false)

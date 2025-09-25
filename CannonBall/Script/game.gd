@@ -292,6 +292,10 @@ func on_exit_WaitSession():
 
 	world.process_mode = Node.PROCESS_MODE_INHERIT
 	world.process_start()
+	
+	ui.get_hint("AD_move").show_attatch(get_my_player())
+	# ui.show_hint("AD-좌/우 이동")
+
 
 func on_entry_Turn():
 	if multiplayer.is_server():
@@ -303,7 +307,7 @@ func on_entry_Turn():
 	else:
 		ui.subuiDashBoard.show_text("Player2 공격", -1)
 		ui.subuiDashBoard.focus_player_info(1)
-		
+	
 func on_exit_Turn():
 	turnCount += 1
 		

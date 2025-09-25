@@ -9,7 +9,7 @@ class_name Player
 var walkSpeed: float = 500.0
 var cannonSpeed: float = 300.0
 var velocity: float = 0
-var telescopeZoomOption: int = 1
+var telescopeZoomOption: int = 0
 
 var stateMachine: StateMachine = StateMachine.new()
 
@@ -163,9 +163,10 @@ func _ready() -> void:
 	cmc.name = name + "_cmc"
 	cmc.global_position = global_position
 	game.add_child(cmc)
-	# cmc.set_target_zoom(Vector2(0.7, 0.7))
 	cmc.set_target(nCamTargetDefault)
 	cmc.camera.make_current()
+
+	# game.ui.init_hint("AD-좌/우 이동", Vector2(128, 400), self)
 	
 	
 func _physics_process(delta: float) -> void:
@@ -201,7 +202,7 @@ func _physics_process(delta: float) -> void:
 				
 				h_movement("self", walkSpeed, delta)
 				amt.set("parameters/BT_Idle/Blend2/blend_amount", clamp(abs(velocity), 0, 1))
-				
+
 			"HandleCannon":
 				# 대포 무브먼트에 고정
 				if cannon:
@@ -212,7 +213,7 @@ func _physics_process(delta: float) -> void:
 			
 				h_movement("cannon", cannonSpeed, delta)
 				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
-				
+
 			"ReadyFire":
 				if Input.is_action_just_pressed("aim"):
 					if isInCannon:
@@ -230,7 +231,7 @@ func _physics_process(delta: float) -> void:
 					elif Input.is_action_just_pressed("wheel_down"):
 						telescopeZoomOption -= 1
 						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
-						game.ui.zoom_cam_telescope(telescopeZoomOption)				
+						game.ui.zoom_cam_telescope(telescopeZoomOption)
 
 	# 높이를 항상 바닥에 고정
 	if not inPondID:
@@ -240,10 +241,15 @@ func _physics_process(delta: float) -> void:
 		#대포의 상호작용구역 안에 들어왔음을 감지
 		if abs(cannon.global_position.x - self.global_position.x) < 150:
 			isInCannon = true
+			game.ui.get_hint("E_hold").show_attatch(cannon, Vector2(0, -320))
+			game.ui.get_hint("F_aim").show_attatch(cannon, Vector2(0, -250))
 		else:
 			isInCannon = false
+			game.ui.get_hint("E_hold").hide_hint()
+			game.ui.get_hint("F_aim").hide_hint()
 	
 	if abs(velocity) > 0:
+		game.ui.get_hint("AD_move").hide_hint()
 		if not aspStep.playing:
 			aspStep.play()
 	else:
@@ -309,7 +315,6 @@ func on_exit_ReadyFire():
 	
 	game.ui.off_observe()
 	cannon.stateMachine.execute_transit("Idle")
-	game.ui.set_hints(0)
 	
 func on_entry_ReadyFire():
 	if multiplayer.is_server():
@@ -323,4 +328,3 @@ func on_entry_ReadyFire():
 	# 카메라 위치를 이동시킴
 	cmc.set_target(nCamTargetAim)
 	game.ui.on_observe()
-	game.ui.set_hints(1)

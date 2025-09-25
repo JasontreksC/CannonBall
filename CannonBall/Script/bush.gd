@@ -3,8 +3,6 @@ class_name Bush
 
 @export var target:int = 0
 @export var bushRadius: float = 300
-# @export var psFxFlame: PackedScene
-# @export var psFxSmoke: PackedScene
 
 @onready var spBush: Sprite2D = $SP_Bush
 @onready var nBurnSpots: Node2D = $BurnFxSpots

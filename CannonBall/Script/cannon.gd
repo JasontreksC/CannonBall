@@ -78,10 +78,12 @@ func _ready() -> void:
 	
 	if multiplayer.is_server():
 		global_position = world.get_spawn_spot("p1")
+		global_position.x += 500
 		scale.x = 1
 		heading = 1
 	else:
 		global_position = world.get_spawn_spot("p2")
+		global_position.x -= 500
 		scale.x = -1
 		heading = -1
 		
@@ -103,6 +105,10 @@ func _ready() -> void:
 	if not multiplayer.is_server():
 		game.rpc("send_transmit", "client_connected")
 
+	# game.ui.init_hint("E-대포 끌기", Vector2(128, 350), self, Vector2(0, -200))
+	# game.ui.init_hint("F-대포 조준", Vector2(128, 350), self, Vector2(0, -100))
+
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -120,11 +126,11 @@ func _physics_process(delta: float) -> void:
 			"Aim":
 				var dir = Input.get_axis("left", "right")
 				var aimed_x = ac.aim(dir, aimSpeedOptions[player.telescopeZoomOption], delta)
-
 				game.ui.aim_to_cam_telescope(aimed_x)
+				if dir:
+					pass
 					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
-				game.ui.subuiHint_Attack.set_possibility(player.attackChance)
 
 				if Input.is_action_just_pressed("clickL"):
 					if player.isAttack and player.attackChance and not game.ui.mouse_on_button:
