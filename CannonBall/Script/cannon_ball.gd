@@ -22,11 +22,6 @@ var invite_steam_name: String
 var peer: MultiplayerPeer = null
 var local_host_ip: String = ""
 var local_join_ip: String = ""
-# const UDP_PORT: int = 4242
-# var udp_peer: PacketPeerUDP = PacketPeerUDP.new()
-# var upd_server: UDPServer = UDPServer.new()
-# var local_hosting: bool = false
-# var listening: bool = false
 
 @export var player_scene: PackedScene
 
@@ -75,11 +70,28 @@ func connect_local_socket():
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
 
-func get_local_ipv4():
+func get_local_ipv4() -> String:
+	var ipv4_17230: Array[String] = []
+	var ipv4_105: Array[String] = []
+	var ipv4_192168: Array[String] = []
+	
 	var adresses := IP.get_local_addresses()
 	for a in adresses:
-		if a.begins_with("192.168."):
-			return a
+		if a.begins_with("172.30."):
+			ipv4_17230.append(a)
+		elif a.begins_with("10.5."):
+			ipv4_105.append(a)
+		elif a.begins_with("192.168."):
+			ipv4_192168.append(a)
+	
+	if ipv4_17230:
+		return ipv4_17230[0]
+	elif ipv4_105:
+		return ipv4_105[0]
+	elif ipv4_192168:
+		return ipv4_192168[0]
+	else:
+		return ""
 
 func back_to_lobby() -> void:
 	get_tree().paused = false

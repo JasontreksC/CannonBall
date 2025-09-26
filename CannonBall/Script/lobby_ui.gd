@@ -59,6 +59,11 @@ func _ready() -> void:
 	for i in range(0, 10, 1):
 		tutorial_videos[i].volume = 0
 
+	if uiMgr.root.local_join_ip:
+		var ip_nums: Array[String] = uiMgr.root.local_join_ip.split(".")
+		for i in range(4):
+			leLocalJoinIP[i].text = ip_nums[i]
+			
 	set_tutorial_page(tutorial_page)
 
 func _process(delta: float) -> void:

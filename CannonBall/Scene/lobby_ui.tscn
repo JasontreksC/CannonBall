@@ -1152,9 +1152,7 @@ offset_top = 105.0
 offset_right = 188.14
 offset_bottom = 165.0
 theme = ExtResource("22_hox77")
-text = "192"
 alignment = 1
-editable = false
 secret_character = ""
 
 [node name="LE_JoinIP_2" type="LineEdit" parent="Local"]
@@ -1164,9 +1162,7 @@ offset_top = 105.0
 offset_right = 292.14
 offset_bottom = 165.0
 theme = ExtResource("22_hox77")
-text = "168"
 alignment = 1
-editable = false
 secret_character = ""
 
 [node name="LE_JoinIP_3" type="LineEdit" parent="Local"]
