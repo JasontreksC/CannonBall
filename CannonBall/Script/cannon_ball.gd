@@ -20,6 +20,13 @@ var my_steam_name: String
 var invite_steam_name: String
 
 var peer: MultiplayerPeer = null
+var local_host_ip: String = ""
+var local_join_ip: String = ""
+# const UDP_PORT: int = 4242
+# var udp_peer: PacketPeerUDP = PacketPeerUDP.new()
+# var upd_server: UDPServer = UDPServer.new()
+# var local_hosting: bool = false
+# var listening: bool = false
 
 @export var player_scene: PackedScene
 
@@ -34,7 +41,7 @@ func _add_player(id=1):
 	gameScene.call_deferred("add_child", player)
 	gameScene.players.append(player)
 
-func create_steam_socket():	
+func create_steam_socket():
 	peer = SteamMultiplayerPeer.new()
 	peer.create_host(0)
 	multiplayer.set_multiplayer_peer(peer)
@@ -54,14 +61,25 @@ func create_local_socket():
 	if not multiplayer.peer_connected.is_connected(_add_player):
 		multiplayer.peer_connected.connect(_add_player)
 	_add_player()
+	# local_hosting = true
+	# print("목적지 설정: ", udp_peer.set_dest_address("127.0.0.1", UDP_PORT))
+	# udp_peer.set_broadcast_enabled(true)
 
 func connect_local_socket():
 	peer = ENetMultiplayerPeer.new()
-	peer.create_client("localhost", 135)
+	peer.create_client(local_join_ip, 135)
 	multiplayer.set_multiplayer_peer(peer)
+	# listening = true
+	# print("리슨: ", upd_server.listen(UDP_PORT))
 
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
+
+func get_local_ipv4():
+	var adresses := IP.get_local_addresses()
+	for a in adresses:
+		if a.begins_with("192.168."):
+			return a
 
 func back_to_lobby() -> void:
 	get_tree().paused = false
@@ -153,6 +171,10 @@ func _ready() -> void:
 					FAIL_REASON = "A user you have blocked is in the lobby."
 			print(FAIL_REASON)
 		)
+
+	# print("바인딩: ", udp_peer.bind(0))
+	local_host_ip = get_local_ipv4()
+	
 	
 func _process(delta: float) -> void:
 	Steam.run_callbacks()

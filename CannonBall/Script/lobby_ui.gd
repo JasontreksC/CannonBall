@@ -1,11 +1,22 @@
 extends Control
 class_name LobbyUI
 
-@onready var scFriendList: ScrollContainer = $SCC_FriendList
-@onready var vbcFirendList: VBoxContainer = $SCC_FriendList/VBC_FirendList
-@onready var btInvite: Button = $BT_Invite
-@onready var btHost: Button = $BT_Host
-@onready var btJoin: Button = $BT_Join
+@onready var scFriendList: ScrollContainer = $Steam/SCC_FriendList
+@onready var vbcFirendList: VBoxContainer = $Steam/SCC_FriendList/VBC_FirendList
+@onready var btInvite: Button = $Steam/BT_Invite
+@onready var btHost: Button = $Steam/BT_Host
+@onready var btJoin: Button = $Steam/BT_Join
+
+@onready var leLocalHostIP: LineEdit = $Local/LE_HostIP
+@onready var leLocalJoinIP: Array[LineEdit] = [
+	$Local/LE_JoinIP_1,
+	$Local/LE_JoinIP_2,
+	$Local/LE_JoinIP_3,
+	$Local/LE_JoinIP_4
+]
+@onready var btLocalHost: Button = $Local/BT_LocalHost
+@onready var btLocalJoin: Button = $Local/BT_LocalJoin
+
 @onready var credit: Panel = $Creddit
 
 ## 튜토리얼
@@ -51,13 +62,27 @@ func _ready() -> void:
 	set_tutorial_page(tutorial_page)
 
 func _process(delta: float) -> void:
-	pass
+	leLocalHostIP.text = uiMgr.root.local_host_ip
+	if not leLocalHostIP.text.is_empty():
+		leLocalHostIP.editable = false
 
 func _on_bt_local_host_pressed() -> void:
 	lobby.local_host()
 
 
 func _on_bt_local_join_pressed() -> void:
+	var loppback: bool = false
+	for i in leLocalJoinIP:
+		if i.text.is_empty():
+			uiMgr.root.local_join_ip = "127.0.0.1"
+			loppback = true
+	
+	if not loppback:
+		uiMgr.root.local_join_ip = "192.168.%s.%s" % [
+			leLocalJoinIP[2].text,
+			leLocalJoinIP[3].text
+		]
+
 	lobby.local_join()
 
 func _on_bt_invite_pressed() -> void:

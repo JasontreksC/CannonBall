@@ -1,4 +1,10 @@
-[gd_resource type="Theme" format=3 uid="uid://bn4glynpaam6t"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bn4glynpaam6t"]
+
+[ext_resource type="FontFile" uid="uid://ts2osqrp1j3y" path="res://Asset/font_kr/KBO Dia Gothic_medium.ttf" id="1_5qkol"]
 
 [resource]
+default_font = ExtResource("1_5qkol")
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/constants/outline_size = 9
 LineEdit/font_sizes/font_size = 24
+LineEdit/fonts/font = ExtResource("1_5qkol")

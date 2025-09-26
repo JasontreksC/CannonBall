@@ -95,3 +95,4 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not hosting and root.my_steam_id:
 		recieve_invite()
+		
