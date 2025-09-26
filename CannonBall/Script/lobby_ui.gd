@@ -76,17 +76,20 @@ func _on_bt_local_host_pressed() -> void:
 
 
 func _on_bt_local_join_pressed() -> void:
-	var loppback: bool = false
+	var loopback: bool = false
 	for i in leLocalJoinIP:
 		if i.text.is_empty():
 			uiMgr.root.local_join_ip = "127.0.0.1"
-			loppback = true
+			loopback = true
 	
-	if not loppback:
-		uiMgr.root.local_join_ip = "192.168.%s.%s" % [
+	if not loopback:
+		uiMgr.root.local_join_ip = "%s.%s.%s.%s" % [
+			leLocalJoinIP[0].text,
+			leLocalJoinIP[1].text,
 			leLocalJoinIP[2].text,
 			leLocalJoinIP[3].text
 		]
+		print(uiMgr.root.local_join_ip)
 
 	lobby.local_join()
 
