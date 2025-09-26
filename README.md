@@ -17,21 +17,24 @@
 - **기타 사용 툴:** Adobe Illustrator(에셋 제작)
 
 ****
-
 ## 테스트 방법
 [빌드 파일 다운로드 링크](https://yeonsungackr-my.sharepoint.com/:f:/g/personal/2025100160_yeonsung_ac_kr/EjppXM4w2KRGjbOKm_1qis4BUXNlO0aSr8JduiB30XjaqQ?e=io8pdi)
 
 
-![alt text](image.png)
+![alt text](screenshot/lobby_image.png)
 #### 스팀 멀티플레이 테스트
 1. 스팀 클리아이언트 실행 및 로그인
 2. **CannonBallBuild/CannonBall.exe** 실행
 3. 호스트: 'Steam 친구 초대' 버튼 클릭 -> 함께 테스트하는 사람 스팀 친구 선택 -> '호스트' 버튼 클릭(게임이 로드되고 초대가 전송됨)
 4. 참가자: 초대를 받으면 '초대 수락' 버튼 활성화 -> 클릭
+#### 로컬 멀티플레이 테스트
+1. '로컬 게임 생성' 버튼 클릭 및 대기
+2. 호스트의 IP 주소('로컬 게임 생성' 버튼의 왼쪽)를 참가자 쪽에서 입력 후 '로컬 게임 참가' 버튼 클릭
+
 #### 한 대의 컴퓨터에서 테스트
 1. **CannonBall/CannonBallExe/CannonBall.exe** 두번 실행
 2. 한 쪽 게임에서 '로컬 게임 생성' 버튼 클릭 
-3. 다른 쪽에서 '로컬 게임 참가' 버튼 클릭
+3. 다른 쪽에서 '로컬 게임 참가' 버튼 클릭(IP주소 입력 X)
 
 ****
 
