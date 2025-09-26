@@ -19,7 +19,7 @@
 ****
 
 ## 테스트 방법
-[빌드 파일 다운로드 링크](https://yeonsungackr-my.sharepoint.com/:f:/g/personal/2025100160_yeonsung_ac_kr/EjppXM4w2KRGjbOKm_1qis4BKhCPvfQFaiWq5WWTqFUA6w?e=JRBa07)
+[빌드 파일 다운로드 링크](https://yeonsungackr-my.sharepoint.com/:f:/g/personal/2025100160_yeonsung_ac_kr/EjppXM4w2KRGjbOKm_1qis4BUXNlO0aSr8JduiB30XjaqQ?e=io8pdi)
 
 
 ![alt text](image.png)
