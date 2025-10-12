@@ -163,9 +163,6 @@ func _ready() -> void:
 		var p2HPCell: HPCell = p1HPCell.duplicate()
 		p2HPCell.position.x =  -62 - 30 * i
 		p2HPCells.add_child(p2HPCell)
-	
-	# for h in ready_hints:
-	# 	subuiHints.add_child(h)
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
@@ -177,14 +174,12 @@ func _process(delta: float) -> void:
 	else:
 		lbHint_Q.visible = false
 	
-	if game.get_my_player() and game.get_my_player().stateMachine.current_state_name() == "ReadyFire":
+	if game.get_my_player() and game.get_my_player().stateMachine.current_state_name() == "ControlCannon":
 		var telescope_center_x: float = trTelescope.get_rect().get_center().x
-		get_hint("AD_aimmove").show_absolute(Vector2(telescope_center_x, 650))
-		get_hint("1_zoom").show_absolute(Vector2(telescope_center_x, 720))
+		get_hint("1_aim").show_absolute(Vector2(telescope_center_x, 720))
 		get_hint("0_fire").show_absolute(Vector2(telescope_center_x, 790))
 	else:
-		game.ui.get_hint("AD_aimmove").hide_hint()
-		game.ui.get_hint("1_zoom").hide_hint()
-		game.ui.get_hint("0_fire").hide_hint()
+		get_hint("1_aim").hide_hint()
+		get_hint("0_fire").hide_hint()
 
 		

@@ -29,6 +29,11 @@ func show_absolute(screen_pos: Vector2):
 	global_position = screen_pos
 	visible = true
 
+func set_lifetime(linetime: float) -> void:
+	get_tree().create_timer(linetime).timeout.connect(func():
+		hide_hint()
+	)
+
 func hide_hint():
 	if is_tween_playing:
 		return

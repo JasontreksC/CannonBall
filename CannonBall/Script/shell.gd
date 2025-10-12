@@ -22,7 +22,7 @@ var p0: Vector2 = Vector2.ZERO
 var v0: float = 0
 var theta0: float = 0
 var launcher: int = 0
-var timeScale: float = 1.0
+var timeScale: float = 2.5
 
 var isFalling: bool = false
 var alive = true

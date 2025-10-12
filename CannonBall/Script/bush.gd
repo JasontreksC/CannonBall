@@ -61,8 +61,12 @@ func _physics_process(_delta: float) -> void:
 
 func on_entered_bush(node: Node2D) -> void:
 	if node is Player:
-		world.game.ui.set_interaction("b_bush", true)
+		if target_player.bush_tip:
+			world.game.ui.get_hint("bush_tip").show_absolute(Vector2(960, 900))
+			world.game.ui.get_hint("bush_tip").set_lifetime(5.0)
+			target_player.bush_tip = 0
 
 func on_exited_bush(node: Node2D) -> void:
-	if node is Player:
-		world.game.ui.set_interaction("b_bush", false)
+	pass
+	# if node is Player:
+	# 	world.game.ui.set_interaction("b_bush", false)

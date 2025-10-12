@@ -50,7 +50,7 @@ func start_shelling(shellType: int, shell_key: String, p0: Vector2, v0: float, t
 	if shellType in [0, 1]:
 		var fxSmoke: Node2D = game.server_spawn_directly("fx_smoke", "none", {
 			"attatch" : shell.name,
-			"smokeAmount" : 200,
+			"smokeAmount" : 600,
 			"smokeLifetime" : 5.0,
 			"upAccell" : 0,
 			"smokeScaleFactor" : 2

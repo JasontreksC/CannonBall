@@ -18,7 +18,9 @@ var isAttack: bool = true
 var attackChance: bool = false
 var selectedShell: int = 0
 var gameFinished: bool = false
-# var isWalking: bool = false
+
+var bush_tip: int = 1
+var pond_tip: int = 1
 
 @export var psCMC: PackedScene
 
@@ -132,22 +134,15 @@ func _ready() -> void:
 
 	# 상태 머신 정의
 	stateMachine.regist_state("Idle")
-	stateMachine.regist_state("HandleCannon")
-	stateMachine.regist_state("ReadyFire")
+	stateMachine.regist_state("ControlCannon")
 	
-	stateMachine.regist_transit("Idle", "HandleCannon", 0)
-	stateMachine.regist_transit("HandleCannon", "Idle", 0)
-	stateMachine.regist_transit("Idle", "ReadyFire", 0)
-	stateMachine.regist_transit("ReadyFire", "Idle", 0)
-	stateMachine.regist_transit("ReadyFire", "HandleCannon", 0)
-	stateMachine.regist_transit("HandleCannon", "ReadyFire", 0)
+	stateMachine.regist_transit("Idle", "ControlCannon", 0)
+	stateMachine.regist_transit("ControlCannon", "Idle", 0)
 	
 	stateMachine.regist_state_event("Idle", "exit", on_exit_Idle)
 	stateMachine.regist_state_event("Idle", "entry", on_entry_Idle)
-	stateMachine.regist_state_event("HandleCannon", "exit", on_exit_HandleCannon)
-	stateMachine.regist_state_event("HandleCannon", "entry", on_entry_HandleCannon)
-	stateMachine.regist_state_event("ReadyFire", "exit", on_exit_ReadyFire)
-	stateMachine.regist_state_event("ReadyFire", "entry", on_entry_ReadyFire)
+	stateMachine.regist_state_event("ControlCannon", "exit", on_exit_ControlCannonCannon)
+	stateMachine.regist_state_event("ControlCannon", "entry", on_entry_ControlCannonCannon)
 	
 	stateMachine.init_current_state("Idle")
 	
@@ -177,19 +172,9 @@ func _physics_process(delta: float) -> void:
 	# 손잡이쪽으로 걸어가 손잡이를 잡게기까지 애니메이션이 짧게라도 나오는것이 자연스럽다.
 	# 그 동안 이동이나 조준과 같은 다른 조작이 입력되면 안된다. 그래서 따로 분기를 정해놓은 것
 	# register_transit을 호출했을 때 두 번째 인수로 건네준 실수값이 초 단위인데, 그동안 이 분기가 처리된다. 0이면 실행되지 않는다.
-	if stateMachine.is_transit_process("Idle", "HandleCannon", delta):
+	if stateMachine.is_transit_process("Idle", "ControlCannon", delta):
 		pass
-	elif stateMachine.is_transit_process("HandleCannon", "Idle", delta):
-		pass
-		
-	elif stateMachine.is_transit_process("Idle", "ReadyFire", delta):
-		pass
-	elif stateMachine.is_transit_process("ReadyFire", "Idle", delta):
-		pass
-		
-	elif stateMachine.is_transit_process("HandleCannon", "ReadyFire", delta):
-		pass
-	elif stateMachine.is_transit_process("ReadyFire", "HandleCannon", delta):
+	elif stateMachine.is_transit_process("ControlCannon", "Idle", delta):
 		pass
 	# 상태 전환 프로세스가 없으면 각 상태에서의 행동 처리
 	else:
@@ -197,41 +182,20 @@ func _physics_process(delta: float) -> void:
 			"Idle":
 				# 입력 시 상태 전환
 				if isInCannon:
-					stateMachine.transit_by_input("handle", "HandleCannon")
-					stateMachine.transit_by_input("aim", "ReadyFire")
+					stateMachine.transit_by_input("interaction", "ControlCannon")
 				
 				h_movement("self", walkSpeed, delta)
 				amt.set("parameters/BT_Idle/Blend2/blend_amount", clamp(abs(velocity), 0, 1))
 
-			"HandleCannon":
+			"ControlCannon":
 				# 대포 무브먼트에 고정
 				if cannon:
 					position.x = cannon.get_handle_x()
 
-				stateMachine.transit_by_input("handle", "Idle")
-				stateMachine.transit_by_input("aim", "ReadyFire")
-			
+				stateMachine.transit_by_input("interaction", "Idle")
+
 				h_movement("cannon", cannonSpeed, delta)
 				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
-
-			"ReadyFire":
-				if Input.is_action_just_pressed("aim"):
-					if isInCannon:
-						stateMachine.transit_back()
-					else:
-						stateMachine.execute_transit("Idle")
-					
-				# 만원경으로 조준
-				if game.ui.zoomFinished:
-					if Input.is_action_just_pressed("wheel_up"):
-						telescopeZoomOption += 1
-						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
-						game.ui.zoom_cam_telescope(telescopeZoomOption)
-
-					elif Input.is_action_just_pressed("wheel_down"):
-						telescopeZoomOption -= 1
-						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
-						game.ui.zoom_cam_telescope(telescopeZoomOption)
 
 	# 높이를 항상 바닥에 고정
 	if not inPondID:
@@ -241,12 +205,10 @@ func _physics_process(delta: float) -> void:
 		#대포의 상호작용구역 안에 들어왔음을 감지
 		if abs(cannon.global_position.x - self.global_position.x) < 150:
 			isInCannon = true
-			game.ui.get_hint("E_hold").show_attatch(cannon, Vector2(0, -320))
-			game.ui.get_hint("F_aim").show_attatch(cannon, Vector2(0, -250))
+			game.ui.get_hint("F_control").show_attatch(cannon, Vector2(0, -250))
 		else:
 			isInCannon = false
-			game.ui.get_hint("E_hold").hide_hint()
-			game.ui.get_hint("F_aim").hide_hint()
+			game.ui.get_hint("F_control").hide_hint()
 	
 	if abs(velocity) > 0:
 		game.ui.get_hint("AD_move").hide_hint()
@@ -295,10 +257,14 @@ func on_entry_Idle():
 	if cannon:
 		cannon.stateMachine.execute_transit("Idle")
 
-func on_exit_HandleCannon():
+
+func on_exit_ControlCannonCannon():
 	amt.set("parameters/conditions/is_state_hc", false)
+
+	cmc.set_target(nCamTargetDefault)
+	game.ui.off_observe()
 	
-func on_entry_HandleCannon():
+func on_entry_ControlCannonCannon():
 	amt.set("parameters/conditions/is_state_hc", true)
 	
 	if multiplayer.is_server():
@@ -307,24 +273,7 @@ func on_entry_HandleCannon():
 		character.scale.x = -1
 	
 	if cannon:
-		cannon.stateMachine.execute_transit("Move")
-
-func on_exit_ReadyFire():
-	# 카메라 위치를 원래대로 되돌림
-	cmc.set_target(nCamTargetDefault)
-	
-	game.ui.off_observe()
-	cannon.stateMachine.execute_transit("Idle")
-	
-func on_entry_ReadyFire():
-	if multiplayer.is_server():
-		character.scale.x = 1
-	else:
-		character.scale.x = -1
-	
-	if cannon:
 		cannon.stateMachine.execute_transit("Aim")
-		
-	# 카메라 위치를 이동시킴
+
 	cmc.set_target(nCamTargetAim)
 	game.ui.on_observe()

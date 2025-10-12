@@ -58,11 +58,12 @@ func _physics_process(delta: float) -> void:
 func on_entered_pond(node: Node2D) -> void:
 	if node is Player:
 		node.inPondID = self.pondID
-		world.game.ui.set_interaction("b_pond", true)
-		if isPoisoned:
-			world.game.ui.set_interaction("t_pond", true)
-
 		node.aspStep.stream = node.asPondStep
+
+		if target_player.pond_tip:
+			world.game.ui.get_hint("pond_tip").show_absolute(Vector2(960, 900))
+			world.game.ui.get_hint("pond_tip").set_lifetime(5.0)
+			target_player.pond_tip = 0
 
 	if node is Cannon:
 		node.inPondID = self.pondID

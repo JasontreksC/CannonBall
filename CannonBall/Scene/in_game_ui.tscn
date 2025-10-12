@@ -256,18 +256,7 @@ offset_bottom = 1219.0
 key = "A  D   "
 pannel_length = Vector2(220, 450)
 
-[node name="E_hold" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
-visible = false
-layout_mode = 1
-offset_left = 55.0
-offset_top = 1306.0
-offset_right = 55.0
-offset_bottom = 1306.0
-key = "E"
-explain = "대포 끌기"
-pannel_length = Vector2(128, 350)
-
-[node name="F_aim" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+[node name="F_control" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
 visible = false
 layout_mode = 1
 offset_left = 58.0
@@ -275,21 +264,10 @@ offset_top = 1402.0
 offset_right = 58.0
 offset_bottom = 1402.0
 key = "F"
-explain = "대포 조준"
+explain = "대포 조작"
 pannel_length = Vector2(128, 350)
 
-[node name="AD_aimmove" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
-visible = false
-layout_mode = 1
-offset_left = 302.0
-offset_top = 1218.0
-offset_right = 302.0
-offset_bottom = 1218.0
-key = "A  D   "
-explain = "조준 이동"
-pannel_length = Vector2(220, 450)
-
-[node name="1_zoom" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+[node name="1_aim" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
 visible = false
 layout_mode = 1
 offset_left = 320.0
@@ -297,7 +275,7 @@ offset_top = 1306.0
 offset_right = 320.0
 offset_bottom = 1306.0
 mouse1 = true
-explain = "확대/축소"
+explain = "조준 이동"
 pannel_length = Vector2(128, 350)
 
 [node name="0_fire" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
@@ -310,3 +288,23 @@ offset_bottom = 1401.0
 mouse0 = true
 explain = "대포 발사"
 pannel_length = Vector2(128, 350)
+
+[node name="bush_tip" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 538.0
+offset_top = 1555.0
+offset_right = 538.0
+offset_bottom = 1555.0
+explain = "  수풀 뒤에 숨으면 적에게 보이지 않습니다."
+pannel_length = Vector2(128, 800)
+
+[node name="pond_tip" parent="SubUI_Hints" instance=ExtResource("12_u4wab")]
+visible = false
+layout_mode = 1
+offset_left = 665.0
+offset_top = 1473.0
+offset_right = 665.0
+offset_bottom = 1473.0
+explain = "  연못에 떨어진 탄은 적은 피해를 입힙니다."
+pannel_length = Vector2(128, 800)

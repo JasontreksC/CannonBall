@@ -11,12 +11,15 @@ var prevPosX: float = 0
 var curVelocity: float = 0
 var inPondID: int = 0
 var reverseBlast: float = 0
-var aimSpeedOptions: Array[float] = [2000, 1000, 500]
 var inBushID: int = 0
+var aimVelocity: float = 0
 
 const FRONT_WHEEL_RADIUS: float = 72.0
 const BACK_WHEEL_RADIUS: float = 42.0
 const SPEED: float = 300
+
+const AIM_SPEED_DECEL: float = 2000
+const AIM_SPEED_STEP: float = 200
 
 @export var shellPathes: Array[String]
 
@@ -105,9 +108,6 @@ func _ready() -> void:
 	if not multiplayer.is_server():
 		game.rpc("send_transmit", "client_connected")
 
-	# game.ui.init_hint("E-대포 끌기", Vector2(128, 350), self, Vector2(0, -200))
-	# game.ui.init_hint("F-대포 조준", Vector2(128, 350), self, Vector2(0, -100))
-
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
@@ -124,12 +124,22 @@ func _physics_process(delta: float) -> void:
 				pass
 				
 			"Aim":
-				var dir = Input.get_axis("left", "right")
-				var aimed_x = ac.aim(dir, aimSpeedOptions[player.telescopeZoomOption], delta)
+				var dir: int = 0
+				if Input.is_action_just_pressed("wheel_down"):
+					dir = -1
+				elif Input.is_action_just_pressed("wheel_up"):
+					dir = 1
+				
+				if ac.is_aimed_max() or ac.is_aimed_min():
+					aimVelocity = 0
+
+				aimVelocity += dir * AIM_SPEED_STEP
+				aimVelocity = move_toward(aimVelocity, 0, delta * AIM_SPEED_DECEL)
+				print(dir)
+				print(heading)
+
+				var aimed_x = ac.aim(aimVelocity, delta)
 				game.ui.aim_to_cam_telescope(aimed_x)
-				if dir:
-					pass
-					
 				bBarrel.global_rotation = -ac.get_aimed_theta()
 
 				if Input.is_action_just_pressed("clickL"):

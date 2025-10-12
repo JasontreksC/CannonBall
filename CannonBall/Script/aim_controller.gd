@@ -5,12 +5,12 @@ class_name AimController
 # 조준한 위치로부터 거리를 구해 대포의 발사각을 조정하고
 # 이에 맞게 포신의 회전 각도를 구한다.
 
-# 최소/최 발사각. 포물선 운동 공식에 따라 가장 멀리 날아가는 발사각은 45도이다.
+# 최소/최대 발사각. 포물선 운동 공식에 따라 가장 멀리 날아가는 발사각은 25도이다.
 @export var minAimAngle : float = -10
-@export var maxAimAngle : float = -45
+@export var maxAimAngle : float = -25
 
 # 대포의 초기 속도. 이 속도를 sin/cos 함수로 x축 방향, y축 방향으로 분해한다.
-@export var V0 : float = 2500
+@export var V0 : float = 10000
 
 # breech는 포신의 가장 안쪽, 즉 포탄의 운동이 시작되는 위치이며
 # muzzel은 포구, 즉 포탄이 포신 밖으로 나오는 출구이다.
@@ -26,6 +26,7 @@ var minAimRange: float = 0
 var maxAimRange: float = 0
 var currentAimRange: float = 0
 var currentAngle : float = 0# degree
+var aimPoint: float = 0
 
 # 포물선 운동의 시작지점인 breech의 글로벌 포지션 반환
 func get_breech_pos() -> Vector2:
@@ -33,16 +34,13 @@ func get_breech_pos() -> Vector2:
 
 # 대포의 조준 상호작용 시 만원경으로 바라보는 UI 발생, 방향키 조작으로 currentAimRange를 증감시킨다.
 # breech의 x좌표에 currentAimRange를 더해 조준한 위치에 대한 글로벌 x좌표를 반환
-func aim(dir: float, speed: float, delta: float) -> float:
-	if not multiplayer.is_server():
-		dir *= -1
-	
-	currentAimRange += dir * speed * delta
+func aim(velocity: float, delta: float) -> float:	
+	currentAimRange += velocity * delta
 	currentAimRange = clamp(currentAimRange, minAimRange, maxAimRange)	
 	
-	if is_equal_approx(currentAimRange, minAimRange):
+	if is_aimed_min():
 		cannon.game.ui.lbAimMessage_Range.text = "최소 사거리입니다."
-	elif is_equal_approx(currentAimRange, maxAimRange):
+	elif is_aimed_max():
 		cannon.game.ui.lbAimMessage_Range.text = "최대 사거리입니다."
 	else:
 		cannon.game.ui.lbAimMessage_Range.text = ""
@@ -61,7 +59,13 @@ func get_aimed_theta() -> float:
 		return theta
 	else:
 		return -theta - PI
-		
+
+func is_aimed_max() -> bool:
+	return is_equal_approx(currentAimRange, maxAimRange)
+
+func is_aimed_min() -> bool:
+	return is_equal_approx(currentAimRange, minAimRange)
+
 func _ready() -> void:
 	# 최대/최소 사거리 구하기
 	minAimRange = pow(V0, 2) * sin(2*deg_to_rad(abs(minAimAngle))) / cannon.game.G
