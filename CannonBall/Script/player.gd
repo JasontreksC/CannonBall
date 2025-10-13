@@ -197,6 +197,18 @@ func _physics_process(delta: float) -> void:
 				h_movement("cannon", cannonSpeed, delta)
 				amt.set("parameters/BT_HC/Blend2/blend_amount", clamp(abs(cannon.curVelocity), 0, 1))
 
+				# 만원경으로 조준
+				if game.ui.zoomFinished:
+					if Input.is_action_just_pressed("wheel_up"):
+						telescopeZoomOption += 1
+						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
+						game.ui.zoom_cam_telescope(telescopeZoomOption)
+
+					elif Input.is_action_just_pressed("wheel_down"):
+						telescopeZoomOption -= 1
+						telescopeZoomOption = clamp(telescopeZoomOption, 0, len(game.ui.telescopeZoomOptions) - 1)
+						game.ui.zoom_cam_telescope(telescopeZoomOption)
+
 	# 높이를 항상 바닥에 고정
 	if not inPondID:
 		self.global_position.y = 0

@@ -4,13 +4,15 @@ class_name SubUIInputHint extends Control
 @onready var hbox: HBoxContainer = $NinePatchRect/HBoxContainer
 @onready var trMouses: Array[TextureRect] = [
 	$NinePatchRect/HBoxContainer/MouseL,
-	$NinePatchRect/HBoxContainer/MouseW
+	$NinePatchRect/HBoxContainer/MouseW,
+	$NinePatchRect/HBoxContainer/MouseR
 ]
 @onready var lbKey: Label = $NinePatchRect/HBoxContainer/Key
 @onready var lbExplain: Label = $NinePatchRect/HBoxContainer/Explain
 
 @export var mouse0: bool
 @export var mouse1: bool
+@export var mouse2: bool
 @export var key: String
 @export var explain: String
 @export var pannel_length: Vector2
@@ -56,6 +58,8 @@ func _ready() -> void:
 
 	trMouses[0].visible = mouse0
 	trMouses[1].visible = mouse1
+	trMouses[2].visible = mouse2
+	
 	if key.is_empty():
 		lbKey.visible = false
 	else:

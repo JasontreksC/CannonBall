@@ -68,5 +68,3 @@ func on_entered_bush(node: Node2D) -> void:
 
 func on_exited_bush(node: Node2D) -> void:
 	pass
-	# if node is Player:
-	# 	world.game.ui.set_interaction("b_bush", false)

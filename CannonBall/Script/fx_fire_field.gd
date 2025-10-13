@@ -34,12 +34,10 @@ func _physics_process(delta: float) -> void:
 	xrange.overlap_test(game.get_my_player())
 
 func on_entered_fire(node: Node2D) -> void:
-	if node is Player:
-		game.ui.set_interaction("t_fire", true)
+	pass
 
 func on_exited_fire(node: Node2D) -> void:
-	if node is Player:
-		game.ui.set_interaction("t_fire", false)
+	pass
 
 @rpc("any_peer", "call_local")
 func lifetime_end() -> void:

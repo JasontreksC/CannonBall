@@ -227,7 +227,6 @@ theme = ExtResource("4_1xitx")
 text = "닫기"
 
 [node name="Tutorial" type="Panel" parent="."]
-visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 5
@@ -296,7 +295,6 @@ theme = ExtResource("4_1xitx")
 text = "다음 >"
 
 [node name="T1_KeySetting" type="Control" parent="Tutorial"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -327,32 +325,15 @@ text = "메뉴"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
-[node name="SubTitle_Aim" type="Label" parent="Tutorial/T1_KeySetting"]
-layout_mode = 0
-offset_left = 345.0
-offset_top = 467.0
-offset_right = 744.0
-offset_bottom = 578.0
-scale = Vector2(0.63497, 0.63497)
-text = "조준"
-label_settings = ExtResource("7_1mlcq")
-horizontal_alignment = 1
-
-[node name="AD_Movement" type="Control" parent="Tutorial/T1_KeySetting"]
-anchors_preset = 0
-offset_top = 102.0
-offset_right = 839.0
-offset_bottom = 270.0
-
-[node name="Key_A" type="Panel" parent="Tutorial/T1_KeySetting/AD_Movement"]
+[node name="Key_A" type="Panel" parent="Tutorial/T1_KeySetting"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 98.0
-offset_top = 9.0
+offset_top = 111.0
 offset_right = 244.0
-offset_bottom = 149.0
+offset_bottom = 251.0
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/AD_Movement/Key_A"]
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Key_A"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -368,15 +349,15 @@ grow_vertical = 2
 text = "A"
 label_settings = SubResource("LabelSettings_rb062")
 
-[node name="Key_D" type="Panel" parent="Tutorial/T1_KeySetting/AD_Movement"]
+[node name="Key_D" type="Panel" parent="Tutorial/T1_KeySetting"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 258.0
-offset_top = 9.0
+offset_top = 111.0
 offset_right = 404.0
-offset_bottom = 149.0
+offset_bottom = 251.0
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/AD_Movement/Key_D"]
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Key_D"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -392,56 +373,26 @@ grow_vertical = 2
 text = "D"
 label_settings = SubResource("LabelSettings_rb062")
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/AD_Movement"]
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting"]
 layout_mode = 0
 offset_left = 433.0
-offset_top = 26.0
+offset_top = 128.0
 offset_right = 759.0
-offset_bottom = 127.0
+offset_bottom = 229.0
 text = "좌우 이동"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EF_Cannon" type="Control" parent="Tutorial/T1_KeySetting"]
-anchors_preset = 0
-offset_top = 270.0
-offset_right = 839.0
-offset_bottom = 438.0
-
-[node name="Key_E" type="Panel" parent="Tutorial/T1_KeySetting/EF_Cannon"]
+[node name="Key_F" type="Panel" parent="Tutorial/T1_KeySetting"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
-offset_left = 98.0
-offset_top = 9.0
-offset_right = 244.0
-offset_bottom = 149.0
+offset_left = 177.43
+offset_top = 284.0
+offset_right = 323.43
+offset_bottom = 424.0
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/EF_Cannon/Key_E"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -31.5
-offset_top = -66.0
-offset_right = 31.5
-offset_bottom = 66.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "E"
-label_settings = SubResource("LabelSettings_rb062")
-
-[node name="Key_F" type="Panel" parent="Tutorial/T1_KeySetting/EF_Cannon"]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 0
-offset_left = 258.0
-offset_top = 9.0
-offset_right = 404.0
-offset_bottom = 149.0
-
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/EF_Cannon/Key_F"]
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Key_F"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -457,76 +408,88 @@ grow_vertical = 2
 text = "F"
 label_settings = SubResource("LabelSettings_rb062")
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/EF_Cannon"]
+[node name="Label2" type="Label" parent="Tutorial/T1_KeySetting"]
 layout_mode = 0
 offset_left = 433.0
-offset_top = 26.0
-offset_right = 842.0
-offset_bottom = 127.0
-text = "대포 끌기 | 대포 조준"
+offset_top = 304.0
+offset_right = 759.0
+offset_bottom = 405.0
+text = "대포 조작"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Mouse_Telescope" type="Control" parent="Tutorial/T1_KeySetting"]
-anchors_preset = 0
-offset_top = 550.0
-offset_right = 839.0
-offset_bottom = 718.0
+[node name="Label3" type="Label" parent="Tutorial/T1_KeySetting"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 656.0
+offset_right = 759.0
+offset_bottom = 757.0
+text = "조준 확대/축소"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Key_LClick" type="Panel" parent="Tutorial/T1_KeySetting/Mouse_Telescope"]
+[node name="Label4" type="Label" parent="Tutorial/T1_KeySetting"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 481.0
+offset_right = 759.0
+offset_bottom = 582.0
+text = "조준 이동"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Key_LClick" type="Panel" parent="Tutorial/T1_KeySetting"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 98.0
-offset_top = 9.0
+offset_top = 461.0
 offset_right = 244.0
-offset_bottom = 149.0
+offset_bottom = 601.0
 
-[node name="Sprite2D" type="Sprite2D" parent="Tutorial/T1_KeySetting/Mouse_Telescope/Key_LClick"]
+[node name="Sprite2D" type="Sprite2D" parent="Tutorial/T1_KeySetting/Key_LClick"]
 position = Vector2(73, 70)
 scale = Vector2(1.75, 1.75)
 texture = ExtResource("9_mhnqm")
 
-[node name="Key_Wheel" type="Panel" parent="Tutorial/T1_KeySetting/Mouse_Telescope"]
+[node name="Key_LClick2" type="Panel" parent="Tutorial/T1_KeySetting"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 258.0
-offset_top = 9.0
+offset_top = 461.0
 offset_right = 404.0
-offset_bottom = 149.0
+offset_bottom = 601.0
 
-[node name="Sprite2D" type="Sprite2D" parent="Tutorial/T1_KeySetting/Mouse_Telescope/Key_Wheel"]
+[node name="Sprite2D" type="Sprite2D" parent="Tutorial/T1_KeySetting/Key_LClick2"]
+position = Vector2(73, 70)
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("9_mhnqm")
+flip_h = true
+
+[node name="Key_Wheel" type="Panel" parent="Tutorial/T1_KeySetting"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 177.43
+offset_top = 642.0
+offset_right = 323.43
+offset_bottom = 782.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Tutorial/T1_KeySetting/Key_Wheel"]
 position = Vector2(73, 70)
 scale = Vector2(1.75, 1.75)
 texture = ExtResource("10_d1dh0")
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Mouse_Telescope"]
-layout_mode = 0
-offset_left = 433.0
-offset_top = 26.0
-offset_right = 842.0
-offset_bottom = 127.0
-text = "대포 발사 | 조준 줌"
-label_settings = ExtResource("8_mhnqm")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Tab_Shell" type="Control" parent="Tutorial/T1_KeySetting"]
-anchors_preset = 0
-offset_left = 968.0
-offset_top = 102.0
-offset_right = 1807.0
-offset_bottom = 270.0
-
-[node name="Key_Tab" type="Panel" parent="Tutorial/T1_KeySetting/Tab_Shell"]
+[node name="Key_Tab" type="Panel" parent="Tutorial/T1_KeySetting"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
-offset_left = 98.0
-offset_top = 9.0
-offset_right = 315.0
-offset_bottom = 149.0
+offset_left = 1066.0
+offset_top = 111.0
+offset_right = 1283.0
+offset_bottom = 251.0
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Tab_Shell/Key_Tab"]
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Key_Tab"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -542,33 +505,26 @@ grow_vertical = 2
 text = "Tab"
 label_settings = SubResource("LabelSettings_rb062")
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Tab_Shell"]
+[node name="Label5" type="Label" parent="Tutorial/T1_KeySetting"]
 layout_mode = 0
-offset_left = 433.0
-offset_top = 26.0
-offset_right = 759.0
-offset_bottom = 127.0
+offset_left = 1401.0
+offset_top = 128.0
+offset_right = 1727.0
+offset_bottom = 229.0
 text = "탄환 선택"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Esc_Quit" type="Control" parent="Tutorial/T1_KeySetting"]
-anchors_preset = 0
-offset_left = 968.0
-offset_top = 270.0
-offset_right = 1807.0
-offset_bottom = 438.0
-
-[node name="Key_Esc" type="Panel" parent="Tutorial/T1_KeySetting/Esc_Quit"]
+[node name="Key_Esc" type="Panel" parent="Tutorial/T1_KeySetting"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
-offset_left = 98.0
-offset_top = 9.0
-offset_right = 315.0
-offset_bottom = 149.0
+offset_left = 1066.0
+offset_top = 279.0
+offset_right = 1283.0
+offset_bottom = 419.0
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Esc_Quit/Key_Esc"]
+[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Key_Esc"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -584,60 +540,19 @@ grow_vertical = 2
 text = "Esc"
 label_settings = SubResource("LabelSettings_rb062")
 
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Esc_Quit"]
+[node name="Label6" type="Label" parent="Tutorial/T1_KeySetting"]
 layout_mode = 0
-offset_left = 433.0
-offset_top = 26.0
-offset_right = 759.0
-offset_bottom = 127.0
+offset_left = 1401.0
+offset_top = 296.0
+offset_right = 1727.0
+offset_bottom = 397.0
 text = "게임에서 나가기"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Q_Detail" type="Control" parent="Tutorial/T1_KeySetting"]
-anchors_preset = 0
-offset_left = 968.0
-offset_top = 438.0
-offset_right = 1807.0
-offset_bottom = 606.0
-
-[node name="Key_Q" type="Panel" parent="Tutorial/T1_KeySetting/Q_Detail"]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 0
-offset_left = 137.0
-offset_top = 9.0
-offset_right = 283.0
-offset_bottom = 149.0
-
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Q_Detail/Key_Q"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -31.5
-offset_top = -66.0
-offset_right = 31.5
-offset_bottom = 66.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Q"
-label_settings = SubResource("LabelSettings_rb062")
-
-[node name="Label" type="Label" parent="Tutorial/T1_KeySetting/Q_Detail"]
-layout_mode = 0
-offset_left = 433.0
-offset_top = 26.0
-offset_right = 759.0
-offset_bottom = 127.0
-text = "상호작용 보기"
-label_settings = ExtResource("8_mhnqm")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="T2_Rules" type="Control" parent="Tutorial"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -31,17 +31,6 @@ var mouse_on_button: bool = false
 ## DashBoard
 @onready var subuiDashBoard : SubUIDashBoard = $SubUIDashBoard
 
-## Interaction
-@export var psSubUIInteraction: PackedScene
-var interaction_stack: Array[NinePatchRect]
-var interaction_state: Dictionary[String, bool] = {
-	"b_pond" : false,
-	"b_bush" : false,
-	"t_fire" : false,
-	"t_pond" : false
-}
-@onready var interactions: Control = $Interactions
-
 # Disconnect
 @onready var subuiDisconnected: ColorRect = $SubUIDisconnected
 
@@ -119,25 +108,6 @@ func remove_hp_points(player: int, count: int):
 		if count <= 0:
 			break
 
-## Interaction
-func set_interaction(type: String, onoff: bool) -> void:
-	if interaction_state.has(type):
-		if interaction_state[type] == onoff:
-			return
-		interaction_state[type] = onoff
-	
-	var nodes: Array[Node] = interactions.get_children()
-	for n in nodes:
-		n.free()
-	
-	var count: int = 0
-	for i in interaction_state.keys():
-		if interaction_state[i]:
-			var new_interaction: NinePatchRect = psSubUIInteraction.instantiate()
-			new_interaction.set("interaction", i)
-			interactions.add_child(new_interaction)
-			new_interaction.position = Vector2(-128, -128 - 128 * count)
-			count += 1
 #Hint
 func get_hint(hint: String) -> SubUIInputHint:
 	if subuiHints.has_node(hint):
@@ -166,20 +136,15 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	lbFps.text = str(Engine.get_frames_per_second())
-	if interactions.get_child_count() > 0:
-		lbHint_Q.visible = true
-		if Input.is_action_just_pressed("q"):
-			for n: Node in interactions.get_children():
-				n.emit_signal("pressed")
-	else:
-		lbHint_Q.visible = false
 	
 	if game.get_my_player() and game.get_my_player().stateMachine.current_state_name() == "ControlCannon":
 		var telescope_center_x: float = trTelescope.get_rect().get_center().x
-		get_hint("1_aim").show_absolute(Vector2(telescope_center_x, 720))
-		get_hint("0_fire").show_absolute(Vector2(telescope_center_x, 790))
+		get_hint("02_aim_move").show_absolute(Vector2(telescope_center_x, 720))
+		get_hint("space_fire").show_absolute(Vector2(telescope_center_x, 790))
+		get_hint("1_aim_zoom").show_absolute(Vector2(telescope_center_x, 860))
 	else:
-		get_hint("1_aim").hide_hint()
-		get_hint("0_fire").hide_hint()
+		get_hint("02_aim_move").hide_hint()
+		get_hint("space_fire").hide_hint()
+		get_hint("1_aim_zoom").hide_hint()
 
 		

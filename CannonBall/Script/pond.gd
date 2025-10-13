@@ -71,10 +71,6 @@ func on_entered_pond(node: Node2D) -> void:
 func on_exited_pond(node: Node2D) -> void:
 	if node is Player:
 		node.inPondID = 0
-		world.game.ui.set_interaction("b_pond", false)
-		if isPoisoned:
-			world.game.ui.set_interaction("t_pond", false)
-		
 		node.aspStep.stream = node.asGroundStep
 
 	if node is Cannon:

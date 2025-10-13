@@ -52,6 +52,14 @@ layout_mode = 2
 texture = ExtResource("4_llqh5")
 stretch_mode = 4
 
+[node name="MouseR" type="TextureRect" parent="NinePatchRect/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+texture = ExtResource("3_u0eeh")
+stretch_mode = 4
+flip_h = true
+
 [node name="Key" type="Label" parent="NinePatchRect/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
