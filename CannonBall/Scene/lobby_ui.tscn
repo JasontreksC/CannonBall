@@ -227,6 +227,7 @@ theme = ExtResource("4_1xitx")
 text = "닫기"
 
 [node name="Tutorial" type="Panel" parent="."]
+visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 5
@@ -1057,48 +1058,16 @@ offset_top = 33.0
 offset_right = 500.0
 offset_bottom = 93.0
 theme = ExtResource("22_hox77")
-text = "호스트 IP"
 alignment = 1
 
-[node name="LE_JoinIP_1" type="LineEdit" parent="Local"]
+[node name="LE_JoinIP" type="LineEdit" parent="Local"]
 layout_mode = 0
-offset_left = 92.14
+offset_left = 92.0
 offset_top = 105.0
-offset_right = 188.14
+offset_right = 500.0
 offset_bottom = 165.0
 theme = ExtResource("22_hox77")
 alignment = 1
-secret_character = ""
-
-[node name="LE_JoinIP_2" type="LineEdit" parent="Local"]
-layout_mode = 0
-offset_left = 196.14
-offset_top = 105.0
-offset_right = 292.14
-offset_bottom = 165.0
-theme = ExtResource("22_hox77")
-alignment = 1
-secret_character = ""
-
-[node name="LE_JoinIP_3" type="LineEdit" parent="Local"]
-layout_mode = 0
-offset_left = 300.14
-offset_top = 105.0
-offset_right = 396.14
-offset_bottom = 165.0
-theme = ExtResource("22_hox77")
-alignment = 1
-secret_character = ""
-
-[node name="LE_JoinIP_4" type="LineEdit" parent="Local"]
-layout_mode = 0
-offset_left = 404.14
-offset_top = 105.0
-offset_right = 500.14
-offset_bottom = 165.0
-theme = ExtResource("22_hox77")
-alignment = 1
-secret_character = ""
 
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
 [connection signal="pressed" from="BT_Credit" to="." method="_on_bt_credit_pressed"]

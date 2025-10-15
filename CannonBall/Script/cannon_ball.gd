@@ -111,23 +111,24 @@ func back_to_lobby() -> void:
 	uiMgr.set_ui(0)
 	sceneMgr.set_scene(0)
 
-
-func _ready() -> void:
-	uiMgr.set_ui(0)
-	sceneMgr.set_scene(0)
-
-	if Steam.steamInitEx(480):
+func steam_client_init():
+	var result = Steam.steamInitEx(480)
+	if result["status"] == 2:
+		print("Steam 클라이언트가 실행중이지 않음")
+		return
+	
+	if Steam.loggedOn():
 		my_steam_id = Steam.getSteamID()
 		print("Steam 초기화 성공")
 		print("내 Steam ID: ", my_steam_id)
+		print("내 Steam 닉네임: ", Steam.getPersonaName())
 		
 		Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
 		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
-		
-		print(Steam.getPersonaName())
 	else:
-		print("Steam 초기화 실패")
-	
+		print("Steam 로그인 상태가 아님")
+		return
+
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
 		if status == 1:
@@ -184,8 +185,17 @@ func _ready() -> void:
 			print(FAIL_REASON)
 		)
 
+func _ready() -> void:
+	uiMgr.set_ui(0)
+	sceneMgr.set_scene(0)
+
+	if not steam_client_init():
+		print("Steam 초기화 실패")
+
+	
+
 	# print("바인딩: ", udp_peer.bind(0))
-	local_host_ip = get_local_ipv4()
+	# local_host_ip = get_local_ipv4()
 	
 	
 func _process(delta: float) -> void:

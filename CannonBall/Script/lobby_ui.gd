@@ -8,12 +8,7 @@ class_name LobbyUI
 @onready var btJoin: Button = $Steam/BT_Join
 
 @onready var leLocalHostIP: LineEdit = $Local/LE_HostIP
-@onready var leLocalJoinIP: Array[LineEdit] = [
-	$Local/LE_JoinIP_1,
-	$Local/LE_JoinIP_2,
-	$Local/LE_JoinIP_3,
-	$Local/LE_JoinIP_4
-]
+@onready var leLocalJoinIP: LineEdit = $Local/LE_JoinIP
 @onready var btLocalHost: Button = $Local/BT_LocalHost
 @onready var btLocalJoin: Button = $Local/BT_LocalJoin
 
@@ -60,36 +55,32 @@ func _ready() -> void:
 		tutorial_videos[i].volume = 0
 
 	if uiMgr.root.local_join_ip:
-		var ip_nums := uiMgr.root.local_join_ip.split(".")
-		for i in range(4):
-			leLocalJoinIP[i].text = ip_nums[i]
+		leLocalJoinIP.text = uiMgr.root.local_join_ip
+	if uiMgr.root.local_host_ip:
+		leLocalHostIP.text = uiMgr.root.local_host_ip
 			
 	set_tutorial_page(tutorial_page)
 
 func _process(delta: float) -> void:
-	leLocalHostIP.text = uiMgr.root.local_host_ip
-	if not leLocalHostIP.text.is_empty():
-		leLocalHostIP.editable = false
+	if uiMgr.root.my_steam_id:
+		btInvite.disabled = false
+	else:
+		btInvite.disabled = true
 
 func _on_bt_local_host_pressed() -> void:
+	if leLocalHostIP.text.is_empty():
+		uiMgr.root.local_host_ip = "127.0.0.1"
+	else:
+		uiMgr.root.local_host_ip = leLocalHostIP.text
+
 	lobby.local_host()
 
 
 func _on_bt_local_join_pressed() -> void:
-	var loopback: bool = false
-	for i in leLocalJoinIP:
-		if i.text.is_empty():
-			uiMgr.root.local_join_ip = "127.0.0.1"
-			loopback = true
-	
-	if not loopback:
-		uiMgr.root.local_join_ip = "%s.%s.%s.%s" % [
-			leLocalJoinIP[0].text,
-			leLocalJoinIP[1].text,
-			leLocalJoinIP[2].text,
-			leLocalJoinIP[3].text
-		]
-		print(uiMgr.root.local_join_ip)
+	if leLocalJoinIP.text.is_empty():
+		uiMgr.root.local_join_ip = "127.0.0.1"
+	else:
+		uiMgr.root.local_join_ip = leLocalJoinIP.text
 
 	lobby.local_join()
 

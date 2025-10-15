@@ -89,7 +89,6 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_lobby()
-	refresh_firend_list()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

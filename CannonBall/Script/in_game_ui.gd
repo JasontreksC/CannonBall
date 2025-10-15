@@ -36,7 +36,6 @@ var mouse_on_button: bool = false
 
 #Hint
 @onready var subuiHints: Control = $SubUI_Hints
-@onready var lbHint_Q: Label = $Hint_Q
 
 var uiMgr: UIManager = null
 var game: Game = null
