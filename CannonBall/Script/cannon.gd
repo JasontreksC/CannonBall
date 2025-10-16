@@ -17,7 +17,7 @@ const FRONT_WHEEL_RADIUS: float = 72.0
 const BACK_WHEEL_RADIUS: float = 42.0
 const SPEED: float = 300
 
-var aim_speed_options = [1500, 1000, 500]
+var aim_speed_options = [2500, 1500, 1000]
 
 @export var shellPathes: Array[String]
 

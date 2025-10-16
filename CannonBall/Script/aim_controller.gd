@@ -7,7 +7,7 @@ class_name AimController
 
 # 최소/최대 발사각. 포물선 운동 공식에 따라 가장 멀리 날아가는 발사각은 25도이다.
 @export var minAimAngle : float = -10
-@export var maxAimAngle : float = -25
+@export var maxAimAngle : float = -40
 
 # 대포의 초기 속도. 이 속도를 sin/cos 함수로 x축 방향, y축 방향으로 분해한다.
 @export var V0 : float = 10000
@@ -45,16 +45,25 @@ func aim(velocity: float, delta: float) -> float:
 	else:
 		cannon.game.ui.lbAimMessage_Range.text = ""
 
+	var h = breech.global_position.y
+	var theta = asin(cannon.game.G * currentAimRange / pow(V0, 2)) / 2
 
+	var T = 2 * V0 * sin(theta) / cannon.game.G
+	var vy_end = V0 * sin(theta) - cannon.game.G *  T
+
+	var t_end = (vy_end + sqrt(pow(vy_end, 2) - 2 * cannon.game.G * h)) / cannon.game.G
+	var actual_aim_range = currentAimRange + V0 * cos(theta) * t_end
 
 	if multiplayer.is_server():
-		return breech.global_position.x + currentAimRange
+		return breech.global_position.x + actual_aim_range
 	else:
-		return breech.global_position.x - currentAimRange
+		return breech.global_position.x - actual_aim_range
+
 
 # currentAimRange를 기반으로, 그 위치에 포탄이 도달하기 위한 발사각을 구한다. 반환값은 radian 값이다.
 func get_aimed_theta() -> float:
 	var theta = asin(cannon.game.G * currentAimRange / pow(V0, 2)) / 2
+
 	if multiplayer.is_server():
 		return theta
 	else:
