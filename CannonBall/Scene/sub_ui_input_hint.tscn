@@ -67,7 +67,7 @@ label_settings = ExtResource("5_lx2he")
 
 [node name="Explain" type="Label" parent="NinePatchRect/HBoxContainer"]
 layout_mode = 2
-text = "좌/우 이동"
+text = "L/R Move"
 label_settings = ExtResource("6_odpy0")
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

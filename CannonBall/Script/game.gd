@@ -37,7 +37,7 @@ func server_spawn_request(key: String, object_name: String, props: Dictionary={}
 		object_name = "object" + str(Time.get_ticks_usec())
 
 	var spawnable: bool = false
-	var count: int = spawner.get_spawnable_scene_count()
+	var count: int = spawner.get_spawnable_scene_count()  
 	for i in range(count):
 		var spawnable_path: String = spawner.get_spawnable_scene(i)
 		if resource_table.get_scene_path(key) == spawnable_path:
@@ -287,7 +287,7 @@ func on_exit_WaitSession():
 	players[0].canMove = true
 	players[1].canMove = true
 
-	ui.subuiDashBoard.show_text("접속 성공!\n잠시 후 게임 시작", 3)
+	ui.subuiDashBoard.show_text("Connection Success!\nGame starts soon...", 3)
 	ui.subuiDashBoard.set_pb_time(3)
 
 	world.process_mode = Node.PROCESS_MODE_INHERIT
@@ -302,10 +302,10 @@ func on_entry_Turn():
 		rpc("change_turn")
 	
 	if is_p1_turn():
-		ui.subuiDashBoard.show_text("Player1 공격", -1)
+		ui.subuiDashBoard.show_text("Player1 Attack!", -1)
 		ui.subuiDashBoard.focus_player_info(0)
 	else:
-		ui.subuiDashBoard.show_text("Player2 공격", -1)
+		ui.subuiDashBoard.show_text("Player2 Attack!", -1)
 		ui.subuiDashBoard.focus_player_info(1)
 	
 func on_exit_Turn():
@@ -325,11 +325,11 @@ func on_exit_Shelling():
 		world.on_turn_count()
 
 	if winner == -1:
-		ui.subuiDashBoard.show_text("잠시후 공수전환", 3)
+		ui.subuiDashBoard.show_text("Turn change...", 3)
 		ui.subuiDashBoard.set_pb_time(3)
 
 func on_entry_EndSession():
-	ui.subuiDashBoard.show_text("게임 종료!", 5)
+	ui.subuiDashBoard.show_text("Game finished!", 5)
 	ui.subuiDashBoard.set_pb_time(5)
 	
 	get_my_player().canMove = false

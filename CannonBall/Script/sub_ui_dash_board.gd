@@ -97,7 +97,7 @@ func _enter_tree() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	show_text("상대 플레이어를\n기다리는 중...", -1)
+	show_text("Waiting for player 2...", -1)
 	unfocus_player_info(0)
 	unfocus_player_info(1)
 

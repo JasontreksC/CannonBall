@@ -33,6 +33,7 @@ void vertex() {
 	// Called for every vertex the material is visible on.
 }
 
+// sin 파동에서 현재 픽셀의 좌표 계산
 float wave_point(float uv_x, float wave_length, float wave_height, float wave_speed, float wave_offset) {
 	return wave_height * (sin(wave_length * uv_x + TIME * wave_speed) + wave_offset);
 }

@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b8imyqqffd7xe" path="res://Asset/ui/ui_no_outline.png" id="1_1y7jf"]
 [ext_resource type="Texture2D" uid="uid://c3pybtbta3oar" path="res://Asset/shell/normal_shell.png" id="2_adb0l"]
 [ext_resource type="Script" uid="uid://lwcvc14h2efo" path="res://Script/sub_ui_shell_selector.gd" id="2_qy1sg"]
-[ext_resource type="Shader" uid="uid://chslhsr7t500r" path="res://Shader/fire_surf.tres" id="3_qy1sg"]
+[ext_resource type="Shader" uid="uid://dd6nq0lui574p" path="res://Shader/fire_surf.tres" id="3_qy1sg"]
 [ext_resource type="Texture2D" uid="uid://coknwbm1o0tp0" path="res://Asset/alpha_texture/crack.png" id="4_cinhi"]
 [ext_resource type="Script" uid="uid://h0n7884yqnt2" path="res://Script/custom_button.gd" id="4_f3c7e"]
 [ext_resource type="Texture2D" uid="uid://b3j2oh0a5iehh" path="res://Asset/shell/poision_shell.png" id="5_f3c7e"]
@@ -44,7 +44,7 @@ offset_top = -141.111
 offset_right = 867.0
 offset_bottom = 36.8888
 scale = Vector2(1.5, 1.5)
-text = "일반 탄"
+text = "Normal Shell"
 label_settings = SubResource("LabelSettings_lau7m")
 
 [node name="CustomButton0" type="Control" parent="SP_Shell0"]
@@ -75,7 +75,7 @@ offset_top = -141.111
 offset_right = 867.0
 offset_bottom = 36.8888
 scale = Vector2(1.5, 1.5)
-text = "화염 탄"
+text = "Flame Shell"
 label_settings = SubResource("LabelSettings_lau7m")
 
 [node name="CustomButton1" type="Control" parent="SP_Shell1"]
@@ -105,7 +105,7 @@ offset_top = -124.209
 offset_right = 739.0
 offset_bottom = 53.791
 scale = Vector2(1.5, 1.5)
-text = "독 탄"
+text = "Poison Shell"
 label_settings = SubResource("LabelSettings_lau7m")
 
 [node name="CustomButton2" type="Control" parent="SP_Shell2"]

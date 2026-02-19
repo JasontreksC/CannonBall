@@ -33,7 +33,7 @@ func _on_pressed() -> void:
 	input_count += 1
 	
 	if input_count == 1:
-		create_tween().tween_property(self, "size:x", 640, 0.5).set_trans(Tween.TRANS_SPRING)
+		create_tween().tween_property(self, "size:x", 800, 0.5).set_trans(Tween.TRANS_SPRING)
 		var color_in: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_EXPO)
 		color_in.tween_property(self, "self_modulate", button_color, 0.5)
 		color_in.tween_property(exit_icon, "modulate", Color.WHITE, 0.5)

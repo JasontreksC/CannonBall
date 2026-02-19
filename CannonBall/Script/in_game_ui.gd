@@ -3,9 +3,9 @@ class_name InGameUI
 
 ## Telescope
 @export var aim_message: Dictionary = {
-	"out_of_boundary" : "적의 진영을 벗어났습니다.",
-	"min_range" : "최소 사거리입니다.",
-	"max_range" : "최대 사거리입니다."
+	"out_of_boundary" : "Leaving enemy zone.",
+	"min_range" : "Min range reached.",
+	"max_range" : "Max range reached."
 }
 var aim_boundary_left_end: float = 0
 var aim_boundary_right_end: float = 0

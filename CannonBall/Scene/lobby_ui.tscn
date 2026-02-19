@@ -1,10 +1,10 @@
-[gd_scene load_steps=28 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=27 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
 [ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
 [ext_resource type="LabelSettings" uid="uid://7aydicaa1ulm" path="res://Material/title.tres" id="2_thp15"]
 [ext_resource type="Theme" uid="uid://c7n68kmajdde2" path="res://Material/lobby_button.tres" id="4_1xitx"]
-[ext_resource type="Texture2D" uid="uid://bkliw5os8x64i" path="res://Asset/ui/ysu_logo.png" id="5_thp15"]
+[ext_resource type="Texture2D" uid="uid://d11dapp0q3btv" path="res://Asset/ui/insta-logo.svg" id="6_0qu6b"]
 [ext_resource type="Texture2D" uid="uid://cbwhdufxtn6ju" path="res://Asset/ui/godot_logo.png" id="6_thp15"]
 [ext_resource type="LabelSettings" uid="uid://cexyqykw0smnf" path="res://Material/tutorial_title_ls.tres" id="7_1mlcq"]
 [ext_resource type="LabelSettings" uid="uid://drnw4sdbefimv" path="res://Material/tutorial_text_ls.tres" id="8_mhnqm"]
@@ -21,7 +21,6 @@
 [ext_resource type="VideoStream" uid="uid://qgv6o2sawnqu" path="res://Asset/video/tutorial_video_9.ogv" id="19_elr6o"]
 [ext_resource type="VideoStream" uid="uid://b6cvj7hxfbqea" path="res://Asset/video/tutorial_video_10.ogv" id="20_7go6n"]
 [ext_resource type="Theme" uid="uid://ddqu6xaoerwn0" path="res://Material/multiplay_option_panel.tres" id="21_0qu6b"]
-[ext_resource type="Theme" uid="uid://bn4glynpaam6t" path="res://Material/lobby_line.tres" id="22_hox77"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thp15"]
 bg_color = Color(1, 1, 1, 0.580392)
@@ -78,20 +77,11 @@ mouse_filter = 2
 texture = ExtResource("2_8l7yk")
 metadata/_edit_lock_ = true
 
-[node name="YSULogo" type="TextureRect" parent="LobbyImage"]
-layout_mode = 0
-offset_left = 72.0
-offset_top = 126.0
-offset_right = 638.0
-offset_bottom = 334.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("5_thp15")
-
 [node name="GodotLogo" type="TextureRect" parent="LobbyImage"]
 layout_mode = 0
-offset_left = 372.0
+offset_left = 36.0
 offset_top = 142.0
-offset_right = 2324.0
+offset_right = 1988.0
 offset_bottom = 810.0
 scale = Vector2(0.125, 0.125)
 texture = ExtResource("6_thp15")
@@ -105,15 +95,16 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 506.0
-offset_top = 409.09
+offset_top = 175.09
 offset_right = 706.0
-offset_bottom = 469.09
+offset_bottom = 235.09
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
-text = "게임 종료
+text = "Quit game
 "
+metadata/_edit_lock_ = true
 
 [node name="BT_Credit" type="Button" parent="."]
 z_index = 1
@@ -124,14 +115,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 271.0
-offset_top = 409.09
+offset_top = 175.09
 offset_right = 471.0
-offset_bottom = 469.09
+offset_bottom = 235.09
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
-text = "크레딧"
+text = "Developers"
+metadata/_edit_lock_ = true
 
 [node name="BT_Tutorial" type="Button" parent="."]
 z_index = 1
@@ -142,14 +134,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 31.0
-offset_top = 409.09
+offset_top = 175.09
 offset_right = 231.0
-offset_bottom = 469.09
+offset_bottom = 235.09
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
-text = "튜토리얼"
+text = "How to play"
+metadata/_edit_lock_ = true
 
 [node name="Creddit" type="Panel" parent="."]
 visible = false
@@ -159,7 +152,7 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -480.0
-offset_top = 300.0
+offset_top = 213.0
 offset_right = 480.0
 offset_bottom = 753.0
 grow_horizontal = 2
@@ -175,39 +168,151 @@ grow_vertical = 2
 
 [node name="Label1" type="Label" parent="Creddit/VBoxContainer"]
 layout_mode = 2
-text = "팀장"
+text = "Team Leader"
 label_settings = SubResource("LabelSettings_thp15")
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="Creddit/VBoxContainer"]
+[node name="Teams1" type="HBoxContainer" parent="Creddit/VBoxContainer"]
 layout_mode = 2
-text = "우재성"
+alignment = 1
+
+[node name="Name" type="Label" parent="Creddit/VBoxContainer/Teams1"]
+layout_mode = 2
+text = "Jasontreks"
 label_settings = SubResource("LabelSettings_1mlcq")
 horizontal_alignment = 1
+
+[node name="InstaLogo" type="TextureRect" parent="Creddit/VBoxContainer/Teams1/Name"]
+layout_mode = 2
+offset_left = 281.0
+offset_right = 326.0
+offset_bottom = 45.0
+texture = ExtResource("6_0qu6b")
+expand_mode = 2
+
+[node name="InstaID" type="Label" parent="Creddit/VBoxContainer/Teams1/Name/InstaLogo"]
+layout_mode = 2
+offset_left = 49.0
+offset_right = 263.0
+offset_bottom = 45.0
+text = "@jasontreks"
+label_settings = SubResource("LabelSettings_1mlcq")
 
 [node name="Label3" type="Label" parent="Creddit/VBoxContainer"]
 layout_mode = 2
-text = "기획 및 프로그래밍"
+text = "Design, Programming"
 label_settings = SubResource("LabelSettings_thp15")
 horizontal_alignment = 1
 
-[node name="Label4" type="Label" parent="Creddit/VBoxContainer"]
+[node name="Teams2" type="HBoxContainer" parent="Creddit/VBoxContainer"]
 layout_mode = 2
-text = "김시호, 손윤재"
+alignment = 1
+
+[node name="Name" type="Label" parent="Creddit/VBoxContainer/Teams2"]
+layout_mode = 2
+text = "K.show"
 label_settings = SubResource("LabelSettings_1mlcq")
 horizontal_alignment = 1
+
+[node name="InstaLogo" type="TextureRect" parent="Creddit/VBoxContainer/Teams2/Name"]
+layout_mode = 2
+offset_left = 258.0
+offset_right = 303.0
+offset_bottom = 45.0
+texture = ExtResource("6_0qu6b")
+expand_mode = 2
+
+[node name="InstaID" type="Label" parent="Creddit/VBoxContainer/Teams2/Name/InstaLogo"]
+layout_mode = 2
+offset_left = 49.0
+offset_right = 263.0
+offset_bottom = 45.0
+text = "@ksh_ow_05_"
+label_settings = SubResource("LabelSettings_1mlcq")
+
+[node name="Teams3" type="HBoxContainer" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Name" type="Label" parent="Creddit/VBoxContainer/Teams3"]
+layout_mode = 2
+text = "Son Yoon Jae"
+label_settings = SubResource("LabelSettings_1mlcq")
+horizontal_alignment = 1
+
+[node name="InstaLogo" type="TextureRect" parent="Creddit/VBoxContainer/Teams3/Name"]
+layout_mode = 2
+offset_left = 302.0
+offset_right = 347.0
+offset_bottom = 45.0
+texture = ExtResource("6_0qu6b")
+expand_mode = 2
+
+[node name="InstaID" type="Label" parent="Creddit/VBoxContainer/Teams3/Name/InstaLogo"]
+layout_mode = 2
+offset_left = 49.0
+offset_right = 263.0
+offset_bottom = 45.0
+text = "@yunxae_"
+label_settings = SubResource("LabelSettings_1mlcq")
 
 [node name="Label5" type="Label" parent="Creddit/VBoxContainer"]
 layout_mode = 2
-text = "그래픽 및 애니메이션"
+text = "Graphic, Animation"
 label_settings = SubResource("LabelSettings_thp15")
 horizontal_alignment = 1
 
-[node name="Label6" type="Label" parent="Creddit/VBoxContainer"]
+[node name="Teams4" type="HBoxContainer" parent="Creddit/VBoxContainer"]
 layout_mode = 2
-text = "홍창범, 박지언"
+alignment = 1
+
+[node name="Name" type="Label" parent="Creddit/VBoxContainer/Teams4"]
+layout_mode = 2
+text = "Beom"
 label_settings = SubResource("LabelSettings_1mlcq")
 horizontal_alignment = 1
+
+[node name="InstaLogo" type="TextureRect" parent="Creddit/VBoxContainer/Teams4/Name"]
+layout_mode = 2
+offset_left = 248.0
+offset_right = 293.0
+offset_bottom = 45.0
+texture = ExtResource("6_0qu6b")
+expand_mode = 2
+
+[node name="InstaID" type="Label" parent="Creddit/VBoxContainer/Teams4/Name/InstaLogo"]
+layout_mode = 2
+offset_left = 49.0
+offset_right = 263.0
+offset_bottom = 45.0
+text = "@beom._.cc"
+label_settings = SubResource("LabelSettings_1mlcq")
+
+[node name="Teams5" type="HBoxContainer" parent="Creddit/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Name" type="Label" parent="Creddit/VBoxContainer/Teams5"]
+layout_mode = 2
+text = "minah"
+label_settings = SubResource("LabelSettings_1mlcq")
+horizontal_alignment = 1
+
+[node name="InstaLogo" type="TextureRect" parent="Creddit/VBoxContainer/Teams5/Name"]
+layout_mode = 2
+offset_left = 253.0
+offset_right = 298.0
+offset_bottom = 45.0
+texture = ExtResource("6_0qu6b")
+expand_mode = 2
+
+[node name="InstaID" type="Label" parent="Creddit/VBoxContainer/Teams5/Name/InstaLogo"]
+layout_mode = 2
+offset_left = 49.0
+offset_right = 263.0
+offset_bottom = 45.0
+text = "@jx.0n._"
+label_settings = SubResource("LabelSettings_1mlcq")
 
 [node name="BT_CloseCredit" type="Button" parent="Creddit"]
 z_index = 1
@@ -257,7 +362,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
-text = "닫기"
+text = "Close"
 
 [node name="BT_Prev" type="Button" parent="Tutorial"]
 z_index = 1
@@ -275,7 +380,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
-text = "< 이전"
+text = "< Prev"
 
 [node name="BT_Next" type="Button" parent="Tutorial"]
 z_index = 1
@@ -293,9 +398,10 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
-text = "다음 >"
+text = "Next >"
 
 [node name="T1_KeySetting" type="Control" parent="Tutorial"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -303,6 +409,7 @@ anchor_bottom = 1.0
 offset_top = 182.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="SubTitle_Control" type="Label" parent="Tutorial/T1_KeySetting"]
 layout_mode = 0
@@ -311,7 +418,7 @@ offset_top = 27.0
 offset_right = 744.0
 offset_bottom = 138.0
 scale = Vector2(0.63497, 0.63497)
-text = "이동/조작"
+text = "Move/Control"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
@@ -380,7 +487,7 @@ offset_left = 433.0
 offset_top = 128.0
 offset_right = 759.0
 offset_bottom = 229.0
-text = "좌우 이동"
+text = "L/R Move player"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -415,7 +522,7 @@ offset_left = 433.0
 offset_top = 304.0
 offset_right = 759.0
 offset_bottom = 405.0
-text = "대포 조작"
+text = "Handle cannon"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -426,7 +533,7 @@ offset_left = 433.0
 offset_top = 656.0
 offset_right = 759.0
 offset_bottom = 757.0
-text = "조준 확대/축소"
+text = "Zoom aim"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -437,7 +544,7 @@ offset_left = 433.0
 offset_top = 481.0
 offset_right = 759.0
 offset_bottom = 582.0
-text = "조준 이동"
+text = "L/R Move aim"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -512,7 +619,7 @@ offset_left = 1401.0
 offset_top = 128.0
 offset_right = 1727.0
 offset_bottom = 229.0
-text = "탄환 선택"
+text = "Select shell"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -547,7 +654,7 @@ offset_left = 1401.0
 offset_top = 296.0
 offset_right = 1727.0
 offset_bottom = 397.0
-text = "게임에서 나가기"
+text = "Quit match"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -561,6 +668,7 @@ anchor_bottom = 1.0
 offset_top = 182.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="SubTitle_Turns" type="Label" parent="Tutorial/T2_Rules"]
 layout_mode = 0
@@ -569,18 +677,18 @@ offset_top = 27.0
 offset_right = 873.0
 offset_bottom = 138.0
 scale = Vector2(0.63497, 0.63497)
-text = "턴제 진행방식"
+text = "Turn-based"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
 [node name="SubTitle_Wins" type="Label" parent="Tutorial/T2_Rules"]
 layout_mode = 0
-offset_left = 1238.0
+offset_left = 1062.0
 offset_top = 27.0
-offset_right = 1637.0
+offset_right = 2051.0
 offset_bottom = 138.0
 scale = Vector2(0.63497, 0.63497)
-text = "승패 조건"
+text = "Victory Conditions"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
@@ -591,9 +699,9 @@ offset_top = 520.0
 offset_right = 1029.0
 offset_bottom = 673.0
 scale = Vector2(0.9, 0.888)
-text = "각 플레이어가 번갈아가며 공격을 수행합니다.
-공격 턴을 진행하는 플레이어는 
-대포를 발사하기 전까지 수명 시간이 줄어듭니다."
+text = "Each player attacks in turn. 
+Your life time drains continuously until
+ you fire the cannon."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
@@ -604,9 +712,9 @@ offset_top = 520.0
 offset_right = 1898.0
 offset_bottom = 673.0
 scale = Vector2(0.9, 0.9)
-text = "체력 또는 수명 시간이 먼저 
-0에 도달한 플레이어가 패배합니다.
-상대 플레이어는 승리합니다."
+text = "The player whose Health or Life Time
+ reaches zero first loses.
+The opponent wins."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
@@ -649,15 +757,16 @@ anchor_bottom = 1.0
 offset_top = 182.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="SubTitle_NormalShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
 offset_left = 109.0
 offset_top = 27.0
-offset_right = 673.0
+offset_right = 892.0
 offset_bottom = 138.0
-scale = Vector2(0.63497, 0.63497)
-text = "일반탄"
+scale = Vector2(0.515, 0.515)
+text = "Standard Shell"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
@@ -665,10 +774,10 @@ horizontal_alignment = 1
 layout_mode = 0
 offset_left = 734.0
 offset_top = 27.0
-offset_right = 1133.0
+offset_right = 1377.29
 offset_bottom = 138.0
-scale = Vector2(0.63497, 0.63497)
-text = "화염탄"
+scale = Vector2(0.515, 0.515)
+text = "Flame Shell"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
@@ -676,53 +785,71 @@ horizontal_alignment = 1
 layout_mode = 0
 offset_left = 1334.0
 offset_top = 27.0
-offset_right = 1733.0
+offset_right = 1978.0
 offset_bottom = 138.0
-scale = Vector2(0.63497, 0.63497)
-text = "독탄"
+scale = Vector2(0.515, 0.515)
+text = "Poison Shell"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
-[node name="Explain_NormalShell" type="Label" parent="Tutorial/T3_Shell"]
+[node name="Balance_NormalShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
-offset_left = 193.0
+offset_left = 194.0
 offset_top = 570.0
-offset_right = 394.0
+offset_right = 566.0
 offset_bottom = 671.0
 scale = Vector2(0.9, 0.888)
-text = "피해: 높음
-범위: 좁음"
+text = "Damage: ★ ★ ★
+Range: ★ ☆ ☆"
 label_settings = ExtResource("8_mhnqm")
-horizontal_alignment = 1
+horizontal_alignment = 2
+
+[node name="Balance_FireShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 733.0
+offset_top = 570.0
+offset_right = 1105.0
+offset_bottom = 671.0
+scale = Vector2(0.9, 0.888)
+text = "Damage: ★ ★ ☆
+Range: ★ ★ ☆"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 2
 
 [node name="Explain_FireShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
-offset_left = 1175.0
-offset_top = 570.0
-offset_right = 1830.0
-offset_bottom = 775.0
-scale = Vector2(0.9, 0.9)
-text = "피해: 낮음
-범위: 넓음
-
-피해 범위가 3초 동안 유지됩니다."
+offset_left = 691.0
+offset_top = 682.0
+offset_right = 1290.0
+offset_bottom = 783.0
+scale = Vector2(0.73, 0.72)
+text = "Creates a fire field.
+Ignites bushes."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
-[node name="Explain_PosionShell" type="Label" parent="Tutorial/T3_Shell"]
+[node name="Explain_PoisonShell" type="Label" parent="Tutorial/T3_Shell"]
 layout_mode = 0
-offset_left = 652.0
-offset_top = 570.0
-offset_right = 1124.0
-offset_bottom = 827.0
-scale = Vector2(0.9, 0.9)
-text = "피해: 중간
-범위: 중간
-
-4턴 동안 유지되는
-화염 필드를 생성합니다."
+offset_left = 1272.0
+offset_top = 682.0
+offset_right = 1871.0
+offset_bottom = 731.0
+scale = Vector2(0.73, 0.72)
+text = "Poisons the pond."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
+
+[node name="Balance_PoisonShell" type="Label" parent="Tutorial/T3_Shell"]
+layout_mode = 0
+offset_left = 1309.0
+offset_top = 570.0
+offset_right = 1681.0
+offset_bottom = 671.0
+scale = Vector2(0.9, 0.888)
+text = "Damage: ★ ☆ ☆
+Range: ★ ★ ★"
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 2
 
 [node name="VSP_Tutorial_3" type="VideoStreamPlayer" parent="Tutorial/T3_Shell"]
 layout_mode = 0
@@ -772,7 +899,7 @@ offset_top = 26.0
 offset_right = 752.0
 offset_bottom = 137.0
 scale = Vector2(0.63497, 0.63497)
-text = "수풀"
+text = "Bush"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
@@ -783,7 +910,8 @@ offset_top = 358.0
 offset_right = 614.0
 offset_bottom = 407.0
 scale = Vector2(0.9, 0.888)
-text = "플레이어와 대포를 가립니다."
+text = "Cloaks the player
+and cannon"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
@@ -794,8 +922,8 @@ offset_top = 714.0
 offset_right = 614.0
 offset_bottom = 815.0
 scale = Vector2(0.9, 0.888)
-text = "화염탄에 맞은 수풀은
-4턴 후 소멸합니다."
+text = "Burnging bushes vanishes
+after 4 turns."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
@@ -806,31 +934,29 @@ offset_top = 27.0
 offset_right = 1645.0
 offset_bottom = 138.0
 scale = Vector2(0.63497, 0.63497)
-text = "연못"
+text = "Pond"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
 [node name="Explain_FireShell" type="Label" parent="Tutorial/T4_Field"]
 layout_mode = 0
-offset_left = 599.0
-offset_top = 356.0
-offset_right = 1929.0
-offset_bottom = 457.0
+offset_left = 908.0
+offset_top = 383.0
+offset_right = 1663.0
+offset_bottom = 432.0
 scale = Vector2(0.9, 0.9)
-text = "연못 안에 떨어진 일반탄, 화염탄은 1의 피해만 입힙니다.
-연못 안 플레이어가 연못 밖 화염탄에 맞으면 절반의 피해만 입습니다."
+text = "Ponds grant damage reduction."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
 [node name="Explain_FireShell2" type="Label" parent="Tutorial/T4_Field"]
 layout_mode = 0
-offset_left = 767.0
-offset_top = 716.0
-offset_right = 1846.0
-offset_bottom = 817.0
+offset_left = 886.0
+offset_top = 719.0
+offset_right = 1708.0
+offset_bottom = 768.0
 scale = Vector2(0.9, 0.9)
-text = "연못 안에 떨어진 독탄은 연못을 6턴 동안 오염시킵니다.
-오염된 연못은 매 2초당 1의 피해를 입힙니다. "
+text = "Poisoned pond persists for 6 turns"
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 
@@ -894,7 +1020,7 @@ offset_top = 72.0
 offset_right = 369.0
 offset_bottom = 183.0
 grow_horizontal = 2
-text = "조작법"
+text = "Keys"
 label_settings = ExtResource("7_1mlcq")
 horizontal_alignment = 1
 
@@ -967,8 +1093,9 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
-text = "Steam 친구 초대
+text = "Invite Steam friend
 "
+metadata/_edit_lock_ = true
 
 [node name="BT_Host" type="Button" parent="Steam"]
 z_index = 1
@@ -987,7 +1114,8 @@ grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 disabled = true
-text = "호스트"
+text = "Host"
+metadata/_edit_lock_ = true
 
 [node name="BT_Join" type="Button" parent="Steam"]
 z_index = 1
@@ -1006,68 +1134,8 @@ grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 disabled = true
-text = "초대 수락"
-
-[node name="Local" type="Panel" parent="."]
-layout_mode = 0
-offset_left = 942.0
-offset_top = 713.0
-offset_right = 1742.0
-offset_bottom = 913.0
-theme = ExtResource("21_0qu6b")
+text = "Accept invite"
 metadata/_edit_lock_ = true
-
-[node name="BT_LocalHost" type="Button" parent="Local"]
-z_index = 1
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -289.86
-offset_top = -167.0
-offset_right = -89.86
-offset_bottom = -107.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("4_1xitx")
-text = "로컬 게임 생성"
-
-[node name="BT_LocalJoin" type="Button" parent="Local"]
-z_index = 1
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -289.86
-offset_top = -95.0
-offset_right = -89.86
-offset_bottom = -35.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("4_1xitx")
-text = "로컬 게임 참가"
-
-[node name="LE_HostIP" type="LineEdit" parent="Local"]
-layout_mode = 0
-offset_left = 92.0
-offset_top = 33.0
-offset_right = 500.0
-offset_bottom = 93.0
-theme = ExtResource("22_hox77")
-alignment = 1
-
-[node name="LE_JoinIP" type="LineEdit" parent="Local"]
-layout_mode = 0
-offset_left = 92.0
-offset_top = 105.0
-offset_right = 500.0
-offset_bottom = 165.0
-theme = ExtResource("22_hox77")
-alignment = 1
 
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
 [connection signal="pressed" from="BT_Credit" to="." method="_on_bt_credit_pressed"]
@@ -1079,5 +1147,3 @@ alignment = 1
 [connection signal="pressed" from="Steam/BT_Invite" to="." method="_on_bt_invite_pressed"]
 [connection signal="pressed" from="Steam/BT_Host" to="." method="_on_bt_host_pressed"]
 [connection signal="pressed" from="Steam/BT_Join" to="." method="_on_bt_join_pressed"]
-[connection signal="pressed" from="Local/BT_LocalHost" to="." method="_on_bt_local_host_pressed"]
-[connection signal="pressed" from="Local/BT_LocalJoin" to="." method="_on_bt_local_join_pressed"]

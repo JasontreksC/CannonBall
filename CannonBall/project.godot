@@ -10,9 +10,11 @@ config_version=5
 
 [application]
 
-config/name="CannonBall"
+config/name="Cannon Ball"
 run/main_scene="uid://j2h0dfktxryh"
 config/features=PackedStringArray("4.4", "Forward Plus")
+boot_splash/show_image=false
+config/icon="uid://babf0xunjdlb4"
 
 [autoload]
 

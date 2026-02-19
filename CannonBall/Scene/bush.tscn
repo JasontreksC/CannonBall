@@ -1,15 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://derjshwc5fbbg"]
+[gd_scene load_steps=3 format=3 uid="uid://derjshwc5fbbg"]
 
 [ext_resource type="Script" uid="uid://byctjxbu1163s" path="res://Script/bush.gd" id="1_yqe78"]
-[ext_resource type="PackedScene" uid="uid://iahjy3vehb1k" path="res://Scene/fx_flame.tscn" id="2_kljv2"]
 [ext_resource type="Texture2D" uid="uid://cbduxfwourgyr" path="res://Asset/environment/bush1.png" id="2_rcqkf"]
-[ext_resource type="PackedScene" uid="uid://etrvlgkdjfwx" path="res://Scene/fx_smoke.tscn" id="3_vrcp8"]
 
 [node name="Bush" type="Node2D"]
 z_index = 10
 script = ExtResource("1_yqe78")
-psFxFlame = ExtResource("2_kljv2")
-psFxSmoke = ExtResource("3_vrcp8")
 
 [node name="SP_Bush" type="Sprite2D" parent="."]
 position = Vector2(0, -300)

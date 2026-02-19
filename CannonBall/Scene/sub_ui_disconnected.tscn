@@ -45,7 +45,7 @@ offset_top = -44.5
 offset_bottom = 44.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "연결이 끊어짐!"
+text = "Disconnected!"
 label_settings = SubResource("LabelSettings_abuhn")
 horizontal_alignment = 1
 
@@ -59,7 +59,7 @@ offset_top = 72.5
 offset_bottom = 161.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "잠시 후 로비로 되돌아갑니다."
+text = "Going back to lobby..."
 label_settings = SubResource("LabelSettings_23qfo")
 horizontal_alignment = 1
 

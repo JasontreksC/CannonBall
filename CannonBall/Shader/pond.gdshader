@@ -11,7 +11,7 @@ void fragment() {
 	vec4 color = COLOR;
 	vec2 uv = UV;
 	if (color.a <= 0.9) {
-		
+
 		vec4 ground_color = texture(ground_tex, fract(vec2(uv.x * float(dir), uv.y) * 2.0));
 		ground_color.rgb = pow(ground_color.rgb, vec3(2.15));
 		COLOR = ground_color;

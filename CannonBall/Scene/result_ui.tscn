@@ -33,6 +33,6 @@ offset_top = 592.0
 offset_right = 958.0
 offset_bottom = 623.0
 scale = Vector2(2, 2)
-text = "로비로 나가기"
+text = "Back to Lobby"
 
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]

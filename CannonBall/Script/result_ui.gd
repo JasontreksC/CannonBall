@@ -12,7 +12,7 @@ func _ready() -> void:
 		0:
 			lbResult.text = "Defeat"
 		1:
-			lbResult.text = "Vectory"
+			lbResult.text = "Victory"
 
 func _on_bt_quit_pressed() -> void:
 	uiMgr.root.back_to_lobby()

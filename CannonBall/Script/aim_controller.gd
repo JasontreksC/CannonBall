@@ -39,9 +39,9 @@ func aim(velocity: float, delta: float) -> float:
 	currentAimRange = clamp(currentAimRange, minAimRange, maxAimRange)	
 	
 	if is_aimed_min():
-		cannon.game.ui.lbAimMessage_Range.text = "최소 사거리입니다."
+		cannon.game.ui.lbAimMessage_Range.text = "Min range reached."
 	elif is_aimed_max():
-		cannon.game.ui.lbAimMessage_Range.text = "최대 사거리입니다."
+		cannon.game.ui.lbAimMessage_Range.text = "Max range reached."
 	else:
 		cannon.game.ui.lbAimMessage_Range.text = ""
 

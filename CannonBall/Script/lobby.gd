@@ -16,14 +16,6 @@ func host_lobby():
 func join_lobby(new_lobby_id : int):
 	Steam.joinLobby(new_lobby_id)
 
-func local_host():
-	sceneMgr.set_scene(1)
-	root.create_local_socket()
-
-func local_join():
-	sceneMgr.set_scene(1)
-	root.connect_local_socket()
-
 ## 친구목록 및 초대
 func refresh_firend_list():
 	var firendCount = Steam.getFriendCount(Steam.FriendFlags.FRIEND_FLAG_ALL)
@@ -77,7 +69,7 @@ func recieve_invite():
 			root.host_steam_id = remote_steam_id
 			root.steam_lobby_id = invited_lobby_id
 
-			ui.btJoin.text = "초대 수락: " + Steam.getFriendPersonaName(root.host_steam_id)
+			ui.btJoin.text = "Accept invite from: " + Steam.getFriendPersonaName(root.host_steam_id)
 			ui.btJoin.disabled = false
 
 			print("invited from: ", invited_lobby_id)

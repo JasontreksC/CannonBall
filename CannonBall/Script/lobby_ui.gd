@@ -7,10 +7,10 @@ class_name LobbyUI
 @onready var btHost: Button = $Steam/BT_Host
 @onready var btJoin: Button = $Steam/BT_Join
 
-@onready var leLocalHostIP: LineEdit = $Local/LE_HostIP
-@onready var leLocalJoinIP: LineEdit = $Local/LE_JoinIP
-@onready var btLocalHost: Button = $Local/BT_LocalHost
-@onready var btLocalJoin: Button = $Local/BT_LocalJoin
+# @onready var leLocalHostIP: LineEdit = $Local/LE_HostIP
+# @onready var leLocalJoinIP: LineEdit = $Local/LE_JoinIP
+# @onready var btLocalHost: Button = $Local/BT_LocalHost
+# @onready var btLocalJoin: Button = $Local/BT_LocalJoin
 
 @onready var credit: Panel = $Creddit
 
@@ -27,8 +27,10 @@ class_name LobbyUI
 @onready var chapter1: ColorRect = $Tutorial/Chapter1
 @onready var tutorial_videos: Array[VideoStreamPlayer] = [$Tutorial/T2_Rules/VSP_Tutorial_1, $Tutorial/T2_Rules/VSP_Tutorial_2, $Tutorial/T3_Shell/VSP_Tutorial_3, $Tutorial/T3_Shell/VSP_Tutorial_4, $Tutorial/T3_Shell/VSP_Tutorial_5, $Tutorial/T4_Field/VSP_Tutorial_6, $Tutorial/T4_Field/VSP_Tutorial_7, $Tutorial/T4_Field/VSP_Tutorial_8, $Tutorial/T4_Field/VSP_Tutorial_9, $Tutorial/T4_Field/VSP_Tutorial_10]
 
+@onready var invite_btn: Button = $Steam/BT_Invite
+
 var tutorial_page: int = 0
-var tutorial_titles = ["조작법", "게임 규칙", "탄환", "필드"]
+var tutorial_titles = ["Keys", "Rules", "Shells", "Field"]
 
 
 var uiMgr: UIManager = null
@@ -53,11 +55,6 @@ func _ready() -> void:
 
 	for i in range(0, 10, 1):
 		tutorial_videos[i].volume = 0
-
-	if uiMgr.root.local_join_ip:
-		leLocalJoinIP.text = uiMgr.root.local_join_ip
-	if uiMgr.root.local_host_ip:
-		leLocalHostIP.text = uiMgr.root.local_host_ip
 			
 	set_tutorial_page(tutorial_page)
 
@@ -66,23 +63,7 @@ func _process(delta: float) -> void:
 		btInvite.disabled = false
 	else:
 		btInvite.disabled = true
-
-func _on_bt_local_host_pressed() -> void:
-	if leLocalHostIP.text.is_empty():
-		uiMgr.root.local_host_ip = "127.0.0.1"
-	else:
-		uiMgr.root.local_host_ip = leLocalHostIP.text
-
-	lobby.local_host()
-
-
-func _on_bt_local_join_pressed() -> void:
-	if leLocalJoinIP.text.is_empty():
-		uiMgr.root.local_join_ip = "127.0.0.1"
-	else:
-		uiMgr.root.local_join_ip = leLocalJoinIP.text
-
-	lobby.local_join()
+		invite_btn.text = "Please run and login Steam client\nand restart the game."
 
 func _on_bt_invite_pressed() -> void:
 	lobby.refresh_firend_list()

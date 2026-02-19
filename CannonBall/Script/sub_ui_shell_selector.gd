@@ -10,8 +10,8 @@ var ui: InGameUI = null
 
 func select(num: int) -> void:
 	var tween: Tween = create_tween().set_parallel(true)
-	tween.tween_property(self, "size:x", 300, 0.5).set_trans(Tween.TRANS_SPRING)
-	tween.tween_property(selector, "size:x", 360, 0.5).set_trans(Tween.TRANS_SPRING)
+	tween.tween_property(self, "size:x", 400, 0.5).set_trans(Tween.TRANS_SPRING)
+	tween.tween_property(selector, "size:x", 490, 0.5).set_trans(Tween.TRANS_SPRING)
 	tween.tween_property(selector, "position:y", y_props[num], 0.25).set_trans(Tween.TRANS_EXPO)
 
 	timer.start(1)
