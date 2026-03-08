@@ -115,13 +115,13 @@ func steam_client_init():
 	)
 	
 	Steam.lobby_joined.connect(
-	func (new_lobby_id: int, _permissions: int, _locked: bool, response: int):
+	func (join_lobby_id: int, _permissions: int, _locked: bool, response: int):
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
-			var id = Steam.getLobbyOwner(new_lobby_id)
+			var id = Steam.getLobbyOwner(join_lobby_id)
 			if id != Steam.getSteamID():
 				sceneMgr.set_scene(1)
 				connect_steam_socket(id)
-				current_lobby_id = new_lobby_id
+				current_lobby_id = join_lobby_id
 
 		else:
 		# Get the failure reason
