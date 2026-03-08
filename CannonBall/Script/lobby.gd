@@ -63,22 +63,22 @@ func _on_pressed_fb(fb: Button):
 	ui.btInvite.text = root.invite_steam_name
 	ui.btHost.disabled = false
 
-func recieve_invite():
-	var packetSize = Steam.getAvailableP2PPacketSize()
-	if packetSize > 0:
-		var packet = Steam.readP2PPacket(packetSize)
+# func recieve_invite():
+# 	var packetSize = Steam.getAvailableP2PPacketSize()
+# 	if packetSize > 0:
+# 		var packet = Steam.readP2PPacket(packetSize)
 		
-		if packet:
-			var remote_steam_id = packet["remote_steam_id"]
-			var invited_lobby_id = bytes_to_var(packet["data"])
+# 		if packet:
+# 			var remote_steam_id = packet["remote_steam_id"]
+# 			var invited_lobby_id = bytes_to_var(packet["data"])
 			
-			root.invited_steam_id = remote_steam_id
-			root.invited_lobby_id = invited_lobby_id
+# 			root.invited_steam_id = remote_steam_id
+# 			root.invited_lobby_id = invited_lobby_id
 
-			ui.btJoin.text = "Accept invite from: " + Steam.getFriendPersonaName(root.invited_steam_id)
-			ui.btJoin.disabled = false
+# 			ui.btJoin.text = "Accept invite from: " + Steam.getFriendPersonaName(root.invited_steam_id)
+# 			ui.btJoin.disabled = false
 
-			print("invited from: ", invited_lobby_id)
+# 			print("invited from: ", invited_lobby_id)
 
 ## 공개 매치 목록 가져오기
 func refresh_public_list():
@@ -125,10 +125,20 @@ func _ready() -> void:
 			ui.vbcPublicList.add_child(btPublic)
 	)
 
+	# 초대를 받았을 때 이벤트
+	Steam.join_requested.connect(
+		func(lobby_id: int, friend_id: int):
+			root.invited_lobby_id = lobby_id
+			root.invite_steam_id = friend_id
+			ui.btJoin.text = "Accept invite from: " + Steam.getFriendPersonaName(root.invited_steam_id)
+			ui.btJoin.disabled = false
+	)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if sceneMgr.currentSceneNum == 0:
-		if not hosting and root.my_steam_id:
-			recieve_invite()
+	pass
+	# if sceneMgr.currentSceneNum == 0:
+	# 	if not hosting and root.my_steam_id:
+	# 		recieve_invite()
 		

@@ -100,7 +100,7 @@ func steam_client_init():
 	func(status: int, new_lobby_id: int):
 		if status == 1:
 			if invite_steam_id:
-				Steam.sendP2PPacket(invite_steam_id, var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
+				Steam.inviteUserToLobby(new_lobby_id, invite_steam_id)
 				print("invite sended!: ", invite_steam_id)
 			
 			Steam.setLobbyData(new_lobby_id, "game", "cannonball")
