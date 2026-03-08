@@ -12,9 +12,9 @@ class_name CannonBall
 # UI, 게임 씬 참조 저장
 
 # 멀티 플레이 관련 리소스
-var app_id: int = 480
+# var app_id: int = 480
 var steam_client_ok = false
-# var app_id: int = 4442940
+var app_id: int = 4442940
 
 # 나의 스팀 정보
 var my_steam_id: int = 0

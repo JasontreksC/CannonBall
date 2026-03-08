@@ -13,7 +13,7 @@ fill_from = Vector2(0.0042735, 0.0512821)
 fill_to = Vector2(0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_71i6m"]
-font_size = 64
+font_size = 48
 
 [sub_resource type="LabelSettings" id="LabelSettings_7shko"]
 font_size = 100
