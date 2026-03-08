@@ -12,17 +12,16 @@ class_name CannonBall
 # UI, 게임 씬 참조 저장
 
 # 멀티 플레이 관련 리소스
-var app_id: int = 480 # 4442940
+var app_id: int = 480
+# var app_id: int = 4442940
 var my_steam_id: int = 0
-var invite_steam_id: int
-var host_steam_id: int
+var invite_steam_id: int = 0
+var host_steam_id: int = 0
 var steam_lobby_id: int = 0
 var my_steam_name: String 
 var invite_steam_name: String
 
 var peer: MultiplayerPeer = null
-# var local_host_ip: String = ""
-# var local_join_ip: String = ""
 
 @export var player_scene: PackedScene
 
@@ -50,49 +49,8 @@ func connect_steam_socket(steam_id : int):
 	peer.create_client(steam_id, 0)
 	multiplayer.set_multiplayer_peer(peer)
 
-# func create_local_socket():
-# 	peer = ENetMultiplayerPeer.new()
-# 	peer.create_server(135)
-# 	multiplayer.set_multiplayer_peer(peer)
-# 	if not multiplayer.peer_connected.is_connected(_add_player):
-# 		multiplayer.peer_connected.connect(_add_player)
-# 	_add_player()
-	# local_hosting = true
-	# print("목적지 설정: ", udp_peer.set_dest_address("127.0.0.1", UDP_PORT))
-	# udp_peer.set_broadcast_enabled(true)
-
-# func connect_local_socket():
-# 	peer = ENetMultiplayerPeer.new()
-# 	peer.create_client(local_join_ip, 135)
-# 	multiplayer.set_multiplayer_peer(peer)
-	# listening = true
-	# print("리슨: ", upd_server.listen(UDP_PORT))
-
 func get_main_viewport_world() -> World2D:
 	return svMain.find_world_2d()
-
-# func get_local_ipv4() -> String:
-# 	var ipv4_17230: Array[String] = []
-# 	var ipv4_105: Array[String] = []
-# 	var ipv4_192168: Array[String] = []
-	
-# 	var adresses := IP.get_local_addresses()
-# 	for a in adresses:
-# 		if a.begins_with("172.30."):
-# 			ipv4_17230.append(a)
-# 		elif a.begins_with("10.5."):
-# 			ipv4_105.append(a)
-# 		elif a.begins_with("192.168."):
-# 			ipv4_192168.append(a)
-	
-# 	if ipv4_17230:
-# 		return ipv4_17230[0]
-# 	elif ipv4_105:
-# 		return ipv4_105[0]
-# 	elif ipv4_192168:
-# 		return ipv4_192168[0]
-# 	else:
-# 		return ""
 
 func back_to_lobby() -> void:
 	get_tree().paused = false
@@ -192,12 +150,6 @@ func _ready() -> void:
 
 	if not steam_client_init():
 		print("Steam 초기화 실패")
-
-	
-
-	# print("바인딩: ", udp_peer.bind(0))
-	# local_host_ip = get_local_ipv4()
-	
 	
 func _process(delta: float) -> void:
 	Steam.run_callbacks()

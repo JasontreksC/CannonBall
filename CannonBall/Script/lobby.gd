@@ -9,6 +9,8 @@ var validFriends: Dictionary[String, int]
 var invalidFriends: Dictionary[String, int]
 var hosting: bool = false
 
+var selected_public_lobby_id: int = 0
+
 func host_lobby():
 	hosting = true
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
@@ -74,6 +76,15 @@ func recieve_invite():
 
 			print("invited from: ", invited_lobby_id)
 
+## 공개 매치 목록 가져오기
+func refresh_public_list():
+	if ui.vbcPublicList.get_child_count() > 0:
+		for n: Node in ui.vbcPublicList.get_children():
+			n.free()
+
+	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_DEFAULT)
+	Steam.addRequestLobbyListFilterSlotsAvailable(1)
+	Steam.requestLobbyList()
 
 func _enter_tree() -> void:
 	sceneMgr = get_parent() as SceneManager
@@ -81,6 +92,34 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	ui = root.uiMgr.get_current_ui_as_lobby()
+
+	# 공개 목록 구성 이벤트
+	Steam.lobby_match_list.connect(
+	func(lobbies: Array):
+		print(lobbies)
+		
+		for id: int in lobbies:
+			var host_steam_id = Steam.getLobbyOwner(id)
+			if host_steam_id <= 0:
+				continue
+
+			var lobby_name = Steam.getFriendPersonaName(host_steam_id) + "'s match"
+
+			var btPublic := Button.new()
+			btPublic.size.y = 50
+			btPublic.text = lobby_name
+			btPublic.set_meta('lobby_id', id)
+
+			btPublic.pressed.connect(
+			func(bt: Button):
+				selected_public_lobby_id = bt.get_meta('lobby_id')
+				ui.btFindPublic.text = bt.text
+				ui.btJoinPublic.disabled = false
+			)
+
+			ui.vbcPublicList.add_child(btPublic)
+	)
+
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

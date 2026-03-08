@@ -7,10 +7,11 @@ class_name LobbyUI
 @onready var btHost: Button = $Steam/BT_Host
 @onready var btJoin: Button = $Steam/BT_Join
 
-# @onready var leLocalHostIP: LineEdit = $Local/LE_HostIP
-# @onready var leLocalJoinIP: LineEdit = $Local/LE_JoinIP
-# @onready var btLocalHost: Button = $Local/BT_LocalHost
-# @onready var btLocalJoin: Button = $Local/BT_LocalJoin
+@onready var scPublicList: ScrollContainer =  $Public/SCC_PublicList
+@onready var vbcPublicList: VBoxContainer = $Public/SCC_PublicList/VBC_PublicList
+@onready var btHostPublic: Button = $Public/BT_HostPublic
+@onready var btFindPublic: Button = $Public/BT_FindPublic
+@onready var btJoinPublic: Button = $Public/BT_JoinPublic
 
 @onready var credit: Panel = $Creddit
 
@@ -36,12 +37,6 @@ var tutorial_titles = ["Keys", "Rules", "Shells", "Field"]
 var uiMgr: UIManager = null
 var lobby: Lobby = null
 
-func _on_bt_host_pressed() -> void:
-	lobby.host_lobby()
-
-func _on_bt_join_pressed() -> void:
-	lobby.join_lobby(uiMgr.root.steam_lobby_id)
-	
 func _enter_tree() -> void:
 	uiMgr = get_parent() as UIManager
 	lobby = uiMgr.root.sceneMgr.currentScene as Lobby
@@ -65,18 +60,52 @@ func _process(delta: float) -> void:
 		btInvite.disabled = true
 		invite_btn.text = "Please run and login Steam client\nand restart the game."
 
+
+# Multiplay Menu - Public
+func _on_bt_host_public_pressed() -> void:
+	uiMgr.root.invite_steam_id = 0
+	lobby.host_lobby()
+
+func _on_bt_find_public_pressed() -> void:
+	if scPublicList.visible:
+		scPublicList.visible = false
+	else:
+		lobby.refresh_public_list()
+		scPublicList.visible = true
+
+func _on_bt_join_public_pressed() -> void:
+	lobby.join_lobby(lobby.selected_public_lobby_id)
+
+# Multiplay Menu - Private
+
 func _on_bt_invite_pressed() -> void:
-	lobby.refresh_firend_list()
-	scFriendList.visible = not scFriendList.visible
+	if scFriendList.visible:
+		scFriendList.visible = false
+	else:
+		lobby.refresh_firend_list()
+		scFriendList.visible = true
+
+func _on_bt_host_pressed() -> void:
+	lobby.host_lobby()
+
+func _on_bt_join_pressed() -> void:
+	lobby.join_lobby(uiMgr.root.steam_lobby_id)
+	
+
+# quit button
 
 func _on_bt_quit_pressed() -> void:
 	get_tree().quit(0)
+
+# Credit button
 
 func _on_bt_credit_pressed() -> void:
 	credit.visible = true
 
 func _on_bt_close_credit_pressed() -> void:
 	credit.visible = false
+
+##  Tutorial Buttons
 
 func _on_bt_tutorial_pressed() -> void:
 	tutorial.visible = true
@@ -86,7 +115,6 @@ func _on_bt_tutorial_pressed() -> void:
 func _on_bt_close_tutorial_pressed() -> void:
 	tutorial.visible = false
 
-##  Tutorial Buttons
 func _on_bt_prev_pressed() -> void:
 	tutorial_page = clamp(tutorial_page - 1, 0, 3)
 		

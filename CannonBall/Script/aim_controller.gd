@@ -45,13 +45,19 @@ func aim(velocity: float, delta: float) -> float:
 	else:
 		cannon.game.ui.lbAimMessage_Range.text = ""
 
+	# 탄착 조준위치 보정
+	# 발사 위치와 지면과의 단차를 구함(h)
 	var h = breech.global_position.y
+	# 발사 각도를 구함
 	var theta = asin(cannon.game.G * currentAimRange / pow(V0, 2)) / 2
-
+	# 총 비행시간을 구함 (h높이에서 발사, 같은 h높이로 되돌아오는 시간)
 	var T = 2 * V0 * sin(theta) / cannon.game.G
+	# 그 순간의 y축 속도를 구함
 	var vy_end = V0 * sin(theta) - cannon.game.G *  T
-
+	# 그 순간의 y축 속도로 지면에 닿기까지 걸리는 찰나의 시간을 계산 (단차 h 만큼 추가로 떨어지는데 걸리는 시간)
 	var t_end = (vy_end + sqrt(pow(vy_end, 2) - 2 * cannon.game.G * h)) / cannon.game.G
+	# 총 비행시간 T + h만큼 떨어지는데 걸리는 시간 t_end를 더한 비행시간이 실제 탄환의 비행시간
+	# 그 시간만큼 X축 이동한 거리가 실제 탄이 떨어지는 위치. 그 위치로 조준경의 초점을 맞춤
 	var actual_aim_range = currentAimRange + V0 * cos(theta) * t_end
 
 	if multiplayer.is_server():

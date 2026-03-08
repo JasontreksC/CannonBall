@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=28 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
 [ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
@@ -21,6 +21,7 @@
 [ext_resource type="VideoStream" uid="uid://qgv6o2sawnqu" path="res://Asset/video/tutorial_video_9.ogv" id="19_elr6o"]
 [ext_resource type="VideoStream" uid="uid://b6cvj7hxfbqea" path="res://Asset/video/tutorial_video_10.ogv" id="20_7go6n"]
 [ext_resource type="Theme" uid="uid://ddqu6xaoerwn0" path="res://Material/multiplay_option_panel.tres" id="21_0qu6b"]
+[ext_resource type="Theme" uid="uid://c1dpet0k6i1wf" path="res://Shader/lobby_scrollbox_theme.tres" id="22_hox77"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thp15"]
 bg_color = Color(1, 1, 1, 0.580392)
@@ -75,7 +76,6 @@ offset_right = 1920.0
 offset_bottom = 1180.0
 mouse_filter = 2
 texture = ExtResource("2_8l7yk")
-metadata/_edit_lock_ = true
 
 [node name="GodotLogo" type="TextureRect" parent="LobbyImage"]
 layout_mode = 0
@@ -95,16 +95,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 506.0
-offset_top = 175.09
+offset_top = 420.09
 offset_right = 706.0
-offset_bottom = 235.09
+offset_bottom = 480.09
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 text = "Quit game
 "
-metadata/_edit_lock_ = true
 
 [node name="BT_Credit" type="Button" parent="."]
 z_index = 1
@@ -115,15 +114,14 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 271.0
-offset_top = 175.09
+offset_top = 420.09
 offset_right = 471.0
-offset_bottom = 235.09
+offset_bottom = 480.09
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 text = "Developers"
-metadata/_edit_lock_ = true
 
 [node name="BT_Tutorial" type="Button" parent="."]
 z_index = 1
@@ -134,15 +132,14 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 31.0
-offset_top = 175.09
+offset_top = 420.09
 offset_right = 231.0
-offset_bottom = 235.09
+offset_bottom = 480.09
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 text = "How to play"
-metadata/_edit_lock_ = true
 
 [node name="Creddit" type="Panel" parent="."]
 visible = false
@@ -1056,11 +1053,10 @@ color = Color(0.485703, 0.485704, 0.485703, 1)
 [node name="Steam" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 942.0
-offset_top = 482.0
+offset_top = 727.0
 offset_right = 1742.0
-offset_bottom = 682.0
+offset_bottom = 927.0
 theme = ExtResource("21_0qu6b")
-metadata/_edit_lock_ = true
 
 [node name="SCC_FriendList" type="ScrollContainer" parent="Steam"]
 visible = false
@@ -1068,9 +1064,10 @@ z_index = 1
 custom_minimum_size = Vector2(350, 400)
 layout_mode = 0
 offset_left = -308.0
-offset_top = -27.0
+offset_top = -59.0
 offset_right = 42.0
-offset_bottom = 373.0
+offset_bottom = 341.0
+theme = ExtResource("22_hox77")
 horizontal_scroll_mode = 0
 
 [node name="VBC_FirendList" type="VBoxContainer" parent="Steam/SCC_FriendList"]
@@ -1095,7 +1092,6 @@ scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 text = "Invite Steam friend
 "
-metadata/_edit_lock_ = true
 
 [node name="BT_Host" type="Button" parent="Steam"]
 z_index = 1
@@ -1115,7 +1111,6 @@ scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 disabled = true
 text = "Host"
-metadata/_edit_lock_ = true
 
 [node name="BT_Join" type="Button" parent="Steam"]
 z_index = 1
@@ -1135,7 +1130,86 @@ scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 disabled = true
 text = "Accept invite"
-metadata/_edit_lock_ = true
+
+[node name="Public" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 942.0
+offset_top = 497.0
+offset_right = 1742.0
+offset_bottom = 697.0
+theme = ExtResource("21_0qu6b")
+
+[node name="SCC_PublicList" type="ScrollContainer" parent="Public"]
+visible = false
+z_index = 1
+custom_minimum_size = Vector2(350, 400)
+layout_mode = 0
+offset_left = -308.0
+offset_top = -27.0
+offset_right = 42.0
+offset_bottom = 373.0
+theme = ExtResource("22_hox77")
+horizontal_scroll_mode = 0
+
+[node name="VBC_PublicList" type="VBoxContainer" parent="Public/SCC_PublicList"]
+custom_minimum_size = Vector2(350, 400)
+layout_mode = 2
+
+[node name="BT_HostPublic" type="Button" parent="Public"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -74.4999
+offset_right = 276.0
+offset_bottom = -14.4999
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "Host public match"
+
+[node name="BT_FindPublic" type="Button" parent="Public"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = 3.5
+offset_right = 140.0
+offset_bottom = 63.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+text = "Find public match
+"
+
+[node name="BT_JoinPublic" type="Button" parent="Public"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 198.0
+offset_top = 3.49991
+offset_right = 298.0
+offset_bottom = 63.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.04695, 1.04695)
+theme = ExtResource("4_1xitx")
+disabled = true
+text = "Join"
 
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
 [connection signal="pressed" from="BT_Credit" to="." method="_on_bt_credit_pressed"]
@@ -1147,3 +1221,6 @@ metadata/_edit_lock_ = true
 [connection signal="pressed" from="Steam/BT_Invite" to="." method="_on_bt_invite_pressed"]
 [connection signal="pressed" from="Steam/BT_Host" to="." method="_on_bt_host_pressed"]
 [connection signal="pressed" from="Steam/BT_Join" to="." method="_on_bt_join_pressed"]
+[connection signal="pressed" from="Public/BT_HostPublic" to="." method="_on_bt_host_public_pressed"]
+[connection signal="pressed" from="Public/BT_FindPublic" to="." method="_on_bt_find_public_pressed"]
+[connection signal="pressed" from="Public/BT_JoinPublic" to="." method="_on_bt_join_public_pressed"]

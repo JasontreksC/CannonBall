@@ -847,6 +847,7 @@ target = 1
 [node name="DamageFields" type="Node2D" parent="."]
 
 [node name="P1BarricadeL" parent="." instance=ExtResource("11_6a5p4")]
+visible = false
 position = Vector2(-10200, 0)
 scale = Vector2(1.5, 1.5)
 
