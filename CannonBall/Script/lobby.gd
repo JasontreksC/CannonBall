@@ -11,9 +11,13 @@ var hosting: bool = false
 
 var selected_public_lobby_id: int = 0
 
-func host_lobby():
+func host_lobby(private: bool):
 	hosting = true
-	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
+
+	if private:
+		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
+	else:
+		Steam.createLobby(Steam.LOBBY_TYPE_PRIVATE, 2)
 
 func join_lobby(new_lobby_id : int):
 	Steam.joinLobby(new_lobby_id)
@@ -124,6 +128,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not hosting and root.my_steam_id:
-		recieve_invite()
+	if sceneMgr.currentSceneNum == 0:
+		if not hosting and root.my_steam_id:
+			recieve_invite()
 		

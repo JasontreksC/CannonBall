@@ -64,7 +64,7 @@ func _process(delta: float) -> void:
 # Multiplay Menu - Public
 func _on_bt_host_public_pressed() -> void:
 	uiMgr.root.invite_steam_id = 0
-	lobby.host_lobby()
+	lobby.host_lobby(false)
 
 func _on_bt_find_public_pressed() -> void:
 	if scPublicList.visible:
@@ -86,7 +86,7 @@ func _on_bt_invite_pressed() -> void:
 		scFriendList.visible = true
 
 func _on_bt_host_pressed() -> void:
-	lobby.host_lobby()
+	lobby.host_lobby(true)
 
 func _on_bt_join_pressed() -> void:
 	lobby.join_lobby(uiMgr.root.invite_steam_id)
