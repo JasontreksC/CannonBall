@@ -1244,7 +1244,8 @@ offset_top = 223.0
 offset_right = 699.0
 offset_bottom = 286.0
 text = "Please make sure the Steam client is running
-and you are logged in."
+and you are logged in.
+Then restart this game."
 label_settings = ExtResource("8_mhnqm")
 horizontal_alignment = 1
 

@@ -79,13 +79,7 @@ func _on_pressed_lb(lb: Button):
 	ui.scPublicList.visible = false
 	ui.btJoinPublic.disabled = false
 
-func _enter_tree() -> void:
-	sceneMgr = get_parent() as SceneManager
-	root = sceneMgr.root as CannonBall
-
-func _ready() -> void:
-	ui = root.uiMgr.get_current_ui_as_lobby()
-
+func bind_steam_events():
 	# 공개 목록 구성 이벤트
 	Steam.lobby_match_list.connect(
 	func(lobbies: Array):
@@ -117,6 +111,13 @@ func _ready() -> void:
 			ui.btJoin.disabled = false
 	)
 
+
+func _enter_tree() -> void:
+	sceneMgr = get_parent() as SceneManager
+	root = sceneMgr.root as CannonBall
+
+func _ready() -> void:
+	ui = root.uiMgr.get_current_ui_as_lobby()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

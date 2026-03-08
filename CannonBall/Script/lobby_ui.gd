@@ -162,11 +162,11 @@ func set_tutorial_page(page: int) -> void:
 		tutorial_videos[i].play()
 
 ## Steam Alert
-func alert_steam(on: bool) -> void:
-	btHostPublic.disabled = on
-	btFindPublic.disabled = on
-	btInvite.disabled = on
-	btHost.disabled = on
-	btJoin.disabled = on
-	btJoinPublic.disabled = on
-	pnSteamAlert.visible = on
+func alert_steam() -> void:
+	btHostPublic.disabled = true
+	btFindPublic.disabled = true
+	btInvite.disabled = true
+	btHost.disabled = true
+	btJoin.disabled = true
+	btJoinPublic.disabled = true
+	pnSteamAlert.visible = true
