@@ -3,6 +3,7 @@ class_name Bush
 
 @export var target:int = 0
 @export var bushRadius: float = 300
+@export var bushLifetimeTurn: int = 3
 
 @onready var spBush: Sprite2D = $SP_Bush
 @onready var nBurnSpots: Node2D = $BurnFxSpots
@@ -19,20 +20,20 @@ func start_burn() -> void:
 	if isBurning:
 		return
 
-	world.game.regist_lifeturn(self.get_path(), 4)
+	world.game.regist_lifeturn(self.get_path(), bushLifetimeTurn)
 
 	var spots: Array[Node] = nBurnSpots.get_children()
 	for s: Node2D in spots:
 		var fxf = world.game.server_spawn_directly("fx_flame", "none", {
 			"global_position": s.global_position
 		})
-		world.game.regist_lifeturn(fxf.get_path(), 4)
+		world.game.regist_lifeturn(fxf.get_path(), bushLifetimeTurn)
 		
 		var fxs = world.game.server_spawn_directly("fx_smoke", "none", {
 			"smokeAmount": 20,
 			"global_position": s.global_position
 		})
-		world.game.regist_lifeturn(fxs.get_path(), 4)
+		world.game.regist_lifeturn(fxs.get_path(), bushLifetimeTurn)
 	
 	isBurning = true
 	

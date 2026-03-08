@@ -487,10 +487,10 @@ shader_parameter/Texture_5 = SubResource("GradientTexture1D_55nal")
 [sub_resource type="CanvasTexture" id="CanvasTexture_xqbbg"]
 
 [node name="FireShell" instance=ExtResource("1_sf3w6")]
-radius = 600.0
+radius = 450.0
 hitDamage = 6
 tickDamage = 1
-lifetimeTurn = 4
+lifetimeTurn = 3
 tickInterval = 1.0
 
 [node name="SP_FireShell" type="Sprite2D" parent="." index="0"]
