@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=31 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
 [ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
@@ -22,6 +22,7 @@
 [ext_resource type="VideoStream" uid="uid://b6cvj7hxfbqea" path="res://Asset/video/tutorial_video_10.ogv" id="20_7go6n"]
 [ext_resource type="Theme" uid="uid://ddqu6xaoerwn0" path="res://Material/multiplay_option_panel.tres" id="21_0qu6b"]
 [ext_resource type="Theme" uid="uid://c1dpet0k6i1wf" path="res://Shader/lobby_scrollbox_theme.tres" id="22_hox77"]
+[ext_resource type="Texture2D" uid="uid://batm6qbehwtgh" path="res://Asset/ui/steam_logo.png" id="23_elr6o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thp15"]
 bg_color = Color(1, 1, 1, 0.580392)
@@ -43,6 +44,12 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_rb062"]
 font_size = 96
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7go6n"]
+bg_color = Color(0.0187081, 0.204055, 0.3954, 0.913725)
+
+[sub_resource type="Theme" id="Theme_lx2cs"]
+Panel/styles/panel = SubResource("StyleBoxFlat_7go6n")
 
 [node name="LobbyUI" type="Control"]
 layout_mode = 3
@@ -1210,6 +1217,36 @@ scale = Vector2(1.04695, 1.04695)
 theme = ExtResource("4_1xitx")
 disabled = true
 text = "Join"
+
+[node name="SteamAlert" type="Panel" parent="."]
+visible = false
+z_index = 100
+layout_mode = 0
+offset_left = 695.0
+offset_top = 400.0
+offset_right = 1428.0
+offset_bottom = 801.0
+theme = SubResource("Theme_lx2cs")
+
+[node name="TextureRect" type="TextureRect" parent="SteamAlert"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 57.0
+offset_right = 1280.0
+offset_bottom = 1017.0
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("23_elr6o")
+
+[node name="Label" type="Label" parent="SteamAlert"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 223.0
+offset_right = 699.0
+offset_bottom = 286.0
+text = "Please make sure the Steam client is running
+and you are logged in."
+label_settings = ExtResource("8_mhnqm")
+horizontal_alignment = 1
 
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]
 [connection signal="pressed" from="BT_Credit" to="." method="_on_bt_credit_pressed"]

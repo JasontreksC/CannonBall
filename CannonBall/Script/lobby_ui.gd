@@ -28,7 +28,7 @@ class_name LobbyUI
 @onready var chapter1: ColorRect = $Tutorial/Chapter1
 @onready var tutorial_videos: Array[VideoStreamPlayer] = [$Tutorial/T2_Rules/VSP_Tutorial_1, $Tutorial/T2_Rules/VSP_Tutorial_2, $Tutorial/T3_Shell/VSP_Tutorial_3, $Tutorial/T3_Shell/VSP_Tutorial_4, $Tutorial/T3_Shell/VSP_Tutorial_5, $Tutorial/T4_Field/VSP_Tutorial_6, $Tutorial/T4_Field/VSP_Tutorial_7, $Tutorial/T4_Field/VSP_Tutorial_8, $Tutorial/T4_Field/VSP_Tutorial_9, $Tutorial/T4_Field/VSP_Tutorial_10]
 
-@onready var invite_btn: Button = $Steam/BT_Invite
+@onready var pnSteamAlert: Panel = $SteamAlert
 
 var tutorial_page: int = 0
 var tutorial_titles = ["Keys", "Rules", "Shells", "Field"]
@@ -56,10 +56,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if uiMgr.root.my_steam_id:
 		btInvite.disabled = false
-	else:
-		btInvite.disabled = true
-		invite_btn.text = "Please run and login Steam client\nand restart the game."
-
 
 # Multiplay Menu - Public
 func _on_bt_host_public_pressed() -> void:
@@ -164,3 +160,13 @@ func set_tutorial_page(page: int) -> void:
 	
 	for i in video_nums:
 		tutorial_videos[i].play()
+
+## Steam Alert
+func alert_steam(on: bool) -> void:
+	btHostPublic.disabled = on
+	btFindPublic.disabled = on
+	btInvite.disabled = on
+	btHost.disabled = on
+	btJoin.disabled = on
+	btJoinPublic.disabled = on
+	pnSteamAlert.visible = on

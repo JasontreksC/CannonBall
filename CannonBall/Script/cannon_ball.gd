@@ -90,8 +90,8 @@ func steam_client_init():
 		print("내 Steam ID: ", my_steam_id)
 		print("내 Steam 닉네임: ", Steam.getPersonaName())
 		
-		Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
-		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
+		# Steam.connect("p2p_session_request", Callable(self, "_on_p2p_session_request"))
+		# Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
 	else:
 		print("Steam 로그인 상태가 아님")
 		return false
@@ -156,15 +156,30 @@ func _ready() -> void:
 	uiMgr.set_ui(0)
 	sceneMgr.set_scene(0)
 
-	if not steam_client_init():
-		print("Steam 초기화 실패")
-	
+	# if not steam_client_init():
+	# 	print("Steam 초기화 실패")
+
+var time_passed: float = 5.0
 func _process(delta: float) -> void:
 	Steam.run_callbacks()
-	
-func _on_p2p_session_request(remote_id: int):
-	print("P2P 세션 요청 수신, 자동 수락:", remote_id)
-	Steam.acceptP2PSessionWithUser(remote_id)
 
-func _on_p2p_session_connect_fail(remote_id: int, error: int):
-	print("P2P 세션 연결 실패:", remote_id, "오류 코드:", error)
+	# Steam 클라이언트 확인
+
+	time_passed += delta
+
+	if time_passed >= 5.0:
+		time_passed = 0.0
+		if not Steam.getSteamID():
+			if not steam_client_init():
+				uiMgr.get_current_ui_as_lobby().alert_steam(true)
+				print("Steam 초기화 실패")
+			else:
+				uiMgr.get_current_ui_as_lobby().alert_steam(false)
+				print("Steam 초기화 성공")
+	
+# func _on_p2p_session_request(remote_id: int):
+# 	print("P2P 세션 요청 수신, 자동 수락:", remote_id)
+# 	Steam.acceptP2PSessionWithUser(remote_id)
+
+# func _on_p2p_session_connect_fail(remote_id: int, error: int):
+# 	print("P2P 세션 연결 실패:", remote_id, "오류 코드:", error)
