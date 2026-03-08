@@ -89,7 +89,7 @@ func _on_bt_host_pressed() -> void:
 	lobby.host_lobby()
 
 func _on_bt_join_pressed() -> void:
-	lobby.join_lobby(uiMgr.root.steam_lobby_id)
+	lobby.join_lobby(uiMgr.root.invite_steam_id)
 	
 
 # quit button

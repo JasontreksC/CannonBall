@@ -14,14 +14,22 @@ class_name CannonBall
 # 멀티 플레이 관련 리소스
 var app_id: int = 480
 # var app_id: int = 4442940
+
+# 나의 스팀 정보
 var my_steam_id: int = 0
-var invite_steam_id: int = 0
-var host_steam_id: int = 0
-var steam_lobby_id: int = 0
 var my_steam_name: String 
+
+# 초대를 받았을 때
+var invited_steam_id: int = 0
+var invited_lobby_id: int = 0
+
+# 초대를 할 때
+var invite_steam_id: int = 0
 var invite_steam_name: String
 
 var peer: MultiplayerPeer = null
+var current_lobby_id: int = 0
+
 
 @export var player_scene: PackedScene
 
@@ -55,15 +63,15 @@ func get_main_viewport_world() -> World2D:
 func back_to_lobby() -> void:
 	get_tree().paused = false
 
-	if steam_lobby_id:
-		var members_num: int = Steam.getNumLobbyMembers(steam_lobby_id)
+	if current_lobby_id:
+		var members_num: int = Steam.getNumLobbyMembers(current_lobby_id)
 		for i in range(members_num):
-			var member_steam_id = Steam.getLobbyMemberByIndex(steam_lobby_id, i)
-			if member_steam_id != steam_lobby_id:
+			var member_steam_id = Steam.getLobbyMemberByIndex(current_lobby_id, i)
+			if member_steam_id != current_lobby_id:
 				Steam.closeP2PSessionWithUser(member_steam_id)
 				
-		Steam.leaveLobby(steam_lobby_id)
-		steam_lobby_id = 0
+		Steam.leaveLobby(current_lobby_id)
+		current_lobby_id = 0
 
 	peer.close()
 	multiplayer.multiplayer_peer = null
@@ -74,7 +82,7 @@ func steam_client_init():
 	var result = Steam.steamInitEx(app_id)
 	if result["status"] == 2:
 		print("Steam 클라이언트가 실행중이지 않음")
-		return
+		return false
 	
 	if Steam.loggedOn():
 		my_steam_id = Steam.getSteamID()
@@ -86,7 +94,7 @@ func steam_client_init():
 		Steam.connect("p2p_session_connect_fail", Callable(self, "_on_p2p_session_connect_fail"))
 	else:
 		print("Steam 로그인 상태가 아님")
-		return
+		return false
 
 	Steam.lobby_created.connect(
 	func(status: int, new_lobby_id: int):
@@ -95,13 +103,13 @@ func steam_client_init():
 				Steam.sendP2PPacket(invite_steam_id, var_to_bytes(new_lobby_id), Steam.P2P_SEND_RELIABLE)
 				print("invite sended!: ", invite_steam_id)
 			
-			Steam.setLobbyData(new_lobby_id, "p1's lobby", 
-				str(Steam.getPersonaName(), "'s Spectabulous Test Server"))
+			Steam.setLobbyData(new_lobby_id, "game", "cannonball")
+			Steam.setLobbyData(new_lobby_id, "lobby_name", "%s's match" % Steam.getFriendPersonaName(my_steam_id))
 			
 			sceneMgr.set_scene(1)
 			create_steam_socket()
 			print("Lobby ID:", new_lobby_id)
-			steam_lobby_id = new_lobby_id
+			current_lobby_id = new_lobby_id
 		else:
 			print("Error on create lobby!")
 	)
@@ -111,12 +119,10 @@ func steam_client_init():
 		if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			var id = Steam.getLobbyOwner(new_lobby_id)
 			if id != Steam.getSteamID():
-				if id == host_steam_id:
-					sceneMgr.set_scene(1)
-					connect_steam_socket(id)
-					steam_lobby_id = new_lobby_id
-				else:
-					print("오류: 초대를 전송한 호스트의 SteamID와 로비 오너의 SteamID가 일치하지 않음.")
+				sceneMgr.set_scene(1)
+				connect_steam_socket(id)
+				current_lobby_id = new_lobby_id
+
 		else:
 		# Get the failure reason
 			var FAIL_REASON: String
@@ -143,6 +149,8 @@ func steam_client_init():
 					FAIL_REASON = "A user you have blocked is in the lobby."
 			print(FAIL_REASON)
 		)
+
+	return true
 
 func _ready() -> void:
 	uiMgr.set_ui(0)

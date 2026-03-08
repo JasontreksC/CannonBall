@@ -68,10 +68,10 @@ func recieve_invite():
 			var remote_steam_id = packet["remote_steam_id"]
 			var invited_lobby_id = bytes_to_var(packet["data"])
 			
-			root.host_steam_id = remote_steam_id
-			root.steam_lobby_id = invited_lobby_id
+			root.invited_steam_id = remote_steam_id
+			root.invited_lobby_id = invited_lobby_id
 
-			ui.btJoin.text = "Accept invite from: " + Steam.getFriendPersonaName(root.host_steam_id)
+			ui.btJoin.text = "Accept invite from: " + Steam.getFriendPersonaName(root.invited_steam_id)
 			ui.btJoin.disabled = false
 
 			print("invited from: ", invited_lobby_id)
@@ -86,6 +86,12 @@ func refresh_public_list():
 	Steam.addRequestLobbyListFilterSlotsAvailable(1)
 	Steam.requestLobbyList()
 
+func _on_pressed_lb(lb: Button):
+	selected_public_lobby_id = lb.get_meta('lobby_id')
+	ui.btFindPublic.text = lb.text
+	ui.scPublicList.visible = false
+	ui.btJoinPublic.disabled = false
+
 func _enter_tree() -> void:
 	sceneMgr = get_parent() as SceneManager
 	root = sceneMgr.root as CannonBall
@@ -97,30 +103,25 @@ func _ready() -> void:
 	Steam.lobby_match_list.connect(
 	func(lobbies: Array):
 		print(lobbies)
-		
+
 		for id: int in lobbies:
-			var host_steam_id = Steam.getLobbyOwner(id)
-			if host_steam_id <= 0:
+			var game_name = Steam.getLobbyData(id, "game")
+			if game_name != "cannonball":
 				continue
 
-			var lobby_name = Steam.getFriendPersonaName(host_steam_id) + "'s match"
+			var lobby_name = Steam.getLobbyData(id, "lobby_name")
 
 			var btPublic := Button.new()
 			btPublic.size.y = 50
-			btPublic.text = lobby_name
+			btPublic.text = lobby_name if lobby_name else str(id)
 			btPublic.set_meta('lobby_id', id)
 
-			btPublic.pressed.connect(
-			func(bt: Button):
-				selected_public_lobby_id = bt.get_meta('lobby_id')
-				ui.btFindPublic.text = bt.text
-				ui.btJoinPublic.disabled = false
-			)
+			btPublic.pressed.connect(_on_pressed_lb.bind(btPublic))
 
 			ui.vbcPublicList.add_child(btPublic)
 	)
 
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if not hosting and root.my_steam_id:
