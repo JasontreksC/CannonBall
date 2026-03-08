@@ -129,7 +129,7 @@ func _ready() -> void:
 	Steam.join_requested.connect(
 		func(lobby_id: int, friend_id: int):
 			root.invited_lobby_id = lobby_id
-			root.invite_steam_id = friend_id
+			root.invited_steam_id = friend_id
 			ui.btJoin.text = "Accept invite from: " + Steam.getFriendPersonaName(root.invited_steam_id)
 			ui.btJoin.disabled = false
 	)
