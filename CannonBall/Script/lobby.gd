@@ -15,9 +15,9 @@ func host_lobby(private: bool):
 	hosting = true
 
 	if private:
-		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
-	else:
 		Steam.createLobby(Steam.LOBBY_TYPE_PRIVATE, 2)
+	else:
+		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
 
 func join_lobby(new_lobby_id : int):
 	Steam.joinLobby(new_lobby_id)
