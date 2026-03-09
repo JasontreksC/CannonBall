@@ -7,7 +7,7 @@ class_name Pond
 @export var pondRadius: float = 220
 @export var pondDepth: float = 100
 @export var pondID: int = 0
-@export var pondPoisonLifetimeTurn: int = 3
+@export var pondPoisonLifetimeTurn: int = 4
 
 #var mat : ShaderMaterial
 var isPoisoned: bool = false
