@@ -490,7 +490,7 @@ shader_parameter/Texture_5 = SubResource("GradientTexture1D_55nal")
 radius = 450.0
 hitDamage = 6
 tickDamage = 1
-lifetimeTurn = 3
+lifetimeTurn = 4
 tickInterval = 1.0
 
 [node name="SP_FireShell" type="Sprite2D" parent="." index="0"]

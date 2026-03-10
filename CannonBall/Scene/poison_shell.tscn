@@ -7,7 +7,7 @@
 radius = 800.0
 hitDamage = 3
 tickDamage = 1
-lifetimeTurn = 4
+lifetimeTurn = 6
 tickInterval = 2.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]

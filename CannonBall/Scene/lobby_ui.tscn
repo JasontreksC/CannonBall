@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dn2qylqxk6ojv"]
+[gd_scene load_steps=32 format=3 uid="uid://dn2qylqxk6ojv"]
 
 [ext_resource type="Script" uid="uid://bfi6kxt5fyfm" path="res://Script/lobby_ui.gd" id="1_hlk56"]
 [ext_resource type="Texture2D" uid="uid://dl5rf8v2lm6mo" path="res://Asset/ui/lobby_image.png" id="2_8l7yk"]
@@ -50,6 +50,9 @@ bg_color = Color(0.0187081, 0.204055, 0.3954, 0.913725)
 
 [sub_resource type="Theme" id="Theme_lx2cs"]
 Panel/styles/panel = SubResource("StyleBoxFlat_7go6n")
+
+[sub_resource type="LabelSettings" id="LabelSettings_elr6o"]
+font_size = 32
 
 [node name="LobbyUI" type="Control"]
 layout_mode = 3
@@ -1063,6 +1066,7 @@ offset_left = 942.0
 offset_top = 727.0
 offset_right = 1742.0
 offset_bottom = 927.0
+mouse_filter = 2
 theme = ExtResource("21_0qu6b")
 
 [node name="SCC_FriendList" type="ScrollContainer" parent="Steam"]
@@ -1246,7 +1250,7 @@ offset_bottom = 286.0
 text = "Please make sure the Steam client is running
 and you are logged in.
 Then restart this game."
-label_settings = ExtResource("8_mhnqm")
+label_settings = SubResource("LabelSettings_elr6o")
 horizontal_alignment = 1
 
 [connection signal="pressed" from="BT_Quit" to="." method="_on_bt_quit_pressed"]

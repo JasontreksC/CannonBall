@@ -18,7 +18,7 @@ void fragment() {
 		if ((t < 0.0) || (t > 1.0))
 			t = 0.0;
 		else
-			t = clamp((UV.y - inner_y_start) / (inner_y_end - inner_y_start), 0, 1.0);
+			t = clamp(t, 0, 1.0);
 		float inner_dist = t / 2.0 * inner_ratio;
 		if ((UV.x > 0.5 - inner_dist) && (UV.x < 0.5 + inner_dist)) {
 			COLOR = inner_color;
